@@ -1,0 +1,26 @@
+# l <= 10, n <= 3 toroidal mode observations listed in PREM, Table 5
+# col 1: n, radial order
+# col 2: T (torsional mode)
+# col 3: l, angular order
+# col 4: observation period, s
+# col 5: standard deviation of observation period, s
+0 T 2 2636.38 0.08
+0 T 3 1705.95 0.15
+0 T 4 1305.92 0.07
+0 T 5 1075.98 0.12
+0 T 6 925.84 0.09
+0 T 7 819.31 0.08
+0 T 8 736.86 0.20
+0 T 9 671.80 0.20
+0 T 10 618.97 0.20
+1 T 2 756.57 0.08
+1 T 3 695.18 0.07
+1 T 6 519.09 0.06
+1 T 7 475.17 0.13
+1 T 8 438.49 0.05
+1 T 9 407.74 0.07
+1 T 10 381.65 0.10 
+2 T 4 420.46 0.07
+2 T 7 363.65 0.07
+2 T 8 343.34 0.06
+3 T 9 259.26 0.07
