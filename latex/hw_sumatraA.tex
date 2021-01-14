@@ -1,0 +1,469 @@
+% dvips -t letter hw_sumatraA.dvi -o hw_sumatraA.ps ; ps2pdf hw_sumatraA.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+\renewcommand{\baselinestretch}{1.0}
+
+%\newcommand{\fft}{h}
+%\newcommand{\ffw}{\widetilde{h}}
+\newcommand{\fft}{h}
+\newcommand{\ffw}{H}
+
+%\newcommand{\tfile}{{\tt CAN$\_$response$\_$template.m}}
+\newcommand{\tfile}{{\tt lab$\_$response.m}}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Problem Set 4: Analysis of the 2004 Sumatra-Andaman earthquake \\
+Part 1: Instrument response and spectral analysis \\ }
+GEOS 626: Applied Seismology, Carl Tape \\
+Assigned: February 12, 2018 --- Due: February 26, 2018 \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\bigskip
+\noindent
+The goals of this problem set are:
+%
+\begin{enumerate}
+\item to review complex numbers and functions
+\item to practice deconvolving the instrument response from a raw seismogram recorded in ``counts''
+\item to introduce you to the frequency dependence of the seismic wavefield, especially with regard to seismological investigations of earthquake sources and Earth structure
+\end{enumerate}
+
+\section*{Instructions}
+
+\begin{itemize}
+
+\item Make sure you have done the lab (\verb+lab_response.pdf+).
+
+\item The main scripts you will use are
+%
+\begin{itemize}
+\item \verb+CAN_response_template.m+
+\item \verb+CAN_noise_template.m+
+\item \verb+CAN_P_template.m+
+\item \verb+CAN_bp_template.m+
+\end{itemize}
+%
+Make a copy of each of these files. The label \verb+CAN+ is for a station at Canberra, Australia, featured in \citet[][Figure~1]{Park2005}.
+
+\item The main function to extract waveforms from our local database is \verb+sumatra_read_seis.m+. Note that this is called within the template scripts.
+
+\item The Global CMT catalog is at \verb+www.globalcmt.org+
+
+\item Background reading:
+
+\begin{itemize}
+\item instrument response and Fourier analysis: \citet[][Ch.~6]{SteinWysession}
+\item Sumatra earthquake: \citep{Lay2005,Ammon2005,Park2005,Ni2005}
+%\item normal modes: \citet[][Section 2.9]{SteinWysession} and \citet[][Ch.~8]{DT}. See also ``Computational details'' in Section 10.5.1 of DT.
+\item PDFs of all referenced Sumatra papers can be found this directory:
+%
+\begin{verbatim}
+/home/admin/databases/SUMATRA/papers/
+\end{verbatim}
+%
+You can readily access these papers by setting a symbolic link
+%
+\begin{verbatim}
+cd
+ln -s /home/admin/databases/SUMATRA/papers sumatra
+\end{verbatim}
+%
+Example command to open a paper: \verb+xpdf ~/sumatra/04_Ammon2005all.pdf+.
+
+\end{itemize}
+
+\item In your answers, please include lines of your computer code if either of these applies:
+%
+\begin{itemize}
+\item your code does not ``work''
+\item you think that the code lines are useful for conveying your solution
+\end{itemize}
+
+\item I try to keep some correspondence between the notation for time series versus the Fourier transform: $c(t)$ vs $C(\omega)$, $\fft(t)$ vs $\ffw(\omega)$, $x_d(t)$ vs $X_d(\omega)$, $x_v(t)$ vs $X_v(\omega)$, $x_a(t)$ vs $X_a(\omega)$.
+
+\end{itemize}
+
+%------------------------
+
+%\pagebreak
+\section*{Problem 1 (0.5). Complex numbers and functions}
+
+\begin{itemize}
+\item The best way to think of complex numbers is to sketch a circle (radius $r$) in the complex plane, with the $x$-axis the real component and the $y$-axis the imaginary component.
+%
+\begin{eqnarray*}
+z &=& r e^{i\theta}
+\\
+z &=& (r\cos\theta) + i(r\sin\theta)
+\\
+z &=& a + bi
+\end{eqnarray*}
+
+
+%------------
+
+\item The forward and inverse Fourier transforms are defined as as\footnote{These are the Fourier conventions used in \citet[][p.~109]{DT} and \citet[][Section 6.4.2]{SteinWysession}.}
+%
+\begin{eqnarray}
+\cF \left[ \fft(t) \right] &=& \ffw(\omega)
+\;=\; \int_{-\infty}^{\infty} \fft(t) \; e^{-i\omega t} \,\rmd t
+\label{fft}
+\\
+\cF^{-1} \left[ \ffw(\omega) \right] &=& \fft(t) 
+\;=\; \frac{1}{2\pi} \int_{-\infty}^{\infty} \; \fft(\omega) \; e^{i\omega t} \,\rmd\omega 
+\label{ifft}
+\;.
+\end{eqnarray}
+
+%------------
+
+\item A complex-valued function, such as the instrument response, is written as
+%
+\begin{eqnarray}
+I(\omega) &=& A(\omega)\,e^{i\phi(\omega)}
+\label{Iw}
+\\
+&=& A(\omega)\cos\phi(\omega) + i\,A(\omega)\sin\phi(\omega)
+\end{eqnarray}
+%
+The version in \refEq{Iw} is conceptually more useful, since $I(\omega)$ is represented as two real-valued functions for amplitude $A(\omega)$ and phase $\phi(\omega)$.
+
+$A(\omega)$ is clearly the amplitude in the sense that
+%
+\begin{equation}
+|I(\omega)| = \left( I(\omega) I(\omega)^* \right)^{1/2}
+= \left( A(\omega)\,e^{i\phi(\omega)} A(\omega)^*\,e^{-i\phi(\omega)} \right)^{1/2}
+= A(\omega)
+\end{equation}
+
+\end{itemize}
+
+\begin{enumerate}
+
+\item (0.1) Let $z$ be a complex number and $z^*$ its complex conjugate. Derive the following expressions in two different ways: (1)~$z = r e^{i\theta}$, (2)~$z = a+bi$.
+%
+\begin{enumerate}
+\item $z_1 z_2$ (derive new $r$ and $\theta$ or $a$ and $b$)
+\item $z_1 / z_2$ (derive new $r$ and $\theta$ or $a$ and $b$)
+\item $(z_1 z_2)^* = z_1^* z_2^*$
+\item $|z| = \sqrt{z^* z}$
+\end{enumerate}
+
+%-----------
+
+\item (0.2)
+
+\begin{enumerate}
+\item (0.1) Using integration by parts ($\int u\,dv = [u\,v] - \int v\,du$), show that 
+%
+\begin{eqnarray}
+\cF \left[ \dot{\fft}(t) \right] = i\omega \, \cF \left[ \fft(t) \right]
+\label{fftder1}
+\;,
+\end{eqnarray}
+%
+where $\dot{\fft}(t) = d\fft/dt$.
+
+Hint: You can assume that $h(t)$ is zero at $\pm\infty$. This is a reasonable assumption for a seismogram: the signal is at the noise level before the earthquake, and long after the earthquake, the effects of attenuation bring the signal back down to the noise level.
+
+\item (0.1) What are the units of $\ffw(\omega)$?
+\end{enumerate}
+
+%-----------
+
+\item (0.1) \refEq{fftder1} holds for the first derivative of $\fft(t)$, which we denote as either $\dot{\fft}(t)$ or $\fft^{(1)}(t)$. The expression can be generalized for the $n$th derivative, which is (using two different notations)
+%
+\begin{eqnarray}
+\cF \left[ \fft^{(n)}(t) \right] &=& (i\omega)^n \, \cF \left[ \fft(t) \right]
+\\
+\ffw_n(\omega) &=& (i\omega)^n \ffw(\omega)
+\label{fftnder}
+\end{eqnarray}
+%
+Let the amplitude spectrum of $\ffw(\omega)$ be $A(\omega)$,
+%
+\begin{equation}
+A(\omega) = |\ffw(\omega)|,
+\end{equation}
+%
+and the amplitude spectrum of $\ffw_n(\omega)$ be $A_n(\omega)$.
+
+Starting with \refEq{fftnder}, show that
+%
+\begin{equation}
+A_n(\omega) = \omega^n A(\omega)
+\end{equation}
+
+%-----------
+
+\item (0.1) Amplitude spectra are almost always plotted in $\log_{10}$-$\log_{10}$ space, with $\log_{10}\omega$ on the $x$-axis and $\log_{10}A$ on the $y$-axis. We will use the natural log and ignore the unnecessary complication of using log-base-10. We will derive the relationship between
+%
+\begin{itemize}
+\item the slope in log-log space of an amplitude spectrum $A(\omega)$ for an input function $\fft(t)$
+\item the slope in log-log space of an amplitude spectrum $A_n(\omega)$ for an input function $h^{(n)}(t)$, where $h(t) = h^{(0)}(t)$ and $h^{(n)}(t)$ is the $n$th derivative of $h(t)$
+\end{itemize}
+
+The key step is to make the coordinate substitution
+%
+\begin{equation}
+u = \ln\omega,
+\end{equation}
+%
+then consider the function $g_n(u)$ that represents $\ln A_n(\omega)$. Recognizing that $\omega = e^u$ (and $\omega^n = e^{nu}$), the function we are interested in is obtained from taking the log of \mbox{$A_n(\omega) = \omega^n A(\omega)$}:
+%
+\begin{eqnarray}
+g_n(u(\omega)) &=& \ln A_n(\omega) = \ln[ \omega^n A(\omega)]
+\\
+g_n(u) &=& \ln[ e^{nu} A(e^u) ]
+\\
+&=& \ln(e^{nu}) + \ln(A(e^u))
+\\
+&=& nu + g_0(u)
+\\
+g_n'(u) &=& n + g_0'(u)
+\label{Anslope}
+\end{eqnarray}
+%
+where the prime ($'$) represents differentiation with respect to $u$.
+%Note that $g(u) = g_0(u)$.
+
+\begin{enumerate}
+\item Describe the meaning of \refEq{Anslope}, starting with $\fft(t)$.
+
+\item Amplitude spectra are often represented by piecewise linear functions in log-log space \citep[\eg][Figs.~6.3-6 and 6.6-8]{SteinWysession}. Consider a linear spectrum (alternatively, this could be thought of as one segment of a spectrum).
+%
+\begin{equation}
+\ln A = m \ln\omega + b.
+\label{Alin}
+\end{equation}
+%
+with slope $m$.
+Let $A(\omega) = A_0(\omega)$ represent the amplitude spectrum for a displacement time series $\fft(t)$. Let $A(\omega)$ be flat ($m=0$).
+
+What is the slope of the amplitude spectrum for velocity, $A_1(\omega)$, in log-log space?
+
+Hint: Write \refEq{Alin} as $g_0(u)$.
+
+\item Now let $A(\omega) = A_0(\omega)$ have slope $m=-2$ in log-log space.
+
+What is the slope of the acceleration spectrum, $A_2(\omega)$, in log-log space?
+
+\end{enumerate}
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\section*{Problem 2 (3.5). Deconvolving the instrument response}
+
+\begin{enumerate}
+
+\item (0.0) Run \verb+CAN_response.m+. The first time you run this, it will compute and save the Fourier transform of a seismogram. This will take about 5 minutes.
+
+Note: Make sure that you run this from your \verb+seismo+ directory, since the file will be saved there.
+
+%-------------------
+
+\item (0.5) Analyze the raw 10-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
+
+\begin{enumerate}
+\item (0.0) What is the duration of the seismogram?
+\item (0.0) What is the time step?
+\item (0.0) What is the Nyquist frequency?
+\item (0.0) Zoom in on the $y$-limits with \verb+ylim(3e4*[-1 1])+ \\
+What is the approximate period (in seconds and in days) of the most conspicuous oscillation?
+%Hint: exclude the first 0.1 fraction of the time series.
+\item (0.1) Find the largest aftershock in the second half of the record. Use the example code to extract the absolute time, then list the location, magnitude, and origin time of the event from a catalog search in \verb+www.globalcmt.org+.
+
+Hint: the magnitude is $\mw > 6$.
+
+\item (0.0) Does this aftershock have the same mechanism as the mainshock?
+\item (0.4) In summary, identify and interpret the main features in the seismogram.
+
+Hint: Aftershocks would be one feature.
+\end{enumerate}
+
+%-------------------
+
+\item (1.0)
+\begin{enumerate}
+\item (0.3) Plot the full amplitude spectrum, $|C(\omega)|$; use \verb+axis tight+ to see the full limits.
+\item (0.3) Plot $|C(\omega)|$ using log-log scaling (\verb+loglog+). \\
+Label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
+\item (0.2) Interpret the largest-amplitude spikes in the spectrum.
+
+Tip: Use \verb+markp.m+ to get the period associated with any peak.
+
+\item (0.1) What is the maximum allowable frequency and why?
+\item (0.1) What is the minimum (non-zero) allowable frequency and why? \\
+What is the corresponding period?
+\end{enumerate}
+
+%-------------------
+
+\item (0.8) Tip: Read \citet{Park2005}.
+
+\begin{enumerate}
+\item (0.3) Plot the amplitude spectrum (do {\em not} use any log scaling) $|C(\omega)|$ over the frequency window $[0.2,1.0]$~mHz.
+\item (0.2) Label each of the peaks that you see (\eg \snl{0}{2}).
+\item (0.2) Why are some of the peaks ``split'' but one is not?
+\item (0.1) What is the relevance of some of the smallest peaks that you identified?
+\end{enumerate}
+
+%-------------------
+
+\item (0.4) Using the same frequencies that you used to define the full $C(\omega)$, evaluate the instrument response to acceleration, $I_a(\omega)$. Hint: See lab on instrument response.
+
+Plot $I_a(\omega)$ as an amplitude spectrum over the full range of frequencies (not just $[0.2,1.0]$~mHz). Use log-log scaling.
+
+%-------------------
+
+\item (0.4) The raw seismogram is a convolution of the ground acceleration, $x_a(t) = \ddot{x}(t)$, with the instrument response, $i_a(t)$. Written in the time domain and frequency domain, this is:
+%
+\begin{eqnarray}
+x_a(t) * i_a(t) &=& c(t)
+\\
+X_a(\omega) I_a(\omega) &=& C(\omega)
+\end{eqnarray}
+
+\begin{enumerate}
+\item (0.3) Deconvolve (or ``remove'') the instrument response from the raw spectral seismogram to obtain the spectral acceleration. Show your lines of code and plot of $|X_a(\omega)|$.
+\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz (again, no log scaling), and compare it with $|C(\omega)|$. What is the effect of the deconvolution on the relative amplitudes of the peaks?
+\end{enumerate}
+
+%-------------------
+
+\item (0.4) Does your spectrum $|X_a(\omega)|$ look different from the one in \citet{Park2005}? Why might this be the case? In other words, what ``choices'' were taken that could influence some of the details in the spectrum?
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\section*{Problem 3 (2.0). Spectral analysis of noise}
+
+Run \verb+CAN_noise.m+. This will generate a time series at CAN for 10 days prior to the Sumatra earthquake.
+
+\begin{enumerate}
+\item (0.2) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
+
+\item (0.3) Extract {\bf a multi-day time series that does not contain any earthquake-like signals}. Include this plot. What is the dominant period? Mark the Nyquist frequency on the $x$-axis.
+
+Tip: Use the command \verb+plot(w,'xunit','h')+ to plot in hours.
+
+\item (1.5)
+
+\begin{enumerate}
+\item (1.0) Now use your earthquake-free time series.
+Following the procedure in Problem~2, deconvolve the instrument response.
+Plot the amplitude spectrum of acceleration using log-log scaling and the frequency limits $10^{-4}$~Hz to $10^1$~Hz.
+
+Tip: If you want a smoother spectral curve, try something like
+
+\noindent
+\verb+Xabs_smooth = 10.^smooth(log10(Xabs),1000,'moving');+
+
+\noindent
+where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
+
+\item (0.2) On your plot, mark the ocean microseismic period ranges \trange{5}{8} and \trange{10}{16} that are mentioned in \citet[][Section 11.2]{ShearerE2}.
+
+\item (0.2) Qualitatively, how does your spectrum---notably your ocean microseism peak---compare with Figure 11.6 of \citet{ShearerE2}?
+
+\item (0.1) Based on this observation, and considering all possible periods, what period range at CAN will provide the highest signal-to-noise ratio?
+
+\end{enumerate}
+
+\end{enumerate}
+
+%------------------------
+
+\pagebreak
+\section*{Problem 4 (4.0). Spectral analysis of the Sumatra earthquake recorded at Canberra}
+
+\begin{itemize}
+\item For this problem we can analyze the raw records, since we are interested here in the basic characteristics of the amplitude spectra, but not the actual values. In other words, you do not need to deconvolve the instrument response.
+
+\item Note: For this problem, make sure you are not loading any pre-stored spectra; here the spectra can be computed quickly on the fly.
+\end{itemize}
+
+\begin{enumerate}
+\item (1.5) {\bf Direct arrival}. 
+Return to \verb+CAN_response.m+ in Problem 2.
+Analyze the direct arrival by extracting (use \verb+extract+; \eg see \verb+CAN_noise.m+) 1 hour before the centroid origin time to 3 hours after, where the centroid origin time is \\ \verb+otime_cmt = 7.323070424652778e5+ (units are in days)
+
+\begin{enumerate}
+\item (0.0) Make sure you are looking at a 4-hour time series before proceeding.
+\item (0.7) Plot the amplitude spectrum (log-log) and mark the two ocean microseism frequency intervals.
+\item (0.2) What is the approximate frequency and period associated with the maximal amplitude?
+\item (0.3) Discuss how your plot compares with the noise spectrum from Problem~3.
+\item (0.3) Discuss how your plot compares with the spectrum from Problem~2. \\
+In your 3-hour spectrum can you identify any of the normal modes in the range $[0.2,1.0]$~mHz?
+\end{enumerate}
+
+%--------------------
+
+%\pagebreak
+\item (1.5) {\bf P wave}. Adapt \verb+CAN_P.m+ to answer the following questions.
+%
+\begin{enumerate}
+\item (0.7) Using Supplemental Figure S11 of \citet{Ammon2005} as a guide, extract ``the'' P-wave and include a plot of the time series. About how long is the P wave signal?
+\item (0.4) Plot the amplitude spectrum of the P wave on a log-log plot with frequency ranging from $10^{-3}$~Hz to $10^1$~Hz. (Make sure you are working with the BHZ data.)
+
+\item (0.4) If you had to estimate a corner frequency \citep[][p.~267]{SteinWysession}, what would it be? Justify your estimate in words or numbers.
+\end{enumerate}
+
+%--------------------
+
+\item (1.0) {\bf High-frequency bandpass}. Adapt \verb+CAN_bp.m+ to answer the following questions.
+%
+\begin{enumerate}
+\item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
+
+If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+filtfilt+, \verb+hilbert+, and \verb+smooth+ in this order.
+
+\item (0.2) What else do you notice in the filtered seismogram?
+\end{enumerate}
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem} \howmuchtime\
+
+%-------------------------------------------------------------
+\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+%\clearpage
+
+%\input{wave_params_table}
+
+\begin{figure}
+\hspace{-1cm}
+\includegraphics[width=18cm]{CAN_response_seis.eps}
+\caption[]
+{{
+%Figure from \tfile.
+Figure from {\tt CAN$\_$response$\_$template.m}.
+}}
+\label{fig:seis}
+\end{figure}
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

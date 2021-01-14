@@ -1,0 +1,312 @@
+% dvips -t letter lab_mt.dvi -o lab_mt.ps ; ps2pdf lab_mt.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+% for referencing anything in the supplement
+\usepackage{xr}
+\externaldocument{/home/carltape/latex/notes/cmt/TapeTape/notes_mt_626}
+
+\include{waltcommands}
+
+\newcommand{\mtfile}{\texttt{notes\_mt\_626.pdf}}
+
+\graphicspath{
+  {/home/carltape/latex/notes/cmt/TapeTape/figures/}
+}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Lab Exercise: Moment tensor as a linear transformation} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+%Assigned: February 9, 2012 --- Due: February 21, 2012
+Last compiled: \today
+\end{spacing}
+
+% assume that Figures 1-7 are in beachnotes_626.pdf
+%\setcounter{figure}{7}
+%\setcounter{table}{1}
+%------------------------
+
+\subsection*{Instructions}
+
+This is a pencil-and-paper lab exercise that does not involve any computer. You should have a ruler, and you are permitted to use a calculator. The exercise directly follows the class notes \mtfile, which has Figures 1--7 and Table 1. I recommend using colored pens or pencils.
+
+\medskip\noindent
+{\em Note}: When estimating the coordinates (\ie the lengths of each component) of a vector, you want to imagine the origin to be at the tail of the vector. 
+
+%------------------------
+
+\subsection*{Exercises}
+
+\begin{enumerate}
+
+\item Examine Figure~\ref{fig:template} and the equations in the figure.
+\label{prob:bigvec}
+
+\begin{enumerate}
+\item Is this a double couple moment tensor? Why or why not?
+
+\item Label the following vectors: $\mb{M}(-\e_1)$ and $\mb{M}(-\e_2)$.
+
+Visually check that $\mb{M}(-\e_1) = -\mb{M}(\e_1)$ and $\mb{M}(-\e_2) = -\mb{M}(\e_2)$.
+
+\item Draw and label the following vectors: $m_{11}\e_1$, $m_{21}\e_2$, $m_{12}\e_1$, $m_{22}\e_2$.
+
+Draw the base of each vector at the tip of $\e_1$, $-\e_1$, $\e_2$, or $-\e_2$.
+
+Draw and label the following vectors: $-m_{11}\e_1$, $-m_{21}\e_2$, $-m_{12}\e_1$, $-m_{22}\e_2$.
+
+\item Assuming that $\|\e_1\| = \|\e_2\| = 1$, use the sketch to estimate the entries of the moment matrix,
+%
+\begin{equation*}
+M = \begin{pmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{pmatrix}
+\end{equation*}
+%
+(Check your answer using Table~1 of \mtfile.)
+
+\end{enumerate}
+
+%--------------
+
+\item 
+\label{prob:matrix}
+We now want to relate our graphical representation of the moment matrix with some standard depictions in the literature. One is that the moment matrix entries are represented as couples, such as in \citet[][Figure 4.4-4]{SteinWysession} (Figure~\ref{fig:SW} here), \citet[][Figure~9.2]{ShearerE2}, and \citet[][Figure 3.7]{AkiRichardsE2}.
+%
+\begin{enumerate}
+\item Sketch the force couples in Figure~\ref{fig:template4} associated with the four entries of the matrix of the moment tensor $m_{ij}$. You should sketch 8 arrows in total---the same number you sketched in Figure~\ref{fig:template}.
+(Here we have a $2 \times 2$ matrix $m_{ij}$, not a $3 \times 3$ matrix, but the basic concepts are the same.)
+
+Draw the base of each vector at the tip of $\e_1$, $-\e_1$, $\e_2$, or $-\e_2$.
+
+Here, draw all forces as unit vectors. 
+
+\item Which entries of the matrix represent the classical description of the double couple?
+%Label the vectors that comprise the double couple.
+(See ``Nomenclature confusion'' in \mtfile.)
+\end{enumerate}
+
+%--------------
+
+\item 
+\label{prob:couples1}
+See Figure~\ref{fig:template_couples1}.
+Write the moment matrix for each of the three examples.
+
+%--------------
+
+\item
+\label{prob:couples2}
+See Figure~\ref{fig:template_couples2}.
+%See Figure~\ref{fig:couples2} of \mtfile.
+%
+\begin{enumerate}
+\item Write the moment matrix for the right-hand figure.
+\item What is odd about this pair of couples?
+\item Write the moment matrix in the standard basis, with $\e_1$ pointing to the right and $\e_2$ pointing up.
+\item Write the moment matrix for the left-hand figure.
+\end{enumerate}
+
+%--------------
+
+\item 
+\label{prob:DC}
+See Figure~\ref{fig:templateDC}.
+%
+\begin{enumerate}
+\item Write the matrix of the moment tensor for each of the vector fields.
+
+\item The $T$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $P$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\mb{T}$ and $\mb{P}$ in the right-hand plot.
+
+\item The eigenvectors are not the fault or slip vectors. For a double couple moment tensor only, the direction of the fault and slip vectors can be obtained from the eigenvectors as 
+%
+\begin{eqnarray*}
+\mb{N} = (\mb{T} + \mb{P})/\sqrt{2}
+\\
+\mb{S} = (\mb{T} - \mb{P})/\sqrt{2}
+\end{eqnarray*}
+%
+Sketch $\mb{N}$ and $\mb{S}$ at the application point $\e_2$ in the right-hand plot.
+\item What do the basis vectors in the left-hand plot represent?
+\item In the left-hand plot, shade the two quadrants containing the $T$ axis, and sketch the double couple (four arrows) at the center of the plot.
+\item Based on (c), make the fault plane {\bf bold}.
+\end{enumerate}
+
+%--------------
+
+\item 
+\label{prob:decom}
+Figure~\ref{fig:decom}.
+%
+\begin{enumerate}
+\item Identify the red vectors in the bottom two plots, and highlight the same vectors in the corresponding top two plots.
+\item Sketch the basis vectors $\{\e_1,\e_2\}$ in the top two.
+\item Each vector can be decomposed into an ``isotropic'' part that points outward. Check that the isotropic vectors are all the same. Why is this the case?
+\end{enumerate}
+
+%--------------
+
+\item 
+\label{prob:arrows}
+In \refFig{fig:SWfour}, use the templates and draw the couples (in red) for the following matrices:
+%
+\begin{equation*}
+%M =
+\begin{pmatrix} 3 &  0 & 0 \\  0 & 2 & 0 \\ 0 & 0 &  1 \end{pmatrix},
+\begin{pmatrix} -1 &  0 & 0 \\  0 & -2 & 0 \\ 0 & 0 & -3 \end{pmatrix},
+\begin{pmatrix} 0 & -1 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & -1 \end{pmatrix},
+\begin{pmatrix} 2 &  0 & 1 \\  0 & 0 & 1 \\ 1 & 1 & -2 \end{pmatrix}
+\end{equation*}
+
+%--------------
+
+\end{enumerate}
+
+%==============================================================
+
+%\clearpage\pagebreak
+
+% \begin{figure}
+% \centering
+% \begin{tabular}{cc}
+% \includegraphics[width=10cm]{couples1meaningOfM} &
+% \includegraphics[width=8cm]{couples1_left}
+% \end{tabular}
+% \caption{
+% Repeat of Figure~\ref{fig:couples3doubleCouple} for class exercise.
+% \label{fig:templateDC}
+% }
+% \end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{couples_mod}
+\caption{
+[Problem~\ref{prob:bigvec}] Same as Figure~\ref{fig:couples1} of \mtfile, but here the basis chosen is to be aligned with the edges of the page.
+\label{fig:template}
+}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\includegraphics[width=0.5\linewidth]{couples_mod_notext_nocolor} & 
+\includegraphics[width=0.5\linewidth]{couples_mod_notext_nocolor} \\
+$m_{11}$ & $m_{12}$ \\ \hline
+\includegraphics[width=0.5\linewidth]{couples_mod_notext_nocolor} &
+\includegraphics[width=0.5\linewidth]{couples_mod_notext_nocolor} \\
+$m_{21}$ & $m_{22}$ \\ \hline
+\end{tabular}
+\caption{
+[Problem~\ref{prob:matrix}] 
+The four panels should be thought of as the entries of the $2 \times 2$ matrix $M$, with entries $m_{11}$, $m_{12}$, $m_{21}$, and $m_{22}$.
+Tip: $m_{12}$ will correspond to forces pointing in the $\pm\e_1$ directions and offset in the $\pm\e_2$ direction (e.g., see Figure~\ref{fig:SW} for the 3D analog).
+\label{fig:template4}
+}
+\end{figure}
+
+\begin{figure}
+\hspace{-1cm}
+\includegraphics[width=18cm]{couples1}
+\caption{
+[Problem~\ref{prob:couples1}] Repeat of Figure~\ref{fig:couples1} from \mtfile.
+Make measurements on these figures to determine the entries of the moment tensor matrix for each case.
+\label{fig:template_couples1}
+}
+\end{figure}
+
+\begin{figure}
+\hspace{-1cm}
+\includegraphics[width=18cm]{couples2}
+\caption{
+[Problem~\ref{prob:couples2}] 
+Repeat of Figure~\ref{fig:couples2} from \mtfile.
+\label{fig:template_couples2}
+}
+\end{figure}
+
+\begin{figure}
+\hspace{-1cm}
+\includegraphics[width=18cm]{couples3doubleCouple}
+\caption{
+[Problem~\ref{prob:DC}] 
+Repeat of Figure~\ref{fig:couples3doubleCouple} from \mtfile.
+\label{fig:templateDC}
+}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tabular}{ccc}
+\includegraphics[height=8cm]{couples1_nobasis}
+& \hspace{1.4cm} &
+\includegraphics[height=8cm]{couples1_nobasis}
+\end{tabular}
+\\
+\makebox{\hspace{0.5cm}}
+\includegraphics[height=8cm]{couples4decomposition_new}
+\caption{
+[Problem~\ref{prob:decom}]
+Repeat of Figures~\ref{fig:couples1} and \ref{fig:couples4decomposition}.
+The red vectors at the bottom are from the set of black vectors at the top.
+In the bottom plots, note that all vectors originate from the tip of $\e_1$, $-\e_1$, $\e_2$, or $-\e_2$.
+No matter what the choice of basis, the isotropic components (green) will be the same magnitude.
+%When the basis is chosen to be the principal axes, as at right, the decomposition can be represented simply with eigenvalues.
+\label{fig:decom}
+}
+\end{figure}
+
+%\ref{fig:SingleCouple}
+%\ref{fig:couples1meaningOfM}
+%\ref{fig:couples1}
+%\ref{fig:couples2}
+%\ref{fig:couples3doubleCouple}
+%\ref{fig:couples4decomposition}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{SW_F4.4-4.eps}
+\caption{
+[Problem~\ref{prob:arrows}]
+Figure 4.4-4 from \citet{SteinWysession}.
+After the exercise you should see the connection between Figure~\ref{fig:template4} (which is $2 \times 2$, not $3 \times 3$) and this figure.
+\label{fig:SW}
+}
+\end{figure}
+
+\begin{figure}
+\hspace{-1cm}
+\begin{tabular}{c|c}
+\includegraphics[width=9cm]{SW_F4.4-4.eps} & \includegraphics[width=9cm]{SW_F4.4-4.eps} \\
+& \\ \hline
+& \\
+\includegraphics[width=9cm]{SW_F4.4-4.eps} & \includegraphics[width=9cm]{SW_F4.4-4.eps} 
+\end{tabular}
+\caption{
+[Problem~\ref{prob:arrows}]
+\label{fig:SWfour}
+}
+\end{figure}
+
+%-------------------------------------------------------------
+\clearpage\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+%====================================================================
+\end{document}
+%====================================================================
+

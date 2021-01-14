@@ -1,0 +1,254 @@
+% dvips -t letter hw_math.dvi -o hw_math.ps ; ps2pdf hw_math.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+\renewcommand{\baselinestretch}{1.1}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Problem Set 2: Linear algebra and vectors} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+Assigned: January 29, 2018 --- Due: February 5, 2018 \\
+Last compiled: \today \\
+\end{spacing}
+
+%------------------------
+
+\subsection*{Overview}
+
+The purpose of this problem set is to review a few mathematical concepts that are important to seismology. These concepts will be useful in following the class reading \citep{SteinWysession,ShearerE2} and for future homework assignments.
+
+Except for Problem 1, you are welcome to use Matlab to support your answers. If you find yourself doing horrendous algebra, then probably you have made a prior mistake.
+
+%------------------------
+
+\subsection*{Problem 1 (5.0). Matrix decompositions}
+
+This problem must be done by hand, unless specified. ``By hand'' means showing your steps and not using decimal notation; for example, write the expression $(4 +\sqrt{3})/5$ rather than 1.1464.
+Be as clear as possible in explaining what equations you are using.
+%You are welcome to check your answers using Matlab.
+
+\medskip\noindent
+The matrix for this problem is
+%
+\begin{equation*}
+\bA =  \left[ \begin{array}{rrr}
+    -1  &   0  &  -4 \\
+     0  &   2  &   1 \\
+     1  &   1  &   4 \\
+\end{array} \right]
+\end{equation*}
+
+\input{hw_math_input}
+
+%------------------------
+
+\subsection*{Problem 2 (3.0). Matrix operations}
+
+\begin{enumerate}
+
+\item (0.3) Determine whether the following three vectors are linearly dependent:
+%
+\begin{eqnarray*}
+\left[ \begin{array}{r} 1 \\ -2 \\ 4  \end{array} \right],
+\left[ \begin{array}{r} 0 \\ 1 \\ 1 \end{array} \right],
+\left[ \begin{array}{r} 1 \\ 4 \\ -2 \end{array} \right]
+\end{eqnarray*}
+
+%----------------
+
+\item (0.3) Find the matrix $\bA$ ($T(\bx) = \bA\bx$) of the following linear transformations:
+%
+\begin{enumerate}
+\item $\mathbb{R}^2 \rightarrow \mathbb{R}^2$ reflection about $y = 0$.
+\item $\mathbb{R}^2 \rightarrow \mathbb{R}^2$ reflection about $x = 0$.
+\item $\mathbb{R}^3 \rightarrow \mathbb{R}^3$ reflection through $xy$-plane.
+\end{enumerate}
+%
+Hint: What does $\bA$ do to the input vector $(x,y)$?
+
+%----------------
+
+\item (0.3)
+%You can use Matlab for any tedious steps.
+
+\begin{enumerate}
+\item (0.1) Find the matrix, $\bA$, ($T(\bx) = \bA\bx$) of the linear transformation described by
+%
+\begin{equation*}
+T \left( \left[ \begin{array}{r} 1 \\ 0 \\ 0  \end{array} \right] \right) = \left[ \begin{array}{r} 1 \\ 2 \end{array} \right],
+\hspace{0.5cm}
+T \left( \left[ \begin{array}{r} 0 \\ 1 \\ 0  \end{array} \right] \right) = \left[ \begin{array}{r} 2 \\ 4 \end{array} \right],
+\hspace{0.5cm}
+T \left( \left[ \begin{array}{r} 0 \\ 0 \\ 1  \end{array} \right] \right) = \left[ \begin{array}{r} 3 \\ 6 \end{array} \right]
+\end{equation*}
+
+\item (0.2) Find the matrix, $\bA$, ($T(\bx) = \bA\bx$) of the linear transformation described by
+%
+\begin{equation*}
+T \left( \left[ \begin{array}{r} 1 \\ 0 \\ 0  \end{array} \right] \right) = \left[ \begin{array}{r} 1 \\ 1 \\ 0 \end{array} \right],
+\hspace{0.5cm}
+T \left( \left[ \begin{array}{r} 2 \\ 1 \\ 0  \end{array} \right] \right) = \left[ \begin{array}{r} 1 \\ 0 \\ -1 \end{array} \right],
+\hspace{0.5cm}
+T \left( \left[ \begin{array}{r} 3 \\ 2 \\ 1  \end{array} \right] \right) = \left[ \begin{array}{r} 0 \\ 1 \\ 1 \end{array} \right]
+\end{equation*}
+
+\end{enumerate}
+
+%----------------
+
+\pagebreak
+\item (0.8) 
+\begin{enumerate}
+\item (0.2) Compute the angle between $\bu = (1,1,1)^T$ and $\bv = (1,2,3)^T$.
+
+\item Compute the area of the parallelogram defined by these vectors using three different methods:
+\begin{enumerate}
+\item (0.2) Use the height vector, $\bh = \bv - \proj_{\ssL} \bv$, where $\ssL$ is the line in the direction of $\bu$ (\refFig{fig:proj}).
+%Sketch the various vectors and the parallelogram.
+\item (0.2) Use the cross product formula, $\| \bu \times \bv \|$ (note: {\em not} the version $\|\bu\|\|\bv\|\sin\theta$, which is used in part a).
+\item (0.2) Compute $\sqrt{\det(\bA^T \bA)}$, where $\bA = [\;\bu \; \bv\;]$.
+\end{enumerate}
+
+\end{enumerate}
+
+%----------------
+
+\item (0.3) \citep[][p.~473, P10]{SteinWysession}.
+
+Prove that the magnitude of a vector is preserved by an orthogonal transformation.
+
+Hint: Let $A\bu = \bv$ and show that $\|\bu\| = \|\bv\|$.
+
+%----------------
+
+\item (0.6) Show that 
+%
+\begin{eqnarray}
+\hlf \left( \bd - \bG\bem \right)^T \left( \bd - \bG\bem \right)
+&=& \hlf \bem^T\bA\bem + \bb^T\bem + c
+\label{lsq1}
+\end{eqnarray}
+%
+where
+%
+\begin{equation}
+\bA = \bG^T\bG
+\,,\hspace{20pt}
+\bb = -\bG^T\bd
+\,,\hspace{20pt}
+c = \hlf\bd^T\bd
+\,.
+\end{equation}
+%
+See Note \footnote{The standard construction of a least squares problem is often given by
+%
+\begin{equation}
+\bG\bem = \bd,
+\label{lsq}
+\end{equation}
+%
+which has solution
+%
+\begin{equation}
+\bem = \left( \bG^T\bG \right)^{-1} \bG^T \bd.
+\label{lsq_sol}
+\end{equation}
+%
+This formulation in \refEq{lsq} is equivalent to minimizing the function
+%
+\begin{equation}
+F(\bem) = \hlf \sum_{i=1}^N \left(\;d_i - \left[ \bG\bem \right]_i \;\right)^2
+\;=\; \hlf \left\| \bd  - \bG\bem \right\|_{L2}^2
+\;=\; \hlf \left( \bd  - \bG\bem \right)^T \left( \bd - \bG\bem \right)
+\end{equation}
+}
+for context for this problem.
+
+Hint: For a scalar $a$, note that $a = a^T$.
+
+%----------------
+
+\item (0.4) Find all $\bx$ such that $\bA\bx = \bb$, where $\bb = (1, 1, 0)^T$ and
+%
+\begin{eqnarray*}
+\bA =  \left[ \begin{array}{rrrr}
+     0  &   0  &   1 & -4 \\
+     1  &   -2  &   0 & -3 \\
+     -1  &   2  &   1 & -1 \\
+\end{array} \right].
+\end{eqnarray*}
+%
+Express the solution as a sum of three vectors (including free parameters).
+
+Hint: Feel free to use a computer to help.
+%Matlab is permissible (though it is not needed).
+
+\end{enumerate}
+
+%------------------------
+
+\pagebreak
+\subsection*{Problem 3 (1.0). Div, grad, curl, and all that}
+
+\citep[][p.~473, P13]{SteinWysession} \\
+Consider the vector field
+%
+\begin{equation}
+\bu(x,y,z) = \bxh(3x^2y^2 + z) + \byh(2x^3y+2y) + \bzh(x).
+\label{vec}
+\end{equation}
+%
+(Note: Make sure you write down \refEq{vec} correctly; otherwise your answers will all be incorrect!) Calculate the following four expressions:
+%
+\begin{enumerate}
+\item (0.4) $\bdel \cdot \bu$
+\item (0.2) $\bdel \times \bu$
+\item (0.2) $\nabla^2\bu$
+\item (0.2) A scalar field $\phi(x,y,z)$ such that $\bu=\bdel\phi$
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem 4 (1.0). Taylor series}
+
+\begin{enumerate}
+\item (0.5) Derive the Taylor series expansion of $f(x) = \ln(x)$ about the point $x = x_0$. List terms up to the third order.
+
+\item (0.5) Let $x_0 = 3.5$. In all of the plots, use $x$ limits from $-1$ to 10 (\verb+xlim([-1 10])+).
+%
+\begin{enumerate}
+\item (0.2) Plot the zeroth-, first-, second-, and third-order {\bf terms} on a single plot.
+
+\item (0.2) Plot the zeroth-, first-, second-, and third-order {\bf Taylor series} on a single plot. Also plot $\ln(x)$.
+(The $n$th-order Taylor series is the sum up to the $n$th-order term.) 
+
+\item (0.1) Normalized residuals can be expressed as $\ln(A/B)$, where both $A > 0$ and $B > 0$.
+The same can be applied to functions such as $f(x) > 0$ and $g(x) > 0$.
+Consider the normalized residuals $\ln[ f(x) / g_k(x) ]$ where $f(x) = \ln(x)$ and $g_k(x)$ is the $k$th-order Taylor series approximation. What is the approximate range of the normalized residual over the range $x = [3,4]$?
+\end{enumerate}
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem} \howmuchtime\
+
+%-------------------------------------------------------------
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_source,carl_him,carl_alaska}
+%-------------------------------------------------------------
+
+\clearpage\pagebreak
+\input{notes_matrix_figs}
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

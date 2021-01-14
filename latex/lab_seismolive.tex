@@ -1,0 +1,198 @@
+% dvips -t letter lab_seismolive.dvi -o lab_seismolive.ps ; ps2pdf lab_seismolive.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+\newcommand{\slive}{{\tt Seismo-Live}}
+\newcommand{\sliveurl}{\url{http://seismo-live.org}}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Lab Exercise: Computational seismology with \slive} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+%Assigned: April 10, 2014 --- Due: April 17, 2014 \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\subsection*{Overview}
+
+\begin{itemize}
+
+\item Background. \\
+The lab uses a suite of tools that are available online and have been published.
+\begin{enumerate}
+\item ObsPy: \url{https://www.obspy.org} \\
+\citet{obspy2010,obspy2011,obspy2015}
+\item Instaseis: \url{http://instaseis.net} \\
+\citet{instaseis}
+\item Heiner Igel book \citep{igel}
+\item \slive: \sliveurl\ by Lion Krischer
+\end{enumerate}
+
+\item The basic idea of \slive\ is to allow users to view codes, run codes, and visualize output from codes, while not needing anything more than an internet connection.
+
+{\em This is a brand-new work in progress, so the instructions in this lab are not apt to be correct at a later date.}
+
+\item A logical extension of this lab might be for the user to download the python notebooks and run them on their own computers. This would provide access to the same tools within a user's own research environment.
+
+To see how to do this, go to the \slive\ mainpage, then click on the box ``More Information''. The instructions are also copied at the end of this lab.
+
+\end{itemize}
+
+%===========================================
+
+\subsection*{Instructions}
+
+\begin{enumerate}
+\item Overview.
+\begin{itemize}
+\item Go to \slive\ at \sliveurl\
+\item Click on the icon ``Help - What is this?'' and read it.
+\item Click on the icon ``More information'' and read it.
+\item Keep in mind the links to the other resources (ObsPy, Instaseis, etc).
+\item Click on the green box that says ``Launch'', then ``Launch a new Notebook''. This will open up a computing environment somewhere ``out there'' (likely a machine at Munich, where Lion Krischer is) that has the required software installed.
+
+Note the disclaimer in the same pop-up window: {\em These notebooks are not persistent. Any changes will be discarded after being idle for 30 minutes.} So make a note of your changes if you want to save them to use again later.
+\end{itemize}
+
+\pagebreak
+\item Python crash course.
+\begin{itemize}
+\item Click on the tab ``Python Courses''.
+\item Click on the tutorial \verb+Python_Crash_Course.ipynb+. This will open a new browser tab.
+\item In your previous browser tab, click on the jupyter tab ``Running'' to see if your job is running. You should see something like this: \\
+\verb+Python Courses/Python_Crash_Course.ipynb     Python 3   Shutdown+ \\
+This means that your job is running on a machine ``out there''. (You might see other jobs, too.)
+
+\item Go back to your new tab. Read the instructions carefully and do the exercise.
+This tutorial provides instructions for using jupyter notebooks
+
+\item Check your solutions with the notebook \verb+Python_Crash_Course-with_solutions.ipynb+
+\end{itemize}
+
+\item Your birthquake [Instaseis].
+\begin{itemize}
+\item Click on the jupyter tab ``Files,'' then click on the house-shaped icon to see the main menu.
+\item Click on ``Instaseis''
+\item Click on the first tutorial \verb+Instaseis_Tutorial_01_introduction.ipynb+
+\item Read the instructions carefully and do the exercise.
+\item Go to the GCMT catalog (\url{www.globalcmt.org}), find an earthquake on your birthday, and generate synthetic seismograms at station COLA\footnote{You can get the coordinates for COLA (network IU) at \url{http://ds.iris.edu/mda/IU/COLA}.} in Fairbanks, Alaska. Check that your beachball is similar to the one shown in the GCMT webpage. {\bf Why is it not exactly the same?} Make sure that you understand the conventions for magnitude and scalar seismic moment, in particular, the units of dyne-cm (GCMT) and N-m (\slive).
+\item Try a few different depths and see how the seismograms change.
+\item Try a few different epicentral distances (change the source or station coordinates) and see how the seismograms change.
+\end{itemize}
+
+\item Back to Canberra. \\
+A recording Canberra, Australia, was featured in our previous lab (\verb+lab_response.pdf+) and homework (\verb+hw_sumatraA.pdf+) on the 2004-12-26 \magw{9.2} Sumatra-Andaman earthaquake. An amplitude spectrum of this seismogram appears in Figure 1 of \citet{Park2005}.
+\begin{itemize}
+\item Click on the house-shaped icon to see the main menu.
+\item Click on ``Applied Seismology''
+\item Click on the tutorial \verb+instrument_response.ipynb+
+\item Compare and contrast the output figures with those that you produced in your lab and homework, as well as the one published in \citet{Park2005}.
+\end{itemize}
+
+\item Seismic wave propagation.
+\begin{itemize}
+\item Click on the house-shaped icon to see the main menu.
+\item Click on ``Computational Seismology''
+\item Click on ``FiniteDifference''
+\item Click on the tutorial \verb+fd_acoustic_2d.ipynb+
+\item Read the instructions carefully and do the exercises. \\
+{\em No need to make a copy of the original notebook. Just modify the one you have.}
+\end{itemize}
+
+\item Try out some other notebooks!
+
+\end{enumerate}
+
+%-------------------------------------------------------------
+
+\subsection*{Instructions for running \slive\ on your local machine}
+
+The following text was copied from here on 2016-04-25. \\
+\verb+https://github.com/krischer/seismo_live#local-installation+ \\
+It is best to follow the latest instructions (and links) from the webpage.
+
+\bigskip\noindent
+You might be interested in running the notebooks locally on your own computer. A big advantage is that any changes you make will no longer be deleted. You can also contribute changes you made (or entirely new notebooks) back to the seismo-live project!
+
+The notebooks as of now require:
+%
+\begin{itemize}
+\item Python 3.5
+\item The scientific Python stack (NumPy, SciPy, matplotlib)
+\item The Jupyter notebooks
+\item ObsPy $\ge$ 1.0.1
+\item Instaseis
+\end{itemize}
+%
+We recommend to install ObsPy via Anaconda as written in its installation instructions. Then install Instaseis (does not work on Windows) according to its documentation. Finally install the Jupyter project with
+%
+\begin{verbatim}
+$ conda install jupyter
+\end{verbatim}
+%
+Now just clone the project from Github, \verb+cd+ to the correct folder and launch the notebook server.
+%
+\begin{verbatim}
+$ git clone --depth=1 https://github.com/krischer/seismo_live.git
+$ cd seismo_live/notebooks
+$ jupyter-notebook
+\end{verbatim}
+%
+Please note that the Instaseis notebooks require a local database symlinked to \verb+seismo_live/notebooks/Instaseis/data/database+. You could get one for example with:
+%
+\begin{verbatim}
+wget -qO- "http://www.geophysik.uni-muenchen.de/~krischer/instaseis/...
+   20s_PREM_ANI_FORCES.tar.gz" | tar xvz -C 20s_PREM_ANI_INSTASEIS_DB
+\end{verbatim}
+
+%-------------------------------------------------------------
+% COMMENTS FOR LION
+
+\iffalse
+rec = instaseis.Receiver(latitude=64.873599, longitude=-147.861600,
+                         network="IU", station="COLA")
+
+src = instaseis.Source.from_strike_dip_rake(
+    latitude=-8.65, longitude=115.80, depth_in_m=20000.0,
+    M0=4.87e+18, strike=79., dip=21., rake=77.)
+
+EMAILED TO MARTIN AND LION -->
+
+suggestions for the instaseis opener
++ can we get 4 hours of seismograms instead of 1 hour? (R1 and R2)
++ can we get depths to 700 km? (150 km limit)
++ enter in Mij so that one can check with the GCMT Mij
++ typo with the double km km:
+  Depth            : 2.0e+01 km km
++ remind the user that GCMT is dyne-cm not N-m
++ remind user that the origin time (1970) does not matter in this example
++ rotate to radial and transverse -- show all 5 seismograms
+
+typos in the Applied Seismology module
+we: Here wer have assumed that the instrument response
+it: Here we see that is consists of multiple stages
+hour: Plot the first our - slice() will leave the original
+\fi
+
+%-------------------------------------------------------------
+%\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

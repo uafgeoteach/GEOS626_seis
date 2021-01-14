@@ -1,0 +1,69 @@
+% dvips -t letter lab_tomo.dvi -o lab_tomo.ps ; ps2pdf lab_tomo.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Lab Exercise: Basis functions for seismic tomography} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+%Assigned: April 10, 2014 --- Due: April 17, 2014 \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\subsection*{Model parameterization}
+
+A tomographic model is typically described in terms of a perturbation in wave speed structure from some reference model, \ie $\delta\ln c = \delta c/c$.
+(Note \footnote{See the section entitled ``ASIDE: the natural log function used to express tomographic models'' in the math review homework solutions.})
+This function may be expanded in terms of a set of $M$ basis functions:
+%
+\begin{equation}
+\delta\ln c(\bx)=\sum_{k=1}^M \delta m_k\,B_k(\bx),
+\label{dlnv}
+\end{equation}
+%
+where $\delta m_k$, $k=1,\ldots,M$, represent the model coefficients describing the model perturbation $\delta\ln c(\bx)$, and $B_k(\bx)$ is a basis function. Here we choose to use spherical spline basis functions \citep{WangDahlen1995spline,Wang1998}.
+
+Run the Matlab script \verb+run_Bkspline.m+ (inside the directory \verb+tomo+) in order to familiarize yourself with spherical spline basis functions. This script will generate a spherical spline basis function of grid order $q$, centered at a randomly selected gridpoint. Change the value for $q$ and see what happens. 
+%An example of a $q = 8$ basis function is shown in \refFig{fig:basis}b.
+
+\begin{itemize}
+\item What is the value of the $q=8$ spline function that is centered at (longitude, latitude) = $(-117^\circ,\;34^\circ)$, evaluated at the points $(-117.05^\circ,\;34.25^\circ)$ and $(-117.10^\circ,\;34.35^\circ)$?
+\end{itemize}
+
+%------------------------
+
+\subsection*{Numerical integration along ray paths}
+
+In order to construct a matrix of partial derivatives for the tomographic inversion, you will need to know how to integrate functions along ray paths that are on the sphere. Determine how to do the following two operations in Matlab.
+
+\begin{itemize}
+\item Discretizing a ray path between two points on the sphere.
+
+I used the \verb+gcwaypts+ (``great circle waypoints'') function in the Matlab Mapping Toolbox.
+
+\item Numerical integration of a function evaluated along a ray path.
+
+\end{itemize}
+
+%-------------------------------------------------------------
+%\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

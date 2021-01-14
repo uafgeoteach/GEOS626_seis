@@ -1,0 +1,185 @@
+% dvips -t letter lab_sumatra.dvi -o lab_sumatra.ps ; ps2pdf lab_sumatra.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2} 
+\centering
+{\large \bf Lab Exercise: Waveforms from the 2004 Sumatra-Andaman earthquake} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+Last compiled: \today
+\end{spacing}
+%------------------------
+
+\section{Overview and Instructions}
+
+\begin{itemize}
+\item This lab is a starter for the homework on the Sumatra earthquake. The goal is to understand the attributes of a seismic waveform (start time, end time, sample rate, station location, etc) and to gain some appreciation for variability in the quality of waveforms, especially when recording a \magw{9.0} earthquake, which puts some seismometers to a difficult test!
+
+%---------
+
+\item Tips on picking stations for analysis:
+\begin{itemize}
+\item Pick time series that have the highest signal-to-noise ratios.
+\item In several cases there are multiple seismograms for the same station (and component), \eg at the South Pole:
+%
+\begin{spacing}{1.0}
+\begin{verbatim}
+120  BHZ_00  IU   QSPA   nm / sec
+121  BHZ_10  IU   QSPA   nm / sec
+122  BHZ_20  IU   QSPA   nm / sec
+123  BHZ_30  IU   QSPA   nm / sec
+\end{verbatim}
+\end{spacing}
+%
+(You can see these lines when running \verb+sumatra_hf_template.m+.)
+You do not need more than one seismogram for each site. In general the multiple listings represent different seismometers being used at different vertical locations, like at the surface and down a deep borehole.
+
+\item For such a big event as Sumatra, there are many seismograms that are ``clipped'' or distorted due to an erroneous response of the seismometer.
+
+\item Having a uniform distribution (by distance, azimuth, latitude, etc) is often needed for analyses. {\bf So when you are picking a subset, be sure you have enough stations to cover the particular variation of interest.} Look over the homework problems to see what variations we will be covering.
+\end{itemize}
+
+\end{itemize}
+
+%------------------------
+
+%\pagebreak
+\section{Exercises}
+
+\begin{enumerate}
+\item  Run \verb+sumatra_modes.m+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records.
+
+\item From a terminal window (not Matlab), use \verb+xpdf+ or \verb+evince+ to browse the 139-page pdf file
+
+\verb+/home/admin/databases/SUMATRA/data/wfobject/all_sumatra_modes.pdf+
+
+to pick a subset of {\bf at least 20 stations} for the analysis of normal modes. Write down the page numbers of the stations you want to keep.
+
+The stations should be selected based on high signal-to-noise within the frequency range 0.2 to 1.0~mHz, and, notably, the \snl{0}{2} peak. Be sure to include Canberra and the station from Figure~2 of \citet{Park2005}.
+{\bf See ``Tips on picking stations'' in the instructions above.}
+
+\item Run \verb+sumatra_modes.m+ and plot your subset of records.
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\section{Building the database of waveforms [FOR READING ONLY]}
+
+I have set up a database of waveforms for the Sumatra earthquake so that you can easily and rapidly access the waveforms. Most seismic waveforms can be obtained from data centers such as the IRIS DMC (\url{http://ds.iris.edu/ds/nodes/dmc/}). In a future version of this lab, I hope that students will download the waveforms themselves.
+
+\subsection{Fetching waveforms}
+
+\medskip\noindent
+The time periods for the waveforms are specified with respect to the origin time of the Sumatra earthquake:
+
+\vspace{0.5cm}
+% otimePDE = datenum(2004,12,26,0,58,50); sprintf('%.6f',otimePDE)
+otimePDE = 2004--12--26 00:58:50 = 732307.040856
+\vspace{0.5cm}
+
+\noindent
+This is the PDE (Preliminary Determination of Epicenter from National Earthquake Information Center) origin time listed in the CMTSOLUTION file (\url{www.globalcmt.org}). The decimal version gives the time in days with respect to some Matlab reference time. In the lists below, all times and durations are in days.
+
+\medskip\noindent
+We select stations from three seismic networks: \\
+
+\begin{tabular}{cll}
+\hline
+G   & Geoscope      & Institut de Physique du Globe de Paris \\
+II  & IRIS/IDA      & Scripps Institute of Oceanography \\
+IU  & GSN-IRIS/USGS & Albuquerque Seismological Laboratory \\
+\hline
+\end{tabular} \\
+
+\noindent
+II and IU form the Global Seismographic Network (GSN).
+The Geoscope network is managed by France and has been running high-quality stations since 1982.
+
+\bigskip\noindent
+There are three sets of waveforms within our Sumatra database:
+%
+\begin{enumerate}
+\item {\bf earthquake waveforms: high sample-rate}
+\begin{itemize}
+\item all stations in networks G, II, IU
+\item duration = 5/24 days (5 hours)
+\item start time: t1 = otimePDE - 1/24
+\item end time: t2 = t1 + duration
+\item channels: BH?
+\end{itemize}
+
+\item {\bf earthquake and modes: low sample-rate}
+\begin{itemize}
+\item all stations in networks G, II, IU
+\item duration = 10 days
+\item start time: t1 = otimePDE - duration/20
+\item end time: t2 = t1 + duration
+\item channels: LH?
+\end{itemize}
+
+\item {\bf pre-earthquake noise: low sample-rate}
+\begin{itemize}
+\item all stations in network G
+\item duration = 10 days
+\item start time: t1 = otimePDE - 1 - duration
+\item end time: t2 = t1 + duration
+\item channels: LH?
+\end{itemize}
+
+\end{enumerate}
+
+%\pagebreak\noindent
+If the size of the data request is not an issue, then it would be simpler to make two requests:
+%
+\begin{enumerate}
+\item {\bf earthquake waveforms: high sample-rate}
+
+\begin{itemize}
+\item all stations in networks G, II, IU
+\item duration = 5/24 days (5 hours)
+\item start time: t1 = otimePDE - 1/24
+\item end time: t2 = t1 + duration
+\item channels: BH?
+\end{itemize}
+
+\item {\bf earthquake and modes: low sample-rate}
+\begin{itemize}
+\item all stations in networks G, II, IU
+\item duration = 10 days
+\item start time: t1 = otimePDE - 1 - duration
+\item end time: t2 = otimePDE + duration
+\item channels: LH?
+\end{itemize}
+
+\end{enumerate}
+
+With these parameters, we can make a command-line request to IRIS DMC to obtain the waveforms. Tools such as ObsPy can be used as well \citep{obspy2010,obspy2011}.
+
+%-------------------------------------------------------------
+
+\subsection{Building a local database of waveforms}
+
+Once the waveforms are obtained, it is helpful to store them as a database. We used Antelope to construct the database of stations, waveforms, and instrument response files. For your homework exercises, you will use Matlab scripts to extract seismic waveforms from the Antelope database. It is important to understand the two-part process of obtaining waveforms (and response files) and creating a database.
+
+%-------------------------------------------------------------
+%\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_him,carl_main,carl_slab}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

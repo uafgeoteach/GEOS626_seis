@@ -1,0 +1,296 @@
+% dvips -t letter hw_inv.dvi -o hw_inv.ps ; ps2pdf hw_inv.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+%\renewcommand{\baselinestretch}{1.0}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Problem Set 8: Forward problems and inverse problems} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+Assigned: April 4, 2018 --- Due: April 11, 2018 \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\subsection*{Overview}
+
+\begin{itemize}
+\item This problem set is designed to introduce you to the Preliminary Reference Earth Model \citep{PREM}, and to give you some experience with forward and inverse problems.
+
+\item Background reading:
+%
+\begin{itemize}
+\item \citet{PREM}
+\item Ch.~7 of \citet{SteinWysession}
+\item class notes ``Taylor series and least squares'' (\verb+notes_taylor.pdf+)
+\end{itemize}
+
+%\item A PDF of \citet{PREM} is available on the course website on Blackboard.
+
+\item Before you start, make sure you have done the lab exercise associated with \verb+lab_linefit.m+
+
+\end{itemize}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem 1 (4.0). PREM}
+
+The Preliminary Reference Earth Model, established in 1980, is a seminal work in seismology \citep{PREM}. (For example, Appendix A of \citet{ShearerE2} is entirely devoted to PREM.) It is a spherically symmetric model of Earth structure, a type of model described as ``one dimensional,'' since variations are only present in the radial dimension.
+
+\begin{enumerate}
+
+\item (0.5) Read Table 1 of \citet{PREM} and the associated text. A {\em material property} is a physical quantity that describes a structure. List the material properties in PREM; list what units PREM assumes for each property.
+
+%-------------------
+
+\item (0.5) We now consider the {\em parameterization} of PREM. PREM is described in terms of geometrical and material parameters.
+We define \textcolor{red}{a {\em geometrical parameter} as a parameter of the model related to the geometry of the model},
+and \textcolor{blue}{a {\em material parameter} as a parameter that is related to a material property of a model}.
+Thus, we can describe PREM using the vector
+%
+\begin{equation}
+\bem = (\textcolor{red}{u_1, u_2, \ldots, u_i, \ldots, u_{M_g}},
+\textcolor{blue}{v_1, v_2, \ldots, v_k, \ldots, v_{M_m}})^T
+\label{bem}
+\end{equation}
+%
+where $u_i$ denotes one of $M_{\rm g}$ geometrical parameters and $v_k$ denotes one of $M_{\rm m}$ material parameters.
+The entries in $\bem$ are the numbers listed in Table~1 of \citet{PREM}.
+%The $A+B$ parameters of $\bem$ {\em completely describe} PREM.
+
+\begin{enumerate}
+\item (0.2) How many \textcolor{red}{geometrical parameters} are needed to describe PREM?
+\item (0.2) How many \textcolor{blue}{material parameters} are needed to describe PREM? Hint: $>$20.
+\item (0.1) How many {\em fewer} material parameters are needed to describe PREM in the isotropic approximation? Hint: Make sure to read the footnote of Table 1 in the paper.
+\end{enumerate}
+
+%-------------------
+
+%\pagebreak
+
+\item (1.0) {\bf Henceforth we will use PREM in the isotropic approximation.}
+
+% MODES HOMEWORK: MU AND RHO
+% BUT THINKING ABOUT TRAVEL TIMES, USING VS (HERE) MIGHT BE BETTER TO USE
+
+\begin{enumerate}
+\item (0.6) Write a Matlab function that inputs a vector of radial (or depth) values and outputs a vector of $\vs$ values; include your code.
+
+Hint: Use the command \verb+polyval+ to save some time.
+
+\item (0.2) Compute $\vs$ for depths of 1.5~km, 10~km, 20~km, and 50~km.
+%
+List the values with $>$5 significant digits, so that I can numerically check them.
+
+\item (0.2) Do the values seem reasonable, given the materials you expect at these depths?
+\end{enumerate}
+
+%-------------------
+
+\item (0.5) Plot a figure showing $\vs(r)$ for $r$ ranging from the center of Earth to the surface of Earth. Label the axes with units.
+
+Hint: Check your result with \citet[][Figure~1.1]{ShearerE2}.
+
+%-------------------
+
+\item (1.5) Read \citet{PREM}, Section 6 and the Appendix. Consider Equation (1) in their Section 6:
+%
+\begin{eqnarray}
+\frac{\delta T}{T} &=& \int_0^1 \rmd r \left(
+\delta v_p \cdot \tilde{P} + 
+\delta v_s \cdot \tilde{S} +
+\delta\rho \cdot \tilde{R} +
+\delta q_\mu \tilde{M} \cdot \ln\tau +
+\delta q_\kappa \tilde{K} \cdot \ln\tau
+\right)
+\nonumber \\
+&& + \; \text{(terms related to changes in radii of discontinuities)}
+\label{dTprem}
+\end{eqnarray}
+%
+We will consider a simplified version of \refEq{dTprem}.
+Imagine you are the PREM authors. You have a pre-PREM ``starting'' (or ``initial'') model describing a spherically symmetric Earth with fixed boundaries between layers. You have tabulated toroidal mode periods only (not spheroidal modes). Your measurements $\delta T/T$ are therefore the differences between mode periods in your starting model (``predictions'') and mode periods identified from earthquake data (``observations''). You are therefore seeking to use your measurements to determine the perturbation functions $\delta\vs(r)$ and $\delta\rho(r)$, since these are the two parameters to which toroidal modes are sensitive. Our simplified version of Equation (1) is therefore
+%
+\begin{equation}
+\frac{\delta T}{T} = \int_0^D \left(\delta\vs(r) \, \tilde{S}(r) + \delta\rho(r) \, \tilde{R}(r)\right) \rmd r,
+\label{dT1}
+\end{equation}
+%
+where the (unknown) velocity perturbation is expanded as a third-order polynomial \citep[][p.~307]{PREM},
+%
+\begin{eqnarray*}
+\delta\vs(r) &=& a_0 + a_1 r + a_2 r^2 + a_3 r^3
+\;\;\;\;{\rm for}\;\;\;\; r_1 \le r \le r_2
+\\
+\delta\rho(r) &=& b_0 + b_1 r + b_2 r^2 + b_3 r^3
+\;\;\;\;{\rm for}\;\;\;\; r_1 \le r \le r_2
+\label{dvs}
+\end{eqnarray*}
+%
+We have replaced the normalized radial integration limits $[0,1]$ with actual radial limits $[0,D]$, where $D$ is the radius of Earth. (Also we use the notation $\vs\,\tilde{S}$ instead of $\vs \cdot \tilde{S}$, since these are functions, not vectors.)
+
+\begin{enumerate}
+\item (1.0) Show that \refEq{dT1} above can be written as
+%
+\begin{equation}
+\frac{\delta T}{T} = \sum_{i=1}^N \sum_{k=0}^3 a_{ik} \int_{r_{i-1}}^{r_i} r^{k} \tilde{S}(r) \rmd r
+\;+\; \sum_{i=1}^N \sum_{k=0}^3 b_{ik} \int_{r_{i-1}}^{r_i} r^{k} \tilde{R}(r) \rmd r
+\label{dT2}
+\end{equation}
+%
+where $N$ is the number of layers in PREM, $r_0 = 0$, $r_N = D$, $a_{ik}$ represents the $\delta\vs(r)$ coefficient associated with the $i$th layer and the $k$th-order polynomial term, and $b_{ik}$ are the corresponding coefficients for $\delta\rho(r)$.
+
+\item (0.1) How many observations are represented in \refEq{dT2}? 
+
+\item (0.1) How many unknown parameters are represented in \refEq{dT2}? (Assume that each layer is parameterized by a cubic polynomial.)
+
+\item (0.3) Using the (simple) formula for angular frequency, derive an expression for $\delta\omega/\omega$ in terms of $\delta T/T$.
+
+\end{enumerate}
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem 2 (2.0). Forward problem: Generating an ellipse described by $\bem$}
+
+In class we discussed the least-squares method and showed how to construct a solution for fitting a line to scattered data, which required a  two-parameter model ($y$-intercept and slope). Here the task is to compute a best-fitting ellipse for a set of data. We start by making a {\bf plotting tool} for ellipses.
+
+An equation for an ellipse centered at $(0,0)$ is given by
+%
+\begin{equation}
+ax^2 + bxy + cy^2 = 1
+\label{ellipse}
+\end{equation}
+%
+The variables $a$, $b$, and $c$ are the unknowns that we want to determine by using a least-squares method in Problem~3.
+
+\begin{enumerate}
+\item (1.0) {\bf (no coding)} Determine a ``forward function'' for a model $\bem = (a,\,b,\,c)$ that inputs a polar angle $\theta_i$ and outputs the point $(x_i,\,y_i)$ on the ellipse described by $\bem$ (\refeq{ellipse}). This function can be thought of as
+%
+\begin{equation}
+f(\bem,\,\theta_i) = (x_i,\,y_i).
+\end{equation}
+%
+List the expressions for $x_i$ and $y_i$ in terms of $a$, $b$, $c$, and $\theta_i$.
+
+\item (1.0) Now assume an input set of $N$ polar angles, $\btheta = (\theta_1, \theta_2, \ldots, \theta_N)$, and you want to determine the corresponding output $(x,y)$-points describing the ellipse.
+
+Write a Matlab function \verb+[x,y] = getellipse(m,theta)+ (include your code) that generates the proper output. Plot the result for the model $\bem = (0.1,\,0.3,\,0.5)$ using input \makebox{angles $\btheta = (0, \ldots, 2\pi)$}. Use the command \verb+axis equal, axis([-5 5 -5 5])+ for your plot.
+
+Hint: For $N$ linearly spaced angles, use \verb+theta = linspace(0,2*pi,N)'+.
+
+\end{enumerate}
+
+%------------------------
+
+\pagebreak
+\subsection*{Problem 3 (4.0). Inverse problem: fitting an ellipse to a set of data}
+
+From Problem 2, you should now have a plotting tool for an arbitrary ellipse model $\bem$.
+For this problem, you do not need the parameter $\theta$.
+
+\begin{enumerate}
+\item (0.5) 
+
+\begin{enumerate}
+\item (0.0) Let's assume that we have a set of $N=8$ points: $(x_1,y_1), \ldots, (x_N,y_N)$. \\
+Using \refEq{ellipse}, write down a system of 8 equations containing the unknowns $a$, $b$, and $c$.
+
+\item  (0.4) In schematic matrix form, write down the least-squares problem $\bG\bem=\bd$ whose unknown vector is $\bem = (a,b,c)^T$, and show the dimensions of each array.
+
+\item (0.1) Solve $\bG\bem=\bd$ for $\bem$ in symbolic form (\ie with $\bG$, $\bem$, and $\bd$ only), and assume that $\bG$ has rank $M = 3$ and $N > M$ (``overdetermined''). Show your steps.
+\end{enumerate}
+
+%-----------------
+
+\item (1.0) Starting with the least-squares misfit function
+%
+\begin{equation}
+F(\bem) = \hlf (\bd - \bG\bem)^T(\bd - \bG\bem)
+\end{equation}
+%
+derive the expressions for the gradient, $\bgamma(\bem)$, and the Hessian, $\bH(\bem)$. \\
+Your answer should include only these variables: $a$, $b$, $c$, $x_i$, $y_i$, and $N$.
+
+Hint: See the class notes on the linear regression example (\verb+notes_taylor.pdf+).
+
+%-----------------
+
+\item (1.0) Show that your previous answers can be expressed as
+%
+\begin{eqnarray}
+\bgamma(\bem) &=& -\bG^T\bd + \bG^T\bG\bem
+\\
+\bH(\bem) &=& \bG^T\bG
+\end{eqnarray}
+
+%-----------------
+
+\item (1.0)
+\begin{enumerate}
+\item (0.5) Using Matlab, implement your result in 3-1-c and solve for $\bem$ using the data
+%
+\begin{equation*}
+(x_i,\;y_i) \;:\; (3,3),\;(1,-2),\;(0,3),\;(-1,2),\;(-2,-2),\;(0,-4),\;(-2,0),\;(2,0).
+\end{equation*}
+
+%(Hint: The design matrix $\bG$ should be $8 \times 3$.)
+
+\item (0.0) Check that the result is the same as if you simply use the ``\verb+\+'' command: \verb+m = G\d+.
+
+\item (0.5) Produce a plot showing both the data and the best-fitting ellipse.
+
+\end{enumerate}
+
+%-----------------
+
+\item (0.5) Pick a set of your own points, then generate a plot containing your points and the best-fitting ellipse. Note that you should {\bf pick points that are in the vicinity of the boundary of some ellipse centered at the origin}.
+
+You may find it easier to use the lines of code below to select your points. You can copy these lines of code directly from the PDF, then paste them into Matlab.
+
+\pagebreak
+\small
+\begin{spacing}{1.0}
+\begin{verbatim}
+figure;
+sd = 3;
+hold off, axis equal, axis([-sd sd -sd sd]), axis manual, hold on, grid on
+x = []; y = []; button = 1;
+disp('Now we get another best-fitting ellipse centered at (0,0).');
+disp('Click on your input points using the mouse.');
+disp('Hit any key after the final point is entered.');
+plot([-sd sd], [0 0], 'k', [0 0], [-sd sd], 'k');
+while button==1
+    [xx,yy,button] = ginput(1);
+    disp(sprintf('    (%.2f, %.2f)',xx,yy));
+    x = [x; xx]; y = [y; yy]; plot(xx,yy,'x')
+end
+whos x y
+\end{verbatim}
+\end{spacing}
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem} \howmuchtime\
+
+%-------------------------------------------------------------
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_him,carl_main,carl_calif}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

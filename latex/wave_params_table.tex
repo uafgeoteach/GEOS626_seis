@@ -1,0 +1,84 @@
+\begin{table}[h]
+\caption[Wave parameters and some related equations]
+{{
+Wave parameters and some related equations.
+Note that $\lim_{l\rightarrow \infty } \sqrt{l(l+1)} = l + \hlf$ (see {\tt wave$\_$ylm.pdf} notes), so in the high-frequency limit, $l + \hlf$ is appropriate.
+We have listed ``rad'' for radians, which have no units; however, it is helpful to think of angles for these quantities.
+%The equations in the last column incorporate $l$ and $a$ and are approximate for $l \gg 1$ (see \citet{Woodhouse1996}, Eq.~2.110; \citet{DH1986}).
+\label{tab:waveparm}
+}}
+\hspace{-1cm}
+\begin{tabular}{||c|c|c|c|c||}
+\hline
+%
+%& & & \\
+% ADJUST THE WIDTH OF THE COLUMNS HERE
+earth radius & \hspace{10pt} $a$ \hspace{10pt}
+& $6.371 \times 10^6$ m & & \\
+\cline{1-3}
+earth circumference & $2\pi a$ & $4.003 \times 10^7$ m & (with $l$) & (with $l$ and $a$)  \\
+%& & & \\
+\cline{1-3}
+%
+%& & & \\
+degree	& $l$ & $0,1,2,\ldots$ & & \\
+%& & & \\
+\hline
+%
+& & & & \\
+period		& $T$
+& $T = \frac{1}{f} = \frac{2\pi}{\omega} = \frac{\lambda}{c} = \frac{2\pi}{c k}$ 
+& $T = \frac{2\pi}{c\sqrt{l(l+1)}}$ 
+& $T = \frac{2\pi a}{c'\sqrt{l(l+1)}}$
+\\
+& & & [s] & [s] \\ \hline
+%
+& & & & \\
+frequency	& $f$
+& $f = \frac{\omega}{2\pi} = \frac{1}{T} = \frac{c}{\lambda} = \frac{ck}{2\pi}$ 
+& $f = \frac{c\sqrt{l(l+1)}}{2\pi}$
+& $f = \frac{c'\sqrt{l(l+1)}}{2\pi a}$
+\\
+& & & [1/s] & [1/s] \\ \hline
+%
+& & & & \\
+angular frequency	& $\omega$		
+& $\omega = 2\pi f = \frac{2\pi}{T} = ck = \frac{2\pi c}{\lambda}$
+& $\omega = c\sqrt{l(l+1)}$
+& $\omega = \frac{\;c'\sqrt{l(l+1)}\;}{a}$
+\\
+& & & [rad/s] & [rad/s] \\ \hline\hline
+%
+& & & & \\
+wavelength	& $\lambda$		
+& $\lambda = \frac{c}{f} = c\,T = \frac{2\pi}{k} = \frac{2\pi c}{\omega}$
+& $\lambda = \frac{2\pi}{\sqrt{l(l+1)}}$
+& $\lambda' = \frac{2\pi a}{\sqrt{l(l+1)}} = \lambda\,a$
+\\
+& & & [rad] & [m] \\ \hline		
+%
+& & & & \\
+wavenumber		& $k$	
+& $k = \frac{\omega}{c} = \frac{2\pi}{\lambda} = \frac{2\pi f}{c} = \frac{2\pi}{Tc}$
+& $k = \sqrt{l(l+1)}$
+& $k' = \frac{\sqrt{l(l+1)}}{a} = k/a$
+\\
+& & & [] & [1/m] \\ \hline
+%
+& & & & \\
+phase speed		& $c$			
+& $c = \frac{\omega}{k} = \frac{\lambda}{T} = f\lambda = \frac{2\pi f}{k} = \frac{2\pi}{kT}$
+& $c = \frac{2\pi}{\;T\sqrt{l(l+1)}\;}$
+& $c' = \frac{2\pi a}{\;T\sqrt{l(l+1)}\;} = c\,a$
+\\
+& & & [rad/s] & [m/s] \\ \hline
+& & & & \\
+group speed             & $U$
+& $U = \frac{d\omega}{d k} = \frac{1}{2\pi}\frac{d f}{d k} = k + \frac{dc}{dk} = c - \frac{dc}{d\lambda}$
+& $U$ 
+& $U' = U\,a$
+\\
+& & & [rad/s] & [m/s] \\
+\hline
+\end{tabular}
+\end{table}

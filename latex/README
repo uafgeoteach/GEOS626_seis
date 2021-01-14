@@ -1,0 +1,64 @@
+classes/seismo/latex/README
+
+This directory contains the latex source code used to make the homework assignments and labs. If you are interested to use latex for your labs or homework, then you can use these files as templates.
+
+------
+TO COMPILE
+
+latex hw_matlab
+xdvi hw_matlab &
+
+TO EDIT (use some text editor like emacs or gedit)
+emacs hw_matlab.tex
+
+The figures and bibliographic references will not be visible.
+
+------
+[NOTES FOR UAF USERS ONLY]
+
+1. The template files require carlcommands.tex for user-defined variables. The figure files are not available (but could be if you want them).
+
+2. To see the bibliography files, you need to set the path to them.
+Check with this command: echo $LATEX_SRC
+If that is empty and if you have GEOTOOLS installed, then add this line to your .bashrc file
+source /home/admin/share/global_bashrc
+or copy and paste these lines into your .bashrc file
+
+# first check the local path (priority #1)
+export TEXINPUTS=.:
+export BSTINPUTS=.:
+export BIBINPUTS=.:
+# then check here (priority #2)
+export LATEX_SRC=$REPOS/GEOTOOLS/latex_util/bib
+export TEXINPUTS=${TEXINPUTS}:${LATEX_SRC}
+export BSTINPUTS=${BSTINPUTS}:${LATEX_SRC}
+export BIBINPUTS=${BIBINPUTS}:${LATEX_SRC}
+
+3. To compile with the bibliography, do this:
+
+latex hw_matlab ; bibtex hw_matlab ; latex hw_matlab ; latex hw_matlab 
+
+4. Some figures will not be visible to you, but you won't need those figures for your own solutions.
+
+------
+[NOTES FOR UAF USERS ONLY]
+IF YOU WANT A TUTORIAL ON USING LATEX
+
+The GEOTOOLS repository contains some instructions and examples in Latex.
+(We will need to use GEOTOOLS later in GEOS 626.)
+To get GEOTOOLS, execute these commands
+
+cd
+mkdir REPOSITORIES
+cd REPOSITORIES
+git clone /home/admin/repositories/github/GEOTOOLS
+
+then 
+
+cd latex_util
+
+Open the README file ("more README" or "emacs README &") to see the instructions.
+
+You will also find a wealth of resources on the internet.
+
+------

@@ -1,0 +1,325 @@
+% dvips -t letter hw_tomo.dvi -o hw_tomo.ps ; ps2pdf hw_tomo.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+\usepackage{pifont}  % \ding
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Problem Set 9: Seismic tomography using ray theory} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+Assigned: April 11, 2018 --- Due: April 18, 2018 \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\subsection*{Overview}
+
+\begin{itemize}
+\item The objective of this assignment is to design a synthetic seismic tomography experiment and to familiarize yourselves with the fundamental aspects of a tomographic inversion:
+%
+\begin{itemize}
+\item model parameterization
+\item construction of the matrix of partial derivatives (of each measurement with respect to each model parameter)
+\item solving the least-squares problem using regularization
+\end{itemize}
+
+\item The source--receiver geometry for this problem is shown in \refFig{fig:geometry}.
+
+\item This example problem can be thought of as a surface-wave tomography problem, whereby the unknown model is a spatial map of surface wave phase speed and the observations are measurements of surface wave traveltimes.
+
+\item The reading and notes on inverse problems from Homework 8 is relevant.
+At the end I have listed some additional references.
+\nocite{Tape2007,Menke,AsterE2,Tarantola2005}
+
+\item 
+%The practical aspects of the assignment are entirely based on Matlab (plus its Mapping Toolbox), and I have provided several scripts that you will need.
+% in a reference directory available from the Blackboard website.
+The data files and Matlab scripts that you need are in the directory \verb+tomo/+. \\
+The two template scripts are \verb+compute_Gik_ray_template.m+ and \verb+tomo_template.m+.
+
+\end{itemize}
+
+%------------------------
+
+\subsection*{Problem 1 (4.0). Constructing the matrix of partial derivatives.}
+
+\begin{enumerate}
+\item (0.0) {\em Model parameterization}. A tomographic model is typically described in terms of a perturbation in wave speed structure from some reference model, \ie $\delta\ln c = \delta c/c$.
+(Note~\footnote{See the section entitled ``ASIDE: the natural log function used to express tomographic models'' in the math review homework solutions.})
+This function may be expanded in terms of a set of $M$ basis functions:
+%
+\begin{equation}
+\delta\ln c(\bx)=\sum_{k=1}^M \delta m_k\,B_k(\bx),
+\label{dlnv}
+\end{equation}
+%
+where $\delta m_k$, $k=1,\ldots,M$, represent the model coefficients describing the model perturbation.  Here we choose to use spherical spline basis functions \citep{WangDahlen1995spline,Wang1998}.
+\refFig{fig:basis}b shows an example of a spherical spline basis function.
+
+Do the lab exercise in \verb+lab_tomo.pdf+.
+
+%-----------------
+
+\item (1.0) {\em Formulate an entry of the partial derivatives matrix}.
+%
+%From the class notes and lecture slides,
+The ray theory traveltime perturbation for the $i$th source--receiver combination is given by
+%
+\begin{equation}
+\delta T_i = -\int_{\mathrm{ray}_i} c^{-1}\,\delta\ln c\;\rmd s,
+\label{ray_tomography}
+\end{equation}
+%
+where $\rmd s$ denotes a segment of the $i$th ray.
+
+\begin{enumerate}
+\item (0.8) Assume a homogeneous reference model with $c_0$ everywhere.
+
+Show how \refEq{ray_tomography} leads to 
+%
+\begin{equation}
+\bDelta\bd = \bG\bDelta\bem,
+\end{equation}
+%
+where the data vector is given by
+%
+\begin{equation}
+\bDelta\bd = (\delta T_1,\ldots,\delta T_i,\ldots,\delta T_N)^T,
+\label{d}
+\end{equation}
+%
+and the model vector is given by
+%
+\begin{equation}
+\bDelta\bem = (\delta m_1,\ldots,\delta m_k,\ldots,\delta m_M)^T,
+\label{m}
+\end{equation}
+
+\item (0.2) Write the expression for the $G_{ik}$ entry of the partial derivatives matrix~$\bG$.
+\end{enumerate}
+
+%-----------------
+
+\item (0.0) Run \verb+compute_Gik_ray_template.m+ and type \verb+whos+ to identify the dimensions of the variables.
+
+%-----------------
+
+\item (3.0) {\em Compute an entry of the partial derivatives matrix}. \\
+Modify \verb+compute_Gik_ray_template.m+ to compute the $N \times M$ partial derivatives matrix~$\bG$.
+Take into account the following details:
+%
+\begin{itemize}
+\item Assume a homogeneous reference phase speed model with $c_0 = 3500$~m/s.
+
+\item Because the reference model is homogeneous, the ray paths are simply great circles.  Use the built-in Matlab function \verb+gcwaypts+ to compute the ray paths, and use 1000 segments or so to effectively describe the ray path (\verb+nseg+). The function \verb+distance+ will compute the great-circle distance (in degrees) between two points on a sphere.
+
+\item Each measurement involves a single source--receiver pair. Use the source--receiver ordering provided in \verb+compute_Gik_ray_template.m+ (see also \refFig{fig:geometry}b), which is
+%
+\begin{verbatim}
+i = (isrc-1)*nrec + irec
+\end{verbatim}
+%
+Here index $i$ is the row index (or measurement index), \verb+isrc+ is the source index, and \verb+irec+ is the receiver index.
+For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125.
+
+\item Use $M=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
+
+\item When properly coded, it should take $<$0.1~s to compute a row of $\bG$ and therefore about 3~minutes to compute the entire matrix. Make sure that your code is reasonably fast (though getting the right answer is most important).
+
+\end{itemize}
+
+\begin{enumerate}
+\item (0.2) What are the units for $d_i$, $m_k$, and $G_{ik}$?
+
+\item (2.4) Check that the value of $G_{ik}$ with $i=126$ and $k=204$ is $-10.3747$. \\ Show your code for calculating $G_{ik}$, and show the output for \verb+Gik(126,204)+.
+
+Note: Based on the indexing above, the $i=126$ measurement corresponds to the ray path between the \verb+isrc=1+ source and the \verb+irec=126+ receiver.
+
+\item (0.2) What does each row of $\bG$ correspond to?
+
+\item (0.2) What does each column of $\bG$ correspond to?
+\end{enumerate}
+
+%-----------------
+
+\item (0.0) Save the partial derivatives matrix
+%
+\begin{verbatim}
+save('Gik','Gik')    % will save the file Gik.mat with the one variable Gik
+\end{verbatim}
+%
+so that you can load it for the next problem.
+%
+\begin{verbatim}
+load Gik             % will load the file Gik.mat with the one variable Gik
+\end{verbatim}
+
+\end{enumerate}
+
+%------------------------
+
+%\pagebreak
+\subsection*{Problem 2 (4.2). Solving for the unknown wavespeed structure.}
+
+Instructions:
+%
+\begin{itemize}
+\item At this point, you should have saved your partial derivatives matrix $\bG$. \\ Now modify \verb+tomo_template.m+.
+
+\item In order to do the inverse problem, you will need the data vector of traveltime measurements (\refeq{d}). Load the column vector \verb+measure_vec.dat+ into Matlab, and check that it has dimension $3300 \times 1$.
+
+\item For this problem, we will make the notation change $\bDelta\bem \rightarrow \bem$ and $\bDelta\bd \rightarrow \bd$, in order to simplify the notation.
+\end{itemize}
+
+\begin{enumerate}
+\item (0.5)
+\begin{enumerate}
+\item (0.1) Write the symbolic expression for the solution $\bem$ to the least squares problem $\bG\bem=\bd$ in the case where $\bG^T\bG$ is full rank.
+
+\item (0.4) List the dimensions and units of $\bem$, $\bd$, $\bG$, $\bG^T\bG$, and $\bG^T\bd$.
+\end{enumerate}
+
+%------------
+
+\item (0.3) Compute $\bem$ using your formula.  What do you get, and why is this the case?
+
+%------------
+
+\item (1.0) If $\bG^T\bG$ is not full rank, then a damping parameter $\lambda$ may be introduced to stabilize (or ``regularize'') the inversion.  One possible solution to the problem is:
+%
+\begin{equation}
+\bem_{\lambda} = \left(\bG^T\bG+\lambda^2\bI\right)^{-1}\bG^T\bd.
+\end{equation}
+%
+\begin{enumerate}
+
+\item (0.6) Compute $\bem_{\lambda}$ for $\lambda = 10$. \\
+List the sum of the squares of the entries of the residual vector $\br_\lambda = \bG\bem_\lambda-\bd$; this is the {\em misfit norm} (squared).
+List the sum of the squares of the entries of the model vector $\bem_{\lambda}$; this is the {\em model norm} (squared).
+
+%------------
+
+\item (0.0) Compute $\bem_{\lambda}$ for a range of $\lambda$ values: for example, try
+
+\verb+lamvec = 10.^linspace(log10(minlam), log10(maxlam), numlam);+
+
+with $\lambda_{\rm min} = 0.1$ and $\lambda_{\rm max} = 1000$ (specify a value for \verb+numlam+).
+
+%------------
+
+\item (0.4) Plot the misfit norm ($y$-axis) versus model norm ($x$-axis) using log-scaled values.
+
+%The misfit norm is the sum of the squares of the residuals, where the $i$the residual is $(\bG\bem-\bd)_i$. The model norm is the sum of the squares of the model parameters $m_k$.
+
+I recommend transforming the quantities by $\log_{10}$, then using the \verb+plot+ command, rather than dealing with the \verb+loglog+ command.
+
+\end{enumerate}
+
+%------------
+
+\item (1.0) 
+
+\begin{enumerate}
+\item (0.6) Plot some of these model vectors by expanding them in the spherical spline basis functions. Use the same color scale for each plot: \verb+caxis([-0.05 0.05])+. (See~Note\footnote{If you want the {\tt seis} color scale from GMT, then type {\tt colormap(seis)} after each figure is done.}.) {\bf Superimpose the source locations in each plot.}
+
+\item (0.4) Comment on any trends that you see in phase speed maps that you produce. \\
+What happens as $\lambda \rightarrow \infty$?
+\end{enumerate}
+
+Notes:
+%
+\begin{itemize}
+\item I have pre-computed the necessary matrix $\bB$ in \verb+tomo_template.m+, such that the function value $\delta\ln c(\phi_j, \theta_j)$ is computed by the dot product $\bB(j,:) \cdot \bem$. This operation is represented by \refEq{dlnv} and can be thought of as
+%
+\begin{equation}
+\bc_{\lambda} = \bB \bem_{\lambda},
+\end{equation}
+%
+where $\bc_{\lambda} = \delta\ln c(\phi, \theta)$ is a vector of phase speed perturbations.
+
+\item The simplest way to plot $\bc_{\lambda}$ is probably with the \verb+scatter+ command. \\ But using something like \verb+pcolor+ will produce prettier results.
+
+\end{itemize}
+
+%\pagebreak
+\item (1.0)
+%
+\begin{enumerate}
+\item (0.7) Perform an inversion using only the first five sources; this requires using a reduced form of your original partial derivatives matrix. Use the same damping parameters as before. Include plots as before, and discuss your results.
+
+Note: Plot only the five sources that were used in the inversion.
+
+\item (0.3) Repeat using only the first source.
+\end{enumerate}
+
+\item (0.4) What are two ways to stabilize the inverse problem based on {\bf the experimental design}? Hint: How can we construct a matrix $\bG^T\bG$ with fewer zeros?
+
+\end{enumerate}
+
+% %------------------------
+
+\pagebreak
+\subsection*{Problem 3 (1.8). Connections with real tomography problems.}
+
+For your answers to this problem, try to imagine explaining the concepts to a fellow graduate student who is not a seismologist. (This should make your answers more explicit.)
+
+\begin{enumerate}
+\item (0.6) Our data vector contains a set of traveltime differences between a wave in our model and a wave in the target model (\ie the unknown Earth model). For problems using recorded seismic data, how is this measurement made?
+
+\item (0.6) After the first iteration, we no longer have a uniform ``reference'' model for phase speed. How will we need to adapt our algorithm to accommodate iterations of the phase speed model?
+
+Hint: How will $\bG$, $\bd$, and $\bem$ change?
+
+\item (0.6) In a real problem we might make measurements at several different periods. How can the phase speed for different periods be used to obtain a 3D model of shear wave structure?
+
+Hint: Think about the modes homework.
+
+\end{enumerate}
+
+%------------------------
+
+\subsection*{Problem} \howmuchtime\
+
+%-------------------------------------------------------------
+%\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+\clearpage\pagebreak
+
+%\vspace{1cm}
+\begin{figure}
+\hspace{-0.5cm}
+\includegraphics[width=17cm]{socal_03b.eps}
+\caption[Source--receiver geometry for southern California]
+{{
+{\em Left}: Example phase speed map and faults for Southern California. The phase speed map is for Rayleigh waves with periods of 20~seconds.
+{\em Right}: Source--receiver geometry for the problem in this homework. The \ding{73} symbols denote the locations of 25 earthquakes; the $\circ$ symbols denote the locations of 132 broadband receivers in the Southern California Seismic Network.
+\label{fig:geometry}
+}}
+\end{figure}
+
+\begin{figure}[p]
+\hspace{-1.5cm}
+\includegraphics[width=19cm]{talk_Gik03_5_ray_hw.eps}
+\caption[Basis function]
+{{
+Example computation for an entry, $G_{ik}$, of the partial derivatives matrix $\bG$, using rays. The row index $i$ is the source-receiver combination, the column index $k$ is the basis function index. The source is denoted by the \ding{73}, the receiver is denoted by the $\triangle$, and the $\circ$ shows the center-point of the spherical spline in (b).
+(a)~Ray path for source number~1 and receiver number~126, corresponding to the $i=126$ index of the $N=3300$ ray paths.
+(b)~$B_{203}(\bx)$, the spherical spline basis function for index $k=203$. Also shown are the center-points of the $M=286$ spherical splines.
+(c)~Spline $B_{203}$ evaluated along the ray path. The value of the phase speed for the reference model is constant, so $G_{ik} = (-1/c) \int_{{\rm ray}_i} B_k\,\rmd s$. In this example, $G_{ik} = -1/(3500\,{\rm m\,s^{-1}})\;(2.45 \times 10^4\,{\rm m})  = -6.98$~s. 
+\label{fig:basis}
+}}
+\end{figure}
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

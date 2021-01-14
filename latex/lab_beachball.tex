@@ -1,0 +1,205 @@
+% dvips -t letter labsol_beachball.dvi -o labsol_beachball.ps ; ps2pdf labsol_beachball.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure S3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\input{waltcommands}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Lab Exercise: Hands on the moment tensor beachball} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+%Assigned: February 13, 2014 --- Due: February 20, 2014 \\
+Last compiled: \today \\
+\end{spacing}
+
+%------------------------
+
+\vspace{-4.4cm}
+\begin{center}
+\includegraphics[width=8cm]{DoubleCoupleVectorField.eps}
+\end{center}
+
+%------------------------
+
+\vspace{-1.8cm}
+\section*{Instructions}
+
+\begin{itemize}
+\item Background reading:
+%
+% WHAT ABOUT AKI AND RICHARDS?
+\begin{itemize}
+\item Section 4.2--4.4 of \citet{SteinWysession}
+\item Ch.~9 of \citet{ShearerE2}
+\item \citet{TapeTape2012beach}
+\end{itemize}
+
+\item I will loan you a painted wooden model of a double couple moment tensor (``beachball''), as well as five dowel segments.
+
+\item A symmetric matrix is guaranteed to have three real eigenvalues. We follow the convention of eigenvalue ordering $\lambda_1 \ge \lambda_2 \ge \lambda_3$ with corresponding ordered eigenvectors \mbT\ (``tension axis''), \mbB\ (``neutral axis''), \mbP\ (``pressure axis''). For this lab, we consider the double couple moment tensor, for which
+%
+\begin{eqnarray*}
+\lambda_1 &=& \lambda
+\\
+\lambda_2 &=& 0
+\\
+\lambda_3 &=& -\lambda
+\end{eqnarray*}
+%
+where $\lambda > 0$.
+
+\item We follow the seismological convention that quadrants containing the tension axis (\mbT) are colored solid, while the quadrants containing the pressure axis (\mbP) are colored white.
+\end{itemize}
+
+%------------------------
+
+\pagebreak
+\section*{Exercises}
+
+\begin{enumerate}
+\item Insert three dowels to give an eigenframe for the moment tensor. Use a red dowel for the tension vector \mbT, a blue for the neutral vector \mbB, and a yellow for the pressure vector~\mbP. If necessary, reverse one vector so that the triple \mbT, \mbB, \mbP\ is right-handed.
+
+%---------------------------
+
+\item Rotate the ball \dg{180} about any one of \mbT, \mbB, or \mbP.
+%
+\begin{enumerate}
+\item Does the eigenframe change?
+
+\item Does the moment tensor change?
+
+\item How many orientations (rotation matrices) are there for each moment tensor?
+
+\end{enumerate}
+
+%---------------------------
+
+\item
+
+\begin{enumerate}
+\item Insert a black dowel for the fault normal vector \mbN. How many possibilities are there?
+
+\item Now insert a black dowel for the slip vector \mbS. There is only one possibility. The slip vector points in the direction of the hemisphere (or ``block'') containing the normal vector.
+
+\item Describe the motion of the fault blocks associated with your \mbN\ and \mbS.
+
+\item How does the motion change if you interchange \mbN\ and \mbS?
+
+\item How does the motion change if you reverse both \mbN\ and \mbS?
+
+\end{enumerate}
+
+%---------------------------
+
+\item Change the orientation of the beachball (moment tensor) in some way, and let $\omega$ be the angle, in matrix space, between the initial moment tensor and the final moment tensor. Then $\omega$ measures how different the reoriented ball is from the original ball; $\omega=0$ means the two balls are identical, $\omega=\pi$ means they are negatives of each other.
+
+\begin{enumerate}
+\item Describe a rotation that will give $\omega=\pi$.
+
+\item Describe a non-trivial rotation that will give $\omega=0$.
+
+\item Convince yourself that if the reorientation is a rotation of \dg{90} about \mbT, then the angle $\omega$ is small to moderate. (Calculation gives $\omega=\pi/3$.)
+
+\end{enumerate}
+
+%---------------------------
+
+%\item Rotate the ball \dg{90} about \mbB. Find $\omega$.
+
+%---------------------------
+
+%\item Rotate the ball \dg{180} about \mbN\ or \mbS. Find $\omega$.
+
+%---------------------------
+
+\item CHALLENGE PROBLEM: Here is some background from \citet{TapeTape2013}. The symbols \xrot{\xi}, \yrot{\xi}, and \zrot{\xi} denote the rotations through angle $\xi$ about the coordinate axes. Thus
+%
+\begin{equation*}
+\xrot{\xi}=\begin{small}\begin{pmatrix}   1 &     0   & 0\\
+                                          0 & \cos\xi &-\sin\xi\\
+                                          0 & \sin\xi & \cos\xi\end{pmatrix}\end{small},\:\:\:
+\yrot{\xi}=\begin{small}\begin{pmatrix}\cos\xi & 0 &\sin\xi \\
+                                       0       & 1 & 0      \\
+                                      -\sin\xi & 0 & \cos\xi\end{pmatrix}\end{small},\:\:
+\zrot{\pi}=\begin{small}\begin{pmatrix}   \cos\xi & -\sin\xi & 0 \\
+                                          \sin\xi & \cos\xi & 0 \\
+                                          0  & 0 & 1\end{pmatrix}\end{small}.\:\:\:
+%\label{eq:DefXxiYxiZxi}
+\end{equation*}
+%
+For $\xi = \pi$ these are
+%
+\begin{equation*}
+\xrot{\pi}=\begin{small}\begin{pmatrix}   1 &     0   & 0\\
+                                          0 & -1 & 0\\
+                                          0 & 0 & -1\end{pmatrix}\end{small},\:\:\:
+\yrot{\pi}=\begin{small}\begin{pmatrix}-1 & 0 & 0 \\
+                                       0 & 1 & 0      \\
+                                       0 & 0 & -1\end{pmatrix}\end{small},\:\:\;
+\zrot{\pi}=\begin{small}\begin{pmatrix}   -1 & 0 & 0 \\
+                                          0 & -1 & 0 \\
+                                          0  & 0 & 1\end{pmatrix}\end{small}.\:\:\:
+\label{eq:DefXxiYxiZxi}
+\end{equation*}
+%
+Use the notation $M_U=UMU^{-1}$, where $U$ is a rotation matrix. Figure~\ref{fig:XXandYY} shows a convention of using two angles, $\xx$ and $\yy$, to characterize the orientation of a beachball.
+
+Verify Eqs.~S3 of the Supporting Information for \citet{TapeTape2013}:
+%
+\begin{eqnarray}
+D(\xx+\pi,\,\yy)&=&\left(D(\xx,\,\yy)\right)_U\hspace{20pt}(U=\xrot{\pi})
+\label{eq1}
+%\label{eq:DPeriodForXX}
+\\
+D(\xx,\,\yy+\pi)&=&D(\xx,\,\yy)
+\label{eq2}
+\\
+D(-\xx,\,\yy)&=&\left(D(\xx,\,\yy)\right)_U\hspace{20pt}(U=\yrot{\pi})
+\label{eq3}
+%\label{eq:DconjugateII}
+\\
+D(\xx,\,\pi/2-\yy)&=&\left(D(\xx,\,\yy)\right)_U\hspace{20pt}(U=\xrot{\pi})
+\label{eq4}
+%\label{eq:DconjugateI}
+\end{eqnarray}
+%
+Do this with a partner: one of you does the expression on the left-hand side, the other does the right-hand side. You will need to both start in some reference orientation and apply the same \xx\ and \yy\; I recommend using $\xx=\yy=\dg{0}$ for starters and then trying $\xx=\yy=\dg{45}$.
+
+\end{enumerate}
+
+%------------------------
+
+\begin{figure}[h]
+\center
+\includegraphics[width=.95\linewidth]{/home/carltape/latex/notes/cmt/figures_cdc/XXandYY_2013-07-14}
+\caption{
+\citep[Figure~8 of][]{TapeTape2013}. The tensor $D(\xx,\,\yy)$.
+%The square is the plane of the crack for the crack tensor.
+(a)~$\xx=\yy=0$. This beachball is the double couple $D=D(0,0)$ in a reference orientation.
+(b)~$\xx=\pi/4$ and $\yy=0$. This beachball is the result of rotating the first ball through angle \xx\ about its slip vector~\mbS.
+(c)~$\xx=\yy=\pi/4$. This ball is the result of rotating the second ball through angle \yy\ about its neutral vector \mbB.
+\label{fig:XXandYY}
+}
+\end{figure}
+
+%-------------------------------------------------------------
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

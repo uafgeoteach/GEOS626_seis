@@ -1,0 +1,482 @@
+% dvips -t letter hw_modesB.dvi -o hw_modesB.ps ; ps2pdf hw_modesB.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\newcommand{\cutoff}[1]{{#1}_{x\bar{n}}}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Problem Set 7: Love waves for a layered Earth\footnote{This problem set was adapted from one by Charles Ammon, Penn State University.}} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+Assigned: March 26, 2018 --- Due: April 4, 2018 \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\section*{Overview}
+
+This problem set is a direct extension of the problem set ``Toroidal modes of a spherically symmetric earth.'' Here we examine mode solutions for Love waves of a simple model of a layer over a halfspace. The layer represents the crust, the halfspace the upper mantle.
+
+\begin{itemize}
+\item Goals:
+%
+\begin{itemize}
+\item to explore Love waves through dispersion plots and eigenfunctions
+\item to relate Loves waves to toroidal modes
+\item to reproduce some textbook plots to fully understand how they were made
+\end{itemize}
+
+\item Background reading: \\
+Section 2.7 of \citet{SteinWysession} \\
+Chapter 7 of \citet{AkiRichardsE2}
+
+\item A table of wave parameters is listed in \refTab{tab:waveparm}. For the flat-layered model, the factors such as degree $l$ and earth radius $a$ are not relevant; therefore the final two columns are not relevant to this problem.
+
+\item Shear velocity $\vs$ (or $\beta$) and compressional velocity $\vp$ (or $\alpha$) pertain to body waves. Phase velocity $c$ and group velocity $U$ pertain to surface waves.
+
+\item It is best to think of the velocities as speeds, since velocity is associated with a direction. When we discuss the velocity of waves through a solid medium, we generally are not tracking the direction of wave propagation.
+
+\end{itemize}
+
+%------------------------
+
+%\pagebreak
+\section*{Background}
+
+In the modes problem set you solved a system of coupled, first-order differential equations.
+%
+\begin{equation}
+\frac{d}{dr}
+\left[ \begin{array}{c} W \\ T \end{array} \right]
+=
+\left[ \begin{array}{cc}
+\frac{1}{r} & \frac{1}{\mu(r)} \\
+& \\
+\frac{(l+2)(l-1)\mu(r)}{r^2} -\omega^2\rho(r)  & \frac{-3}{r}
+\end{array} \right]
+\left[ \begin{array}{c} W \\ T \end{array} \right]
+\label{ODEs}
+\end{equation}
+%
+The analogous problem for a (flat) layer-over-halfspace structure is
+%
+\begin{equation}
+\frac{d}{dr}
+\left[ \begin{array}{c} W \\ T \end{array} \right]
+=
+\left[ \begin{array}{cc}
+0 & \frac{1}{\mu(r)} \\
+& \\
+k^2 \mu(r)-\omega^2\rho(r) & 0
+\end{array} \right]
+\left[ \begin{array}{c} W \\ T \end{array} \right]
+\label{rODEs}
+\end{equation}
+%
+To solve \refEq{ODEs} the strategy was to specify $l$, then search over frequencies ($\omega$) and find solutions, indexed by $n$, in the form $_n\omega_l$, $_nW_l(r)$, $_nT_l(r)$. {\bf To solve \refEq{rODEs} the strategy is to specify a frequency $\omega = 2\pi/T$, then search over wavenumber $k$ to find solutions of the form $k_n$, $W_n(r)$, $T_n(r)$.}
+
+Here the layer represents the crust, and the halfspace represents the upper mantle.
+
+\refFig{fig:dots} shows dispersion plots for the toroidal modes (previous homework) and for Love waves (this homework).
+
+%------------------------
+
+\subsection*{Problem 1 (2.0). Setup (minimal coding)}
+
+\begin{enumerate}
+
+\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \verb+surf_stress_love.m+; just write down the analogous boundary conditions to those from the toroidal shell problem.
+
+%----------------
+
+\item (1.4) The appearance of overtone branches for \refEq{rODEs} depends on the {\em cut-off frequency of the nth higher mode} 
+%
+\begin{eqnarray}
+\cutoff{\omega} &=& g\,\bar{n}
+\label{wcn}
+\\
+g &=& \frac{\pi\beta_c}{H} \left( 1 - \frac{\beta_c^2}{\beta_m^2}\right)^{-1/2}
+\label{wcn_Aki}
+\\
+&=& \frac{\pi}{H} \frac{1}{\frac{1}{\beta_c}\left(1 - \frac{\beta_c^2}{\beta_m^2} \right)^{1/2}}
+= \frac{\pi}{H} \frac{1}{\left(\frac{1}{\beta_c^2} - \frac{1}{\beta_m^2} \right)^{1/2}}
+= \frac{\pi}{H} \left( \frac{1}{\beta_c^2} - \frac{1}{\beta_m^2} \right)^{-1/2}
+\label{wcn_SW}
+\end{eqnarray}
+%
+where $\beta_c$ is the crustal velocity, $\beta_m$ is the mantle velocity, and $H$ is the thickness of the layer. \refEq{wcn_Aki} is the version listed in \citet[][Eq. 7.8]{AkiRichardsE2}; \refEq{wcn_SW} is the version listed in  \citet[][p. 92]{SteinWysession}. I have used the notation $\bar{n}$ to distinguish it from the $n$ used for the indexing of mode branches. Note that $g$ is a function of the structural model only.
+
+\refEq{wcn} implies:
+%
+\begin{itemize}
+\item The index $\bar{n} \ge 1$ represents the number branches ($n = 0, 1, \ldots, \bar{n}-1$) that are present for $\omega_{x\overline{(n-1)}} < \omega < \omega_{x\bar{n}}$.
+\item Only the $n=0$ fundamental branch exists for $\omega < \omega_{x1}$
+\item The $n=0$ and $n=1$ branches exist for $\omega_{x1} < \omega < \omega_{x2}$.
+\end{itemize}
+%
+
+Consider a model with the following properties for the crust (subscript~$c$) and upper mantle (subscript~$m$):
+%
+\begin{eqnarray*}
+H &=& 40\;{\rm km}
+\\
+\rho_c &=& 2800 \;{\rm kg/m^3}
+\\
+\beta_c &=& 3450 \;{\rm m/s}
+\\
+\rho_m &=& 3300 \;{\rm kg/m^3}
+\\
+\beta_m &=& 4600 \;{\rm m/s}
+\end{eqnarray*}
+
+\begin{enumerate}
+\item (0.1) What are the shear modulus (or rigidity) values of $\mu_m$ and $\mu_c$ ($\mu = \rho\beta^2$)? \\
+What are the simplest units for shear modulus?
+
+\item (0.2) List the $\cutoff{f} = \cutoff{\omega}/(2\pi)$ for $\bar{n}=1,\ldots,10$.
+
+\item (0.4) Using Figure 7.3 of \citet{AkiRichardsE2} as a guide (but with $f$ instead of $\omega$ for the $x$-axis), make a {\em schematic} (\ie drawn by hand) dispersion diagram with the horizontal axis (frequency $f$) ranging from 0 to 0.33~Hz and the vertical axis (phase speed $c$) ranging from $\beta_c$ to $\beta_m$. Be sure to label your axes.
+
+\item (0.1) What is the phase speed of the longest-period Love waves? \\
+Plot a dot on your sketch to represent this case.
+
+\item (0.1) For any given branch $n$, what is the phase speed of the shortest-period Love waves?
+
+\item (0.2) Given a fixed period of $T = 20$~s, how many solutions do you expect? \\
+What about for $T = 6$ s? Put dots in your sketch to indicate your solutions.
+
+\item (0.1) What is the wavelength $\lambda_m$ of shear waves in the mantle for period $T = 20$~s?
+
+\item (0.2) Given a fixed period $T$, what is the range of phase speeds $c$ that must be searched? \\
+What is the corresponding range of wavenumbers $k$?
+
+Make sure that the values in each range are ordered such that the mode branches are encountered in increasing order ($n = 0,1,\ldots$).
+
+\end{enumerate}
+
+\label{prob:model1}
+
+%----------------
+
+\item (0.3) Sketch/draw the setup for this problem and include the following features and labels: the layer, $r$-axis, $r$-origin, $H$, $\lambda_m$, $\rho_c$, $\mu_c$, $\rho_m$, $\mu_m$.
+
+In order to avoid numerical overflow during integration, we will use a coordinate system with an origin ($r = 0$) that is within the halfspace, three times a mantle shear-wavelength below the base of the layer. The convention is such that $r$ points upward.
+
+\label{prob:setup}
+
+%----------------
+
+\item (0.0) You will examine two additional models. Fill in \refTab{tab:models} with the values for these models.
+
+\end{enumerate}
+
+%----------------
+
+%\pagebreak
+\subsection*{Problem 2 (8.0). Implementation}
+
+The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \verb+surf_stress_love.m+ with the initial conditions
+%
+\begin{eqnarray}
+W(r_b) &=& 1.0
+\label{Wbase}
+\\
+T(r_b) &=& \mu_m \sqrt{k^2 - (\omega/\beta_m)^2}
+\label{Tbase}
+\end{eqnarray}
+%
+where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress'' $T(r_b) \approx 0$ will change for each $k$.
+%
+%\begin{equation}
+%v_\beta = \sqrt{k^2 - \omega^2/\beta^2}.
+%\end{equation}
+%
+%Use the values of $\beta = \sqrt{\mu/\rho}$ and $\mu$ appropriate for the halfspace, and note that $T(r_b)$ will change for each $k$.
+
+%---------------
+
+\begin{enumerate}
+
+\item (4.0) Adapt the four scripts from the modes homework to solve \refEq{rODEs}.
+
+Notes:
+%
+\begin{itemize}
+\item You will need to rename \verb+spshell_template.m+ to \verb+spshell_love.m+ and then make significant modifications.
+%(You might even find that starting from scratch is easier.)
+
+Declare the following global variables:
+%
+\begin{verbatim}
+global rvec WT rspan k omega
+global cthick mmu mrho crho cmu mbeta
+\end{verbatim}
+%
+Note that \verb+rvec+ and \verb+WT+ are defined in \verb+surf_stress_love.m+, not \verb+spshell_love.m+.
+
+\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$.
+%\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$. Furthermore, consider the order in which $k_n$ are computed in your search.
+Your answers in Problem~1-\ref{prob:model1} should be helpful here.
+Use the Matlab command \verb+linspace+ to generate a vector \verb+kvec+ containing \verb+numk+ values (try \verb+numk=100+).
+
+% the only changes needed will be for the ode45 solver
+\item I have provided \verb+surf_stress_love.m+ as a replacement for \verb+surf_stress.m+.
+
+\item You will need to adapt \verb+earthfun_love.m+ to return $\rho(r)$ and $\mu(r)$.
+
+Note: \verb+imod+ is not needed, as before.
+
+\item You will need to adapt \verb+stress_disp_tor.m+ (\refeq{ODEs}) to be \verb+stress_disp_love.m+ (\refeq{rODEs}).
+
+Hint: You will want to define (only) two global variables, \verb+omega+ and \verb+k+.
+
+\end{itemize}
+
+\begin{enumerate}
+\item (0.0) Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What are your new values for \verb+rspan(1)+ and \verb+rspan(2)+? Label \verb+rspan(1)+ and \verb+rspan(2)+ in your sketch from Problem~1-\ref{prob:setup}.
+
+\item (0.0) Given a period of $T = 20$, list the starting and finishing $k$ values in your \verb+kvec+.
+
+Also list values for \verb+earthfun_love(rspan(1))+ and \verb+earthfun_love(rspan(2))+ and check that they are consistent with what you expect.
+
+\item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$.
+
+\begin{enumerate}
+\item (0.5) Check that your root is $k_0 = 8.53 \times 10^{-5}$~1/m and list the line in your Matlab script that solved for $k_0$.
+
+\item (0.5) Show your code for \verb+stress_disp_love.m+ and \verb+earthfun_love.m+.
+
+\item (0.5) In $\sim$3 sentences, explain what \verb+spshell_love.m+ is doing in order to find $k_0$.
+
+\end{enumerate}
+
+\item (1.0) Show a plot of the eigenfunctions; draw a line at the base of the layer.
+
+Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+set(gca,'ydir','reverse');+ to flip the direction of the $y$-axis.
+
+\item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
+
+\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+.
+
+Show your code and output to demonstrate your findings. Do not show the already-provided code \verb+surface_stress_love.m+.
+
+\item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
+
+After you do the check, you can go back to using the default tolerance.
+\end{enumerate}
+
+%----------------
+
+\item (0.4) Compute the displacement and stress eigenfunctions and values of wavenumber for the fundamental mode, $k_0$ ($n=0$), for periods of 120, 80, 50, 25, 10, and 6 seconds.
+
+\begin{enumerate}
+\item (0.2) Include plots for all eigenfunctions.
+\item (0.2) List values in \refTab{tab:k0}.
+\end{enumerate}
+
+%----------------
+
+\item (0.6) Compute all possible solutions for the target period of $T = 3.0$ s.
+%
+\begin{enumerate}
+\item (0.2) Turn in a plot showing the two eigenfunctions for all possible $n$.
+
+\item (0.2) List your results in \refTab{tab:T3}.
+
+\item (0.1) What is the relationship between the number of zero crossings of $W_n(r)$ in the layer and $n$?
+\item (0.1) What are the two types of waves (\ie mathematical functions) that are apparent in each eigenfunction?
+%Based on the shapes of the eigenfunctions, would you expect higher-$n$ modes to travel faster or slower?
+\end{enumerate}
+
+%----------------
+
+\pagebreak
+
+\item (1.0)
+\begin{enumerate}
+\item (0.8) Loop over a range of frequencies to construct the dispersion plot you sketched in Problem~1-\ref{prob:model1}. Use an equally spaced frequency vector ($\sim$50 values) ranging between periods of 3.0 seconds and 20.0 seconds.
+%
+\begin{itemize}
+\item Sketch (by hand or in Matlab) vertical bars corresponding to $\cutoff{f}$.
+\item Label the branches $n=0$, $n=1$, etc.
+\end{itemize}
+
+\item (0.2) Include an additional plot of phase speed versus period, and sketch (by hand or in Matlab) vertical bars corresponding to $\cutoff{T} = 1/\cutoff{f}$.
+\end{enumerate}
+
+%----------------
+
+\item (1.0) We now consider the fundamental mode only.
+
+\begin{enumerate}
+\item (0.8) Using an equally spaced frequency vector ($\sim$50 values) ranging between periods of 20.0 seconds and 200.0 seconds, compute three dispersion plots for fundamental-mode Love waves:
+%
+\begin{itemize}
+\item (0.4) phase speed~(km/s) vs period~(s)
+\item (0.2) phase speed~(km/s) vs frequency~(Hz)
+\item (0.2) angular frequency (rad/s) vs wavenumber~(1/km)
+\end{itemize}
+
+\item (0.2) Repeat the calculation but now use lower tolerance with the ODE solver (\verb+ode45+); see the previous modes problem set for details.
+%
+\begin{itemize}
+\item Include the plots with your solution.
+\item Why will numerical errors be particularly problematic for calculating group speed, $U = d\omega/dk$?
+\end{itemize}
+
+\end{enumerate}
+
+%----------------
+
+\item (1.0)
+%
+\begin{enumerate}
+\item (0.6) Using your code, reproduce Figure 2.8-2 (p.~96) of \citet{SteinWysession}, including both phase speed and group speed, $U = d\omega/dk$.
+
+Notes:
+%
+\begin{itemize}
+\item It might be useful to specify target $k$ corresponding to equal increments of period (since period is being plotted).
+\item For numerical differentiation of $A(x)$ to get $dA/dx$, try \verb+gradient(A,x)+.
+\end{itemize}
+
+\item (0.4) Explain how measurements of phase speed and group speed can be used to infer structural properties.
+\end{enumerate}
+
+%----------------
+
+\item (0.0) Using your code, reproduce the dispersion plot on p.~257 of \citet{AkiRichardsE2}, including both phase speed and group speed, $U = d\omega/dk$.
+
+%----------------
+
+\end{enumerate}
+
+%------------------------
+
+\subsection*{Problem} \howmuchtime\
+
+%-------------------------------------------------------------
+\pagebreak
+\bibliographystyle{agu08}
+\bibliography{carl_abbrev,carl_main,carl_source,carl_him,carl_alaska}
+%-------------------------------------------------------------
+
+\input{wave_params_table}
+
+%---------------------------------------
+
+%\begin{figure}
+%\begin{center}
+%\includegraphics[width=15cm]{modes_love_n5_blank.eps}
+%\end{center}
+%\caption[]
+%{{
+%Text.
+%}}
+%\label{fig:love_eigfun_n0}
+%\end{figure}
+
+\clearpage\pagebreak
+\begin{figure}
+\centering
+\begin{tabular}{cc}
+(a) & \includegraphics[width=12cm]{modes_disp_fig12b_icase7.eps} \\ \hline
+& \\
+(b) & \includegraphics[width=12cm]{modes_love_n5_imodel1_C.eps} 
+\end{tabular}
+\caption[]
+{{
+Dispersion plots for a toroidal modes in a homogeneous shell and Love waves in a layer-over-halfspace.
+(a) Dispersion plot for toroidal modes in a homogeneous shell. The dotes shows the only allowable solutions; the curves are drawn to show the difference branches ($n=0$, $n=1$, etc). 
+Note the $10^{-3}$ scaling for wavenumber. These wavenumbers (and frequencies) are much smaller than those in (b).
+(b) Dispersion plot for Love waves in a layer-over-halfspace. The dots are {\bf not} discrete modes; one should think of the solution space as a set of curves (\ie connect the colored dots).
+The model is described in Problem~1-\ref{prob:model1}.
+\label{fig:dots}
+}}
+\end{figure}
+
+\clearpage\pagebreak
+
+\pagestyle{empty}
+
+\begin{table}
+\vspace{-3cm}
+\centering
+\caption[]
+{{
+Different layer-over-halfspace models used in this homework assignment.
+Model~1 is the focus of Problem~1-\ref{prob:model1}.
+Model~2 is from  Figure 2.8-2 (p.~96) of \citet{SteinWysession}.
+Model~3 is from p.~257 of \citet{AkiRichardsE2}.
+\label{tab:models}
+}}
+\begin{spacing}{1.5}
+\begin{tabular}{||l|c|c|c|r|r|r||}
+\hline\hline
+& & name in code & units & Model 1 & Model 2 & Model 3 \\
+\hline\hline
+thickness of crust        & $H$       & \verb+cthick+ & km       & 40 & & \\ \hline
+density of crust          & $\rho_c$  & \verb+crho+   & kg/m$^3$ & 2800 & & \\ \hline
+shear wavespeed in crust  & $\beta_c$ & \verb+cbeta+  & m/s      & 3450 & & \\ \hline
+density of mantle         & $\rho_m$  & \verb+mrho+   & kg/m$^3$ & 3300 & & \\ \hline
+shear wavespeed in mantle & $\beta_m$ & \verb+mbeta+  & m/s      & 4600 & & \\
+\hline\hline
+\end{tabular}
+\end{spacing}
+\end{table}
+
+\begin{table}
+\vspace{-5cm}
+\centering
+\caption[]
+{{
+\label{tab:k0}
+}}
+\begin{spacing}{1.5}
+\begin{tabular}{r|r|r}
+\hline\hline
+period, s & $f_0$, frequency, mHz & $k_0$, wavenumber, 1/m  \\ \hline\hline
+120 & & \\ \hline
+80 & & \\ \hline
+50 & &  \\ \hline
+25 & & \\ \hline
+10 & & \\ \hline
+6 & &  \\ \hline
+\end{tabular}
+\end{spacing}
+\end{table}
+
+\begin{table}
+\vspace{-5cm}
+\centering
+\caption[]
+{{
+\label{tab:T3}
+}}
+\begin{spacing}{1.5}
+\begin{tabular}{c|c|c|c}
+\hline\hline
+mode branch & $f_n$, mHz & $k_n$, 1/m & $c_n$, m/s \\ \hline\hline
+$n=0$ & \hspace{2cm} & \hspace{2cm} & \hspace{2cm} \\ \hline
+$n=1$ & & & \\ \hline
+ & & & \\ \hline
+ & & & \\ \hline
+ & & & \\ \hline
+ & & \\ \hline
+ & & & \\ \hline
+ & & & \\ \hline
+\end{tabular}
+\end{spacing}
+\end{table}
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

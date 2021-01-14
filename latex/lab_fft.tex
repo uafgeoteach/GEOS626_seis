@@ -1,0 +1,134 @@
+% dvips -t letter lab_fft.dvi -o lab_fft.ps ; ps2pdf lab_fft.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Lab Exercise: Discrete Fourier Transform of solar motion} \\
+GEOS 626: Applied Seismology, Carl Tape \\
+Last compiled: \today \\
+\end{spacing}
+
+%------------------------
+
+\section*{Instructions}
+
+The data set \verb+solarshort.dat+ is a 1024-point synthetic time series of the motion of our sun due to planet rotations. The three columns are time in earth years, $x$ position of the sun in astronomical units (AU), and $y$ position of the sun. In this hypothetical problem, {\bf one or more of the planets is revolving in an opposite sense from the others.} Your task is to identify the planets in the frequency spectrum, while getting some appreciation for the meaning of the Discrete Fourier Transform with regard to negative frequencies. For some basic information on planets, see these websites:
+%
+\begin{verbatim}
+http://ssd.jpl.nasa.gov/?planet_phys_par
+http://ssd.jpl.nasa.gov/?constants
+\end{verbatim}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=16cm]{fft_solar_data.eps}
+\caption[]
+{{
+Solar motion due to planetary influences. Upper left represents a $\sim$100-year record; upper right is a $\sim$400-year record.
+\label{fig:solar}
+}}
+\end{figure}
+
+%------------------------
+
+\begin{spacing}{2.0}
+
+\section*{Questions}
+
+\begin{enumerate}
+
+\item Run \verb+lab_fft.m+ to generate the plot in \refFig{fig:solar}.
+
+Examine the (synthetic) time series of solar motion and the text output in the command window.
+%
+\begin{enumerate}
+\item What is the main period of oscillation?
+\item What planet is responsible for the dominant period?
+\item Write the solar motion $c(t)$ in terms of $x(t)$ and $y(t)$. (Examine the code.)
+\item What is the number of points $n$ in the discretized version of $c(t)$? 
+\item What does the function \verb+fftvec.m+ do?
+\end{enumerate}
+
+%---------
+
+\item For the {\bf shorter-length time series}, compute the Fourier transform (see \verb+fft+):
+%
+\begin{equation*}
+H(f) = \cF[c(t)]
+\end{equation*}
+%
+Check that $H(f)$ is complex and has the same number of points as $c(t)$.
+
+%---------
+
+\item  Compute the amplitude spectrum, $A(f)$ (see \verb+conj+).
+The power spectral density $P(f)$ and spectral amplitude $A(f)$ are real functions given by
+%
+\begin{eqnarray*}
+P(f) &=& H^{*}(f)\,H(f)
+\\
+A(f) &=& |H(f)| = \sqrt{P(f)},
+\end{eqnarray*}
+%
+where $H(f)$ is the Fourier transform of $c(t)$.
+
+%---------
+
+\item Plot the amplitude spectrum (use \verb+semilogy+) and describe in in qualitative terms. \\
+Use the function \verb+fftvec.m+ to obtain the frequency vector. \\
+Plot the $y$-axis with the range \verb+ylim([1e-4 1e1])+.
+
+%---------
+
+\item  Use the function \verb+markp.m+ to help identify periods associated with spectral peaks. (An example of how to use \verb+markp.m+ will be done in lab.) Then answer the following questions:
+%
+\begin{enumerate}
+\item What is the number of points, $n$, in the discretized version of $c(t)$?
+\item What is the number of points in the discretized version of $H(f)$?
+\item What is the sampling interval $\Delta t$?
+\item What is the Nyquist frequency $\fnyq$? \\
+List an analytical expression and also the numerical value.
+\item What is the frequency interval $\Delta f$? \\
+List an analytical expression and also the numerical value.
+\item What planet is retrograde?
+\item What planets are identifiable as prograde?
+\item What planets are not resolved?
+\end{enumerate}
+
+\item Now try the {\bf longer-length time series} (\verb+longdata = 1+) and repeat the analysis.
+%
+\begin{enumerate}
+\item What is the number of points $n$ in the discretized version of $c(t)$?
+\item What is the sampling interval $\Delta t$?
+\item What is the Nyquist frequency $\fnyq$?
+\item What is the frequency interval $\Delta f$?
+\item What planets are identifiable as prograde?
+\item What planets are not resolved?
+\end{enumerate}
+
+\end{enumerate}
+
+\end{spacing}
+
+%-------------------------------------------------------------
+%\bibliographystyle{agu08}
+%\bibliography{carl_abbrev,carl_main,carl_him}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------

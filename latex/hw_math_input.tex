@@ -1,0 +1,44 @@
+\begin{enumerate}
+\item (0.2) {\bf Determinant.}
+
+Calculate the determinant of $\bA$.
+
+\item (0.5) {\bf Matrix inverse.}
+
+\begin{enumerate}
+\item How do we know that the inverse of $\bA$ must exist?
+\item Calculate $\bA^{-1}$.
+\end{enumerate}
+
+\item (1.0) {\bf Eigenvalues.}
+
+Calculate the eigenvalues of $\bA$, assuming that one of the eigenvalues is either $-1$ or 1.
+
+\item (1.8) {\bf Eigenvectors.}
+
+\begin{enumerate}
+\item (1.3) Calculate an eigenbasis $\bU$ of $\bA$. Solve by hand and show your work.
+
+\item (0.2) Use Matlab to check that $\bA\bU = \bU\bD$, where $\bU$ is your eigenbasis and $\bD$ is your diagonal matrix with eigenvalues on the diagonal. (Note: I am {\bf not} asking to use Matlab's \verb+eig+ command.) Show your commands and output.
+
+\item (0.2) Using Matlab, normalize the columns of $\bU$ and again check that $\bA\bU = \bU\bD$ with your new $\bU$. Show your commands and output.
+
+\item (0.1) Describe (in words) the relationship between matrices $\bA$ and $\bD$ in terms of a linear transformation.
+
+\end{enumerate}
+
+\pagebreak
+\item (1.5) {\bf Orthogonalization.}
+
+\begin{enumerate}
+\item (1.2) Use the Gram-Schmidt procedure (by hand) to derive matrices $\bQ$ and $\bR$ of the decomposition of $\bA = \bQ\bR$. See \refFigii{fig:proj}{fig:ortho} as a guide.
+\footnote{If you use Aster p.~301, note that his $\bw_k$ are {\em not} normalized. So his $\bw_k$ are my $\bh_k$, and my $\bw_k = \bh_k/\|\bh_k\|$. See \refFig{fig:ortho}.}
+
+\item (0.1) Using Matlab or not, check that $\bQ$ is orthogonal.
+
+\item (0.1) Using Matlab, check that $\bA = \bQ\bR$ with your $\bQ$ and $\bR$. Show your commands and output.
+
+\item (0.1) Compare your results with those obtained using Matlab's factorization in \verb+[Q,R] = qr(A)+. Show your commands and output.
+\end{enumerate}
+
+\end{enumerate}

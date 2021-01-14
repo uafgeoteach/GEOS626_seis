@@ -1,0 +1,141 @@
+\begin{table}[h]
+\caption[]{{
+Functions used in {\tt genlsq.m}.
+Assume $\nparm$ model parameters and $\ndata$ observations (in our problem, $\nparm=4$ model parameters and $\ndata=12$ arrival times).
+Note that that Matlab in-line function definitions may contain additional variables that are fixed for the problem.
+Do not list numbers for the dimensions; instead use $\nparm$ and $\ndata$ (and 1).
+\label{tab:funs}
+}}
+\begin{spacing}{4}
+\hspace{-1.2cm}
+\begin{tabular}{r|l|l|l|l|l|l}
+\hline
+         &                          & input      & math      & input     & output    & output \\
+function & description \hspace{3cm} & variables  & notation  & dimension & dimension & units \hspace{0.5cm} \\
+\hline\hline 
+\verb+tt+ & & {\tt x,y,t,v,xr,yr} & $g_i(\bem)$ & $\nparm \times 1$ & $1 \times 1$ & \\ \hline
+\verb+d+  & & & & & & \\ \hline
+\verb+G+  & & & & & & \\ \hline
+\verb+S+  & & & & & & \\ \hline
+\end{tabular}
+\end{spacing}
+\end{table}
+
+\begin{table}[h]
+\caption[]{{
+Classification of variables for generalized least squares. In the first column, list the name of the corresponding variable in {\tt genlsq$\_$template.m}. Assume $\nparm$ model parameters and $\ndata$ observations (in our problem, $\ndata=12$ arrival times). Do not list numbers for the dimensions; instead use $\nparm$ and $\ndata$ (and 1).
+\label{tab:vars}
+}}
+\begin{spacing}{1.4}
+\hspace{-1cm}
+\begin{tabular}{c|c|c|c|l|l}
+\hline
+our notation & Tarantola notation & {\tt genlsq.m} & dimension & description \hspace{2cm} & units \hspace{0.5cm} \\
+\hline\hline 
+$\bem_n$
+& --
+& --
+& $\nparm \times 1$ 
+& model vector
+&
+\\ \hline
+$\cprior$
+& 
+& \verb+cprior+
+&
+&
+& --
+\\ \hline
+$\covd$
+& --
+&
+&
+&
+& --
+\\ \hline
+$\bG_n = \bG(\bem_n)$
+& --
+& 
+&
+&
+& --
+\\ \hline
+$\bd$
+&
+&
+&
+& 
+\\ \hline
+$\bd_n = \bg(\bem_n)$
+& --
+&
+&
+& 
+\\ \hline
+\hline
+$F(\bem_n)$
+&
+&
+&
+&
+\\ \hline
+$\covdi (\bd_n - \bd)$
+& --
+& --
+&
+& --
+\\ \hline
+$\bG^T\covdi$
+& --
+& --
+&
+& --
+& --
+\\ \hline
+$\cprior^{-1} (\bem_n - \mprior)$
+& --
+& --
+&
+& --
+& --
+\\ \hline
+\hline
+$\cpost$
+& 
+& \verb+cpost+
+&
+& 
+& --
+\\ \hline
+$\bgamma$
+& --
+& \verb+g+
+&
+&
+& --
+\\ \hline
+$\bgammah$
+& --
+& \verb+ghat+
+&
+&
+& --
+\\ \hline
+$\bH$
+& --
+& \verb+H+
+&
+&
+& --
+\\ \hline
+$\bHh$
+& --
+& \verb+Hhat+
+&
+&
+& --
+\\ \hline
+\hline
+\end{tabular}
+\end{spacing}
+\end{table}
