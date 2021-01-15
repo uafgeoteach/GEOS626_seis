@@ -1,0 +1,11 @@
+rvec = 0
+rspan = 0
+WT = 0
+k = 0
+omega = 0
+cthick = 0
+mmu = 0
+mrho = 0
+cmu = 0
+crho = 0
+mbeta = 0
