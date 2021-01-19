@@ -12,9 +12,9 @@
 \begin{spacing}{1.2}
 \centering
 {\large \bf Problem Set 1: \\
-The Gutenberg--Richter frequency--magnitude relation} \\
+The Gutenberg--Richter frequency--magnitude relation [gr]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: January 17, 2018 --- Due: January 29, 2018 \\
+Assigned: January 14, 2021 --- Due: January 21, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -27,25 +27,32 @@ Last compiled: \today
 \item The purposes of this problem set are:
 %
 \begin{enumerate}
-\item to practice using Matlab for scientific computing and plotting
+\item to practice using Python for scientific computing and plotting
 \item to think critically about histograms
 \item to review and apply some concepts of differentiation
 \item to understand the frequency--magnitude relation, including some of its subtler points
 \end{enumerate}
 %
-If you are new to Matlab, let me know.
+If you are new to Python, let me know.
 
 \item Suggested reading: \citet[][Section 4.7.1]{SteinWysession}, \citet{GutenbergRichter1944}
 
-\item See the handout \verb+doc_startup.pdf+ to get set up on the Linux network. This includes copying the template file: \\
-\verb+cp hw_gr_template.m hw_gr.m+
+%\item See the handout \verb+doc_startup.pdf+ to get set up on the Linux network. This includes copying the template file: \\
+%\verb+cp hw_gr_template.m hw_gr.m+
 %to access \verb+GEOTOOLS+.
 
-\item {\bf Possible source of confusion:} Following standard mathematical notation, I will use `$\log_{10}$' to represent the base-10 logarithm and `$\ln$' to represent the natural logarithm. Note that in Matlab \verb+log10+ is $\log_{10}$ and \verb+log+ is $\ln$. (Note that \citet{SteinWysession} use `$\log$' for the base-10 logarithm.) Reminder: $\log_{10} x = \ln x / \ln 10$
+\item Log into OpenSARlab and run the template notebook \verb+hw_gr.ipynb+. You can work directly in this file.
 
-\item {\bf Matlab tips:}
+\item {\bf Possible source of confusion:} Following standard mathematical notation, I will use `$\log_{10}$' to represent the base-10 logarithm and `$\ln$' to represent the natural logarithm. Note that in Python \verb+log10+ is $\log_{10}$ and \verb+log+ is $\ln$. (Note that \citet{SteinWysession} use `$\log$' for the base-10 logarithm.) Reminder: $\log_{10} x = \ln x / \ln 10$
+
+\item {\bf Python tips:}
 %Use \verb+linspace+ to generate a sequency of numbers, $x_i$; then $10^{x_i}$ will be uniformly spaced in $\log$ space.
-\verb+hw_gr.m+ shows an example of how to plot multiple items on a log-scaled plot. It also shows how to produce a postscript (PS) or pdf file from a Matlab file. Make sure you follow the template script before proceeding.
+\verb+hw_gr.ipynb+ shows an example of how to plot multiple items on a log-scaled plot.
+%It also shows how to produce a postscript (PS) or pdf file from a Matlab file.
+Make sure you follow the template script before proceeding.
+
+\item {\bf Written responses:}
+Complete as many answers as possible from inside the Jupyter notebook. Other responses, such as equation derivations (if needed), can be done with pencil and paper, then scanned and uploaded to the google drive.
 
 \item {\bf Latex option:}
 If you want to use Latex for your homeworks, see the templates in the folder \verb+latex+ (and see the \verb+README+).
@@ -100,7 +107,7 @@ where the index $i$ refers to the magnitude bin, with $M_i$ being the magnitude 
 \begin{enumerate}
 \item (0.2) We consider the Global Centroid Moment Tensor (GCMT) catalog (\verb+www.globalcmt.org+), from 01-Jan-1976 to 30-June-2011. Thus $T$ represents the duration of the catalog, and $R$ represents planet Earth.
 
-Run the Matlab program \verb+hw_gr.m+ to generate a global map of the catalog.
+Run the Python notebook \verb+hw_gr.ipynb+ to generate a global map of the catalog.
 %
 \begin{enumerate}
 \item (0.0) What is the range of depths of events in the catalog?
@@ -108,9 +115,9 @@ Run the Matlab program \verb+hw_gr.m+ to generate a global map of the catalog.
 \item (0.1) What is the range of magnitudes of events in the catalog?
 \end{enumerate}
 
-\item (0.8) Running \verb+hw_gr.m+ will call the function \verb+seis2GR.m+ to obtain the cumulative and incremental distributions for the $\mw$ values of the GCMT catalog, using a bin width of $\Delta M = 0.1$. Examine the output that appears in the Matlab command window.
+\item (0.8) Running \verb+hw_gr.ipynb+ will call the function \verb+seis2GR.py+ to obtain the cumulative and incremental distributions for the $\mw$ values of the GCMT catalog, using a bin width of $\Delta M = 0.1$. Examine the output that appears.
 
-Note: The function \verb+seis2GR.m+ uses the variables names \verb+Ncum+ for the cumulative numbers $N_i$, \verb+N+ for the incremental numbers, and \verb+Medges+ for the bin edges $M_i$.
+Note: The function \verb+seis2GR.py+ uses the variables names \verb+Ncum+ for the cumulative numbers $N_i$, \verb+N+ for the incremental numbers, and \verb+Medges+ for the bin edges $M_i$.
 
 \begin{enumerate}
 \item (0.2) What is the maximum value of the incremental distribution?
@@ -136,9 +143,10 @@ What is its magnitude interval?
 \item (3.0) Now it's time to write some lines of code. 
 
 \begin{enumerate}
-\item (0.0) Using the output from \verb+seis2GR.m+ (as shown in \verb+hw_gr.m+), {\bf plot the cumulative and incremental distributions on the same plot}, similar to the plot in \citet[][Figure~4.7-2]{SteinWysession}, but note that your $x$-axis is $\mw$, not $\log_{10} M_0$, and your $y$-axis is number of earthquakes, not number of earthquakes per year.
+\item (0.0) Using the output from \verb+seis2GR.py+ (as shown in \verb+hw_gr.ipynb+), {\bf plot the cumulative and incremental distributions on the same plot}, similar to the plot in \citet[][Figure~4.7-2]{SteinWysession}, but note that your $x$-axis is $\mw$, not $\log_{10} M_0$, and your $y$-axis is number of earthquakes, not number of earthquakes per year.
 
-{\em Matlab tip}: There are two ways to deal with log scaling. One way is to transform $N$ into $n = \log_{10} N$, then work with~$n$ and use the \verb+plot+ command. Another way is to work with $N$ directly and use the \verb+semilogy+ command, as shown in the example at the bottom of \verb+hw_gr_template.m+. (Pay attention to how the \verb+hold+ command works; this can be tricky.)
+{\em Coding tip}: There are two ways to deal with log scaling. One way is to transform $N$ into $n = \log_{10} N$, then work with~$n$ and use the \verb+plot+ command. Another way is to work with $N$ directly and use the \verb+semilogy+ command, as shown in the example at the bottom of \verb+hw_gr.ipynb+.
+%(Pay attention to how the \verb+hold+ command works; this can be tricky.)
 
 Which distribution---incremental or cumulative---has more scatter?
 

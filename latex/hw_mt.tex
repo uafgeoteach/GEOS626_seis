@@ -18,7 +18,7 @@
 
 \begin{spacing}{1.2}
 \centering
-{\large \bf Problem Set 3: Fault parameters and moment tensors} \\
+{\large \bf Problem Set 3: Fault parameters and moment tensors [mt]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
 Assigned: February 5, 2018 --- Due: February 12, 2018 \\
 Last compiled: \today
@@ -104,14 +104,16 @@ Angle $\phi$ is measured from $\bxh$, and angle $\theta$ is measured from $\bzh$
 \item (0.1) Write down the matrix entries for $\bR_y(\rotangA)$. Check that $\bR_y(90^\circ)(1,0,0) = (0,0,-1)$.
 \end{enumerate}
 
-\item (0.5) Write a function \verb+myrotmat.m+ in Matlab that inputs a rotation angle $\rotangA$ and an index for the axis ($k = 1,2,3$ for $x,y,z$), and then outputs the rotation matrix $\bR_k(\rotangA)$. 
+\item (0.5) Write a function \verb+myrotmat.py+ that inputs a rotation angle $\rotangA$ and an index for the axis ($k = 1,2,3$ for $x,y,z$), and then outputs the rotation matrix $\bR_k(\rotangA)$. 
 
 List the Matlab output for $\bR_x(60^\circ)$, $\bR_y(60^\circ)$, and $\bR_z(60^\circ)$.
 
-The top line of your \verb+myrotmat.m+ should look like this:
+The top lines of your \verb+myrotmat.py+ should look like this:
 %
 \begin{verbatim}
-function OUTPUT = myrotmat(INPUT1,INPUT2)
+import numpy as np
+
+def rotmat(xdeg,ixyz):
 \end{verbatim}
 
 \item (1.5) \refFig{fig:rotsub} shows a rotation of $\rotangB = 30^\circ$ about rotation axis $\rotvec$, which points in the direction represented by polar angle $\theta$ and azimuthal angle $\phi$. The six-part ball is used to help you see the rotation. Mathematically the net rotation is $\bU(\rotvec(\phi,\theta),\rotangB)$. Make sure that \refFig{fig:rotsub} makes sense before proceeding.
@@ -126,10 +128,10 @@ Do not use the words clockwise or counterclockwise.
 %Hint: What operations should be applied to $\rotvec$?
 \end{enumerate}
 
-\item (0.8) Write a new function \verb+myrotmat_gen.m+ that represents $\bU(\rotvec,\rotangB)$; note that this function will call your \verb+myrotmat.m+ function. WARNING: If you use the arctangent function, be sure to use \verb+atan2(y,x)+, not \verb+atan(y/x)+.
+\item (0.8) Write a new function \verb+myrotmat_gen.py+ that represents $\bU(\rotvec,\rotangB)$; note that this function will call your \verb+myrotmat.py+ function. WARNING: If you use the arctangent function, be sure to use \verb+atan2(y,x)+, not \verb+atan(y/x)+.
 %
 \begin{enumerate}
-\item (0.2) Using \verb+myrotmat_gen.m+, compute $\bU(\rotvec,\rotangB)$ for input values of $\rotvec = (2,1,2)$ and $\rotangB = 30^\circ$. List $\bU$ in decimal form.
+\item (0.2) Using \verb+myrotmat_gen.py+, compute $\bU(\rotvec,\rotangB)$ for input values of $\rotvec = (2,1,2)$ and $\rotangB = 30^\circ$. List $\bU$ in decimal form.
 \item (0.1) Numerically check that $\bU(-\rotvec,-\rotangB)$ gives the same result, and explain why this is the case.
 \item (0.1) Numerically check that $\bU(\rotvec,\rotangB)\rotvec = \rotvec$, and explain why this is the case.
 \item (0.2) Numerically check that $\bU$ is orthogonal and also a (right-handed) rotation matrix.
@@ -142,7 +144,7 @@ Do not use the words clockwise or counterclockwise.
 \end{itemize}
 \end{enumerate}
 %
-In Problem 2, you will need to use an accurate version of \verb+myrotmat_gen.m+. You can check your function with the following output:
+In Problem 2, you will need to use an accurate version of \verb+myrotmat_gen.py+. You can check your function with the following output:
 %
 \begin{spacing}{1.0}
 \begin{verbatim}
@@ -179,7 +181,7 @@ U =
 %
 {\bf If you get these results, then you did it! If not, then ask me for this function to use in Problem~2. (But you will lose 1.0 point for this request.)}
 
-\item (0.4) Using the function \verb+globefun3.m+, plot your rotation axis $\rotvec$, the initial point $\br_0$, and the rotated point $\br$, all within the same figure. Pencil in an arrow from $\br_0$ to $\br$.
+\item (0.4) Using the function \verb+globefun3.py+, plot your rotation axis $\rotvec$, the initial point $\br_0$, and the rotated point $\br$, all within the same figure. Pencil in an arrow from $\br_0$ to $\br$.
 
 Note that \verb+globefun3.m+ inputs latitude ($=90-\theta$) and longitude ($=\phi$).
 
