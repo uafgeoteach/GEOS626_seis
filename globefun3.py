@@ -30,9 +30,8 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     gpts = 100
     tt = np.linspace(0, 2*np.pi, gpts)
     
-    #fig = plt.figure(figsize=plt.figaspect(0.9)*(1.5))
-    #ax = fig.add_subplot(projection='3d')
     
+    ax.set_box_aspect((4,4,3.4))  ## Equal axis
     ax.plot(R*np.cos(tt), R*np.sin(tt), np.zeros(gpts), lc, linewidth=lw)
     ax.plot(np.zeros(gpts), R*np.cos(tt), R*np.sin(tt), lc, linewidth=lw)
     ax.plot(R*np.cos(tt), np.zeros(gpts), R*np.sin(tt), lc, linewidth=lw)
