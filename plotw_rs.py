@@ -15,6 +15,7 @@ from matplotlib import dates
 from obspy import read, Stream
 from obspy.core import read, UTCDateTime
 from datetime import datetime
+from obspy.geodetics import gps2dist_azimuth
 
 def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T2=[], pmax=50, iintp=0, inorm=[1], tlims=[], nfac=1, azstart=[], iunit=1, imap=1, wsyn=[], bplotrs=True, displayfigs='on'):
     '''
@@ -110,10 +111,18 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     fhct = 1; # initialize number of figure handle counts
     #--------------------
     # check input arguments
-    
+    print(len(w))
+    w.merge(method=1, fill_value=0)#,interpolation_samples=0)  ## merge any traces with duplicate sta/chans
     if len(w)==0:
         print('empty w') 
         return
+    wtemp=Stream()
+    for tr in w:
+        if statistics.mean(tr.data)==0:
+                print('nan trace')
+        else:
+            wtemp.append(tr)
+    w=wtemp
     #print('%i/%i input variables:' % (nargin,narg0))
     # note: the variable will not be listed if it is not present
     #whos w rssort iabs tshift tmark T1 T2 pmax iintp inorm tlims nfac azstart iunit imap wsyn bplotrs
@@ -132,7 +141,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         bplotrs = True    
         '''
     geoinorm = inorm
-    
     # exit here if user enters impermissible values
     if rssort not in [0, 1, 2, 3]: 
         raise ValueError('input rssort = %f must be 0, 1, 2, 3' % (rssort))
@@ -219,7 +227,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         itrel = 0
     
     #--------------------
-   
+    
     chans=[]
     for tr in w:
         chans.append(tr.stats.channel)
@@ -239,15 +247,16 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     endtime=[]
     netwk=[]
     sta=[]
-    loc=[]
     rlat=[]
     rlon=[]
     edep=[]
     eid=[]
     mag=[]
+    loc=[]
     tdata = []
     trtimes=[]
     evidst=[]
+    print(len(w))
     for i, tr in enumerate(w):
         rlat.append(tr.stats.sac.stla)
         rlon.append(tr.stats.sac.stlo)
@@ -258,7 +267,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         netwk.append(tr.stats.network)
         sta.append(tr.stats.station)
         loc.append(tr.stats.location)
-        loca=tr.stats.location
         edep.append('dep ')
         eid.append(evidst[0])
         mag.append('NaN')
@@ -300,7 +308,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                 if nuchan > 1:
                     slabs[ii]=(str(netwk[ii]) + '.' + str(sta[ii]) + '.' + str(loc[ii]) + '.' + str(chans[ii]))
                 else:
-                    slabs[ii]=([str(netwk[ii]) + '.' + str(sta[ii]) + '.' + str(loc[ii])])
+                    slabs[ii]=(str(netwk[ii]) + '.' + str(sta[ii]) + '.' + str(loc[ii]))
                 ii+=1
         elif nsta==1 and neve>0:
             irs=0;  # 1 station, multiple events
@@ -346,7 +354,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     #print(stref);
     print('--> this will be subtracted from all time vectors')
     
-    
     # compute distances and azimuths to stations (or events)
     if irs==1:
         lat1 = elat
@@ -359,7 +366,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         lat2 = elat
         lon2 = elon
 
-    # Python does not have quick calc function for distance in degrees. Will revisit.
+    
     ###[dist] = distance(lat1,lon1,lat2,lon2, 'degrees')
     def get_bearing(lat1, long1, lat2, long2):
         dLon = (long2 - long1)
@@ -373,16 +380,20 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     dist = []
     azi=[]
     i=0
-    while i < len(lat2):
-        dist.append(distance.distance((lat1[i], lon1[i]), (lat2[i], lon2[i])).km)
-        azimuth=get_bearing(lat1[i], lon1[i], lat2[i], lon2[i])
+    #while i < len(lat2):
+    for i in range(len(lat2)):
+        #dist.append(distance.distance((lat1[i], lon1[i]), (lat2[i], lon2[i])).km)
+        dist.append((gps2dist_azimuth(lat1[i], lon1[i], lat2[i], lon2[i])[0])/1000)
+        #azimuth=get_bearing(lat1[i], lon1[i], lat2[i], lon2[i])
+        azimuth=gps2dist_azimuth(lat1[i], lon1[i], lat2[i], lon2[i])[1]
+        
         if azimuth < 0:
             azi.append(azimuth + 360)
             #azi.append(get_bearing(lat1[i], lon1[i], lat2[i], lon2[i]))
         else:
             azi.append(azimuth)
         
-        i+=1
+        #i+=1
     
     ###dist_deg = dist;
     if iunit not in [1,2,3]:
@@ -393,6 +404,8 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         #dist = deg2km(dist)
     if iunit == 2:
         sunit = 'deg';
+        for d in range(len(dist)):
+            dist[d]=kilometers2degrees(dist[d])
     if iunit == 3:
         # input lon2 and lon1 are assumed to be utmx and utmy,
         # so dist (from above) is over-written
@@ -473,14 +486,25 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         ifilter = 0
         print('NO FILTER WILL BE APPLIED')
         stfilt = '--'
+        wtemp=Stream()
+        for tr in w:
+            fval=statistics.mean(tr.data)
+            tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
+            wtemp.append(tr)
+        w=wtemp
+        
     else:
         ifilter = 1;
         npoles = 2;
         
         # fill gaps with mean value
         #w = fillgaps(w,'meanAll');
-        
-        #w.merge(fill_value=0)
+        wtemp=Stream()
+        for tr in w:
+            fval=statistics.mean(tr.data)
+            tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
+            wtemp.append(tr)
+        w=wtemp
         # these operations might depend on whether the input is displacements
         # (which could have static offsets) or velocities
         print('pre-processing: detrend, demean, taper');
@@ -497,13 +521,21 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             stfilt = ('T > %.1f s (f < %.2f Hz)' % (T1[0],1/T1[0]))
             if T1[0] >= Tmax_for_mHz: 
                 stfilt = ('T > %.1f s (f < %.1f mHz)' % (T1[0],1/T1[0]*1e3))
-            
+            try:
+                w.filter("lowpass", freq=1/T1[0],corners=npoles,zerophase=True)
+            except:
+                print("filter didn't work")
+                
         elif len(T1) == 0 and len(T2) != 0:
             print('%i-pole high-pass T < %.1f s (f > %.2f Hz)' % (npoles,T2[0],1/T2[0]))
             #f = filterobject('H',1/T2,npoles);        
             stfilt = ('T < %.1f s (f > %.2f Hz)' % (T2[0],1/T2[0]))
             if T2[0] >= Tmax_for_mHz:
                 stfilt = ('T < %.1f s (f > %.1f mHz)' % (T2[0],1/T2[0]*1e3))
+            try:
+                w.filter("highpass", freq=1/T2[0],corners=npoles,zerophase=True)
+            except:
+                print("filter didn't work")
             
         elif len(T1) != 0 and len(T2) != 0:
             print('%i-pole band-pass filter between T = %.1f - %.1f s' % (npoles,T1[0],T2[0]))
@@ -511,7 +543,11 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             stfilt = ('T = %.1f-%.1f s (%.2f-%.2f Hz)' % (T1[0],T2[0],1/T2[0],1/T1[0]))
             if T2[0] >= Tmax_for_mHz:
                 stfilt = ('T = %.1f-%.1f s (%.1f-%.1f mHz)' % (T1[0],T2[0],1/T2[0]*1e3,1/T1[0]*1e3))
-
+            try:
+                w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],corners=npoles,zerophase=True)
+            except:
+                print("filter didn't work")
+                
         '''
         #w = filtfilt(f,w);   % apply filter
         wtemp=Stream()
@@ -523,16 +559,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         w=wtemp
         '''
         
-        try:
-            #w = filtfilt(f,w)   # apply filter
-            w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],corners=npoles,zerophase=True)
-        except:
-            print("filter didn't work")
-            #ii=0
-            #while ii < len(nw):
-             #   print('%s, %.6f',get(w(ii),'station'),get(w(ii),'freq')));
-            #    w[ii] = filtfilt(f,w(ii));
-            #ii+=1
         # apply identical filtering to synthetics, if present
         
         if isyn==1:
@@ -580,6 +606,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     #wmaxvec = max(abs(w.merge(fill_value=0)))          # will handle empty records
     #print(wmaxvec)
     '''
+    ### come back to deal with synthetic arguments ###
     if isyn==1
         wsynmaxvec = max(abs(fillgaps(wsyn,0)));
         disp('amplitude comparison between data and synthetics:');
@@ -674,6 +701,8 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     kk = 0
     az1 = azstart
     azinc = 45
+    #azbin = np.arange(azstart , azstart+360, azinc) % 360
+    #print(azbin)
     try:
         azbin = np.arange(azstart , azstart+360, azinc) % 360
     except:
@@ -735,11 +764,13 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     pp=0
     jj=0
     kk=0
+    
     while pp < nfig:
-        print('record section page %i/%i (max %i per page)' % (pp,nfig,nseis))
+        print('record section page %i/%i (max %i per page)' % (pp,nfig,pmax))
         
         #tempfh = figure('Visible',displayfigs); hold on;
-        fig=plt.figure(figsize=(10,10))
+        figname='fig'+str(pp)
+        figname=plt.figure(figsize=(8,10))
         ax = plt.subplot(111)
 
         #fig=plt.figure()
@@ -755,94 +786,101 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         dplotmax = 0;
         
         wtemp=Stream()
+        jj=0
+        
         while jj < jmax:       # loop over seismograms
-            ii = ivec[kk];  # key sorting
-            rlabs[jj] = rlabels[ii]
-            # get seismogram
-            ti3 = fttimes[ii]
-            di3 = ftrs[ii]
+            if kk<nseis:
             
-            # KEY: time vector for plotting
-            tplot = (ti3 - tref) - tshift[ii]
-            
-            if iabs==0:
-                # plot from top to bottom
-                dy[jj] = (jmax + 1 - jj)*yshift
-            else:
-                # use absolute scaling (e.g., plot records at their actual distance)
-                if rssort==1: 
-                    dy[jj] = azi[ii] 
-                else: 
-                    dy[jj] = dist[ii]
-            norm=np.linalg.norm(di3)
-            dplot = di3 /nvec[ii]      # key amplitude scaling
-            dplotshift = dplot + dy[jj]
-            
-            # get the max value of the seismogram within the plotted time interval
-            #btplot = and(tplot > tlims(1),tplot < tlims(2));
-            #dplotmax = max([dplotmax max(abs(dplot(btplot)))]);
-            #plt.plot(ti3,dplot,'b')
-            ax.plot(tplot,dplotshift,'b', linewidth=0.7);
-            # PLOT LABELS FOR EACH WAVEFORM
-            plt.text(-39, statistics.mean(dplotshift), str(rlabels[ii])[2:-2], fontsize=8)
-            
-            
-            # specify the amplitude of the first seismogram plotted
-            # (note that this is not the maximum over all seismograms plotted)
-            
-            if jj==0:
-                imx = np.argmax(abs(di3))
+                ii = ivec[kk];  # key sorting
+                rlabs[jj] = rlabels[ii]
+                # get seismogram
+                ti3 = fttimes[ii]
+                di3 = ftrs[ii]
                 
-                stmx = ('%s max %.2e %s at t = %.1f s ' % (sta[ii],di3[imx],units,tplot[imx]))
-            
-            '''
-            if isyn==1
-            # be careful about the reference time
-            [tisyn,disyn,tstartsyn] = getm(wsyn(ii),'timevector','data','start');
-            tplot = (tisyn - tstartsyn)*spdy - tshift(ii);
-            dplotshift = disyn/nvec(ii) + dy(jj);   % key amplitude scaling
-            plot(tplot,dplotshift,synplot); 
-            end
-            '''
-            
-            # partition if plotting by azimuth (see azbin above)
-            if rssort==1 and iabs==0:
-                # azimuth of previous (az0) and current (az1) stations in the sorted list
-                az0 = az1
-                az1 = azi[ii]
-                # (this boolean clause could probably be simplified) 
-                if (az1 > az0 and (any(az1>azbin) and any(azbin > az0))) or (az1 < az0 and (any(az1 > azbin) or any(azbin > az0))):
-                    # note: it would nice if these bars extended to the LEFT,
-                    # outside the plotting axes
-                    tp1 = tlims[0];
-                    tp2 = tlims[0] + azbin_fwid*(tlims[1]-tlims[0]);
-                    #disp(sprintf('%i %i %.2f %.2f',pp,jj,tp1,tp2));  % testing
-                    if wsyn != None: # and var != None:
-                        pc = 'r' 
-                    else: 
-                        pc = 'k'
-                    print(tp1)
-                    print(tp2)
-                    print(*dy[jj]+yshift/2)
-                    plt.plot([tp1, tp2],[1 ,1]*dy[jj]+yshift/2,pc,'linewidth')
-            
-            # exit early for the last page of the multi-page record section
-            if pp == nfig and jj == nseis % pmax:
-                print('ending early')
+                # KEY: time vector for plotting
+                tplot = (ti3 - tref) - tshift[ii]
+                
                 if iabs==0:
-                    dy = (jmax + 1 - arange(jmax))*yshift
-                return
-
-            
-            kk = kk+1
+                    # plot from top to bottom
+                    dy[jj] = (jmax + 1 - jj)*yshift
+                else:
+                    # use absolute scaling (e.g., plot records at their actual distance)
+                    if rssort==1: 
+                        dy[jj] = azi[ii] 
+                    else: 
+                        dy[jj] = dist[ii]
+                #norm=np.linalg.norm(di3)
+                dplot = di3 /nvec[ii]      # key amplitude scaling
+                dplotshift = dplot + dy[jj]
+                
+                # get the max value of the seismogram within the plotted time interval
+                #btplot = and(tplot > tlims(1),tplot < tlims(2));
+                #dplotmax = max([dplotmax max(abs(dplot(btplot)))]);
+                #plt.plot(ti3,dplot,'b')
+                ax.plot(tplot,dplotshift,'b', linewidth=0.7);
+                # PLOT LABELS FOR EACH WAVEFORM
+                txtplace=max(rlabels, key=len)
+                txtplce=len(str(rlabels[ii])[2:-2])
+                
+                plt.text(tlims[0], statistics.mean(dplotshift), str(rlabels[ii])[2:-2], ha='right', fontsize=8)
+                
+                
+                # specify the amplitude of the first seismogram plotted
+                # (note that this is not the maximum over all seismograms plotted)
+                
+                if jj==0:
+                    imx = np.argmax(abs(di3))
+                    
+                    stmx = ('%s max %.2e %s at t = %.1f s ' % (sta[ii],di3[imx],units,tplot[imx]))
+                
+                '''
+                ### come back to deal with synthetic arguments ###
+                if isyn==1
+                # be careful about the reference time
+                [tisyn,disyn,tstartsyn] = getm(wsyn(ii),'timevector','data','start');
+                tplot = (tisyn - tstartsyn)*spdy - tshift(ii);
+                dplotshift = disyn/nvec(ii) + dy(jj);   % key amplitude scaling
+                plot(tplot,dplotshift,synplot); 
+                end
+                '''
+                
+                # partition if plotting by azimuth (see azbin above)
+                if rssort==1 and iabs==0:
+                    # azimuth of previous (az0) and current (az1) stations in the sorted list
+                    az0 = az1
+                    az1 = azi[ii]
+                    # (this boolean clause could probably be simplified) 
+                    if (az1 > az0 and (any(az1>azbin) and any(azbin > az0))) or (az1 < az0 and (any(az1 > azbin) or any(azbin > az0))):
+                        # note: it would nice if these bars extended to the LEFT,
+                        # outside the plotting axes
+                        tp1 = tlims[0];
+                        tp2 = tlims[0] + azbin_fwid*(tlims[1]-tlims[0]);
+                        #disp(sprintf('%i %i %.2f %.2f',pp,jj,tp1,tp2));  % testing
+                        if wsyn != None: # and var != None:
+                            pc = 'r' 
+                        else: 
+                            pc = 'k'
+                        plt.plot([tp1, tp2],[1 ,1]*dy[jj]+yshift/2,pc,'linewidth')
+                
+                # exit early for the last page of the multi-page record section
+                if pp == nfig and jj == nseis % pmax:
+                    print('ending early')
+                    if iabs==0:
+                        dy = (jmax + 1 - arange(jmax))*yshift
+                    return
+    
+                
+                kk = kk+1
             jj+=1  # jj (loop over seismograms)
             
         if iabs==0:
             
             # this may chop off a large-amplitude trace near the boundary, but
             # at least the gap will be the same for a sequence of plots
-            ylims = yshift*[0 ,jmax+2]
-            plt.ylim(ylims)
+
+            ylims = int(yshift)*[0 ,jmax+2]
+            
+            #plt.ylim(ylims)
             # this will provide more space if one of the traces has a large
             # amplitude, but the gap may vary for a sequence of plots
             #ylims = yshift*[1 ,jmax] + dplotmax*[-1 ,1]   
@@ -865,11 +903,13 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         # plot absolute-time marker
         mm=0
         while mm < nmark:
-            tm = (tmark[mm] - tstartmin)*spdy - tshift0;
-            plt.plot(tm*[1, 1],ax0[2:3],'r','linewidth')
+            tm = (dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy - tshift0;
+            
+            #plt.plot(tm*[1, 1],ax0[2:3],'r','linewidth')
+            plt.vlines(tm,ylims[0],ylims[1], 'r')
             mm+=1
         plt.xlim(tlims)
-        plt.ylim(ylims)
+        plt.ylim(ylims[0],ylims[1])
         #plt.subplots_adjust(left=0.10)
         plt.xlabel('Time (s)', fontweight='bold')
         plt.yticks([])
@@ -898,7 +938,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         # plot title
         # note: might want to label the channel, too
         #if ifilter==1, stfilt = sprintf('T = %.1f-%.1f s (%.2f-%.2f Hz)',T1,T2,1/T2,1/T1); else stfilt = '--'; end
-        print(stchan)
+        
         st0 = ('%s [%s, %s]' % (stchan,stunit,stfilt))
         if irs==1:
             
@@ -918,10 +958,39 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         
         
         plt.tight_layout()
+        plt.show()
         pp+=1
-    return fig
+    #return fig
     
+    #--------------------------------------------------------------------------
+    # plot map
+    # future work would be to add some more options for alaska plots (alaska_basemap.m)
+    if imap==1:
+        if iunit==3: 
+            fac = 1e-3    
+        else:
+            fac = 1
+        iplotsrc = 1
+        fsize = 10
+        
+        figsta=plt.figure(figsize=(8,10))
+        
+        plt.plot(rlon*fac,rlat*fac,'bv') 
+        if iplotsrc==1:
+            plt.plot(elon*fac,elat*fac,'k',markersize=20,markerfacecolor='r')
+        # plot station labels (or eid labels)
+        if irs==1:
+            for i,lab in enumerate(sta):
+                plt.text(rlon[i]*fac,rlat[i]*fac,str(lab),fontsize=fsize)
+        else:
+            plt.text(elon[i]*fac,elat[i]*fac,eid[i],fontsize=fsize)
+        
+        plt.title(str(stline1) +'\n'+ str(stchan),fontsize=8)
+        
+    print('--> leaving plotw_rs.m')
     
+    #==========================================================================
+
     
     
     
