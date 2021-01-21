@@ -21,6 +21,18 @@
   {/home/carltape/latex/notes/cmt/TapeTape/figures/}
 }
 
+%\newcommand{\tvec}{\textcolor{red}{\mbt}}
+%\newcommand{\bvec}{\textcolor{blue}{\mbb}}
+%\newcommand{\pvec}{\textcolor{yellow}{\mbp}}
+\newcommand{\tvec}{\mbt}
+\newcommand{\bvec}{\mbb}
+\newcommand{\pvec}{\mbp}
+\newcommand{\nvec}{\mbn}
+\newcommand{\svec}{\mbs}
+
+\newcommand{\eone}{\textcolor{red}{\e_1}}
+\newcommand{\etwo}{\textcolor{blue}{\e_2}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -40,7 +52,7 @@ Last compiled: \today
 
 \subsection*{Instructions}
 
-This is a pencil-and-paper lab exercise that does not involve any computer. You should have a ruler, and you are permitted to use a calculator. The exercise directly follows the class notes \mtfile, which has Figures 1--7 and Table 1. I recommend using colored pens or pencils.
+This is a pencil-and-paper lab exercise that does not involve any computer. You should have a ruler, and you are permitted to use a calculator. The exercise directly follows the class notes \mtfile, which has Figures 1--7 and Table 1. I recommend using colored pens or pencils (especially red and blue).
 
 \medskip\noindent
 {\em Note}: When estimating the coordinates (\ie the lengths of each component) of a vector, you want to imagine the origin to be at the tail of the vector. 
@@ -51,29 +63,32 @@ This is a pencil-and-paper lab exercise that does not involve any computer. You 
 
 \begin{enumerate}
 
-\item Examine Figure~\ref{fig:template} and the equations in the figure.
+\item Examine Figure~\ref{fig:template}. Derive the equations in the figure.
 \label{prob:bigvec}
 
 \begin{enumerate}
 \item Is this a double couple moment tensor? Why or why not?
 
-\item Label the following vectors: $\mb{M}(-\e_1)$ and $\mb{M}(-\e_2)$.
+\item Label the following vectors: $\mb{M}(-\eone)$ and $\mb{M}(-\etwo)$.
 
-Visually check that $\mb{M}(-\e_1) = -\mb{M}(\e_1)$ and $\mb{M}(-\e_2) = -\mb{M}(\e_2)$.
+Visually check that $\mb{M}(-\eone) = -\mb{M}(\eone)$ and $\mb{M}(-\etwo) = -\mb{M}(\etwo)$.
 
-\item Draw and label the following vectors: $m_{11}\e_1$, $m_{21}\e_2$, $m_{12}\e_1$, $m_{22}\e_2$.
+\item Draw and label the following vectors: $m_{11}\eone$, $m_{21}\etwo$, $m_{12}\eone$, $m_{22}\etwo$.
 
-Draw the base of each vector at the tip of $\e_1$, $-\e_1$, $\e_2$, or $-\e_2$.
+Draw the base of each vector at the tip of $\eone$, $-\eone$, $\etwo$, or $-\etwo$.
 
-Draw and label the following vectors: $-m_{11}\e_1$, $-m_{21}\e_2$, $-m_{12}\e_1$, $-m_{22}\e_2$.
+Draw and label the following vectors: $-m_{11}\eone$, $-m_{21}\etwo$, $-m_{12}\eone$, $-m_{22}\etwo$.
 
-\item Assuming that $\|\e_1\| = \|\e_2\| = 1$, use the sketch to estimate the entries of the moment matrix,
+\item Assuming that $\|\eone\| = \|\etwo\| = 1$, use the sketch to estimate the entries of the moment matrix
 %
 \begin{equation*}
 M = \begin{pmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{pmatrix}
 \end{equation*}
 %
+for this choice of basis.
 (Check your answer using Table~1 of \mtfile.)
+
+\item With two dashed lines (like spokes of a wheel), mark the principal axes basis.
 
 \end{enumerate}
 
@@ -87,7 +102,7 @@ We now want to relate our graphical representation of the moment matrix with som
 \item Sketch the force couples in Figure~\ref{fig:template4} associated with the four entries of the matrix of the moment tensor $m_{ij}$. You should sketch 8 arrows in total---the same number you sketched in Figure~\ref{fig:template}.
 (Here we have a $2 \times 2$ matrix $m_{ij}$, not a $3 \times 3$ matrix, but the basic concepts are the same.)
 
-Draw the base of each vector at the tip of $\e_1$, $-\e_1$, $\e_2$, or $-\e_2$.
+Draw the base of each vector at the tip of $\eone$, $-\eone$, $\etwo$, or $-\etwo$.
 
 Here, draw all forces as unit vectors. 
 
@@ -113,7 +128,7 @@ See Figure~\ref{fig:template_couples2}.
 \begin{enumerate}
 \item Write the moment matrix for the right-hand figure.
 \item What is odd about this pair of couples?
-\item Write the moment matrix in the standard basis, with $\e_1$ pointing to the right and $\e_2$ pointing up.
+\item Write the moment matrix in the standard basis, with $\eone$ pointing to the right and $\etwo$ pointing up.
 \item Write the moment matrix for the left-hand figure.
 \end{enumerate}
 
@@ -126,20 +141,20 @@ See Figure~\ref{fig:templateDC}.
 \begin{enumerate}
 \item Write the matrix of the moment tensor for each of the vector fields.
 
-\item The $T$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $P$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\mb{T}$ and $\mb{P}$ in the right-hand plot.
+\item The $\tvec$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $\pvec$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\tvec$ and $\pvec$ in the right-hand plot.
 
 \item The eigenvectors are not the fault or slip vectors. For a double couple moment tensor only, the direction of the fault and slip vectors can be obtained from the eigenvectors as 
 %
 \begin{eqnarray*}
-\mb{N} = (\mb{T} + \mb{P})/\sqrt{2}
+\nvec = (\tvec + \pvec)/\sqrt{2}
 \\
-\mb{S} = (\mb{T} - \mb{P})/\sqrt{2}
+\svec = (\tvec - \pvec)/\sqrt{2}
 \end{eqnarray*}
 %
-Sketch $\mb{N}$ and $\mb{S}$ at the application point $\e_2$ in the right-hand plot.
+Sketch $\nvec$ and $\svec$ at the application point $\etwo$ in the right-hand plot.
 \item What do the basis vectors in the left-hand plot represent?
 \item In the left-hand plot, shade the two quadrants containing the $T$ axis, and sketch the double couple (four arrows) at the center of the plot.
-\item Based on (c), make the fault plane {\bf bold}.
+\item Based on (c), make the fault plane {\bf bold}. If this is map view, what kind of fault is this?
 \end{enumerate}
 
 %--------------
@@ -150,7 +165,7 @@ Figure~\ref{fig:decom}.
 %
 \begin{enumerate}
 \item Identify the red vectors in the bottom two plots, and highlight the same vectors in the corresponding top two plots.
-\item Sketch the basis vectors $\{\e_1,\e_2\}$ in the top two.
+\item Sketch the basis vectors $\{\eone,\etwo\}$ in the top two.
 \item Each vector can be decomposed into an ``isotropic'' part that points outward. Check that the isotropic vectors are all the same. Why is this the case?
 \end{enumerate}
 
@@ -158,7 +173,7 @@ Figure~\ref{fig:decom}.
 
 \item 
 \label{prob:arrows}
-In \refFig{fig:SWfour}, use the templates and draw the couples (in red) for the following matrices:
+In \refFig{fig:SWfour}, use the templates and draw the couples (in red) for the following moment matrices, shown in the standard basis:
 %
 \begin{equation*}
 %M =
@@ -212,7 +227,7 @@ $m_{21}$ & $m_{22}$ \\ \hline
 \caption{
 [Problem~\ref{prob:matrix}] 
 The four panels should be thought of as the entries of the $2 \times 2$ matrix $M$, with entries $m_{11}$, $m_{12}$, $m_{21}$, and $m_{22}$.
-Tip: $m_{12}$ will correspond to forces pointing in the $\pm\e_1$ directions and offset in the $\pm\e_2$ direction (e.g., see Figure~\ref{fig:SW} for the 3D analog).
+Tip: $m_{12}$ will correspond to forces pointing in the $\pm\eone$ directions and offset in the $\pm\etwo$ direction (e.g., see Figure~\ref{fig:SW} for the 3D analog).
 \label{fig:template4}
 }
 \end{figure}
@@ -261,7 +276,7 @@ Repeat of Figure~\ref{fig:couples3doubleCouple} from \mtfile.
 [Problem~\ref{prob:decom}]
 Repeat of Figures~\ref{fig:couples1} and \ref{fig:couples4decomposition}.
 The red vectors at the bottom are from the set of black vectors at the top.
-In the bottom plots, note that all vectors originate from the tip of $\e_1$, $-\e_1$, $\e_2$, or $-\e_2$.
+In the bottom plots, note that all vectors originate from the tip of $\eone$, $-\eone$, $\etwo$, or $-\etwo$.
 No matter what the choice of basis, the isotropic components (green) will be the same magnitude.
 %When the basis is chosen to be the principal axes, as at right, the decomposition can be represented simply with eigenvalues.
 \label{fig:decom}
