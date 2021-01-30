@@ -3,6 +3,8 @@
 
 \input{hw626_header}
 
+\renewcommand{\baselinestretch}{1.1}
+
 % change the figures to ``Figure L3'', etc
 \renewcommand{\thefigure}{L\arabic{figure}}
 \renewcommand{\thetable}{L\arabic{table}}
@@ -67,7 +69,7 @@ This is a pencil-and-paper lab exercise that does not involve any computer. You 
 \label{prob:bigvec}
 
 \begin{enumerate}
-\item Is this a double couple moment tensor? Why or why not?
+\item Figure~5 in the notes showed a vector field for a double couple moment tensor. Is this a double couple moment tensor? Why or why not?
 
 \item Label the following vectors: $\mb{M}(-\eone)$ and $\mb{M}(-\etwo)$.
 
@@ -82,7 +84,7 @@ Draw and label the following vectors: $-m_{11}\eone$, $-m_{21}\etwo$, $-m_{12}\e
 \item Assuming that $\|\eone\| = \|\etwo\| = 1$, use the sketch to estimate the entries of the moment matrix
 %
 \begin{equation*}
-M = \begin{pmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{pmatrix}
+M = \begin{pmatrix} \textcolor{red}{m_{11}} & \textcolor{blue}{m_{12}} \\ \textcolor{red}{m_{21}} & \textcolor{blue}{m_{22}} \end{pmatrix}
 \end{equation*}
 %
 for this choice of basis.
@@ -143,7 +145,8 @@ See Figure~\ref{fig:templateDC}.
 
 \item The $\tvec$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $\pvec$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\tvec$ and $\pvec$ in the right-hand plot.
 
-\item The eigenvectors are not the fault or slip vectors. For a double couple moment tensor only, the direction of the fault and slip vectors can be obtained from the eigenvectors as 
+\item The fault normal vector is $\nvec$. The fault slip vector is $\svec$.
+The eigenvectors $\tvec$ and $pvec$ are not the fault vectors. For a double couple moment tensor only, the directions of the fault and slip vectors can be obtained from the eigenvectors as\footnote{This is not the only choice for defining $\nvec$ and $\svec$.}
 %
 \begin{eqnarray*}
 \nvec = (\tvec + \pvec)/\sqrt{2}
@@ -151,10 +154,15 @@ See Figure~\ref{fig:templateDC}.
 \svec = (\tvec - \pvec)/\sqrt{2}
 \end{eqnarray*}
 %
-Sketch $\nvec$ and $\svec$ at the application point $\etwo$ in the right-hand plot.
+Sketch $\nvec$ and $\svec$ at the application point $\eone$ in the right-hand plot.
+
 \item What do the basis vectors in the left-hand plot represent?
+
 \item In the left-hand plot, shade the two quadrants containing the $T$ axis, and sketch the double couple (four arrows) at the center of the plot.
+
 \item Based on (c), make the fault plane {\bf bold}. If this is map view, what kind of fault is this?
+
+\item If instead we swap $\bn$ and $\bs$, then what type of fault is it?
 \end{enumerate}
 
 %--------------
@@ -164,7 +172,7 @@ Sketch $\nvec$ and $\svec$ at the application point $\etwo$ in the right-hand pl
 Figure~\ref{fig:decom}.
 %
 \begin{enumerate}
-\item Identify the red vectors in the bottom two plots, and highlight the same vectors in the corresponding top two plots.
+\item Identify the magenta vectors in the bottom two plots, and highlight the same vectors in the corresponding top two plots.
 \item Sketch the basis vectors $\{\eone,\etwo\}$ in the top two.
 \item Each vector can be decomposed into an ``isotropic'' part that points outward. Check that the isotropic vectors are all the same. Why is this the case?
 \end{enumerate}
@@ -275,7 +283,7 @@ Repeat of Figure~\ref{fig:couples3doubleCouple} from \mtfile.
 \caption{
 [Problem~\ref{prob:decom}]
 Repeat of Figures~\ref{fig:couples1} and \ref{fig:couples4decomposition}.
-The red vectors at the bottom are from the set of black vectors at the top.
+The magenta vectors at the bottom are from the set of black vectors at the top.
 In the bottom plots, note that all vectors originate from the tip of $\eone$, $-\eone$, $\etwo$, or $-\etwo$.
 No matter what the choice of basis, the isotropic components (green) will be the same magnitude.
 %When the basis is chosen to be the principal axes, as at right, the decomposition can be represented simply with eigenvalues.

@@ -20,7 +20,7 @@
 \centering
 {\large \bf Problem Set 3: Fault parameters and moment tensors [mt]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: February 5, 2018 --- Due: February 12, 2018 \\
+Assigned: January 28, 2021 --- Due: February 4, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -106,7 +106,7 @@ Angle $\phi$ is measured from $\bxh$, and angle $\theta$ is measured from $\bzh$
 
 \item (0.5) Write a function \verb+myrotmat.py+ that inputs a rotation angle $\rotangA$ and an index for the axis ($k = 1,2,3$ for $x,y,z$), and then outputs the rotation matrix $\bR_k(\rotangA)$. 
 
-List the Matlab output for $\bR_x(60^\circ)$, $\bR_y(60^\circ)$, and $\bR_z(60^\circ)$.
+List the computer output for $\bR_x(60^\circ)$, $\bR_y(60^\circ)$, and $\bR_z(60^\circ)$.
 
 The top lines of your \verb+myrotmat.py+ should look like this:
 %
@@ -183,7 +183,7 @@ U =
 
 \item (0.4) Using the function \verb+globefun3.py+, plot your rotation axis $\rotvec$, the initial point $\br_0$, and the rotated point $\br$, all within the same figure. Pencil in an arrow from $\br_0$ to $\br$.
 
-Note that \verb+globefun3.m+ inputs latitude ($=90-\theta$) and longitude ($=\phi$).
+Note that \verb+globefun3.py+ inputs latitude ($=90-\theta$) and longitude ($=\phi$).
 
 \end{enumerate}
 
@@ -199,7 +199,7 @@ Note that \verb+globefun3.m+ inputs latitude ($=90-\theta$) and longitude ($=\ph
 
 You should not use any notation such as $\bxh$, $\byh$, or $\bzh$ throughout this problem.
 
-\item You will utilize the function $\bU(\rotvec,\rotangB)$ (\verb+myrotmat_gen.m+) that you obtained in Problem 1. (You should have checked that your function gets the results in Problem 1-5; otherwise get a version of \verb+myrotmat_gen.m+ from me.)
+\item You will utilize the function $\bU(\rotvec,\rotangB)$ (\verb+myrotmat_gen.py+) that you obtained in Problem 1. (You should have checked that your function gets the results in Problem 1-5; otherwise get a version of \verb+myrotmat_gen.py+ from me.)
 
 \item The dip is denoted by $\theta$. (In Problem 1, $\theta$ was a generic polar angle.)
 
@@ -256,7 +256,7 @@ Please note the following:
 
 %-----------
 
-\item (0.6) Using your \verb+myrotmat_gen.m+, compute the vectors $\bK$, $\bN$, and $\bS$ for this example, using the angles listed in \refFig{fig:cmt}.
+\item (0.6) Using your \verb+myrotmat_gen.py+, compute the vectors $\bK$, $\bN$, and $\bS$ for this example, using the angles listed in \refFig{fig:cmt}.
 %
 \begin{enumerate}
 \item (0.3) Write the vectors in decimal form as a sum of weighted basis vectors: for example, $\bv = (1.45,1.75,-5.32)$ in basis $\{\bih,\bjh,\bkh\}$ is $\rotvec = 1.45\bih + 1.75\bjh - 5.32\bkh$.
@@ -468,7 +468,7 @@ A point on the sphere: $\phi = 40^\circ$ (azimuthal angle), $\theta = 30^\circ$ 
 Eigenvalue space for moment tensors; the three axes correspond to the eigenvalues.
 The purple plane is the deviatoric plane $\lambda_1 + \lambda_2 + \lambda_3 = 0$.
 The brown planes are the coordinate planes $\lambda_1 = 0$, $\lambda_2 = 0$, and $\lambda_3 = 0$.
-ISO is the $(1,1,1)$ direction; DC is the $(1,-1,0)$ direction.
+ISO (isotropic) is the $(1,1,1)$ direction; DC (double couple) is the $(1,-1,0)$ direction.
 The principal axes of the moment tensor are denoted by $p_1$, $p_2$, and $p_3$.
  The space of double couples represents all solutions that are deviatoric (purple plane) {\em and} have one eigenvalue that is zero (brown planes).
 %Ignoring the six-part symmetry (related to different eigenvalue ordering), this means that all double couples are found on the line in the direction $(1,0,-1)$.

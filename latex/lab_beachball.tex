@@ -55,7 +55,7 @@ Last compiled: \today \\
 
 \item I will loan you a painted wooden model of a double couple moment tensor (``beachball''), as well as five dowel segments.
 
-\item A symmetric matrix is guaranteed to have three real eigenvalues. We follow the convention of eigenvalue ordering $\lambda_1 \ge \lambda_2 \ge \lambda_3$ with corresponding ordered eigenvectors \tvec\ (``tension axis''), \bvec\ (``neutral axis''), \pvec\ (``pressure axis''). For this lab, we consider the double couple moment tensor, for which
+\item A symmetric matrix is guaranteed to have three real eigenvalues. We follow the convention of eigenvalue ordering $\lambda_1 \ge \lambda_2 \ge \lambda_3$ with corresponding ordered eigenvectors \tvec\ (``tension axis''), \bvec\ (``neutral axis''), \pvec\ (``pressure axis'') (so $\lambda_t \ge \lambda_b \ge \lambda_p$). For this lab, we consider the double couple moment tensor, for which
 %
 \begin{eqnarray*}
 \lambda_1 &=& \lambda
@@ -81,7 +81,7 @@ where $U = [\tvec\; \bvec \; \pvec]$ is the (orthogonal) orientation matrix and
 D = \begin{pmatrix} \lambda_1 & 0 & 0 \\ 0 & \lambda_2 & 0 \\ 0 & 0 & \lambda_3 \end{pmatrix}
 \end{equation}
 %
-contains the eigenvalues that characterize the source type of the moment tensor.
+contains the eigenvalues that characterize the source type of the moment tensor. $M$ is the moment tensor in its standard basis; $D$ is the moment tensor in its eigenbasis.
 
 \end{itemize}
 
@@ -98,9 +98,9 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 \item Rotate the ball \dg{180} about any one of \tvec, \bvec, or \pvec.
 %
 \begin{enumerate}
-\item Does the eigenframe change?
+\item Does the eigenframe change? (Think: eigenframe = dowels)
 
-\item Does the moment tensor change?
+\item Does the moment tensor change? (Think: moment tensor = beachball)
 
 \item How many orientations (rotation matrices) are there for each moment tensor?
 
@@ -132,7 +132,11 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 
 \item Describe a non-trivial rotation that will give $\omega=0$.
 
-\item Convince yourself that if the reorientation is a rotation of \dg{90} about \tvec, then $\omega$ is small to moderate. (Calculation gives $\omega=\pi/3$.)
+\item Convince yourself that if the reorientation is a rotation of \dg{90} about \pvec, then $\omega$ is small to moderate. (Calculation gives $\omega=\pi/3$.)
+
+\item CHALLENGE: Show that $\omega=\pi/3$.
+
+\item CHALLENGE: Show that $\omega=\pi/3$ for a rotation of \dg{90} about \tvec.
 
 \end{enumerate}
 
@@ -146,8 +150,13 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 
 %---------------------------
 
-\pagebreak
-\item CHALLENGE PROBLEM: Here is some background from \citet{TapeTape2013}. The symbols \xrot{\xi}, \yrot{\xi}, and \zrot{\xi} denote the rotations through angle $\xi$ about the coordinate axes. Thus
+\item Having finished this lab and also \verb+lab_mt.pdf+, where we looked at the moment tensor as a linear transformation and a vector field, let's now look at the figure at the start of this lab. Describe it as completely as possible. Include a precise description of what the beachball represents.
+
+\end{enumerate}
+
+\subsection*{Challenge problem}
+
+Here is some background from \citet{TapeTape2013}. The symbols \xrot{\xi}, \yrot{\xi}, and \zrot{\xi} denote the rotations through angle $\xi$ about the coordinate axes. Thus
 %
 \begin{equation*}
 \xrot{\xi}=\begin{small}\begin{pmatrix}   1 &     0   & 0\\
@@ -156,7 +165,7 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 \yrot{\xi}=\begin{small}\begin{pmatrix}\cos\xi & 0 &\sin\xi \\
                                        0       & 1 & 0      \\
                                       -\sin\xi & 0 & \cos\xi\end{pmatrix}\end{small},\:\:
-\zrot{\pi}=\begin{small}\begin{pmatrix}   \cos\xi & -\sin\xi & 0 \\
+\zrot{\xi}=\begin{small}\begin{pmatrix}   \cos\xi & -\sin\xi & 0 \\
                                           \sin\xi & \cos\xi & 0 \\
                                           0  & 0 & 1\end{pmatrix}\end{small}.\:\:\:
 %\label{eq:DefXxiYxiZxi}
@@ -200,8 +209,6 @@ D(\xx,\,\pi/2-\yy)&=&\left(D(\xx,\,\yy)\right)_U\hspace{20pt}(U=\xrot{\pi})
 %
 Do this with a partner: one of you does the expression on the left-hand side, the other does the right-hand side. You will need to both start in some reference orientation and apply the same \xx\ and \yy\; I recommend using $\xx=\yy=\dg{0}$ for starters and then trying $\xx=\yy=\dg{45}$.
 
-\end{enumerate}
-
 %------------------------
 
 \begin{figure}[h]
@@ -218,7 +225,7 @@ Do this with a partner: one of you does the expression on the left-hand side, th
 \end{figure}
 
 %-------------------------------------------------------------
-\pagebreak
+%\pagebreak
 \bibliographystyle{agu08}
 \bibliography{carl_abbrev,carl_main,carl_him}
 %-------------------------------------------------------------
