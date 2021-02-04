@@ -6,11 +6,10 @@
 Diagram showing notation for vectors and angles for Problem 2.
 $\bn$ is the north vector, $\bN$ is the fault normal vector, $\bK$ is the strike vector, and $\bS$ is the slip vector.
 The strike angle is $\kappa = 40^\circ$, the dip angle is $\theta = 70^\circ$, and the slip angle is $\sigma = -120^\circ$.
-The slip angle is the (signed) angle between the strike vector and the slip vector.
+The slip angle is the signed angle (see instructions in {\tt hw\_mt}) between the strike vector and the slip vector.
 %--------------
 % THIS IS IMPORTANT
-The sign of $\sigma$ is determined from the direction of $\bN$: rotate $\bK$ to $\bS$ along the shortest angle; if that rotation is counterclockwise, with $\bN$ determining ``up,'' then the angle is positive. (In other words, if $\bK \times \bS$ is in the direction of $\bN$, then $\sigma > 0$; otherwise $\sigma < 0$.)
-Another way of explaining it is that you rotate $\bK$ to $\bS$ clockwise (looking down $\bN$); the resultant angle is between $0^\circ$ and $360^\circ$. By convention, the angle is ``wrapped'' to the interval $[-180^\circ, 180^\circ]$, similar to the choice in longitude conventions. In this example $\sigma = 240^\circ = -120^\circ$.
+%The sign of $\sigma$ is determined from the direction of $\bN$: rotate $\bK$ to $\bS$ along the shortest angle; if that rotation is counterclockwise, with $\bN$ determining ``up,'' then the angle is positive. (In other words, if $\bK \times \bS$ is in the direction of $\bN$, then $\sigma > 0$; otherwise $\sigma < 0$.) Another way of explaining it is that you rotate $\bK$ to $\bS$ clockwise (looking down $\bN$); the resultant angle is between $0^\circ$ and $360^\circ$. By convention, the angle is ``wrapped'' to the interval $[-180^\circ, 180^\circ]$, similar to the choice in longitude conventions. In this example $\sigma = 240^\circ = -120^\circ$.
 %--------------
 Note that the fault vectors $\bN$ and $\bS$ always ``sandwich'' the colored quadrant of the beachball, which contains $\bT = \bu_1$ at its center.
 $\bT$ is the $T$-axis, which is the eigenvector associated with positive eigenvalue, $\lambda_1$.
