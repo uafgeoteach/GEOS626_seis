@@ -112,12 +112,15 @@
 \newcommand{\qmin}{q_{\rm min}}
 \newcommand{\eg}{e.g.,\xspace}
 \newcommand{\ie}{i.e.,\xspace}
+\newcommand{\cf}{cf.,\xspace}
 
 \newcommand{\delmin}{\ensuremath{\Delta_{\rm{min}}}}
 \newcommand{\delmax}{\ensuremath{\Delta_{\rm max}}}
 \newcommand{\alphamax}{\ensuremath{\alpha_{\rm max}}}
 \newcommand{\vd}[2]{\ensuremath{{\mathbf{#1}}_{#2}}}
 \newcommand{\vu}[2]{\ensuremath{{\mathbf{#1}}^{#2}}}
+
+\newcommand{\rspace}[1]{\ensuremath{{\mathbb{R}^{#1}}}}
 
 %---------------------------------------------------------
 % commands from Tromp
@@ -323,6 +326,7 @@
 \newcommand{\bGh}{\mbox{\boldmath{$\hat{\rm G}$}}}
 \newcommand{\bHh}{\mbox{\boldmath{$\hat{\rm H}$}}}
 \newcommand{\bLh}{\mbox{\boldmath{$\hat{\rm L}$}}}
+\newcommand{\bKh}{\mbox{\boldmath{$\hat{\rm K}$}}}
 \newcommand{\bRh}{\mbox{\boldmath{$\hat{\rm R}$}}}
 \newcommand{\bNh}{\mbox{\boldmath{$\hat{\rm N}$}}}
 \newcommand{\bSh}{\mbox{\boldmath{$\hat{\rm S}$}}}
@@ -484,6 +488,7 @@
 \newcommand{\mags}[1]{$M_{\rm s}\,${#1}}
 \newcommand{\magt}[1]{$M_{\rm t}\,${#1}}
 \newcommand{\magM}[1]{$M\,${#1}}
+\newcommand{\magm}[1]{$m\,${#1}}
 
 \newcommand{\hdur}{\tau_{\rm h}}
 
@@ -549,18 +554,23 @@
 \newcommand{\misfitvar}{F}
 \newcommand{\misfitt}{\misfitvar^{\rm T}}
 \newcommand{\misfitw}{\misfitvar^{\rm W}}
-%\newcommand{\nparm}{M}           % number of data
-%\newcommand{\ndata}{N}           % number of data
+\newcommand{\nparm}{n}           % number of model parameters
+\newcommand{\ndata}{m}           % number of data
+\newcommand{\nsample}{p}         % number of samples in a distribution
 \newcommand{\nrec}{R}            % number of stations
 \newcommand{\irec}{r}            % staation index
 \newcommand{\nsrc}{S}            % number of sources
 \newcommand{\isrc}{s}            % source index
-\newcommand{\ipick}{p}            % pick index
-\newcommand{\ncmp}{C}            % number of components
+\newcommand{\ipick}{p}           % pick index
+\newcommand{\ncmp}{C}           % number of components
 \newcommand{\normt}{M_{\rm T}}   % normalization for DT adjoint source
 \newcommand{\norma}{M_{\rm A}}   % normalization for DA adjoint source
 \newcommand{\normtr}[1]{M_{{\rm T}{#1}}}   % normalization for DT adjoint source -- with subscript
 \newcommand{\normar}[1]{M_{{\rm A}{#1}}}   % normalization for DA adjoint source -- with subscript
+
+% SVD variables
+\newcommand{\nsval}{p}
+\newcommand{\ntrun}{\nsval'}
 
 \newcommand{\rmd}{\mathrm{d}}        % roman d for dV in integrals 
 \newcommand{\nglob}{{N_{\rm glob}}} 
@@ -594,7 +604,6 @@
 \newcommand{\covdi}{\bC_{\rm D}^{-1}}
 \newcommand{\covmi}{\bC_{\rm M}^{-1}}
 \newcommand{\cprior}{\bC_{\rm prior}}
-%\newcommand{\Cprior}{\bC_{\rm M}}
 \newcommand{\cpriori}{\bC_{\rm prior}^{-1}}
 \newcommand{\cpost}{\bC_{\rm post}}
 \newcommand{\cposti}{\bC_{\rm post}^{-1}}
@@ -608,6 +617,14 @@
 \newcommand{\Cpost}{\bC_{\rm post}}
 %\newcommand{\Cpost}{\bC_{\tssm}}
 \newcommand{\Cd}{\bC_{\rm D}}
+\newcommand{\rhopost}{\brho_{\rm post}}
+
+\newcommand{\dvec}{\bd^{\rm obs}}   % data vector
+\newcommand{\dvect}{\bd^{\rm obs\,T}}   % data vector
+\newcommand{\pvec}{\bd}           % predictions vector g(m) = d
+\newcommand{\dvecv}[1]{d^{\rm obs}_{#1}}
+\newcommand{\dveci}{\dvecv{i}}
+\newcommand{\pveci}{d_i} 
 
 %\newcommand{\misfitvartilde}{\widetilde{\misfitvar}}
 \newcommand{\misfitvartilde}{\misfitvar}

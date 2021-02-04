@@ -37,7 +37,24 @@ The purpose of this problem set is to obtain a geometrical understanding of the 
 
 \item {\bf Spherical coordinates}. You will need to familiarize yourself with spherical coordinates. We will use the standard physics convention for radial coordinate $r$ (or $\rho$), polar angle $\theta$, and azimuthal angle $\phi$.
 
+\item {\bf Unit vectors.} The hat notation, like $\brh$, denoted a unit vector. If we rotate a unit vector, we still have a unit vector.
+
 \item {\bf All rotations are right-handed}. Stick your thumb on your right hand in the direction of the rotation axes, point your fingers toward the vector being rotated, then curling your fingers inward gives the positive rotation direction.
+
+\item {\bf Signed angles}.
+%(This is a minor point that seems to require major text. Do not dwell on this.)
+The angle $\alpha$ between any two vectors and be determined from the dot product ($\cos\alpha = (\ba \cdot \bb) / (\|\ba\|\|\bb\|)$) ranges between $0^\circ$ and $180^\circ$. in \refFig{fig:cmt}, the angle between $\bK$ and $\bS$ is $120^\circ$.
+
+See \refFig{fig:cmt}, where $\sigma$ is the {\em signed} angle from $\bK$ to $\bS$. The arrow from $\bK$ and $\bS$ tells us that $\bK$ is the initial vector and $\bS$ is the final; by itself, {\bf it does not tell us the sign of the angle}.
+
+The sign of $\sigma$ is determined from the direction of $\bN$: rotate $\bK$ to $\bS$ along the shortest angle. If that rotation is counterclockwise, with $\bN$ determining ``up,'' then the angle is positive; if that rotation is clockwise (as in \refFig{fig:cmt}), then the angle is negative ($\sigma = -120^\circ$). (In other words, if $\bK \times \bS$ is in the direction of $\bN$, then $\sigma > 0$; otherwise $\sigma < 0$.)
+
+The angle $\sigma$ has the range $[-180^\circ, 180^\circ]$, but for this homework assignment it may be more convenient to work with the angle on the interval $[0^\circ, 360^\circ]$. (This is similar to the case with longitudes angles: both versions can be found on maps.) To get from $\bK$ to $\bS$, you can rotate counter-clockwise (looking down $\bN$); the resultant angle is between $0^\circ$ and $360^\circ$. In this example $\sigma = 240^\circ = -120^\circ$.
+
+However, there's good physical justification to have the slip angle range on the interval $[-180^\circ, 180^\circ]$ rather than $[0^\circ, 360^\circ]$. Slip angles $10^\circ$ and $-10^\circ$ are similar to each other, since they are both $10^\circ$ from the horizontal; the numbers $10^\circ$ and $350^\circ$ do not reflect their geometric similarity.
+
+% OLD TEXT FROM THE CAPTION
+%The sign of $\sigma$ is determined from the direction of $\bN$: rotate $\bK$ to $\bS$ along the shortest angle; if that rotation is counterclockwise, with $\bN$ determining ``up,'' then the angle is positive. (In other words, if $\bK \times \bS$ is in the direction of $\bN$, then $\sigma > 0$; otherwise $\sigma < 0$.) Another way of explaining it is that you rotate $\bK$ to $\bS$ clockwise (looking down $\bN$); the resultant angle is between $0^\circ$ and $360^\circ$. By convention, the angle is ``wrapped'' to the interval $[-180^\circ, 180^\circ]$, similar to the choice in longitude conventions. In this example $\sigma = 240^\circ = -120^\circ$.
 
 \item {\bf Eigenvalue space of moment tensors}. A ``moment tensor'' $\bM$ is a $3 \times 3$ symmetric tensor (6~distinct entries) that is a point-source representation for a source of seismic waves. This could be an earthquake or something more exotic, like a nuclear explosion, a dike opening near a volcanic magma chamber, or a calving glacier. ``Double couple'' moment tensors represent a small subset of all moment tensors, as depicted in \refFig{fig:lam}. Double couples are defined such that both the trace and the determinant of $\bM$ are zero:
 %
@@ -68,7 +85,7 @@ In seismology the double couple moment tensor is depicted as a beachball with fo
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \subsection*{Problem 1 (4.0). Rotations in 2D and 3D}
 
 This problem should prepare you for Problem 2.
@@ -189,7 +206,7 @@ Note that \verb+globefun3()+ inputs latitude ($=90-\theta$) and longitude ($=\ph
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \subsection*{Problem 2 (4.0). From fault parameters to moment tensors, Part I}
 
 \begin{itemize}
@@ -249,6 +266,7 @@ Please note the following:
 %
 \begin{itemize}
 \item There should be no numbers in your expressions.
+\item Treat everything as unit vectors ($\bK = \bKh$, $\bN = \bNh$, $\bS = \bSh$).
 \item Write all expressions {\em without} using negative signs with angles (like $-\kappa$, $-\theta$, or $-\sigma$).
 %\item These expressions should be as succinct as possible (no messy, long equations).
 \item See \refFig{fig:cmt} for an explanation of the conventions for $\sigma$ and $\kappa$.
@@ -261,14 +279,14 @@ Please note the following:
 \begin{enumerate}
 \item (0.3) Write the vectors in decimal form as a sum of weighted basis vectors: for example, $\bv = (1.45,1.75,-5.32)$ in basis $\{\bih,\bjh,\bkh\}$ is $\rotvec = 1.45\bih + 1.75\bjh - 5.32\bkh$.
 
-\item (0.3) Check the following results:
+\item (0.3) Numerically check the following:
 %
 \begin{itemize}
 \item The fault vectors are unit vectors.
-\item The unsigned angle between $\bnh$ and $\bK$ is $\kappa$.
-\item The unsigned angle between $\brh$ and $\bN$ is $\theta$.
-\item The unsigned angle between $\bK$ and $\bS$ is $\sigma$.
-\item $\bN = (\bS \times \bK)/\| \bS \times \bK \|$
+\item The angle between $\bnh$ and $\bK$ is $\kappa$.
+\item The angle between $\brh$ and $\bN$ is $\theta$. (Always true)
+\item The angle between $\bK$ and $\bS$ is $|\sigma|$. (Always true)
+\item $\bN = (\bS \times \bK)/\| \bS \times \bK \|$.
 \end{itemize}
 
 \end{enumerate}
@@ -441,6 +459,7 @@ Hint: Check the eigenvalues of $\bM_{\rm denali}$.
 
 %------------------------
 
+\pagebreak
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------
