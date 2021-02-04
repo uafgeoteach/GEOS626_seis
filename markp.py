@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp)
 # 
 # This marks the 1/x value on a plot where you click the mouse.
