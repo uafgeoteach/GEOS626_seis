@@ -1,10 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import numpy as np
+
 def fftvec(t):
     # Python version of fftvec.m made by Carl tape
     # FFTVEC provides frequency vector for Matlab's fft convention
@@ -14,9 +9,10 @@ def fftvec(t):
     # all-positive frequencies, and no use of fftshift.
     #
     # EXAMPLE:
-    #   t = [2:0.4:8.0]; n=length(t); f = fftvec(t); ix = 4; f([ix+1 n-ix+1])
-    #   dt = t(2)-t(1); df = 1/(2*dt)/(n/2) [= 1/(dt*n)]
-    #   figure; plot(f,'.-'); figure; plot(fftshift(f),'.-');
+    #   t = np.arange(2,9.0,0.4); n=len(t); f = fftvec(t); ix = 4; 
+    #   dt = t[1]-t[0]; df = 1/(2*dt)/(n/2) 
+    #   fig=plt.figure();plt.plot(f,'-'); 
+    #   fig2=plt.figure(); plt.plot(np.fft.fftshift(f),'-');
     #
     # NOTE: I chose to set fNyq as the negative frequency such that
     #       fftshift(fftvec(t)) will give a vector increasing uniformly from
