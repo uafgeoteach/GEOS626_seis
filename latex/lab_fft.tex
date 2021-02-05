@@ -51,7 +51,7 @@ Solar motion due to planetary influences. Upper left represents a $\sim$100-year
 
 \begin{enumerate}
 
-\item Run \verb+lab_fft.m+ to generate the plot in \refFig{fig:solar}.
+\item Run \verb+lab_fft.ipynb+ to generate the plot in \refFig{fig:solar}.
 
 Examine the (synthetic) time series of solar motion and the text output in the command window.
 %
@@ -60,7 +60,7 @@ Examine the (synthetic) time series of solar motion and the text output in the c
 \item What planet is responsible for the dominant period?
 \item Write the solar motion $c(t)$ in terms of $x(t)$ and $y(t)$. (Examine the code.)
 \item What is the number of points $n$ in the discretized version of $c(t)$? 
-\item What does the function \verb+fftvec.m+ do?
+\item What does the function \verb+fftvec()+ do?
 \end{enumerate}
 
 %---------
@@ -89,12 +89,12 @@ where $H(f)$ is the Fourier transform of $c(t)$.
 %---------
 
 \item Plot the amplitude spectrum (use \verb+semilogy+) and describe in in qualitative terms. \\
-Use the function \verb+fftvec.m+ to obtain the frequency vector. \\
+Use the function \verb+fftvec()+ to obtain the frequency vector. \\
 Plot the $y$-axis with the range \verb+ylim([1e-4 1e1])+.
 
 %---------
 
-\item  Use the function \verb+markp.m+ to help identify periods associated with spectral peaks. (An example of how to use \verb+markp.m+ will be done in lab.) Then answer the following questions:
+\item  Use the function \verb+markp()+ to help identify periods associated with spectral peaks. (An example of how to use \verb+markp()+ will be done in lab.) Then answer the following questions:
 %
 \begin{enumerate}
 \item What is the number of points, $n$, in the discretized version of $c(t)$?

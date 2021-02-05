@@ -16,6 +16,8 @@
 \renewcommand{\theequation}{L\arabic{equation}}
 \renewcommand{\thesection}{L\arabic{section}}
 
+\newcommand{\tfile}{{\tt run\_getwaveform\_626.ipynb}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -36,11 +38,15 @@ Last compiled: \today
 
 The bandpass filter that is applied to the seismograms can have a dramatic effect on what is visible. The frequency limits of the bandpass is one of several important choices that are needed when plotting record sections.
 
-\item This lab uses the GISMO Waveform Suite for Matlab; see \verb+lab_response.pdf+ for details.
+\item This lab uses ObsPy to access seismic waveforms from the IRIS Data Management Center. See {\tt lab\_response.pdf}.
 
-\item The seismic waveforms are stored at the Alaska Earthquake Center. AEC receives waveforms from all stations in Alaska, as well as all global stations from the Global Seismic Network (GSN = networks II + IU). Because most of the waveforms are from Alaska, most of the examples are from events from Alaska.
+\item WARNING: This lab is in a state of transition from Matlab to Python.
 
-Most waveforms here are also available from the IRIS Data Management Center.
+%\item This lab uses the GISMO Waveform Suite for Matlab; see \verb+lab_response.pdf+ for details.
+
+%\item The seismic waveforms are stored at the Alaska Earthquake Center. AEC receives waveforms from all stations in Alaska, as well as all global stations from the Global Seismic Network (GSN = networks II + IU). Because most of the waveforms are from Alaska, most of the examples are from events from Alaska.
+
+%Most waveforms here are also available from the IRIS Data Management Center.
 
 %------------------------
 
@@ -55,43 +61,24 @@ Most waveforms here are also available from the IRIS Data Management Center.
 \begin{enumerate}
 %-----------
 
-\item Open \verb+run_getwaveform_626.m+ (shown in \refApp{sec:script}) and \verb+plotw_rs.m+.
+\item Open \tfile\ and \verb+plotw_rs.py+.
 %
 \begin{enumerate}
-\item Run \verb+run_getwaveform_626.m+ to produce the map in \refFig{fig:map_ex01} and the record section in \refFig{fig:rs_ex01}. \\
+\item Run \tfile\ to produce the map in \refFig{fig:map_ex01} and the record section in \refFig{fig:rs_ex01}. \\
 {\bf Spend some time to understand the two key parts}: \\
 (1) waveform extraction, (2) plotting a record section.
 
 What input variables are needed to specify the bandpass? \\
-How is a bandpass filter applied within \verb+plotw_rs.m+? \\
+How is a bandpass filter applied within \verb+plotw_rs.py+? \\
 What input variables are needed to specify the bandpass?
 
-\item Comment the \verb+break+ statement at the end of \verb+run_getwaveform_626.m+, and then reproduce the spectrogram in \refFig{fig:BOOM} by following the 7 steps within the Matlab comments.
-
-\item Uncomment the \verb+break+ statement to turn off the spectrogram tool. If you want to see spectrograms for other stations in other examples, then you need to replace \verb+BOOM+ with another station name.
-
-\item The simplest example of waveform extraction can be seen with the lines of code at the top of \verb+run_getwaveform_626.m+:
-%
-\begin{spacing}{1.0}
-\begin{verbatim}
-startTime = datenum(2012,4,11,8,41,57);
-endTime   = datenum(2012,4,11,10,21,57);
-ds = datasource('uaf_continuous');
-sta = {'MDM'};
-cha = {'BHZ'};
-scnl = scnlobject(sta,cha,'','');
-w = waveform(ds,scnl,startTime,endTime);
-figure; plot(w);
-\end{verbatim}
-\end{spacing}
-%
-The function \verb+waveform+ is the key function that is called from within \verb+getwaveform.m+.
+\item What does the spectrogram show? Try changing the station and other input parameters.
 
 \end{enumerate}
 
 %---------------
 
-\item Try the rest of the examples in \verb+run_getwaveform_626.m+. Here are some questions for each example
+\item Try the rest of the examples in \tfile. Here are some questions for each example
 %
 \begin{itemize}
 \item Example 1: calving event at Yahtse glacier. 
@@ -139,7 +126,7 @@ For each possibly triggered event, enter the following information in \refTab{ta
 \begin{itemize}
 \item the closest station (and the distance in km)
 \item the suspicious stations
-\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+T1+ and \verb+T2+ when calling \verb+plotw_rs.m+: you do not need to re-extract the waveforms.
+\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+T1+ and \verb+T2+ when calling \verb+plotw_rs()+: you do not need to re-extract the waveforms.
 \end{itemize}
 %
 \begin{table}[h]
@@ -175,8 +162,6 @@ Iliamna & & & & \\ \hline
 
 %-------------------------------------------------------------
 
-\appendix
-
 %-------------------------------------------------------------
 
 \clearpage\pagebreak
@@ -208,7 +193,7 @@ The record section shows filtered (\frange{0.5}{10.0}) vertical-component wavefo
 \includegraphics[width=16cm]{BOOMspec_geos626}
 \caption[]
 {{
-Spectrogram for a seismogram in {\tt run\_getwaveform\_626.m}.
+Spectrogram for a seismogram in \tfile.
 }}
 \label{fig:BOOM}
 \end{figure}
@@ -374,6 +359,10 @@ The record section shows filtered (\frange{2}{4}) vertical-component waveforms f
 \end{figure}
 
 %==============================================
+
+\iffalse
+
+\appendix
 
 \clearpage\pagebreak
 
@@ -644,6 +633,8 @@ kk = 1;     % order
 figure; plot(wfilt(isort(kk)));
 \end{verbatim}
 \end{spacing}
+
+\fi
 
 %-------------------------------------------------------------
 \end{document}

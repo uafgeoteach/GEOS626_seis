@@ -10,8 +10,10 @@
 \newcommand{\fft}{h}
 \newcommand{\ffw}{H}
 
-%\newcommand{\tfile}{{\tt CAN$\_$response$\_$template.m}}
-\newcommand{\tfile}{{\tt lab$\_$response.m}}
+\newcommand{\tfileresponse}{{\tt CAN\_response.ipynb}}
+\newcommand{\tfilenoise}{{\tt CAN\_noise.ipynb}}
+\newcommand{\tfileP}{{\tt CAN\_P.ipynb}}
+\newcommand{\tfilebp}{{\tt CAN\_bp.ipynb}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -22,7 +24,7 @@
 {\large \bf Problem Set 4: Analysis of the 2004 Sumatra-Andaman earthquake \\
 Part 1: Instrument response and spectral analysis [sumatraA] \\ }
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: February 12, 2018 --- Due: February 26, 2018 \\
+Assigned: February 9, 2021 --- Due: February 16, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -47,15 +49,15 @@ The goals of this problem set are:
 \item The main scripts you will use are
 %
 \begin{itemize}
-\item \verb+CAN_response_template.m+
-\item \verb+CAN_noise_template.m+
-\item \verb+CAN_P_template.m+
-\item \verb+CAN_bp_template.m+
+\item \tfileresponse\
+\item \tfilenoise\
+\item \tfileP\
+\item \tfilebp\
 \end{itemize}
 %
 Make a copy of each of these files. The label \verb+CAN+ is for a station at Canberra, Australia, featured in \citet[][Figure~1]{Park2005}.
 
-\item The main function to extract waveforms from our local database is \verb+sumatra_read_seis.m+. Note that this is called within the template scripts.
+%\item The main function to extract waveforms from our local database is \verb+sumatra_read_seis.m+. Note that this is called within the template scripts.
 
 \item The Global CMT catalog is at \verb+www.globalcmt.org+
 
@@ -65,21 +67,7 @@ Make a copy of each of these files. The label \verb+CAN+ is for a station at Can
 \item instrument response and Fourier analysis: \citet[][Ch.~6]{SteinWysession}
 \item Sumatra earthquake: \citep{Lay2005,Ammon2005,Park2005,Ni2005}
 %\item normal modes: \citet[][Section 2.9]{SteinWysession} and \citet[][Ch.~8]{DT}. See also ``Computational details'' in Section 10.5.1 of DT.
-\item PDFs of all referenced Sumatra papers can be found this directory:
-%
-\begin{verbatim}
-/home/admin/databases/SUMATRA/papers/
-\end{verbatim}
-%
-You can readily access these papers by setting a symbolic link
-%
-\begin{verbatim}
-cd
-ln -s /home/admin/databases/SUMATRA/papers sumatra
-\end{verbatim}
-%
-Example command to open a paper: \verb+xpdf ~/sumatra/04_Ammon2005all.pdf+.
-
+\item PDFs of all referenced Sumatra papers can be found in the google drive.
 \end{itemize}
 
 \item In your answers, please include lines of your computer code if either of these applies:
@@ -269,9 +257,9 @@ What is the slope of the acceleration spectrum, $A_2(\omega)$, in log-log space?
 
 \begin{enumerate}
 
-\item (0.0) Run \verb+CAN_response.m+. The first time you run this, it will compute and save the Fourier transform of a seismogram. This will take about 5 minutes.
+\item (0.0) Run \tfileresponse. The first time you run this, it will compute and save the Fourier transform of a seismogram.
 
-Note: Make sure that you run this from your \verb+seismo+ directory, since the file will be saved there.
+%Note: Make sure that you run this from your \verb+seismo+ directory, since the file will be saved there.
 
 %-------------------
 
@@ -303,7 +291,7 @@ Hint: Aftershocks would be one feature.
 Label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
 \item (0.2) Interpret the largest-amplitude spikes in the spectrum.
 
-Tip: Use \verb+markp.m+ to get the period associated with any peak.
+Tip: Use \verb+markp+ (see {\tt lab\_fft.ipynb}) to get the period associated with any peak.
 
 \item (0.1) What is the maximum allowable frequency and why?
 \item (0.1) What is the minimum (non-zero) allowable frequency and why? \\
@@ -353,7 +341,7 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 %\pagebreak
 \section*{Problem 3 (2.0). Spectral analysis of noise}
 
-Run \verb+CAN_noise.m+. This will generate a time series at CAN for 10 days prior to the Sumatra earthquake.
+Run \tfilenoise. This will generate a time series at CAN for 10 days prior to the Sumatra earthquake.
 
 \begin{enumerate}
 \item (0.2) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
@@ -400,7 +388,7 @@ where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
 
 \begin{enumerate}
 \item (1.5) {\bf Direct arrival}. 
-Return to \verb+CAN_response.m+ in Problem 2.
+Return to \tfileresponse\ in Problem 2.
 Analyze the direct arrival by extracting (use \verb+extract+; \eg see \verb+CAN_noise.m+) 1 hour before the centroid origin time to 3 hours after, where the centroid origin time is \\ \verb+otime_cmt = 7.323070424652778e5+ (units are in days)
 
 \begin{enumerate}
@@ -415,7 +403,7 @@ In your 3-hour spectrum can you identify any of the normal modes in the range $[
 %--------------------
 
 %\pagebreak
-\item (1.5) {\bf P wave}. Adapt \verb+CAN_P.m+ to answer the following questions.
+\item (1.5) {\bf P wave}. Adapt \tfileP\ to answer the following questions.
 %
 \begin{enumerate}
 \item (0.7) Using Supplemental Figure S11 of \citet{Ammon2005} as a guide, extract ``the'' P-wave and include a plot of the time series. About how long is the P wave signal?
@@ -426,7 +414,7 @@ In your 3-hour spectrum can you identify any of the normal modes in the range $[
 
 %--------------------
 
-\item (1.0) {\bf High-frequency bandpass}. Adapt \verb+CAN_bp.m+ to answer the following questions.
+\item (1.0) {\bf High-frequency bandpass}. Adapt \tfilebp\ to answer the following questions.
 %
 \begin{enumerate}
 \item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
@@ -459,7 +447,7 @@ If you want to prepare for a future homework problem, then follow the filtering 
 \caption[]
 {{
 %Figure from \tfile.
-Figure from {\tt CAN$\_$response$\_$template.m}.
+Figure from \tfileresponse.
 }}
 \label{fig:seis}
 \end{figure}

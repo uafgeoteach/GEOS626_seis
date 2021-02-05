@@ -3,6 +3,8 @@
 
 \input{hw626_header}
 
+\renewcommand{\baselinestretch}{1.05}
+
 % change the figures to ``Figure L3'', etc
 \renewcommand{\thefigure}{L\arabic{figure}}
 \renewcommand{\thetable}{L\arabic{table}}
@@ -15,7 +17,7 @@
 \newcommand{\ffw}{H}
 
 %\newcommand{\tfile}{{\tt CAN$\_$response$\_$template.m}}
-\newcommand{\tfile}{{\tt lab$\_$response.m}}
+\newcommand{\tfile}{{\tt lab\_response.ipynb}}
 
 %\renewcommand{\thefigure}{\Alph{figure}}
 
@@ -37,7 +39,7 @@ Last compiled: \today
 
 \begin{itemize}
 
-\item You will use \tfile\ (see \refApp{sec:script}). The example station is CAN, which is in Canberra, Australia, and featured in \citet[][Figure~1]{Park2005}.
+\item You will use \tfile. The example station is CAN, which is in Canberra, Australia, and featured in \citet[][Figure~1]{Park2005}.
 
 %---------
 
@@ -45,19 +47,21 @@ Last compiled: \today
 
 %---------
 
-\item This lab and the associated problem set utilize the GISMO (``GI Seismology'') Waveform Suite for Matlab developed by Celso Reyes and Michael West \citep{ReyesWest2011} and now maintained by Glenn Thompson. It is available via github here:
+\item WARNING: This document is in a state of transition from Matlab to Python. The original lab used Matlab to generate the figures in this document. Your lab is in Python and will generate different figures using ObsPy \citep{obspy2010,obspy2011,obspy2015}. An excellent resource for learning ObsPy are the tutorials in seismolive (\url{www.seismo-live.org}) \citep{seismolive}.
 
-\verb+https://github.com/geoscience-community-codes/GISMO+
+%\item This lab and the associated problem set utilize the GISMO (``GI Seismology'') Waveform Suite for Matlab developed by Celso Reyes and Michael West \citep{ReyesWest2011} and now maintained by Glenn Thompson. It is available via github here:
 
-GISMO is installed on the linux network and will not be available off the network computers (unless you install it yourself). For information, check out the wiki page:
+%\verb+https://github.com/geoscience-community-codes/GISMO+
 
-\verb+https://github.com/geoscience-community-codes/GISMO/wiki+
+%GISMO is installed on the linux network and will not be available off the network computers (unless you install it yourself). For information, check out the wiki page:
 
-In Matlab, type \verb+methods waveform+ to see the main functions in the toolbox.
+%\verb+https://github.com/geoscience-community-codes/GISMO/wiki+
+
+%In Matlab, type \verb+methods waveform+ to see the main functions in the toolbox.
 
 %---------
 
-\item There are different tools in seismology for deconvolving instrument responses and for processing seismic waveforms. We are using Matlab and GISMO, but alternative tools include ObsPy \citep{obspy2010} and SAC \citep{SAC}. {\bf Do not get bogged down in the details of the functions we are using.} Our goal is to understand how to {\em use} these tools.
+%\item There are different tools in seismology for deconvolving instrument responses and for processing seismic waveforms. We are using Matlab and GISMO, but alternative tools include ObsPy \citep{obspy2010} and SAC \citep{SAC}. {\bf Do not get bogged down in the details of the functions we are using.} Our goal is to understand how to {\em use} these tools.
 
 %---------
 
@@ -67,7 +71,7 @@ In Matlab, type \verb+methods waveform+ to see the main functions in the toolbox
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \section{Background}
 
 The output from a seismometer is in ``counts'' as a function of time. (See Note \footnote{The IRIS webpage for frequently asked questions says: ``Counts'' is the raw number read off the physical instrument, ie. the voltage read from a sensor.}.) The scaling from counts to ground motion is not simple and is described by the ``instrument response''.
@@ -93,20 +97,21 @@ For most theoretical derivations, $\omega = 2\pi f$ tends to simplify the notati
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section{Computing and plotting instrument response, $I(\omega)$}
 
-Run \tfile, which produces Matlab figures 1--5. {\bf Examine the figures and read the code in order to understand what is being done and shown.}
+Run \tfile, which produces \refFigab{fig1}{fig3}. {\bf Examine the figures and read the code in order to understand what is being done and shown.}
 %
 \begin{itemize}
-\item Figure~1 (\refFig{fig1}) is generated with two commands
+\item \refFig{fig1} is generated with two commands [update to python needed]
 %
 \begin{verbatim}
 res0 = response_get_from_db(station,channel,startTime,f,dbname);
 response_plot(res0);
 \end{verbatim}
 %
-This uses utilities within GISMO to read the instrument response within the Antelope database. What is needed to get the instrument response is the station (CAN), then channel (LHZ), a time, a vector of frequencies, and the name of the database. The time (\verb+startTime+) is needed because the instrument response may change as a function of time, based on changes made at the station, either from in-person visits or from remote interaction. The instrument response file could change because, for example, maybe the sensor is replaced, or it is reoriented, or the response is updated from what the manufacturer provided.
+%This uses utilities within GISMO to read the instrument response within the Antelope database.
+What is needed to get the instrument response is the station (CAN), then channel (LHZ), a time, a vector of frequencies, and the name of the database. The time (\verb+startTime+) is needed because the instrument response may change as a function of time, based on changes made at the station, either from in-person visits or from remote interaction. The instrument response file could change because, for example, maybe the sensor is replaced, or it is reoriented, or the response is updated from what the manufacturer provided.
 
 The plot shows $\phi(\omega)$ and $A(\omega)$, as in \refEq{Iw}.
 
@@ -120,62 +125,11 @@ is $\fnyq = 0.5$~Hz. For $f > \fnyq$ we see that the phase response is quite com
 
 As a general rule, you need to be very careful if you are looking at signals with frequencies above $\fnyq$.
 
-\item Figure~2 (\refFig{fig1}) matches Figure~1 and shows that the instrument response plot is the same when you read the response file \verb+STRECKEISEN_STS1.5+ directly, rather than getting the response from an antelope database.
-
-\item Figure~3 (\refFig{fig3}) shows what the instrument response looks like when the digitizer+FIR filters are ignored. This is the classical ``simple'' plot of a pole-zero response.
-
-\item Figure~4 (\refFig{fig3}) matches Figure~3 and shows that you get the same result when you read a pole-zero file. This pole-zero file looks like this:
-%
-\small
-\begin{spacing}{1.0}
-\begin{verbatim}
-* **********************************
-* NETWORK   (KNETWK): G
-* STATION    (KSTNM): CAN
-* LOCATION   (KHOLE): 
-* CHANNEL   (KCMPNM): LHZ
-* CREATED           : 2012-03-26T22:39:01
-* START             : 1989-06-02T00:00:00
-* END               : 2006-12-10T02:60:60
-* DESCRIPTION       : Canberra, Australia
-* LATITUDE          : -35.321000
-* LONGITUDE         : 148.999000 
-* ELEVATION         : 650.0  
-* DEPTH             : 0.0  
-* DIP               : 0.0  
-* AZIMUTH           : 0.0  
-* SAMPLE RATE       : 1.0
-* INPUT UNIT        : M
-* OUTPUT UNIT       : COUNTS
-* INSTTYPE          : STRECKEISEN STS1
-* INSTGAIN          : 2.252000e+03 (M/S)
-* COMMENT           : N/A
-* SENSITIVITY       : 1.844840e+09 (M/S)
-* A0                : 3.727650e+12
-* **********************************
-ZEROS	3
-	+0.000000e+00	+0.000000e+00
-	+0.000000e+00	+0.000000e+00
-	+0.000000e+00	+0.000000e+00
-POLES	10
-	-1.233947e-02	+1.234318e-02
-	-1.233947e-02	-1.234318e-02
-	-3.917563e+01	+4.912335e+01
-	-3.917563e+01	-4.912335e+01
-	-3.034990e+01	+7.868112e+00
-	-3.034990e+01	-7.868112e+00
-	-2.220727e+01	+2.208852e+01
-	-2.220727e+01	-2.208852e+01
-	-8.135964e+00	+3.016618e+01
-	-8.135964e+00	-3.016618e+01
-CONSTANT	+6.876917e+21
-\end{verbatim}
-\end{spacing}
-\normalsize
+\item \refFig{fig2} shows what the instrument response looks like when the digitizer+FIR (finite impulse response) filters are ignored. This is the classical ``simple'' plot of a pole-zero response. This pole-zero file is shown in \refApp{sec:pz}.
 
 %---------------------
 
-\item Figure~5 (\refFig{fig5}) shows the instrument response to displacement, velocity, and acceleration, denoted by $I_d(\omega)$, $I_v(\omega)$, and $I_a(\omega)$. We will see in the homework that 
+\item \refFig{fig3} shows the instrument response to displacement, velocity, and acceleration, denoted by $I_d(\omega)$, $I_v(\omega)$, and $I_a(\omega)$. We will see in the homework that 
 %
 \begin{eqnarray*}
 X_v(\omega) &=& (i\omega) X_d(\omega)
@@ -201,13 +155,13 @@ I_a &=& I_v / (i\omega)
 %
 It turns out that the effect of differentiation in the time domain leads to an {\em increase by a factor of one} in the slope of the amplitude spectrum of ground motion ($H(\omega)$) in log-log space, for example, by changing from $X_d(\omega)$ to $X_v(\omega)$. But when we are looking at the {\em instrument response}, the slope will {\em decrease by a factor of one} when changing from, say, $I_d(\omega)$ to $I_v(\omega)$.
 
-We see this in \refFig{fig5}. Consider the flat segment in $I_v(\omega)$. Change to $I_a(\omega)$ and the slope decreases; change to $I_d(\omega)$ and the slope increases.
+We see this in \refFig{fig3}. Consider the flat segment in $I_v(\omega)$. Change to $I_a(\omega)$ and the slope decreases; change to $I_d(\omega)$ and the slope increases.
 
 \end{itemize}
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \subsection*{Questions}
 
 \begin{enumerate}
@@ -257,165 +211,55 @@ Rotate to R and T to isolate SH waves.
 
 \appendix
 
-\section{Matlab script \tfile}
-\label{sec:script}
+\section{Example pole-zero file}
+\label{sec:pz}
 
-\footnotesize
+\small
 \begin{spacing}{1.0}
 \begin{verbatim}
-clear, close all, clc
-
-deg = 180/pi;
-spdy = 86400;   % seconds per day
-
-% print figures to files
-iprint = 0;
-pdir = './';
-
-% test file is the 2004 Sumatra earthquake recorded at CAN.G,
-% featured in Figure 1 of Park et al. 2005 (Science)
-ddir = '/home/admin/databases/SUMATRA/data/';
-tdir = [ddir 'CAN_test/'];
-dbname = [ddir 'sumatra'];
-station = 'CAN';
-netwk = 'G';        % note: the network is not added to 'waveform' (get(w,'network'))
-channel = 'LHZ';
-stlab = [station '_' netwk '_' channel];
-pzfile = [tdir 'SAC_PZs_G_CAN_LHZ__1989.153.00.00.00.0000_2006.344.02.60.60.99999'];
-
-% waveform time interval
-% note: start time needed to access response file
-startTime0 = datenum(2004,12,25,12,58,50);
-endTime0 = datenum(2005,1,4,12,58,50);
-% pick times to get the entire waveform that is in the database
-startTime = startTime0 - 1;
-endTime = endTime0 + 1;
-
-dlabs = {'m to counts','m/s to counts','m/s^2 to counts'};
-
-%==========================================================================
-
-% specify frequencies
-fmin = 1e-4;
-fmax = 1e2;
-numf = 100;
-f = logspace(log10(fmin),log10(fmax),numf)';
-omega = 2*pi*f;
-% note: Although f=0 is an allowable frequency for FFT, you will crash the
-%       functions below if you have f=0 included. In our homework problems,
-%       the frequency vector will be provided when the fft operation is
-%       applied.
-
-aran = 10.^[-20 1.5];
-
-% default option: get instrument response from antelope database
-% FIGURE 1
-res0 = response_get_from_db(station,channel,startTime,f,dbname);
-response_plot(res0,[fmin fmax]); ylim(aran);
-title('response_get_from_db.m','interpreter','none');
-if iprint==1, print(gcf,'-depsc',sprintf('%sCAN_response_fig1',pdir)); end
-
-if 0==1
-    % res0 is a matlab structure
-    % note: the amplitude of abs(res0.values) is NORMALIZED to 1 (by calib)
-    res0
-    res0.calib
-    res0.units
-    Ivcheck = res0.values / (res0.calib*1e-9);  % to match results below
-    figure;
-    subplot(2,1,1); semilogx(res0.frequencies,angle(Ivcheck));
-    subplot(2,1,2); loglog(res0.frequencies,abs(Ivcheck));
-    break
-end
-
-% Here we create a response object by directly specifying the response file.
-% For one file we manually removed the FIR filters in order to show that it
-% would then match the response obtained from the converted-to-velocity
-% sac pole-zero file.
-% FIGURES 2 and 3
-for kk=1:2
-    if kk==1
-        rfile0 = 'STRECKEISEN_STS1.5';
-    else
-        rfile0 = 'STRECKEISEN_STS1.5_noFIR';
-    end
-    rfile = [tdir rfile0];
-    respObject = dbresponse(rfile);
-    response.values = eval_response(respObject,omega);
-    response.frequencies = f;
-    response_plot(response,[fmin fmax]);
-    ylim(aran);
-    title(rfile0,'interpreter','none');
-    if iprint==1, print(gcf,'-depsc',sprintf('%sCAN_response_fig%i',pdir,kk+1)); end
-end
-
-% compare CAN response in antelope database (no FIR) with PZs from sac file
-% FIGURE 4 (should match Figure 3)
-ideriv = 1;     % response to VELOCITY
-listfile = true;
-[p,z,c,A0,k] = read_pzfile(pzfile,ideriv,listfile);
-polezero.poles = p;
-polezero.zeros = z;
-polezero.normalization = A0;    % A0 (not c) needed to match normalization
-res = response_get_from_polezero(f,polezero);
-response_plot(res,[fmin fmax]); ylim(aran);
-title(['sac pole-zero file: ' dlabs{ideriv+1}]);
-if iprint==1, print(gcf,'-depsc',sprintf('%sCAN_response_fig4',pdir)); end
-
-% relationship between PZ constants (sac) and calib (antelope)
-% note: c = A0*k <==> CONSTANT = A0*SENSITIVITY
-res0.calib*1e-9, 1/k
-
-%-----------------------
-% compare displacement, velocity, and acceleration spectra
-% Note that all response plots are normalized such that the
-% VELOCITY RESPONSE = 1 at some calibration period.
-% FIGURE 5
-
-% first: use read_pzfile.m (add one pole=0 per differentiation)
-xf = 5;  % figure index
-figure(xf); nr=3; nc=2;
-for kk=1:3
-    ideriv = kk-1;
-    [p,z,c,A0,k] = read_pzfile(pzfile,ideriv);   % c = A0*k
-    polezero.poles = p;
-    polezero.zeros = z;
-    polezero.normalization = c;    % note c, not A0
-    res = response_get_from_polezero(f,polezero);
-    % complex instrument response to either displacement, velocity, or acceleration
-    Ix = res.values;
-    % phase response
-    subplot(nr,nc,2*kk-1); semilogx(f,angle(Ix)*deg); axis([fmin fmax -180 180]);
-    xlabel('frequency, Hz'); ylabel('phase, deg');
-    % amplitude response
-    subplot(nr,nc,2*kk); loglog(f,abs(Ix)); xlim([fmin fmax]);
-    xlabel('frequency, Hz'); ylabel('amplitude');
-    [maxI,imax] = max(abs(Ix));
-    title({sprintf('sac pole-zero file (%s)',dlabs{kk})...
-        sprintf('max = %.3e at %.3e Hz',maxI,f(imax)) });
-end
-
-% THIS IS ONLY A CHECK
-% second: check this operation by dividing by i*omega for each operation
-%         (here we plot in dashed red lines on Figure 10 to show an exact match)
-% note: FFT[ f'(t) ] = i*w*FFT[ f(t) ]
-[p,z,c,A0,k] = read_pzfile(pzfile,0);   % displacement
-polezero.poles = p;
-polezero.zeros = z;
-polezero.normalization = c;
-res = response_get_from_polezero(f,polezero);
-Id = res.values;        % displacement
-figure(xf); subplot(nr,nc,1); hold on; plot(f,angle(Id)*deg,'r--'); grid on;
-figure(xf); subplot(nr,nc,2); hold on; plot(f,abs(Id),'r--'); axis(10.^[-4 2 -5 12]); grid on;
-Iv = Id./(1i*omega);    % velocity
-figure(xf); subplot(nr,nc,3); hold on; plot(f,angle(Iv)*deg,'r--'); grid on;
-figure(xf); subplot(nr,nc,4); hold on; plot(f,abs(Iv),'r--'); axis(10.^[-4 2 -5 12]); grid on;
-Ia = Id./(-omega.^2);   % acceleration
-figure(xf); subplot(nr,nc,5); hold on; plot(f,angle(Ia)*deg,'r--'); grid on;
-figure(xf); subplot(nr,nc,6); hold on; plot(f,abs(Ia),'r--'); axis(10.^[-4 2 -5 12]); grid on;
-if iprint==1, orient tall; print(gcf,'-depsc',sprintf('%sCAN_response_fig%i',pdir,xf)); end
+* **********************************
+* NETWORK   (KNETWK): G
+* STATION    (KSTNM): CAN
+* LOCATION   (KHOLE): 
+* CHANNEL   (KCMPNM): LHZ
+* CREATED           : 2012-03-26T22:39:01
+* START             : 1989-06-02T00:00:00
+* END               : 2006-12-10T02:60:60
+* DESCRIPTION       : Canberra, Australia
+* LATITUDE          : -35.321000
+* LONGITUDE         : 148.999000 
+* ELEVATION         : 650.0  
+* DEPTH             : 0.0  
+* DIP               : 0.0  
+* AZIMUTH           : 0.0  
+* SAMPLE RATE       : 1.0
+* INPUT UNIT        : M
+* OUTPUT UNIT       : COUNTS
+* INSTTYPE          : STRECKEISEN STS1
+* INSTGAIN          : 2.252000e+03 (M/S)
+* COMMENT           : N/A
+* SENSITIVITY       : 1.844840e+09 (M/S)
+* A0                : 3.727650e+12
+* **********************************
+ZEROS	3
+	+0.000000e+00	+0.000000e+00
+	+0.000000e+00	+0.000000e+00
+	+0.000000e+00	+0.000000e+00
+POLES	10
+	-1.233947e-02	+1.234318e-02
+	-1.233947e-02	-1.234318e-02
+	-3.917563e+01	+4.912335e+01
+	-3.917563e+01	-4.912335e+01
+	-3.034990e+01	+7.868112e+00
+	-3.034990e+01	-7.868112e+00
+	-2.220727e+01	+2.208852e+01
+	-2.220727e+01	-2.208852e+01
+	-8.135964e+00	+3.016618e+01
+	-8.135964e+00	-3.016618e+01
+CONSTANT	+6.876917e+21
 \end{verbatim}
 \end{spacing}
+\normalsize
 
 %-------------------------------------------------------------
 
@@ -428,62 +272,34 @@ if iprint==1, orient tall; print(gcf,'-depsc',sprintf('%sCAN_response_fig%i',pdi
 \includegraphics[width=16cm]{CAN_response_fig1.eps}
 \caption[]
 {{
-{\bf Figure 1} output from \tfile.
+Output from \tfile.
 Note that the amplitudes are normalized by the maximum value.
 }}
 \label{fig1}
 \end{figure}
 
-\setcounter{figure}{2}
-
-\iffalse
-\begin{figure}
-\centering
-\includegraphics[width=16cm]{CAN_response_fig2.eps}
-\caption[]
-{{
-{\bf Figure 2} output from \tfile.
-Note that the amplitudes are normalized by the maximum value.
-}}
-\label{fig2}
-\end{figure}
-\fi
+%\setcounter{figure}{2}
 
 \begin{figure}
 \centering
 \includegraphics[width=16cm]{CAN_response_fig3.eps}
 \caption[]
 {{
-{\bf Figure 3} output from \tfile.
+Output from \tfile.
 Note that the amplitudes are normalized by the maximum value.
 }}
-\label{fig3}
+\label{fig2}
 \end{figure}
-
-\iffalse
-\begin{figure}
-\centering
-\includegraphics[width=16cm]{CAN_response_fig4.eps}
-\caption[]
-{{
-{\bf Figure 4} output from \tfile.
-Note that the amplitudes are normalized by the maximum value.
-}}
-\label{fig4}
-\end{figure}
-\fi
-
-\setcounter{figure}{4}
 
 \begin{figure}
 \centering
 \includegraphics[width=16cm]{CAN_response_fig5.eps}
 \caption[]
 {{
-{\bf Figure 5} output from \tfile.
+Output from \tfile.
 The dashed red lines are plotted on top of the blue lines as a check.
 }}
-\label{fig5}
+\label{fig3}
 \end{figure}
 
 %-------------------------------------------------------------
