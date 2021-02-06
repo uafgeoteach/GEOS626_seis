@@ -18,16 +18,12 @@ def sumatra_loop(w0):
     # that it avoids having to reload the waveform data each time you run the
     # loop.
     #
-    # To make composite PDF:
-    # for file in `ls sumatra_modes*.ps` ; do ps2pdf $file ; done ; pdcat -r sumatra_modes*pdf all_sumatra_modes.pdf
-    #
     
-    savefile=False           ### change to False if sumatra_modes.txt file already saved
-    compute_fft=True         ### create folder of computed fft
+    savefile=True           ### change to False if sumatra_modes.txt file already saved
+    
     spdy = 86400
     w = w0.copy()
     nw=len(w)
-    print(nw)
     stas=[]
     chans=[]
     nets=[]
@@ -46,7 +42,7 @@ def sumatra_loop(w0):
     # plot time series
     ifigure = 0
     
-        # fill gaps in the time series if the total length of gaps is leff than
+    # fill gaps in the time series if the total length of gaps is leff than
     # this fraction of the full time series.
     FTHRESH = 0.03
     
