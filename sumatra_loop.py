@@ -8,7 +8,7 @@ import os
 from os import path
 from wf_fft import wf_fft
 
-def sumatra_loop(w0):
+def sumatra_loop(w0,fdir,pplot):
     # sumatra_loop.py
     #
     # Extract the time series for the 2004 Sumatra earthquake that are not
@@ -18,6 +18,10 @@ def sumatra_loop(w0):
     # that it avoids having to reload the waveform data each time you run the
     # loop.
     #
+    # Input:
+    #       w0 =        Stream to compute fft
+    #       fdir =      directory to save fft
+    #       pplot =     Bool whether to compute fft or not
     
     savefile=True           ### change to False if sumatra_modes.txt file already saved
     
@@ -33,7 +37,10 @@ def sumatra_loop(w0):
         chans.append(tr.stats.channel)
         locs.append(tr.stats.location)
         nets.append(tr.stats.network)
-        tr.trim(tr.stats.starttime+(9.5*spdy),tr.stats.starttime+(19*spdy), pad=True, fill_value=0)
+        sotime=UTCDateTime("2004-12-26T00:58:53.0")# origin time of Sumatra earthquake)
+        tr.trim(sotime-(0.5*spdy),sotime+(9*spdy), pad=True, fill_value=0)
+        print(tr.stats.station)
+        print(tr.stats.starttime)
     # write to command window
     for ii in range (len(w)):
         print('%3i %7s %7s %4s %4s' % (ii,stas[ii],chans[ii],locs[ii],nets[ii]))
@@ -332,7 +339,7 @@ def sumatra_loop(w0):
     # write to file
     
     if savefile==True:
-        filename = 'sumatra_modes.txt'
+        filename = str(fdir)+'/sumatra_modes.txt'
         print('writing %i points to file %s' % (nw,filename))
         with open(filename, "w") as file1:
             pdfp = -1
@@ -351,52 +358,57 @@ def sumatra_loop(w0):
     
     
     # compute fft for each time series that is NOT cut
-    directory1 = "./datawf/sumatra_fft"
+    directory1 = fdir
     if not path.exists(directory1):  # If data directory doesn't exist, it will create one
         os.makedirs(directory1)
-    all_fft_f=[]
-    all_fft_amp=[]
-    all_fft_phs=[]
-    ii=imin
-    while ii < imax:
-        if ii not in scut:
-            stag = str(stas[ii])+ '_'+ str(chans[ii])+ '_' +str(nets[ii])
-            dur = len(w[ii])/spdy;
-            stdur = 'duration = %.2f days'% (dur)
-            stit = str(stag)+ ', '+ str(stdur)
-            print('%i/%i %s' % (ii,nw,stag))
-            dur_s = 10*24*60*60    # convert 10 days into s
-            
-            tr = w[ii].copy()
-            mnst=stats.mean(tr.data)
-            t = tr.stats.starttime
-           
-            # Make sure they have the same no. of sample
-            tr.trim(t,t+dur_s, pad=True, fill_value=mnst)
-            
-            w_detrend=detrend(tr.data,'constant')
-            w_demean=w_detrend-mnst
-            taper_percentage = 1
-            npts = len(w_demean)              # number of samples
-            df = tr.stats.sampling_rate       # sampling rate
-            nsec = npts/df                        # sampling time
-            fNy = df / 2.0                        # Nyquist frequency
-            taper = cosine_taper(npts,taper_percentage)
-            w_taper = w_demean * taper
-            fft_amp, fft_phase, f = wf_fft(w_taper,fNy) # amplitude, and phase, frequencies of fft
-            
-            all_fft_f.append(f)
-            all_fft_amp.append(fft_amp)
-            all_fft_phs.append(fft_phase)
-            
-            # write and save the stream into ".sac" format
-            tr_fft = Trace(np.array(fft_amp))
-            tr_fft.write(path.join(directory1, stas[ii]+locs[ii])+"amps", format = 'SAC')  
-        #print (tr_fft)
-        ii+=1
-    # save amplitudes and frequencies to npy dat file
-    np.save(path.join(directory1, 'all_fft_freq'), all_fft_f)
-    np.save(path.join(directory1, 'all_fft_phase'), all_fft_phs)            
-    
-    wnew=fft_amp
-    return wnew 
+    if pplot==True:
+        all_fft_f=[]
+        all_fft_amp=[]
+        all_fft_phs=[]
+        ii=imin
+        while ii < imax:
+            if ii not in scut:
+                stag = str(stas[ii])+ '_'+ str(chans[ii])+ '_' +str(nets[ii])
+                dur = len(w[ii])/spdy;
+                stdur = 'duration = %.2f days'% (dur)
+                stit = str(stag)+ ', '+ str(stdur)
+                print('%i/%i %s' % (ii,nw,stag))
+                dur_s = 10*24*60*60    # convert 10 days into s
+                
+                tr = w[ii].copy()
+                mnst=stats.mean(tr.data)
+                t = tr.stats.starttime
+               
+                # Make sure they have the same no. of sample
+                #tr.trim(t,t+dur_s, pad=True, fill_value=mnst)
+                
+                w_detrend=detrend(tr.data,'constant')
+                #w_demean=w_detrend-mnst
+                taper_percentage = 1
+                npts = tr.stats.npts              # number of samples
+                df = tr.stats.sampling_rate       # sampling rate
+                nsec = npts/df                        # sampling time
+                fNy = df / 2.0                        # Nyquist frequency
+                taper = cosine_taper(npts,taper_percentage)
+                w_taper = w_detrend * taper
+                fft_amp, fft_phase, f = wf_fft(w_taper,fNy) # amplitude, and phase, frequencies of fft
+                
+                all_fft_f.append(f)
+                all_fft_amp.append(fft_amp)
+                all_fft_phs.append(fft_phase)
+                
+                # write and save the stream into ".sac" format
+                tr_fft = Trace(np.array(fft_amp))
+                tr_fft.stats.network=tr.stats.network
+                tr_fft.stats.station=tr.stats.station
+                tr_fft.stats.location=tr.stats.location
+                tr_fft.stats.channel=tr.stats.channel
+                tr_fft.write(path.join(directory1, stas[ii]+locs[ii])+"amps", format = 'SAC')  
+            #print (tr_fft)
+            ii+=1
+        # save amplitudes and frequencies to npy dat file
+        np.save(path.join(directory1, 'all_fft_freq'), all_fft_f)
+        np.save(path.join(directory1, 'all_fft_phase'), all_fft_phs)            
+        
+        w=fft_amp
+    return w 
