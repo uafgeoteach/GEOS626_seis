@@ -112,7 +112,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     #--------------------
     # check input arguments
     print(len(w))
-    w.merge(method=1, fill_value=0)#,interpolation_samples=0)  ## merge any traces with duplicate sta/chans
+    #w.merge(method=1, fill_value=0)#,interpolation_samples=0)  ## merge any traces with duplicate sta/chans
     if len(w)==0:
         print('empty w') 
         return
@@ -395,7 +395,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         
         #i+=1
     
-    ###dist_deg = dist;
+    dist_deg = dist
     if iunit not in [1,2,3]:
         warnings.warn('iunit not 1,2,3 -- setting iunit = 1');
         iunit = 1
@@ -616,62 +616,64 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         end
         wmaxvec = max([wmaxvec' ; wsynmaxvec'])';
     end
-    K = [];
-    fH = [];
-    if geoinorm(1) == 2
-    %if inorm(1)==2
-        % For information on geometric spreading, see Stein and Wysession,
-        % Section 4.3.4, Eq 20 (which is for Rayleigh waves. GEOFAC = 0.5).
-        % For our purposes, this will fold the attenuation factor into the same
-        % single factor that accounts for geometric spreading.
-        % WARNING: This does not take into account the variation in amplitude. 
-        disp(sprintf('correct for geometrical spreading using (sin x)^-%.2f',GEOFAC));
-        sindel = sin(dist_deg / deg);
-        % note: stations that are father away get enhanced by a larger valuye
-        Kvec = wmaxvec .* sindel.^GEOFAC;
-        % single parameter for fitting (GEOFAC fixed)
-        if length(geoinorm)==4
-            K = geoinorm(4);               % user-specified K value
-        else
-            K = median(Kvec);
-        end
-        wvec = K./(sindel.^GEOFAC);     % factor will depend on source-station distance
-                                        % but not on source depth
-        for ii=1:length(w)
-           % THIS CHANGES THE AMPLITUDE OF w(ii)
-           w(ii) = w(ii) / wvec(ii); 
-           if isyn==1
-               wsyn(ii) = wsyn(ii) / wvec(ii); 
-           end
-           disp(sprintf('%5s %8.3f deg, max = %8.2e, maxG = %5.2f, K/sin(del)^x = %16.2f',...
-               sta{ii},dist_deg(ii),wmaxvec(ii),max(abs(w(ii))),wvec(ii)));
-        end
+    '''
+    K = []
+    fH = []
+    if geoinorm[0] == 2:
+    #if inorm(1)==2
+        # For information on geometric spreading, see Stein and Wysession,
+        # Section 4.3.4, Eq 20 (which is for Rayleigh waves. GEOFAC = 0.5).
+        # For our purposes, this will fold the attenuation factor into the same
+        # single factor that accounts for geometric spreading.
+        # WARNING: This does not take into account the variation in amplitude. 
+        print('correct for geometrical spreading using (sin x)^-%.2f' % (GEOFAC))
+        sindel = np.sin(np.asarray(dist_deg) / deg)
+        # note: stations that are father away get enhanced by a larger valuye
+        Kvec = wmaxvec * (sindel**GEOFAC)
+        # single parameter for fitting (GEOFAC fixed)
+        if len(geoinorm)==4:
+            K = geoinorm[3]               # user-specified K value
+        else:
+            K = statistics.median(Kvec)
+ 
+        wvec = K/(sindel**GEOFAC)     # factor will depend on source-station distance
+                                        # but not on source depth
+        ii=0
+        while ii < len(w):
+            # THIS CHANGES THE AMPLITUDE OF w(ii)
+            w[ii].data = w[ii].data / wvec[ii] 
+            if isyn==1:
+                wsyn[ii] = wsyn[ii] / wvec[ii] 
+            print('%5s %8.3f deg, max = %8.2e, maxG = %5.2f, K/sin(del)^x = %16.2f' %
+               (sta[ii],dist_deg[ii],wmaxvec[ii],max(abs(w[ii].data)),wvec[ii]))
+            ii+=1
+        # extra figure with best-fitting curve
+        if bplot_geometric_speading:
+            fsizeg = 14 
+            msizeg = 20
+            if len(w) > 10: 
+                fsizeg = 10 
+                msizeg = 12
+            
+            geofig=plt.figure()
+            plt.plot(dist_deg,wmaxvec,'ko',markersize=msizeg,markerfacecolor='r')
+            plt.text(dist_deg,wmaxvec,sta,fontsize=fsizeg)
+            # best-fitting curve
+            x = np.linspace(0,min([1.1*max(dist_deg), 180]))
+            plt.plot(x,K/(sin(x/deg)**GEOFAC),'r--',linewidth=2)
+            plt.ylim(0, 1.05*max(wmaxvec))
+            plt.xlabel('\Delta, source-station arc distance, deg',fontsize=14);
+            plt.ylabel('max( |v(t)| )',fontsize=14);
+            plt.title('A(\\Delta) = %.2e / (sin \\Delta)^{%.2f}' % (K,GEOFAC),fontsize=16)
         
-        % extra figure with best-fitting curve
-        if bplot_geometric_speading
-            fsizeg = 14; msizeg = 20;
-            if length(w) > 10, fsizeg = 10; msizeg = 12; end
-            tempfh = figure('Visible',displayfigs); hold on;
-        fH = [fH tempfh];
-            plot(dist_deg,wmaxvec,'ko','markersize',msizeg,'markerfacecolor','r');
-            text(dist_deg,wmaxvec,sta,'fontsize',fsizeg);
-            % best-fitting curve
-            x = linspace(0,min([1.1*max(dist_deg) 180]));
-            plot(x,K./(sin(x/deg).^GEOFAC),'r--','linewidth',2);
-            ylim([0 1.05*max(wmaxvec)]);
-            xlabel('\Delta, source-station arc distance, deg','FontSize',14);
-            ylabel('max( |v(t)| )','FontSize',14);
-            title(sprintf('A(\\Delta) = %.2e / (sin \\Delta)^{%.2f}',K,GEOFAC),'FontSize',16);
-        end
-        
-        % update wmaxvec
-        wmaxvec = max(abs(fillgaps(w,0)));
-        if isyn==1
-            wsynmaxvec = max(abs(fillgaps(wsyn,0)));
-            wmaxvec = max([wmaxvec' ; wsynmaxvec'])';
-        end
-    end
-    '''    
+        # update wmaxvec
+        #wmaxvec = max(abs(fillgaps(w,0)))
+        '''
+        if isyn==1:
+            wsynmaxvec = max(abs(fillgaps(wsyn,0)))
+            wmaxvec = max([wmaxvec' ; wsynmaxvec'])'
+            '''
+       
     wmax = max(wmaxvec)    
     
     #--PLOT RECORD SECTIONS----------------------------------------------------
@@ -879,7 +881,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             # at least the gap will be the same for a sequence of plots
 
             ylims = int(yshift)*[0 ,jmax+2]
-            
+            plt.yticks([])
             #plt.ylim(ylims)
             # this will provide more space if one of the traces has a large
             # amplitude, but the gap may vary for a sequence of plots
@@ -887,6 +889,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             
         else:
             # using actual values of distance or azimuth
+            ax.yaxis.tick_right()
             if rssort==1:
                 ylims = [min(azi)-5, max(azi)+5];
                 if max(azi)-min(azi) > 300:
@@ -912,7 +915,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         plt.ylim(ylims[0],ylims[1])
         #plt.subplots_adjust(left=0.10)
         plt.xlabel('Time (s)', fontweight='bold')
-        plt.yticks([])
+        
         
         # title string explaining the time axis
         if itrel==0:
@@ -956,7 +959,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                 
         
         
-        
+        plt.ion
         plt.tight_layout()
         plt.show()
         pp+=1
@@ -986,11 +989,12 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             plt.text(elon[i]*fac,elat[i]*fac,eid[i],fontsize=fsize)
         
         plt.title(str(stline1) +'\n'+ str(stchan),fontsize=8)
-        
+        plt.show()
     print('--> leaving plotw_rs.m')
     
     #==========================================================================
 
+    return w
     
     
     
