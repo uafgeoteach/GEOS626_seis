@@ -16,6 +16,7 @@ from obspy import read, Stream
 from obspy.core import read, UTCDateTime
 from datetime import datetime
 from obspy.geodetics import gps2dist_azimuth
+import numpy.matlib
 
 def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T2=[], pmax=50, iintp=0, inorm=[1], tlims=[], nfac=1, azstart=[], iunit=1, imap=1, wsyn=[], bplotrs=True, displayfigs='on'):
     '''
@@ -169,16 +170,15 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             print(iabs, rssort)
             raise ValueError('if iabs=1, then rssort=1 (az) or rssort=2 (dist)')
             
-    print(np.shape(w))
     nw=len(w)
-    '''
-    [nw,ncomp] = np.shape(w)   # w could be nw x ncomp
+    
+    ncomp = 1   # w could be nw x ncomp
     # warning: a 1 x 3 w could still all have the same component
     if ncomp not in [1,2,3]:
         #w = w[:]
-        w = np.concatenate(w)
-        [nw,ncomp] = np.shape(w);
-    '''
+        #w = np.concatenate(w)
+        nw,ncomp = np.shape(w)[0],np.shape(w)[1];
+    
     #w = np.concatenate(w)               # convert w to vector
     #tshift = tshift[:]
     ##if len(tshift) != 0:
@@ -200,7 +200,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     elif len(tshift)==nw:
         print('input tshift has dimension %i x %i' % (np.shape(tshift)))
         tshift = tshift[:]
-        tshift = repmat(tshift,1,ncomp);
+        tshift = np.matlib.repmat(tshift,1,ncomp);
         print('output tshift has dimension %i x %i' % (np.shape(tshift)));
         
     else:
@@ -273,8 +273,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         elat= elat*np.ones((len(w),1))
         elon= elon*np.ones((len(w),1))
         tdata.append(tr.data)
-        trtimes.append(tr.times('timestamp'))
-        
+        trtimes.append(tr.times("timestamp"))
     # FUTURE WORK
     # NEED TO EXIT IF ANY OF THE ABOVE FIELDS ARE EMPTY (isempty does not work)
     
@@ -348,9 +347,9 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     print('minimum start time of all waveforms is %s (%s)' % (tstartmin,sta[imin]))
     tref = dates.date2num(tstartmin)*spdy
     if itrel==1 and len(tmark)==1:
-        tref = tmark
+        tref = dates.date2num(tmark[0])*spdy
     
-    stref = print('reference time is %s' % (tref));
+    stref = print('reference time is %s' % (dates.num2date(tref/spdy)));
     #print(stref);
     print('--> this will be subtracted from all time vectors')
     
@@ -453,9 +452,9 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             if len(np.unique(tshift)) > 1:
                 if max(tshift) < spdy:
                     if tshift[jj] < 100:
-                        stshift = ('DT %.1f s' % (tshift(jj)))
+                        stshift = ('DT %.1f s' % (tshift[jj]))
                     else:
-                        stshift = ('DT %.1f min' % (tshift(jj)/60))
+                        stshift = ('DT %.1f min' % (tshift[jj]/60))
                     
                 else:
                     stshift = ''
@@ -754,7 +753,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         while ii < nw:
             #ti3 = get(w(ii),'timevector')
             ti3 = trtimes[ii]
-            
             # KEY: time vector for plotting
             tplot = (ti3 - tref) - tshift[ii];
             tlim1[ii] = min(tplot);
@@ -762,7 +760,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             ii+=1
         #print('it took %.2f s to establish the time limits for plotting' % (toc))
         tlims = [min(tlim1), max(tlim2)]
-        
+        print('tlims',tlims)
     pp=0
     jj=0
     kk=0
@@ -790,7 +788,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         wtemp=Stream()
         jj=0
         
-        while jj < jmax:       # loop over seismograms
+        for jj in range(jmax):       # loop over seismograms
             if kk<nseis:
             
                 ii = ivec[kk];  # key sorting
@@ -801,7 +799,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                 
                 # KEY: time vector for plotting
                 tplot = (ti3 - tref) - tshift[ii]
-                
                 if iabs==0:
                     # plot from top to bottom
                     dy[jj] = (jmax + 1 - jj)*yshift
@@ -873,7 +870,6 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     
                 
                 kk = kk+1
-            jj+=1  # jj (loop over seismograms)
             
         if iabs==0:
             
@@ -903,11 +899,12 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         
         # plot tshift marker
         #plt.plot([0, 0],ax0[2:3],'r','linewidth')
+        plt.vlines(0,ylims[0],ylims[1], 'r')
         # plot absolute-time marker
         mm=0
         while mm < nmark:
             tm = (dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy - tshift0;
-            
+            print((dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy)
             #plt.plot(tm*[1, 1],ax0[2:3],'r','linewidth')
             plt.vlines(tm,ylims[0],ylims[1], 'r')
             mm+=1
