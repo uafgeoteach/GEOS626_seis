@@ -3,7 +3,7 @@
 
 \input{hw626_header}
 
-\renewcommand{\baselinestretch}{1.1}
+\renewcommand{\baselinestretch}{1.0}
 
 \newcommand{\Tnl}{\mbox{${}_nT_l$}}   % eigenfun
 \newcommand{\Wnl}{\mbox{${}_nW_l$}}   % eigenfun
@@ -18,9 +18,9 @@
 
 \begin{spacing}{1.2}
 \centering
-{\large \bf Problem Set 5: Toroidal modes of a spherically symmetric earth\footnote{This problem set was designed and written by Charles Ammon, Penn State University. I have made some modifications.}} \\
+{\large \bf Problem Set 5: Toroidal modes of a spherically symmetric earth\footnote{This problem set was designed and written by Charles Ammon, Penn State University. I have made some modifications and also converted from Matlab to Python.}} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: February 26, 2018 --- Due: March 9, 2018 \\
+Assigned: February 16, 2021 --- Due: February 25, 2021 \\
 Last compiled: \today \\
 \end{spacing}
 
@@ -29,14 +29,16 @@ Last compiled: \today \\
 \subsection*{Overview and instructions}
 
 \begin{itemize}
+\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python. (For example, the emphasis on global variables may no longer be needed.)
+
 \item This problem set provides a hands-on introduction to how normal modes of a particular earth model can be computed. The goal is to gain a better understanding for the concepts of normal modes, eigenfrequencies, eigenfunctions, and dispersion.
 
-\item The necessary starting Matlab scripts and data are available in the class github directory. The relevant files are:
+\item The necessary starting Python scripts and data are available in the class github directory. The relevant files are:
 %
 \begin{itemize}
-\item \verb+spshell_template.m+ (\refSec{sec:shell})
-\item \verb+surf_stress.m+ (\refSec{sec:surf})
-\item \verb+stress_disp_tor.m+ (\refSec{sec:stress})
+\item \verb+spshell.ipynb+ (\refSec{sec:shell})
+\item \verb+surf_stress.py+ (\refSec{sec:surf})
+\item \verb+stress_disp_tor.py+ (\refSec{sec:stress})
 \end{itemize}
 
 \item Background reading:
@@ -67,7 +69,7 @@ Cross section of the spherical shell model assumed in this problem. Since the ou
 
 %------------------------
 
-%\pagebreak
+%\clearpage\pagebreak
 \begin{table}[h]
 \centering
 \caption[]
@@ -97,7 +99,7 @@ $\omnl^m$ & $0 < $ $\omnl^m$ $ \le \infty$ & eigenfrequency for $(n,l,m)$ & eige
 \section{Background}
 
 %One advantage of studying theoretical seismology today is the availability of computer tools that we can use to explore equations and their solutions. Tools such as Matlab create new opportunities for deeper understanding – 
-With the power of computing, we can investigate the nature of problems that have long been fundamental to the interpretation and understanding of seismograms. In these notes, I outline a Matlab solution for computing toroidal normal modes in radially symmetric earth models. To simplify the discussion, I work with simplest model: a uniform shell. This physical model is actually a surprisingly good approximation to earth at the longest periods of oscillation. Although earth has a very dense, mostly iron core, the fluid outer core results in a zero toroidal stress at the core-mantle boundary, much like the elastic shell model shown in \refFig{fig:shells}. To compute the eigenfrequencies and eigenfunctions of the model we must solve two problems. First, we must develop a tool to integrate two coupled first-order ordinary differential equations (ODE's), and second we must develop a tool to identify those values of frequency that produce a zero surface stress when the ODE's are integrated.
+With the power of computing, we can investigate the nature of problems that have long been fundamental to the interpretation and understanding of seismograms. In these notes, I outline a Python solution for computing toroidal normal modes in radially symmetric earth models. To simplify the discussion, I work with simplest model: a uniform shell. This physical model is actually a surprisingly good approximation to earth at the longest periods of oscillation. Although earth has a very dense, mostly iron core, the fluid outer core results in a zero toroidal stress at the core-mantle boundary, much like the elastic shell model shown in \refFig{fig:shells}. To compute the eigenfrequencies and eigenfunctions of the model we must solve two problems. First, we must develop a tool to integrate two coupled first-order ordinary differential equations (ODE's), and second we must develop a tool to identify those values of frequency that produce a zero surface stress when the ODE's are integrated.
 
 \subsection{Equations of Motion}
 
@@ -171,29 +173,29 @@ The form of the function $F$ is described in \refEq{ODEs}, and we must solve tho
 \includegraphics[width=12cm]{modes_workflow.eps}
 \caption[]
 {{
-Solving the eigenvalue problem for the vibrating shell is accomplished using three scripts. The main purpose of each script is described in the above chart, which also shows the dependencies: {\tt spshell$\_$template.m} calls {\tt surf$\_$stress.m}, which requires {\tt stress$\_$disp$\_$tor.m}.
+Solving the eigenvalue problem for the vibrating shell is accomplished using three scripts. The main purpose of each script is described in the above chart, which also shows the dependencies: {\tt spshell.ipynb} calls {\tt surf\_stress.py}, which requires {\tt stress\_disp\_tor.py}.
 \label{fig:workflow}
 }}
 \end{figure}
 
 %-----------------------------
 
-\subsection{The Matlab Solution}
+\subsection{The Numerical Solution}
 
-Our solution will involve three different Matlab scripts (\refFig{fig:workflow}); two are needed to solve the equations of motion (\refeq{ODEs}), and the third is used to find the values of that are eigenfrequencies. The first two scripts handle the computation of the surface stress using the Runge-Kutta routines in Matlab (the surface-stress calculator). The third script repeatedly calls the surface-stress calculator as part of a simple root finding scheme that uses a fixed step size in frequency to identify regions containing the roots, and then relies on the Matlab root-finding routine \verb+fzero+ to refine the value of the eigenfrequency. I describe each script in more detail below.
+Our solution will involve three different Python scripts (\refFig{fig:workflow}); two are needed to solve the equations of motion (\refeq{ODEs}), and the third is used to find the values of that are eigenfrequencies. The first two scripts handle the computation of the surface stress using the Runge-Kutta routines in Python (the surface-stress calculator). The third script repeatedly calls the surface-stress calculator as part of a simple root finding scheme that uses a fixed step size in frequency to identify regions containing the roots, and then relies on the Python root-finding routine \verb+fzero+ to refine the value of the eigenfrequency. I describe each script in more detail below.
 %, and conclude with some results for specific values of $l$.
 
 \subsubsection{Computing the Surface Stress}
 
-To integrate the equations and evaluate the surface traction I created two scripts. The first script (\verb+stress_disp_tor.m+; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Matlab, and the name of this script is an argument to the Matlab Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). I set up $\mu$, $\rho$, $\omega$, and $l$ as {\bf global variables} so that they can be set and changed from the main script (\verb+spshell.m+). The same global values are used in all the scripts. It's a good idea to keep this script as simple and short as you can, since it's executed often.
+To integrate the equations and evaluate the surface traction I created two scripts. The first script (\verb+stress_disp_tor.py+; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). I set up $\mu$, $\rho$, $\omega$, and $l$ as {\bf global variables} so that they can be set and changed from the main script (\verb+spshell.ipynb+). The same global values are used in all the scripts. It's a good idea to keep this script as simple and short as you can, since it's executed often.
 
-The second script (\verb+surf_stress.m+; \refSec{sec:surf}) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Matlab, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
+The second script (\verb+surf_stress.py+; \refSec{sec:surf}) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
 
 \subsubsection{Finding the Roots}
 
-The third script (\verb+spshell.m+; \refSec{sec:shell}) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
+The third script (\verb+spshell.ipynb+; \refSec{sec:shell}) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
 
-Once I know two frequency values that bracket a root, I use the Matlab function \verb+fzero+ to find that root; \verb+fzero+ uses a bisection-interpolation procedure to find the root of the function. You must pass the name of the script used to calculate the surface stress and the bounding values of frequency to the \verb+fzero+ routine, and it returns the value of the root. Matlab allows you to control the options in the search for roots, but I found the default values suitable for this problem.
+Once I know two frequency values that bracket a root, I use the function \verb+fzero+ to find that root; \verb+fzero+ uses a bisection-interpolation procedure to find the root of the function. You must pass the name of the script used to calculate the surface stress and the bounding values of frequency to the \verb+fzero+ routine, and it returns the value of the root. Python allows you to control the options in the search for roots, but I found the default values suitable for this problem.
 
 %\subsection*{The Uniform Shell Model}
 
@@ -244,7 +246,7 @@ We see that the radial stress function $T(r)$ is defined in terms of the radial 
 %\pagebreak
 \section{Three Matlab scripts}
 
-\subsection{\tt spshell$\_$template.m}
+\subsection{\tt spshell.ipynb}
 \label{sec:shell}
 
 \small
@@ -408,7 +410,7 @@ fprintf('/// l = %i, nroots = %i (nmax = %i, fmax = %.3f mHz)\n',...
 %--------------------
 
 %\pagebreak
-\subsection{\tt surf$\_$stress.m}
+\subsection{\tt surf\_stress.m}
 \label{sec:surf}
 
 \small
@@ -444,7 +446,7 @@ value = WT(end,2);      % stress value at earth's surface (at r = rspan(2))
 %-------------------------
 
 \pagebreak
-\subsection{\tt stress$\_$disp$\_$tor.m}
+\subsection{\tt stress\_disp\_tor.m}
 \label{sec:stress}
 
 \small
@@ -549,7 +551,7 @@ $\Tnl(r)$
 %
 \begin{enumerate}
 \item Write down the two equations represented by \refEq{ODEs}; show explicit $r$ dependence, $l$ dependence, and $n$ dependence (\eg $\omnl$).
-\item List and name the variables that describe the Earth structure?
+\item List and name the variables that describe the Earth structure.
 %How many material variables are present?
 
 \item What is the physical meaning of $Wnl(r)$ and $Tnl(r)$?
@@ -557,7 +559,7 @@ $\Tnl(r)$
 
 %---------
 
-\item (0.0) Execute the script \verb+spshell.m+ and analyze the output. Two figures are generated, one for a set of $W(r)$, the other for a set of $T(r)$ (\refFig{fig:Tr}).
+\item (0.0) Execute the script \verb+spshell.ipynb+ and analyze the output. Two figures are generated, one for a set of $W(r)$, the other for a set of $T(r)$ (\refFig{fig:Tr}).
 %
 \begin{enumerate}
 \item What is the range of frequencies that you are evaluating? List $f_{\rm min}$ and $f_{\rm max}$ in mHz. Draw two lines for $f = f_{\rm min}$ and $f = f_{\rm max}$ in \refFig{fig:dots}a.
@@ -574,7 +576,7 @@ $\Tnl(r)$
 
 %---------
 
-\item (0.0) Now change \verb+iplot_all_freqs+ from 1 rto 0, then rerun.
+\item (0.0) Now change \verb+iplot_all_freqs+ from 1 to 0, then rerun.
 %
 \begin{enumerate}
 \item How many solutions to \refEq{ODEs} do you obtain over this range of frequencies?
@@ -645,7 +647,7 @@ Note: Some points $(l,\,\fnl)$ will be outside the plotting range.
 
 \item (0.3) On your dispersion diagram, plot the observations in \refTab{tab:modes_obs} with a different symbol (or color) from the predictions. (Make sure you plot all predicted frequencies, not just the ones with matching observations.)
 
-Note: See code at the bottom of \verb+spshell.m+ to read in the observations.
+Note: See code at the bottom of \verb+spshell.ipynb+ to read in the observations.
 
 \end{enumerate}
 
@@ -665,9 +667,9 @@ where $i$ is the measurement index that represents some particular $n$-$l$ pair,
 \begin{enumerate}
 \item (0.1) Write the expression for $F(\bem)$ in the case of $N=1$.
 
-\item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations will be loaded within \verb+spshell.m+ if you comment out the last \verb+break+ statement.
+\item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations will be loaded within \verb+spshell.ipynb+ if you comment out the last \verb+break+ statement.
 
-Tip: Initialize an $a \times b$ matrix as \verb+Fobs = NaN(a,b)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres(:)+. See example code at the bottom of \verb+spshell.m+.
+Tip: Initialize an $a \times b$ matrix as \verb+Fobs = NaN(a,b)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres(:)+. See example code at the bottom of \verb+spshell.ipynb+.
 
 \begin{itemize}
 \item Show your code excerpt for the calculation.
@@ -695,7 +697,7 @@ Hint: For this misfit analysis, note that you only have observations up to $n = 
 \begin{itemize}
 \item Find a value of $\mu$ that best fits all $N=20$ observed eigenfrequencies.
 \item List the value of $F(\bem)$ (\refeq{Fm}) for the best-fitting $\mu$.
-\item Justify your choice of the new $\mu$, either in words, Matlab output, or a figure.
+\item Justify your choice of the new $\mu$, either in words, Python output, or a figure.
 \item Show a dispersion plot as before (use \verb+axis([0 11 0 4])+) that contains all predictions and observations.
 \end{itemize}
 
