@@ -16,9 +16,10 @@ from obspy import read, Stream
 from obspy.core import read, UTCDateTime
 from datetime import datetime
 from obspy.geodetics import gps2dist_azimuth
+from scipy.signal import butter, filtfilt, sosfiltfilt
 import numpy.matlib
 
-def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T2=[], pmax=50, iintp=0, inorm=[1], tlims=[], nfac=1, azstart=[], iunit=1, imap=1, wsyn=[], bplotrs=True, displayfigs='on'):
+def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T2=[], pmax=50, iintp=0, inorm=[1], tlims=[], nfac=1, azstart=[], iunit=1, imap=1, wsyn=[], bplotrs=True, displayfigs='on'):
     '''
     %PLOTW_RS processes waveform object and plots as a record section
     %
@@ -112,6 +113,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     fhct = 1; # initialize number of figure handle counts
     #--------------------
     # check input arguments
+    w=win.copy()
     print(len(w))
     #w.merge(method=1, fill_value=0)#,interpolation_samples=0)  ## merge any traces with duplicate sta/chans
     if len(w)==0:
@@ -504,15 +506,22 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
             wtemp.append(tr)
         w=wtemp
+        
         # these operations might depend on whether the input is displacements
         # (which could have static offsets) or velocities
         print('pre-processing: detrend, demean, taper');
         
         w.detrend('demean')
-        
+        '''wtemp=Stream()
+        for tr in w:
+            fval=statistics.mean(tr.data)
+            dmean=tr.data/abs(fval)
+            tr.data=dmean
+            wtemp.append(tr)
+        w=wtemp'''
         #w = demean(w); 
-        w.taper(max_percentage=RTAPER);
-        
+        w.taper(max_percentage=RTAPER, type='cosine');
+        wfilt=Stream()
         Tmax_for_mHz = 100     # list mHz, not Hz, for T2 >= Tmax_for_mHz
         if len(T1) != 0 and len(T2) == 0:
             print('%i-pole low-pass T > %.1f s (f < %.2f Hz)' % (npoles,T1[0],1/T1[0]))
@@ -521,7 +530,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             if T1[0] >= Tmax_for_mHz: 
                 stfilt = ('T > %.1f s (f < %.1f mHz)' % (T1[0],1/T1[0]*1e3))
             try:
-                w.filter("lowpass", freq=1/T1[0],corners=npoles,zerophase=True)
+                wfilt=w.filter("lowpass", freq=1/T1[0],zerophase=True)
             except:
                 print("filter didn't work")
                 
@@ -532,7 +541,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             if T2[0] >= Tmax_for_mHz:
                 stfilt = ('T < %.1f s (f > %.1f mHz)' % (T2[0],1/T2[0]*1e3))
             try:
-                w.filter("highpass", freq=1/T2[0],corners=npoles,zerophase=True)
+                wfilt=w.filter("highpass", freq=1/T2[0],zerophase=True)
             except:
                 print("filter didn't work")
             
@@ -543,10 +552,22 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             if T2[0] >= Tmax_for_mHz:
                 stfilt = ('T = %.1f-%.1f s (%.1f-%.1f mHz)' % (T1[0],T2[0],1/T2[0]*1e3,1/T1[0]*1e3))
             try:
-                w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],corners=npoles,zerophase=True)
+                for tr in w:
+                    #sos = butter(5, [1/T2[0], 1/T1[0]], 'bandpass', output='sos');
+                    lowcut=1/T2[0]
+                    highcut=1/T1[0]
+                    nyq = 0.5 * tr.stats.sampling_rate
+                    low = lowcut / nyq
+                    high = highcut / nyq
+                    sos = butter(5, [low, high], analog=False, btype='band', output='sos')
+                    #y = filtfilt(b, a, tr.data, padtype = 'odd', padlen=3*(max(len(b),len(a))-1))
+                    y = sosfiltfilt(sos, tr.data.copy())
+                    tr.data=y
+                    wfilt.append(tr)
+                #w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],zerophase=True)
             except:
                 print("filter didn't work")
-                
+        w=wfilt        
         '''
         #w = filtfilt(f,w);   % apply filter
         wtemp=Stream()
@@ -573,7 +594,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
     if iintp==1:
         if ifilter==0: 
             w.detrend()
-        w.integrate()
+        w=w.integrate('spline')
         if isyn==1:
             if ifilter==0:
                 wsyn.detrend()
@@ -720,7 +741,8 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         yshift = nfac
     
     if iabs==1:
-        if inorm==1:
+        nvec=np.ones((len(wmaxvec),1))
+        if inorm[0]==1:
             if rssort==1:
                 yran=aran
             else:
@@ -728,11 +750,13 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                 if iunit==1:
                     yran = kilometers2degrees(dran)
             
-            nvec = nfac * nseis/yran*wmaxvec
+            for ii in range(len(wmaxvec)):
+                nvec[ii] = nfac * nseis/yran*wmaxvec[ii]
             
         else:        # inorm = 0 or 2
             wvec = wmax*np.ones((nseis,1))
-            nvec = nfac*wvec
+            for jj in range(len(wvec)):
+                nvec[jj] = nfac*wvec[jj]
         
         # sign flip is needed, since y-axis direction is flipped
         nvec = -nvec
@@ -770,7 +794,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         
         #tempfh = figure('Visible',displayfigs); hold on;
         figname='fig'+str(pp)
-        figname=plt.figure(figsize=(8,10))
+        figname=plt.figure(figsize=(8,11))
         ax = plt.subplot(111)
 
         #fig=plt.figure()
@@ -809,6 +833,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                     else: 
                         dy[jj] = dist[ii]
                 #norm=np.linalg.norm(di3)
+                
                 dplot = di3 /nvec[ii]      # key amplitude scaling
                 dplotshift = dplot + dy[jj]
                 
@@ -816,7 +841,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                 #btplot = and(tplot > tlims(1),tplot < tlims(2));
                 #dplotmax = max([dplotmax max(abs(dplot(btplot)))]);
                 #plt.plot(ti3,dplot,'b')
-                ax.plot(tplot,dplotshift,'b', linewidth=0.7);
+                ax.plot(tplot,dplotshift,'b', linewidth=0.5);
                 # PLOT LABELS FOR EACH WAVEFORM
                 txtplace=max(rlabels, key=len)
                 txtplce=len(str(rlabels[ii])[2:-2])
@@ -885,7 +910,7 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
             
         else:
             # using actual values of distance or azimuth
-            ax.yaxis.tick_right()
+            #ax.yaxis.tick_right()
             if rssort==1:
                 ylims = [min(azi)-5, max(azi)+5];
                 if max(azi)-min(azi) > 300:
@@ -902,14 +927,15 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
         plt.vlines(0,ylims[0],ylims[1], 'r')
         # plot absolute-time marker
         mm=0
-        while mm < nmark:
+        for mm in range(nmark):
             tm = (dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy - tshift0;
             print((dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy)
             #plt.plot(tm*[1, 1],ax0[2:3],'r','linewidth')
             plt.vlines(tm,ylims[0],ylims[1], 'r')
-            mm+=1
         plt.xlim(tlims)
         plt.ylim(ylims[0],ylims[1])
+        if rssort ==1:
+            plt.gca().invert_yaxis()
         #plt.subplots_adjust(left=0.10)
         plt.xlabel('Time (s)', fontweight='bold')
         
@@ -956,9 +982,9 @@ def plotw_rs(w,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T
                 
         
         
-        plt.ion
+        #plt.ion
         plt.tight_layout()
-        plt.show()
+        #plt.show()
         pp+=1
     #return fig
     
