@@ -50,7 +50,7 @@ See \verb+doc_startupB.pdf+ to set up \verb+GEOTOOLS+.
 %
 \begin{enumerate}
 \item \verb+lab_seismo_rs.pdf+, the lab for getting waveforms and plotting record sections.
-Be familiar with what \verb+getwaveform.m+ and \verb+plotw_rs.m+ are doing.
+Be familiar with what \verb+plotw_rs.py+ is doing.
 Be sure you understand what a bandpass filter is.
 
 \item \verb+lab_response.pdf+, the lab on instrument response
@@ -63,9 +63,9 @@ Be sure you understand what a bandpass filter is.
 \item The main scripts you will use are in your \verb+seismo+ directory:
 %
 \begin{itemize}
-\item \verb+sumatra_modes_template.m+
-\item \verb+sumatra_hf_template.m+
-\item \verb+sumatra_lf_template.m+
+\item \verb+sumatra_modes.ipynb+
+\item \verb+sumatra_hf.ipynb+
+\item \verb+sumatra_lf.ipynb+
 \end{itemize}
 
 %---------
@@ -119,12 +119,12 @@ Or try out the commands \verb+wkeep+ and \verb+wcut+.
 %\pagebreak
 \section*{Problem 1 (4.5). Splitting of normal mode frequencies}
 
-The template script is \verb+sumatra_modes_template.m+. See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
+The template script is \verb+sumatra_modes.ipynb+. See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
 
 \begin{enumerate}
 \item (0.5) Recall the modes spectrum that we computed for station CAN that emulated Figure~1 of \citet{Park2005}. Having done the homework on toroidal modes, you should now have a better understanding of what the modes peaks are.
 
-Run \verb+modes_PREMobs.m+ to see the observed modes that were used in constructing PREM back in 1980 \citep{PREM}. Keep in mind that these observations were identified from dozens of different earthquakes and hundreds of different stations.
+Run \verb+modes_PREMobs.ipynb+ to see the observed modes that were used in constructing PREM back in 1980 \citep{PREM}. Keep in mind that these observations were identified from dozens of different earthquakes and hundreds of different stations.
 The dispersion plot (\refFig{fig:premmodes}) identifies the frequency range 0.2--1.0~mHz that is used in Figure~1 of \citet{Park2005}, which is a spectrum of the {\bf vertical component} of ground motion for one station for one earthquake.
 %
 \begin{enumerate}
@@ -140,14 +140,14 @@ List them in increasing frequency.
 
 %---------
 
-\item (0.5) Run \verb+sumatra_modes.m+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records, and list at least one station associated with each error.
+\item (0.5) Run \verb+sumatra_modes.ipynb+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records, and list at least one station associated with each error.
 
 %---------
 
 \item (0.5)
 %
 \begin{enumerate}
-\item (0.4) Set \verb+bload = false+ in \verb+sumatra_modes.m+, then modify \verb+ipick+ (or use \verb+wkeep.m+) and plot the seismograms of the stations you selected in \verb+lab_sumatra.pdf+. To save paper, use something like a $5 \times 4$ subplot.
+\item (0.4) Modify \verb+ipick+ and plot the seismograms of the stations you selected in \verb+lab_sumatra.pdf+. To save paper, use something like a $5 \times 4$ subplot.
 
 \item (0.1) Compute the amplitude of the \snl{0}{0} peak for all your stations. \\
 List the median value.
@@ -155,7 +155,7 @@ List the median value.
 
 %---------
 
-\item (1.0) ``Stacking'' refers to summing similar functions in order to enhance the signal-to-noise ratio. Use the function \verb+w2fstack.m+ to generate a stack of your spectra.
+\item (1.0) ``Stacking'' refers to summing similar functions in order to enhance the signal-to-noise ratio. Use the function \verb+w2fstack+ to generate a stack of your spectra.
 %
 \begin{enumerate}
 \item (0.4) Include a plot of the stacked spectrum over two ranges: 0.2--10~mHz and 0.2--1.0~mHz.
@@ -169,7 +169,7 @@ List the median value.
 \item (0.5) Several peaks in the Sumatra spectrum are clearly split; the central peak is the ``degenerate'' frequency ($m=0$), and the split peaks are known as ``singlets'' ($m = -l,\ldots,l$). 
 %
 \begin{enumerate}
-\item (0.2) Use \verb+w2fstack.m+ to generate a stack of \snl{0}{2}, and include this plot. \\
+\item (0.2) Use \verb+w2fstack+ to generate a stack of \snl{0}{2}, and include this plot. \\
 Hint: Use a new frequency range.
 \item (0.1) Label the peaks \snlm{0}{2}{-2}, \ldots, \snlm{0}{2}{2} on the plot.
 \item (0.2) Measure the frequency of the central peak, $_0f_2^0$ ($m=0$), and the spacing between peaks, $\Delta f$.
@@ -217,7 +217,7 @@ See \citet[][p. 106]{SteinWysession} for background.
 \section*{Problem 2 (4.0). Directivity}
 
 \begin{enumerate}
-\item (0.0) Examine \verb+sumatra_hf_template.m+ and make sure you understand how to do certain operations for plotting record sections. It would be helpful to check what each parameter in \verb+plotw_rs.m+ does (type \verb+open plotw_rs+).
+\item (0.0) Examine \verb+sumatra_hf.ipynb+ and make sure you understand how to do certain operations for plotting record sections. It would be helpful to check what each parameter in \verb+plotw_rs.py+ does (type \verb+open plotw_rs+).
 
 \item (1.0) We will repeat the analysis of \citet{Ni2005} but using even more simplifications than they did. {\bf Read \citet{Ni2005} carefully before you begin.} We will assume the following:
 %
@@ -256,7 +256,7 @@ Hint: \refEq{Tr} is an equation with 6 unknowns: $T_r$, $L$, $v_r$, $v$, $\alpha
 
 \item (1.2) 
 \begin{enumerate}
-\item (1.0) Modify \verb+sumatra_hf_template.m+ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
+\item (1.0) Modify \verb+sumatra_hf.ipynb+ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
 
 Notes:
 %
@@ -264,7 +264,7 @@ Notes:
 \item See the earlier homework on these waveforms.
 
 \item Note that the epicentral distances must be $30^\circ < \Delta < 85^\circ$, so specify \\
-\verb+stasub = deg2km([30 85])+ when requesting waveforms.
+\verb+stasub = [30 85]+ when requesting waveforms.
 
 \item Use at least 10 stations with high-quality seismograms. (Think about what stations would be needed to reproduce the plot in \citet{Ni2005}. Be sure to include CAN from before.)
 
@@ -302,7 +302,7 @@ List the station name, distance $\Delta$, and azimuth $\alpha$ for each set of s
 \item (1.0)
 %
 \begin{enumerate}
-\item (0.4) Modify \verb+sumatra_lf_template.m+ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
+\item (0.4) Modify \verb+sumatra_lf.ipynb+ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
 
 Note: You may find the command \verb+extract+ and \verb+max+ useful for quantifying the amplitude ratio, though quantification is not required. If you do quantify the ratios, use the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave.
 
@@ -319,16 +319,16 @@ Hint: Think about \refFig{fig:sumatra_chen}.
 %\pagebreak
 \section*{Problem 3 (1.5). Miscellaneous}
 
-In this problem, you will find it helpful to use an appropriate input for \verb+stasub+ so that \verb+getwaveform.m+ will return only a subset of stations/waveforms.
+In this problem, you will find it helpful to use an appropriate input for \verb+stasub+ so that \verb+client.get_waveforms+ will return only a subset of stations/waveforms.
 
 \begin{enumerate}
-\item (1.0) Modify \verb+sumatra_lf_template.m+ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure S12 of \citet{Ammon2005} for reference and checking.
+\item (1.0) Modify \verb+sumatra_lf.ipynb+ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure S12 of \citet{Ammon2005} for reference and checking.
 
 %Note: Use \verb+cutoff = [];+ and \verb+iint=0+ when calling \verb+getwaveform+; all filtering and integration can be applied within the plotting script (\verb+plotw_rs.m+).
 %
 \begin{enumerate}
-\item (0.4) Include plots of seismograms (or a record section) for calibration applied (\verb+iprocess=1+).
-\item (0.4) Include plots of seismograms (or a record section) for instrument deconvolved (\verb+iprocess=2+).
+\item (0.4) Include plots of seismograms (or a record section) for raw data (\verb+iprocess=False+).
+\item (0.4) Include plots of seismograms (or a record section) for instrument deconvolved (\verb+iprocess=True+).
 \item (0.2) How different are the waveform shapes and amplitudes?
 \item (0.0) On the basis of your results, can you infer whether the seismograms in \citet{Ammon2005} were instrument deconvolved or not?
 \end{enumerate}
@@ -338,7 +338,7 @@ Notes:
 \begin{itemize}
 \item Note: Let us assume that \citet{Ammon2005} used the label H1 to denote the E channel (nominally east) and H2 to denote the N channel (nominally north).
 
-\item Converting to displacement is trivial (see \verb+plotw_rs.m+ or \verb+getwaveform.m+). If you use \verb+plotw_rs.m+, then you may want to output the modified (\ie filtered) \verb+w+ to analyze.
+\item Converting to displacement is trivial (see \verb+plotw_rs.py+). If you use \verb+plotw_rs.py+, then you may want to output the modified (\ie filtered) \verb+w+ to analyze.
 
 \end{itemize}
 
@@ -347,7 +347,7 @@ Notes:
 \item (0.5) 
 %
 \begin{enumerate}
-\item (0.3) Modify \verb+sumatra_hf_template.m+ to reproduce the azimuthal record section of P waves shown in Figure S11 of \citet{Ammon2005}. (Plot with one column, not two.) Order the seismograms starting with the direction of the rupture direction (\verb+azstart+ parameter in \verb+plotw_rs.m+).
+\item (0.3) Modify \verb+sumatra_hf.ipynb+ to reproduce the azimuthal record section of P waves shown in Figure S11 of \citet{Ammon2005}. (Plot with one column, not two.) Order the seismograms starting with the direction of the rupture direction (\verb+azstart+ parameter in \verb+plotw_rs.py+).
 Hint: The variable \verb+nfac+ will change the amplitudes of the plotted waveforms.
 \item Qualitatively describe the variations in the P waves as a function of azimuth from the rupture direction. (Use the waveforms in Figure S11 of \citet{Ammon2005} if your own record section does not match.)
 \end{enumerate}
