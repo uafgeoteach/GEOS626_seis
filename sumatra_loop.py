@@ -39,8 +39,6 @@ def sumatra_loop(w0,fdir,pplot):
         nets.append(tr.stats.network)
         sotime=UTCDateTime("2004-12-26T00:58:53.0")# origin time of Sumatra earthquake)
         tr.trim(sotime-(0.5*spdy),sotime+(9*spdy), pad=True, fill_value=0)
-        print(tr.stats.station)
-        print(tr.stats.starttime)
     # write to command window
     for ii in range (len(w)):
         print('%3i %7s %7s %4s %4s' % (ii,stas[ii],chans[ii],locs[ii],nets[ii]))
