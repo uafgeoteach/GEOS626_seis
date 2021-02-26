@@ -17,7 +17,7 @@ from obspy.core import read, UTCDateTime
 from datetime import datetime
 from obspy.geodetics import gps2dist_azimuth
 from scipy.signal import butter, filtfilt, sosfiltfilt
-import numpy.matlib
+
 
 def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T2=[], pmax=50, iintp=0, inorm=[1], tlims=[], nfac=1, azstart=[], iunit=1, imap=1, wsyn=[], bplotrs=True, displayfigs='on'):
     '''
@@ -95,8 +95,9 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     % Yun Wang 11/2011
     %==========================================================================
     '''
-    
+    start = datetime.now()
     print('--> entering plotw_rs.m')
+    
     narg0 = 18;         # number of input arguments
     spdy = 86400;       # seconds per day
     synplot = 'r';      # plotting a second set of seismograms
@@ -105,6 +106,12 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                         # =0.5 for surface waves (between 0.5 and 1.0 for regional surface waves)
                         # note: GEOFAC = inorm(2)
     bplot_geometric_speading = True;
+    T1 = np.asarray([T1]) if np.isscalar(T1) else np.asarray(T1)
+    T2 = np.asarray([T2]) if np.isscalar(T2) else np.asarray(T2)
+    tshift = np.asarray([tshift]) if np.isscalar(tshift) else np.asarray(tshift)
+    tmark = np.asarray([tmark]) if np.isscalar(tmark) else np.asarray(tmark)
+    inorm = np.asarray([inorm]) if np.isscalar(inorm) else np.asarray(inorm)
+    tlims = np.asarray([tlims]) if np.isscalar(tlims) else np.asarray(tlims)
     # options for printing record sections (see also bplotrs)
     bprint_record_section = False;
     odir = './';
@@ -228,26 +235,12 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         tshift0 = tshift[0]
         itrel = 0
     
-    #--------------------
-    
-    chans=[]
-    for tr in w:
-        chans.append(tr.stats.channel)
-    if nseis ==1:
-        stchan = chans
-    else:
-        #unique channels
-        uchan = np.unique(chans)
-        nuchan = len(uchan)
-        stchan = []
-        ii=0
-        while ii < nuchan:
-            stchan.append(uchan[ii])
-            ii+=1
+    #-------------------
 
     starttime=[]
     endtime=[]
     netwk=[]
+    chans=[]
     sta=[]
     rlat=[]
     rlon=[]
@@ -260,6 +253,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     evidst=[]
     print(len(w))
     for i, tr in enumerate(w):
+        chans.append(tr.stats.channel)
         rlat.append(tr.stats.sac.stla)
         rlon.append(tr.stats.sac.stlo)
         starttime.append(tr.stats.starttime)
@@ -276,6 +270,17 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         elon= elon*np.ones((len(w),1))
         tdata.append(tr.data)
         trtimes.append(tr.times("timestamp"))
+        
+    if nseis ==1:
+        stchan = chans
+    else:
+        #unique channels
+        uchan = np.unique(chans)
+        nuchan = len(uchan)
+        stchan = []
+        ii=0
+        for ii in range(nuchan):
+            stchan.append(uchan[ii])
     # FUTURE WORK
     # NEED TO EXIT IF ANY OF THE ABOVE FIELDS ARE EMPTY (isempty does not work)
     
@@ -449,7 +454,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     rlabels=np.empty(((nseis),1), dtype=object)
     if iabs==0:
         jj=0
-        while jj < nseis:
+        for jj in range(nseis):
             # variable time shift
             if len(np.unique(tshift)) > 1:
                 if max(tshift) < spdy:
@@ -472,7 +477,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                 rlabels[jj] = ('%s %s (%.0f, %.0f %s) %.0f km %.1f %s' % 
                     (str(slabs[jj])[2:-2], chans[jj], math.floor(azi[jj]), dist[jj], sunit, edep[jj], mag[jj], stshift))
             
-            jj+=1
+            
         
     else:
         rlabels = slabs
@@ -552,6 +557,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
             if T2[0] >= Tmax_for_mHz:
                 stfilt = ('T = %.1f-%.1f s (%.1f-%.1f mHz)' % (T1[0],T2[0],1/T2[0]*1e3,1/T1[0]*1e3))
             try:
+                '''
                 for tr in w:
                     #sos = butter(5, [1/T2[0], 1/T1[0]], 'bandpass', output='sos');
                     lowcut=1/T2[0]
@@ -564,7 +570,8 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                     y = sosfiltfilt(sos, tr.data.copy())
                     tr.data=y
                     wfilt.append(tr)
-                #w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],zerophase=True)
+                    '''
+                wfilt=w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],zerophase=True)
             except:
                 print("filter didn't work")
         w=wfilt        
@@ -591,6 +598,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     print(len(w))
     # integrate or differentiate
     # note: units of w will automatically change
+    units = 'nm / sec'
     if iintp==1:
         if ifilter==0: 
             w.detrend()
@@ -747,7 +755,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                 yran=aran
             else:
                 yran=dran
-                if iunit==1:
+                if iunit==2:
                     yran = kilometers2degrees(dran)
             
             for ii in range(len(wmaxvec)):
@@ -910,7 +918,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
             
         else:
             # using actual values of distance or azimuth
-            #ax.yaxis.tick_right()
+            ax.yaxis.tick_right()
             if rssort==1:
                 ylims = [min(azi)-5, max(azi)+5];
                 if max(azi)-min(azi) > 300:
@@ -929,12 +937,13 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         mm=0
         for mm in range(nmark):
             tm = (dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy - tshift0;
-            print((dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy)
+            #print((dates.date2num(tmark[mm]) - dates.date2num(tstartmin))*spdy)
             #plt.plot(tm*[1, 1],ax0[2:3],'r','linewidth')
             plt.vlines(tm,ylims[0],ylims[1], 'r')
         plt.xlim(tlims)
         plt.ylim(ylims[0],ylims[1])
-        if rssort ==1:
+        if iabs==1:
+        #if rssort ==1:
             plt.gca().invert_yaxis()
         #plt.subplots_adjust(left=0.10)
         plt.xlabel('Time (s)', fontweight='bold')
@@ -998,12 +1007,10 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
             fac = 1
         iplotsrc = 1
         fsize = 10
-        
-        figsta=plt.figure(figsize=(8,10))
-        
+        figsta=plt.figure(figsize=(8,10)) 
         plt.plot(rlon*fac,rlat*fac,'bv') 
-        if iplotsrc==1:
-            plt.plot(elon*fac,elat*fac,'k',markersize=20,markerfacecolor='r')
+        #if iplotsrc==1:
+        plt.plot(elon*fac,elat*fac,'k*',markersize=15,markerfacecolor='r')
         # plot station labels (or eid labels)
         if irs==1:
             for i,lab in enumerate(sta):
@@ -1014,7 +1021,10 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         plt.title(str(stline1) +'\n'+ str(stchan),fontsize=8)
         plt.show()
     print('--> leaving plotw_rs.m')
-    
+    # Print download time
+    d = datetime.now() - start
+    print (d, " s to plot waveforms")
+
     #==========================================================================
 
     return w
