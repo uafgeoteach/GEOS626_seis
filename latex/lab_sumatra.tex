@@ -9,6 +9,9 @@
 \renewcommand{\theequation}{L\arabic{equation}}
 \renewcommand{\thesection}{L\arabic{section}}
 
+%\newcommand{\tfile}{{\tt sumatra\_modes.m}}
+\newcommand{\tfile}{{\tt lab\_sumatra.ipynb}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -24,7 +27,11 @@ Last compiled: \today
 \section{Overview and Instructions}
 
 \begin{itemize}
-\item This lab is a starter for the homework on the Sumatra earthquake. The goal is to understand the attributes of a seismic waveform (start time, end time, sample rate, station location, etc) and to gain some appreciation for variability in the quality of waveforms, especially when recording a \magw{9.0} earthquake, which puts some seismometers to a difficult test!
+\item The key file is \tfile.
+
+%\item WARNING: This lab is in a state of transition from Matlab to Python. All the utilities are in Python, but this document refers to Matlab and linux instructions.
+
+\item This lab is a starter for the homework on the Sumatra earthquake (\verb+hw_sumatraB+). The goal is to understand the attributes of a seismic waveform (start time, end time, sample rate, station location, etc) and to gain some appreciation for variability in the quality of waveforms, especially when recording a \magw{9} earthquake, which puts some seismometers to a difficult test!
 
 %---------
 
@@ -42,13 +49,38 @@ Last compiled: \today
 \end{verbatim}
 \end{spacing}
 %
-(You can see these lines when running \verb+sumatra_hf_template.m+.)
+(You can see these lines when running \verb+sumatra_hf.ipynb+.)
 You do not need more than one seismogram for each site. In general the multiple listings represent different seismometers being used at different vertical locations, like at the surface and down a deep borehole.
 
 \item For such a big event as Sumatra, there are many seismograms that are ``clipped'' or distorted due to an erroneous response of the seismometer.
 
 \item Having a uniform distribution (by distance, azimuth, latitude, etc) is often needed for analyses. {\bf So when you are picking a subset, be sure you have enough stations to cover the particular variation of interest.} Look over the homework problems to see what variations we will be covering.
 \end{itemize}
+
+\item We select stations from three seismic networks: \\
+
+\begin{tabular}{cll}
+\hline
+G   & Geoscope      & Institut de Physique du Globe de Paris \\
+II  & IRIS/IDA      & Scripps Institute of Oceanography \\
+IU  & GSN-IRIS/USGS & Albuquerque Seismological Laboratory \\
+\hline
+\end{tabular} \\
+
+\noindent
+II and IU form the Global Seismographic Network (GSN).
+The Geoscope network is managed by France and has been running high-quality stations since 1982.
+
+\item The time periods for the waveforms are specified with respect to the origin time of the Sumatra earthquake:
+
+\vspace{0.5cm}
+% otimePDE = datenum(2004,12,26,0,58,50); sprintf('%.6f',otimePDE)
+otimePDE = 2004--12--26 00:58:50
+\vspace{0.5cm}
+
+\noindent
+This is the PDE (Preliminary Determination of Epicenter from National Earthquake Information Center) origin time listed in the CMTSOLUTION file (\url{www.globalcmt.org}).
+%The decimal version gives the time in days with respect to some Matlab reference time. In the lists below, all times and durations are in days.
 
 \end{itemize}
 
@@ -58,25 +90,55 @@ You do not need more than one seismogram for each site. In general the multiple 
 \section{Exercises}
 
 \begin{enumerate}
-\item  Run \verb+sumatra_modes.m+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records.
+\item Examine \tfile. There are two sets of waveforms that are requested. List the specified parameters for each set below.
 
-\item From a terminal window (not Matlab), use \verb+xpdf+ or \verb+evince+ to browse the 139-page pdf file
+\begin{itemize}
+\item networks:
+\item stations: 
+\item locations: 
+\item channels: 
+\item duration: 
+\item start time: 
+\item end time: 
+\item channels:
+\end{itemize}
 
-\verb+/home/admin/databases/SUMATRA/data/wfobject/all_sumatra_modes.pdf+
+\begin{itemize}
+\item networks:
+\item stations: 
+\item locations: 
+\item channels: 
+\item duration: 
+\item start time: 
+\item end time: 
+\item channels:
+\end{itemize}
 
-to pick a subset of {\bf at least 20 stations} for the analysis of normal modes. Write down the page numbers of the stations you want to keep.
+\item Run \tfile\ to fetch the database of waveforms and save them as local files. If successful, you should see a large set of seismograms displayed. In that case, set \verb+Dload=False+ and proceed.
 
+\item  Run \tfile\ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records.
+
+\item Browse all remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes. You can identify the subset by the list of indices in \verb+ipick+.
+
+%From a terminal window (not Matlab), use \verb+xpdf+ or \verb+evince+ to browse the 139-page pdf file
+%
+%\verb+/home/admin/databases/SUMATRA/data/wfobject/all_sumatra_modes.pdf+
+%
+%to pick a subset of {\bf at least 20 stations} for the analysis of normal modes. Write down the page numbers of the stations you want to keep.
 The stations should be selected based on high signal-to-noise within the frequency range 0.2 to 1.0~mHz, and, notably, the \snl{0}{2} peak. Be sure to include Canberra and the station from Figure~2 of \citet{Park2005}.
 {\bf See ``Tips on picking stations'' in the instructions above.}
 
-\item Run \verb+sumatra_modes.m+ and plot your subset of records.
+\item Run \tfile\ and plot your subset of records. \\
+This will prepare you for \verb+sumatra_modes.ipynb+.
 
 \end{enumerate}
 
 %------------------------
 
+\iffalse
+
 %\pagebreak
-\section{Building the database of waveforms [FOR READING ONLY]}
+\section{Building the database of waveforms [FOR READING ONLY; THIS IS NOW OBSOLETE, SINCE EACH STUDENT IS CREATING THEIR OWN DATABASE OF WAVEFORMS]}
 
 I have set up a database of waveforms for the Sumatra earthquake so that you can easily and rapidly access the waveforms. Most seismic waveforms can be obtained from data centers such as the IRIS DMC (\url{http://ds.iris.edu/ds/nodes/dmc/}). In a future version of this lab, I hope that students will download the waveforms themselves.
 
@@ -173,6 +235,8 @@ With these parameters, we can make a command-line request to IRIS DMC to obtain 
 \subsection{Building a local database of waveforms}
 
 Once the waveforms are obtained, it is helpful to store them as a database. We used Antelope to construct the database of stations, waveforms, and instrument response files. For your homework exercises, you will use Matlab scripts to extract seismic waveforms from the Antelope database. It is important to understand the two-part process of obtaining waveforms (and response files) and creating a database.
+
+\fi
 
 %-------------------------------------------------------------
 %\pagebreak

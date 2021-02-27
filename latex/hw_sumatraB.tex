@@ -12,7 +12,7 @@
 {\large \bf Problem Set 6: Analysis of the 2004 Sumatra-Andaman earthquake \\
 Part 2: Analyzing the effects of rupture complexity and Earth heterogeneity [sumatraB]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: March 20, 2018 --- Due: March 27, 2018 \\
+Assigned: February 25, 2021 --- Due: March 16, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -41,8 +41,8 @@ Plate boundaries are from \citet{Bird2003}: AU = Australia, IN = India, BU = Bur
 The purpose of this problem set is to handle a large data set of seismograms and to extract some useful scientific information about the earthquake source (and Earth structure). As you will see, much of the challenge is in representing the seismic waveforms in a sensible manner; this includes judging which seismograms are ``bad,'' that is, not representative of the ground motion. A key part of this representation is determining what bandpass to use for the seismograms for each scientific question.
 
 \begin{itemize}
-\item This problem set uses some scripts in \verb+GEOTOOLS+ for analyzing sets of waveforms. \\
-See \verb+doc_startupB.pdf+ to set up \verb+GEOTOOLS+.
+%\item This problem set uses some scripts in \verb+GEOTOOLS+ for analyzing sets of waveforms. \\
+%See \verb+doc_startupB.pdf+ to set up \verb+GEOTOOLS+.
 
 %---------
 
@@ -60,7 +60,7 @@ Be sure you understand what a bandpass filter is.
 
 %---------
 
-\item The main scripts you will use are in your \verb+seismo+ directory:
+\item The main scripts you will use are:
 %
 \begin{itemize}
 \item \verb+sumatra_modes.ipynb+
@@ -77,12 +77,12 @@ Be sure you understand what a bandpass filter is.
 \item directivity: \citet[][Section 4.3.2]{SteinWysession} 
 \item Sumatra earthquake: \citet{Lay2005,Ammon2005,Park2005,Ni2005,SSteinOkal2007}
 \item normal modes: \citet[][Section 2.9]{SteinWysession} and \citet[][Ch.~8]{DT}. See also ``Computational details'' in Section 10.5.1 of DT.
-\item PDFs of all referenced Sumatra papers can be found in one of two directories:
-%
-\begin{verbatim}
-/home/admin/databases/SUMATRA/papers/
-/home/admin/databases/SUMATRA/papers/SCIENCE_2005/
-\end{verbatim}
+\item PDFs of all referenced Sumatra papers can be found in the class google drive.
+
+%\begin{verbatim}
+%/home/admin/databases/SUMATRA/papers/
+%/home/admin/databases/SUMATRA/papers/SCIENCE_2005/
+%\end{verbatim}
 
 \end{itemize}
 
@@ -94,7 +94,7 @@ Be sure you understand what a bandpass filter is.
 http://stuplots.geophys.uni-stuttgart.de/~plots/Modes/modes.html
 \end{verbatim}
 %
-To get a better feel for spherical harmonic functions, try out \verb+ylmplots.m+ and this website:
+To get a better feel for spherical harmonic functions, try out \verb+ylmplots.ipynb+ and this website:
 %
 \begin{verbatim}
 http://lucien.saviot.free.fr/terre/index.en.html
@@ -119,7 +119,8 @@ Or try out the commands \verb+wkeep+ and \verb+wcut+.
 %\pagebreak
 \section*{Problem 1 (4.5). Splitting of normal mode frequencies}
 
-The template script is \verb+sumatra_modes.ipynb+. See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
+The template script is \verb+sumatra_modes.ipynb+.
+%See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
 
 \begin{enumerate}
 \item (0.5) Recall the modes spectrum that we computed for station CAN that emulated Figure~1 of \citet{Park2005}. Having done the homework on toroidal modes, you should now have a better understanding of what the modes peaks are.
@@ -140,14 +141,15 @@ List them in increasing frequency.
 
 %---------
 
-\item (0.5) Run \verb+sumatra_modes.ipynb+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records, and list at least one station associated with each error.
+\item (0.5) Run \verb+lab_sumatra.ipynb+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records, and list at least one station associated with each error.
 
 %---------
 
 \item (0.5)
 %
 \begin{enumerate}
-\item (0.4) Modify \verb+ipick+ and plot the seismograms of the stations you selected in \verb+lab_sumatra.pdf+. To save paper, use something like a $5 \times 4$ subplot.
+\item (0.4) Modify \verb+ipick+ and plot the seismograms of the stations you selected in \verb+lab_sumatra.pdf+.
+%To save paper, use something like a $5 \times 4$ subplot.
 
 \item (0.1) Compute the amplitude of the \snl{0}{0} peak for all your stations. \\
 List the median value.
@@ -197,7 +199,7 @@ See \citet[][Figure 3]{SSteinOkal2007} for additional background.
 
 %---------
 
-\item (0.5) Table 5 of \citet{PREM} lists the observed frequencies of spheroidal modes; these are also read in by \verb+modes_PREMobs.m+.
+\item (0.5) Table 5 of \citet{PREM} lists the observed frequencies of spheroidal modes; these are also read in by \verb+modes_PREMobs.ipynb+.
 %
 \begin{enumerate}
 \item (0.2) See if you can identify the peaks for \snl{0}{0}, \snl{1}{0}, and \snl{2}{0} in the stacked Sumatra spectrum. Include your plots.
@@ -384,7 +386,7 @@ Hint: The variable \verb+nfac+ will change the amplitudes of the plotted wavefor
 {{
 Observations of (a) toroidal and (b) spheroidal modes used in making PREM \citep{PREM}.
 The horizontal dashed lines mark the frequency range 0.2--1.0~mHz.
-These figures are generated from {\tt modes\_PREMobs.m}.
+These figures are generated from {\tt modes\_PREMobs.ipynb}.
 }}
 \label{fig:premmodes}
 \end{figure}
