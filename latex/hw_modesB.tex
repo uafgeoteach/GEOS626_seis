@@ -93,7 +93,7 @@ Here the layer represents the crust, and the halfspace represents the upper mant
 
 \begin{enumerate}
 
-\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \verb+surf_stress_love.m+; just write down the analogous boundary conditions to those from the toroidal shell problem.
+\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \verb+surf_stress_love.py+; just write down the analogous boundary conditions to those from the toroidal shell problem.
 
 %----------------
 
@@ -183,7 +183,7 @@ In order to avoid numerical overflow during integration, we will use a coordinat
 %\pagebreak
 \subsection*{Problem 2 (8.0). Implementation}
 
-The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \verb+surf_stress_love.m+ with the initial conditions
+The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \verb+surf_stress_love.py+ with the initial conditions
 %
 \begin{eqnarray}
 W(r_b) &=& 1.0
@@ -210,33 +210,33 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 Notes:
 %
 \begin{itemize}
-\item You will need to rename \verb+spshell_template.m+ to \verb+spshell_love.m+ and then make significant modifications.
+\item You will need to rename \verb+spshell.ipynb+ to \verb+spshell_love.ipynb+ and then make significant modifications. In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
 %(You might even find that starting from scratch is easier.)
 
-Declare the following global variables:
+The following global variables are declared in spshell_love_config:
 %
 \begin{verbatim}
-global rvec WT rspan k omega
-global cthick mmu mrho crho cmu mbeta
+rvec WT rspan k omega
+cthick mmu mrho crho cmu mbeta
 \end{verbatim}
 %
-Note that \verb+rvec+ and \verb+WT+ are defined in \verb+surf_stress_love.m+, not \verb+spshell_love.m+.
+Note that \verb+rvec+ and \verb+WT+ are defined in \verb+surf_stress_love.py+, not \verb+spshell_love.py+.
 
 \item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$.
 %\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$. Furthermore, consider the order in which $k_n$ are computed in your search.
 Your answers in Problem~1-\ref{prob:model1} should be helpful here.
-Use the Matlab command \verb+linspace+ to generate a vector \verb+kvec+ containing \verb+numk+ values (try \verb+numk=100+).
+Use the Python command \verb+np.linspace()+ to generate a vector \verb+kvec+ containing \verb+numk+ values (try \verb+numk=100+).
 
 % the only changes needed will be for the ode45 solver
-\item I have provided \verb+surf_stress_love.m+ as a replacement for \verb+surf_stress.m+.
+\item I have provided \verb+surf_stress_love.py+ as a replacement for \verb+surf_stress.py+.
 
-\item You will need to adapt \verb+earthfun_love.m+ to return $\rho(r)$ and $\mu(r)$.
+\item You will need to adapt \verb+earthfun_love.py+ to return $\rho(r)$ and $\mu(r)$.
 
 Note: \verb+imod+ is not needed, as before.
 
-\item You will need to adapt \verb+stress_disp_tor.m+ (\refeq{ODEs}) to be \verb+stress_disp_love.m+ (\refeq{rODEs}).
+\item You will need to adapt \verb+stress_disp_tor.py+ (\refeq{ODEs}) to be \verb+stress_disp_love.py+ (\refeq{rODEs}).
 
-Hint: You will want to define (only) two global variables, \verb+omega+ and \verb+k+.
+Hint: You will want to update (only) two global variables, \verb+omega+ and \verb+k+.
 
 \end{itemize}
 
@@ -250,11 +250,11 @@ Also list values for \verb+earthfun_love(rspan(1))+ and \verb+earthfun_love(rspa
 \item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$.
 
 \begin{enumerate}
-\item (0.5) Check that your root is $k_0 = 8.53 \times 10^{-5}$~1/m and list the line in your Matlab script that solved for $k_0$.
+\item (0.5) Check that your root is $k_0 = 8.52 \times 10^{-5}$~1/m and list the line in your Python script that solved for $k_0$.
 
-\item (0.5) Show your code for \verb+stress_disp_love.m+ and \verb+earthfun_love.m+.
+\item (0.5) Show your code for \verb+stress_disp_love.py+ and \verb+earthfun_love.py+.
 
-\item (0.5) In $\sim$3 sentences, explain what \verb+spshell_love.m+ is doing in order to find $k_0$.
+\item (0.5) In $\sim$3 sentences, explain what \verb+spshell_love.py+ is doing in order to find $k_0$.
 
 \end{enumerate}
 
@@ -266,7 +266,7 @@ Suggestion: For plotting purposes only, you may find it simpler to transform you
 
 \item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+.
 
-Show your code and output to demonstrate your findings. Do not show the already-provided code \verb+surface_stress_love.m+.
+Show your code and output to demonstrate your findings. Do not show the already-provided code \verb+surface_stress_love.py+.
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
@@ -305,11 +305,11 @@ After you do the check, you can go back to using the default tolerance.
 \item (0.8) Loop over a range of frequencies to construct the dispersion plot you sketched in Problem~1-\ref{prob:model1}. Use an equally spaced frequency vector ($\sim$50 values) ranging between periods of 3.0 seconds and 20.0 seconds.
 %
 \begin{itemize}
-\item Sketch (by hand or in Matlab) vertical bars corresponding to $\cutoff{f}$.
+\item Sketch (by hand or in Python) vertical bars corresponding to $\cutoff{f}$.
 \item Label the branches $n=0$, $n=1$, etc.
 \end{itemize}
 
-\item (0.2) Include an additional plot of phase speed versus period, and sketch (by hand or in Matlab) vertical bars corresponding to $\cutoff{T} = 1/\cutoff{f}$.
+\item (0.2) Include an additional plot of phase speed versus period, and sketch (by hand or in Python) vertical bars corresponding to $\cutoff{T} = 1/\cutoff{f}$.
 \end{enumerate}
 
 %----------------
