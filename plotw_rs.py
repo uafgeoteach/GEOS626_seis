@@ -106,12 +106,13 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                         # =0.5 for surface waves (between 0.5 and 1.0 for regional surface waves)
                         # note: GEOFAC = inorm(2)
     bplot_geometric_speading = True;
-    T1 = np.asarray([T1]) if np.isscalar(T1) else np.asarray(T1)
-    T2 = np.asarray([T2]) if np.isscalar(T2) else np.asarray(T2)
-    tshift = np.asarray([tshift]) if np.isscalar(tshift) else np.asarray(tshift)
-    tmark = np.asarray([tmark]) if np.isscalar(tmark) else np.asarray(tmark)
-    inorm = np.asarray([inorm]) if np.isscalar(inorm) else np.asarray(inorm)
-    tlims = np.asarray([tlims]) if np.isscalar(tlims) else np.asarray(tlims)
+    T1 = np.atleast_1d(T1)
+    T2 = np.atleast_1d(T2)
+    tshift = np.atleast_1d(tshift)
+    tmark = np.atleast_1d(tmark)
+    inorm = np.atleast_1d(inorm)
+    tlims = np.atleast_1d(tlims)
+    azstart=np.atleast_1d(azstart)
     # options for printing record sections (see also bplotrs)
     bprint_record_section = False;
     odir = './';
@@ -143,13 +144,6 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     else:
         print('second waveform object detected -- waveforms will be superimposed');
         isyn=1
-    '''    
-    if bplotrs == True:
-        otag = bplotrs[2]
-        odir = bplotrs[1]
-        bprint_record_section = bplotrs[0]
-        bplotrs = True    
-        '''
     geoinorm = inorm
     # exit here if user enters impermissible values
     if rssort not in [0, 1, 2, 3]: 
@@ -254,8 +248,12 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     print(len(w))
     for i, tr in enumerate(w):
         chans.append(tr.stats.channel)
-        rlat.append(tr.stats.sac.stla)
-        rlon.append(tr.stats.sac.stlo)
+        try:
+            rlat.append(tr.stats.sac.stla)
+            rlon.append(tr.stats.sac.stlo)
+        except:
+            rlat.append(tr.stats.coordinates[0])
+            rlon.append(tr.stats.coordinates[1])
         starttime.append(tr.stats.starttime)
         endtime.append(tr.stats.endtime)
         evid=str(tr.stats.starttime).replace(":",'')
@@ -734,11 +732,12 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     #azbin = np.arange(azstart , azstart+360, azinc) % 360
     #print(azbin)
     try:
-        azbin = np.arange(azstart , azstart+360, azinc) % 360
+        azbin = np.arange(azstart , azstart+360, azinc) # %360
     except:
         azbin=[]
     azbin_fwid = 0.1    
-    
+    for a in range(len(azbin)):
+        azbin[a]=azbin[a]%360
     # vertical separation between seismograms
     wsep = 1.5*statistics.median(wmaxvec)
     yshift = wsep*nfac
@@ -881,19 +880,39 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                     # azimuth of previous (az0) and current (az1) stations in the sorted list
                     az0 = az1
                     az1 = azi[ii]
+                    
                     # (this boolean clause could probably be simplified) 
-                    if (az1 > az0 and (any(az1>azbin) and any(azbin > az0))) or (az1 < az0 and (any(az1 > azbin) or any(azbin > az0))):
-                        # note: it would nice if these bars extended to the LEFT,
-                        # outside the plotting axes
-                        tp1 = tlims[0];
-                        tp2 = tlims[0] + azbin_fwid*(tlims[1]-tlims[0]);
-                        #disp(sprintf('%i %i %.2f %.2f',pp,jj,tp1,tp2));  % testing
-                        if wsyn != None: # and var != None:
-                            pc = 'r' 
-                        else: 
-                            pc = 'k'
-                        plt.plot([tp1, tp2],[1 ,1]*dy[jj]+yshift/2,pc,'linewidth')
-                
+                    #if (az1 > az0 and (any(az1>azbin) and any(azbin>az0))) or(az1 < az0 and (any(az1>azbin)or any(azbin>az0))):
+                    if az1 > az0:
+                        for ii in range(len(azbin)):
+                            if az1>azbin[ii] and azbin[ii]>az0:
+                                
+                                # note: it would nice if these bars extended to the LEFT,
+                                # outside the plotting axes
+                                tp1 = tlims[0];
+                                tp2 = tlims[0] + azbin_fwid*(tlims[1]-tlims[0]);
+                                #disp(sprintf('%i %i %.2f %.2f',pp,jj,tp1,tp2));  % testing
+                                if wsyn != None: # and var != None:
+                                    pc = 'r' 
+                                else: 
+                                    pc = 'k'
+                                plt.plot([tp1, tp2],[dy[jj]+yshift/2 ,dy[jj]+yshift/2],pc,'linewidth')
+                                break
+                    elif az1<az0:
+                        for ii in range(len(azbin)):
+                            if az1>azbin[ii] or azbin[ii]>az0:
+                                
+                                # note: it would nice if these bars extended to the LEFT,
+                                # outside the plotting axes
+                                tp1 = tlims[0];
+                                tp2 = tlims[0] + azbin_fwid*(tlims[1]-tlims[0]);
+                                #disp(sprintf('%i %i %.2f %.2f',pp,jj,tp1,tp2));  % testing
+                                if wsyn != None: # and var != None:
+                                    pc = 'r' 
+                                else: 
+                                    pc = 'k'
+                                plt.plot([tp1, tp2],[dy[jj]+yshift/2 ,dy[jj]+yshift/2],pc,'linewidth')
+                                break
                 # exit early for the last page of the multi-page record section
                 if pp == nfig and jj == nseis % pmax:
                     print('ending early')
@@ -909,7 +928,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
             # this may chop off a large-amplitude trace near the boundary, but
             # at least the gap will be the same for a sequence of plots
 
-            ylims = int(yshift)*[0 ,jmax+2]
+            ylims = [0 ,yshift*(jmax+2)]
             plt.yticks([])
             #plt.ylim(ylims)
             # this will provide more space if one of the traces has a large
