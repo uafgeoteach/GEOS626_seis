@@ -23,7 +23,8 @@ def sumatra_loop(w0,fdir,pplot):
     #       fdir =      directory to save fft
     #       pplot =     Bool whether to compute fft or not
     
-    savefile=True           ### change to False if sumatra_modes.txt file already saved
+    # change to false if you do not want to overwrite the existing text file
+    savetextfile=True
     
     spdy = 86400
     w = w0.copy()
@@ -43,11 +44,10 @@ def sumatra_loop(w0,fdir,pplot):
     for ii in range (len(w)):
         print('%3i %7s %7s %4s %4s' % (ii,stas[ii],chans[ii],locs[ii],nets[ii]))
     
-    
     # plot time series
     ifigure = 0
     
-    # fill gaps in the time series if the total length of gaps is leff than
+    # fill gaps in the time series if the total length of gaps is less than
     # this fraction of the full time series.
     FTHRESH = 0.03
     
@@ -72,6 +72,7 @@ def sumatra_loop(w0,fdir,pplot):
     
         # specific commands for certain records
         
+        # trim these records in order to use the visibly okay portions of seismograms
         if str(stas[ii])=='QSPA' and str(chans[ii])=='LHZ' and str(locs[ii]) == '20':
             print('special cutting of the end of the record')
             stime = w[ii].stats.starttime
@@ -217,83 +218,80 @@ def sumatra_loop(w0,fdir,pplot):
                 plt.plot(w[ii].data,'r') 
                 plt.title(str(stag)+ ' special cut')
         
-        
-        # skip these
+        # exclude these seismograms for obvious reasons
         if str(stas[ii])=='ADK' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='DAV' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='DGAR' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='GRFO' and str(chans[ii])=='LHZ':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='MBWA' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='RAO' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='POHA' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='WAKE' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='XMAS' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='HOPE' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='LCO' and str(chans[ii])=='LHZ':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='PTCN' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='PEL' and str(chans[ii])=='LHZ':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='RSSD' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='SHEL' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='PALK' and str(chans[ii])=='LHZ' and str(locs[ii])=='00':
-            print('SKIPPING'); scut.append(ii)
-        
+            print('REMOVING'); scut.append(ii)
         
         # skip these (multiple records per station)
-        
         if str(stas[ii])=='TRISIU':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='TRIS':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='FUNA':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='OTAV':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
+        # note: PMG00 looks okay (check gaps)
         if str(stas[ii])=='PMG':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
         if str(stas[ii])=='SAML':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
+        # note: SDV00 and SDV10 look okay (check gaps)
         if str(stas[ii])=='SDV':
-            print('SKIPPING'); scut.append(ii)
+            print('REMOVING'); scut.append(ii)
         
-
         # check for gaps and fill with mean data
-        
         wd = w[ii].data
         if len(wd) !=0:
             values = np.array(wd)
@@ -331,12 +329,10 @@ def sumatra_loop(w0,fdir,pplot):
              #   print('cutting the last point to make it an even number (FFT)');
               #  w(ii) = extract(w(ii),'INDEX',1,length(wd)-1);
            
-
         ii+=1
     
-    # write to file
-    
-    if savefile==True:
+    # write text file
+    if savetextfile==True:
         filename = str(fdir)+'/sumatra_modes.txt'
         print('writing %i points to file %s' % (nw,filename))
         with open(filename, "w") as file1:
@@ -348,14 +344,13 @@ def sumatra_loop(w0,fdir,pplot):
                 else:
                     pkeep=1
                 pdfp = pdfp + pkeep
-                # Writing data to a file
+                # writing text file
                 file1.write('%3i %3i %7s %7s %4s %16s %4i\n' %(jj,pdfp*pkeep,str(stas[jj]+str(locs[jj])),
                             str(chans[jj]),str(nets[jj]),str(stag),pkeep))
         
         file1.close()
     
-    
-    # compute fft for each time series that is NOT cut
+    # compute fft for each time series that has NOT been removed (see scut)
     directory1 = fdir
     if not path.exists(directory1):  # If data directory doesn't exist, it will create one
         os.makedirs(directory1)
@@ -377,7 +372,7 @@ def sumatra_loop(w0,fdir,pplot):
                 mnst=stats.mean(tr.data)
                 t = tr.stats.starttime
                
-                # Make sure they have the same no. of sample
+                # Make sure they have the same number of samples
                 #tr.trim(t,t+dur_s, pad=True, fill_value=mnst)
                 
                 w_detrend=detrend(tr.data,'constant')
@@ -385,8 +380,8 @@ def sumatra_loop(w0,fdir,pplot):
                 taper_percentage = 1
                 npts = tr.stats.npts              # number of samples
                 df = tr.stats.sampling_rate       # sampling rate
-                nsec = npts/df                        # sampling time
-                fNy = df / 2.0                        # Nyquist frequency
+                nsec = npts/df                    # sampling time
+                fNy = df / 2.0                    # Nyquist frequency
                 taper = cosine_taper(npts,taper_percentage)
                 w_taper = w_detrend * taper
                 fft_amp, fft_phase, f = wf_fft(w_taper,fNy) # amplitude, and phase, frequencies of fft
