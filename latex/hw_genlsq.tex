@@ -31,7 +31,7 @@
 %{\large \bf Lab Exercise: Earthquake location with generalized least squares [genlsq]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
 %GEOS 627: Inverse Problems and Parameter Estimation, Carl Tape \\
-Assigned: April 18, 2018 --- Due: May 1, 2018 \\
+Assigned: April 13, 2021 --- Due: April 22, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -65,12 +65,12 @@ Following \citet[][p.~205]{Tarantola2005}, the general form of a {\bf nonlinear 
 %\footnote{Here I am using $\cprior$ whereas Tarantola uses $\covm$.}
 %
 \begin{eqnarray*}
-\misfitvar(\bem) &=& \misfitvar_{\rm D}(\bem) + \misfitvar_{\rm M}(\bem) 
+\misfitvar(\mvec) &=& \misfitvar_{\rm D}(\mvec) + \misfitvar_{\rm M}(\mvec) 
 \\
-&=& \hlf \left\| \bg(\bem) - \bd_{\rm obs} \right\|^2_{\rm D} + \hlf \left\| \bem - \mprior \right\|^2_{\rm M}
+&=& \hlf \left\| \bg(\mvec) - \dvec \right\|^2_{\rm D} + \hlf \left\| \mvec - \mprior \right\|^2_{\rm M}
 \nonumber \\
-&=& \hlf \left( \bg(\bem) - \bd_{\rm obs}\right)^T \; \covdi \left( \bg(\bem) - \bd_{\rm obs} \right)
-\;+\; \hlf \left( \bem - \mprior \right)^T \; \cpriori \left( \bem - \mprior \right).
+&=& \hlf \left( \bg(\mvec) - \dvec\right)^T \; \covdi \left( \bg(\mvec) - \dvec \right)
+\;+\; \hlf \left( \mvec - \mprior \right)^T \; \cpriori \left( \mvec - \mprior \right).
 \nonumber
 %\label{misfit_gen}
 \end{eqnarray*}
@@ -85,7 +85,7 @@ variable                            & notation (p. 66) & notation (p. 261)  & no
 prior model covariance matrix       & $\bC_{\rm M}$                & $\bC_{\rm M}$    & $\cprior$    \\ \hline
 posterior model covariance matrix   & $\widetilde{\bC}_{\rm M}$    & $\bC_{M'}$      & $\cpost$     \\ \hline
 prior model vector                  & $\mprior$                  & $\mprior$      & $\mprior$     \\ \hline
-posterior model vector              & $\widetilde{\bem}$         & $\bem_{\rm MAP}$ & $\mpost$     \\ \hline
+posterior model vector              & $\widetilde{\bem}$         & $\mvec_{\rm MAP}$ & $\mpost$     \\ \hline
 \hline
 \end{tabular}
 \vspace{0.2cm}
@@ -93,21 +93,21 @@ posterior model vector              & $\widetilde{\bem}$         & $\bem_{\rm MA
 A Matlab solution to a least squares problem may be as simple as \verb+m = G\d+, but what is the meaning (and computation) behind this expression? The objective of this assignment is to demystify some of the black-box elements of least-squares inverse problems. This will involve a combination of reading \citet{Tarantola2005}, solving some equations, and implementing the equations within Matlab. We approach these topics with the classic example of earthquake location.
 
 % comment out for 627:
-See \citet[][Chapter 7]{SteinWysession} for an introduction to the earthquake location problem. However, note that they do not approach the problem from a generalized least squares perspective, as we do in this assignment. In particular, they do not consider the model misfit term $(\bem-\mprior)^T \cpriori (\bem-\mprior)$. But they do introduce the concept of the data covariance matrix and posterior model covariance matrix on p. 421.
+See \citet[][Chapter 7]{SteinWysession} for an introduction to the earthquake location problem. However, note that they do not approach the problem from a generalized least squares perspective, as we do in this assignment. In particular, they do not consider the model misfit term $(\mvec-\mprior)^T \cpriori (\mvec-\mprior)$. But they do introduce the concept of the data covariance matrix and posterior model covariance matrix on p. 421.
 
 Throughout the assignment, and in the code, keep in mind the interchangability of these terms:
 %
 \begin{eqnarray*}
-\mpost &=& \bem_{\rm final}
+\mpost &=& \mvec_{\rm final}
 \\
-\mtarget &=& \bem_{\rm true}
+\mtarget &=& \mvec_{\rm true}
 \end{eqnarray*}
 %
 The posterior model is the same as the final model of an iterative problem. And the ``target model'' is the same as the ``true model'': this is the model used to generate the ``target data'' or ``true data''. We will use the notation $\mpost$ and $\mtarget$.
 
 % 627: list inverse or seismo directory
-\bigskip\noindent
-{\bf To get the necessary scripts for this assignment, go into your {\tt seismo} directory and type {\tt git pull}.}
+%\bigskip\noindent
+%{\bf To get the necessary scripts for this assignment, go into your {\tt seismo} directory and type {\tt git pull}.}
 
 %------------------------
 
@@ -115,7 +115,7 @@ The posterior model is the same as the final model of an iterative problem. And 
 \pagebreak
 \subsection*{Problem 0 (2.0). Generalized least squares solutions}
 
-Here you will derive formulas for generalized least squares under the assumption of a linear model $\bg(\bem) = \bG\bem$.
+Here you will derive formulas for generalized least squares under the assumption of a linear model $\bg(\mvec) = \bG\mvec$.
 %
 \begin{enumerate}
 \item (1.5) Show the equivalence of the three expressions for the posterior Gaussian that are listed in \citet[][p.~66]{Tarantola2005}:
@@ -142,7 +142,7 @@ HINT: You may find it useful to use the two matrix identities that we derived in
 \label{cpost2}
 \end{eqnarray}
 
-\item (0.5) List each matrix in \refEqab{mpost1}{cpost2} that must be inverted. Also list the dimensions of each matrix, assuming that there are $M$ model parameters and $N$ observations.
+\item (0.5) List each matrix in \refEqab{mpost1}{cpost2} that must be inverted. Also list the dimensions of each matrix, assuming that there are $\nparm$ model parameters and $\ndata$ observations.
 \end{enumerate}
 
 %------------------------
@@ -153,13 +153,13 @@ HINT: You may find it useful to use the two matrix identities that we derived in
 \begin{enumerate}
 \item (0.7) Derive an equation for the arrival time $t_r$ of a seismic wave that originates at source location ($x_s, y_s$) at origin time $t_s$ and is recorded at receiver location ($x_r, y_r$). Assume that the medium is homogeneous and characterized with a single wavespeed $V$.
 
-\item (0.2) Let $t_r = g(\bem)$, where $\bem = (x_s,y_s,t_s,V)$.
+\item (0.2) Let $t_r = g(\mvec)$, where $\mvec = (x_s,y_s,t_s,V)$.
 Is $g$ a linear function of $t_s$? Is it a linear function of $x_s$, $y_s$, or $V$?
-Is it a linear function of $\bem$?
+Is it a linear function of $\mvec$?
 
-\item (0.2) Apply the variable transformation $v = \ln(V/V_0)$, where $V_0$ is a normalizing constant such that $v$ is unitless. Write $g(\bem)$ in terms of the model parameters $t_s$, $x_s$, $y_s$, and $v$.
+\item (0.2) Apply the variable transformation $v = \ln(V/V_0)$, where $V_0$ is a normalizing constant such that $v$ is unitless. Write $g(\mvec)$ in terms of the model parameters $t_s$, $x_s$, $y_s$, and $v$.
 
-\item (0.7) Write expressions for the partial derivatives of $g(\bem)$: $\partial g/ \partial x_s$, $\partial g/ \partial y_s$, etc.
+\item (0.7) Write expressions for the partial derivatives of $g(\mvec)$: $\partial g/ \partial x_s$, $\partial g/ \partial y_s$, etc.
 
 \item (0.2) Write the matrix form for $G_{ik} = \partial g_i/ \partial m_k$, where $i$ is the receiver (or arrival time) index. (Here the subscript $i$ for data index and $r$ for receiver index are the same, since there is one measurement per receiver.) Do not write out the full expressions.
 For example, the upper left element of your matrix should be $\partial g_1/\partial x_s$.
@@ -180,9 +180,9 @@ Use $\cdots$ to indicate an element within a sequence.
 \item Note: Generating samples (from $\cprior$ and $\covd$) is not required to solve this problem. We use the samples mainly to ``illuminate'' the covariance matrices.
 
 \item It may help to relate this problem to a real-world example of earthquake location. Imagine that you detect a P wave at some particular station (``station X''). The next closest station, which has not yet ``seen'' the P wave, is 20~km away. At that moment you might assume a prior model for the epicenter $(x_s, y_s)$ that is centered on station X and has a Gaussian distribution characterized by $\sigma = 20$~km. 
-Your prior model for the structure of the medium is assumed to be homogeneous with P-velocity reference value $V = 5$~km/s (with some associated uncertainty). Your prior model for the origin time could be the arrival time at station X (with some associated uncertainty).
+Your {\bf prior model} for the structure of the medium is assumed to be homogeneous with P-velocity reference value $V = 5$~km/s (with some associated uncertainty). Your prior model for the origin time could be the arrival time at station X (with some associated uncertainty).
 
-You then record the P wave arrival times at all other stations. You choose an initial model; a sensible choice might be the prior model that is station X, P arrival time at station X, and velocity $V$. With this initial model, you compute predicted arrival times at all stations. Using \refEq{misfit_gen}, you quantify the misfit between your predicted arrival times and the observed arrival times. The rest is optimization.
+You then record the P wave arrival times at all other stations. You choose an {\bf initial model}; a sensible choice might be the prior model (see above). With this initial model, you compute predicted arrival times at all stations. Using the generalized least-squares misfit function (see Overview and instructions), you quantify the misfit between your predicted arrival times and the observed arrival times. The rest is optimization.
 
 \end{itemize}
 
@@ -223,7 +223,7 @@ Run \verb+genlsq_template.m+, then hit ``0'' to exit. You should generate six fi
 \item (0.4) 
 
 \begin{enumerate}
-\item (0.0) Write down the quasi-Newton algorithm from \citet[][Eq.~6.319]{Tarantola2005}. Use $\nu_n = 1$, use $\cprior$ instead of $\covm$, and use $\bg(\bem_n)$ to represent the predictions of the forward model.
+\item (0.0) Write down the quasi-Newton algorithm from \citet[][Eq.~6.319]{Tarantola2005}. Use $\nu_n = 1$, use $\cprior$ instead of $\covm$, and use $\bg(\mvec_n)$ to represent the predictions of the forward model.
 
 \vspace{1cm}
 
@@ -232,7 +232,7 @@ Run \verb+genlsq_template.m+, then hit ``0'' to exit. You should generate six fi
 \item (0.1) Compare Eq.~6.319 with Eq.~6.291,
 %
 \begin{equation}
-\bem_{n+1} \approx \bem_{n} - \bHh^{-1}_n \bgammah_n.
+\mvec_{n+1} \approx \mvec_{n} - \bHh^{-1}_n \bgammah_n.
 \label{mn}
 \end{equation}
 %
@@ -291,7 +291,7 @@ Show your lines of code.
 % comment out for 627:
 Show your lines of code.
 
-List $\mpost$ and $\cpost$ after \textcolor{red}{four iterations}. (The initial model is $\bem_0$, the first iteration is $\bem_1$.) Note that the posterior model is simply the final model of your iterative algorithm.
+List $\mpost$ and $\cpost$ after \textcolor{red}{four iterations}. (The initial model is $\mvec_0$, the first iteration is $\mvec_1$.) Note that the posterior model is simply the final model of your iterative algorithm.
 
 %------------------
 
@@ -323,11 +323,11 @@ List $\mpost$ and $\cpost$ after \textcolor{red}{four iterations}. (The initial 
 
 %------------------
 
-\item (0.3) Does $\bem_{\rm post}$ match $\bem_{\rm target}$? Why or why not?
+\item (0.3) Does $\mvec_{\rm post}$ match $\mvec_{\rm target}$? Why or why not?
 
 %------------------
 
-\item (0.3) Express the solution $\bem_{\rm post}$ with units. List all numbers to 0.01 precision.
+\item (0.3) Express the solution $\mvec_{\rm post}$ with units. List all numbers to 0.01 precision.
 
 %------------------
 
@@ -374,11 +374,12 @@ Does the negative correlation that you previously identified continue to appear?
 
 %------------------------
 
+\pagebreak
+
 % comment out for 627
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------
-%\pagebreak
 \bibliographystyle{agu08}
 \bibliography{carl_abbrev,carl_main,carl_source,carl_him,carl_alaska}
 

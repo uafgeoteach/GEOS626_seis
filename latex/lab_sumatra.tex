@@ -42,19 +42,19 @@ Last compiled: \today
 %
 \begin{spacing}{1.0}
 \begin{verbatim}
-120  BHZ_00  IU   QSPA   nm / sec
-121  BHZ_10  IU   QSPA   nm / sec
-122  BHZ_20  IU   QSPA   nm / sec
-123  BHZ_30  IU   QSPA   nm / sec
+IU QSPA 00 BHZ
+IU QSPA 10 BHZ
+IU QSPA 20 BHZ
+IU QSPA 30 BHZ
 \end{verbatim}
 \end{spacing}
 %
-(You can see these lines when running \verb+sumatra_hf.ipynb+.)
+%(You can see these lines when running \verb+sumatra_hf.ipynb+.)
 You do not need more than one seismogram for each site. In general the multiple listings represent different seismometers being used at different vertical locations, like at the surface and down a deep borehole.
 
 \item For such a big event as Sumatra, there are many seismograms that are ``clipped'' or distorted due to an erroneous response of the seismometer.
 
-\item Having a uniform distribution (by distance, azimuth, latitude, etc) is often needed for analyses. {\bf So when you are picking a subset, be sure you have enough stations to cover the particular variation of interest.} Look over the homework problems to see what variations we will be covering.
+\item Having a uniform distribution (by distance, azimuth, latitude, etc) is often needed for analyses. {\bf So when you are picking a subset, be sure you have enough stations to cover the particular variation of interest.} Look over the homework problems to see what variations we will be covering. Use the global map of stations for help in picking.
 \end{itemize}
 
 \item We select stations from three seismic networks: \\
@@ -90,7 +90,7 @@ This is the PDE (Preliminary Determination of Epicenter from National Earthquake
 \section{Exercises}
 
 \begin{enumerate}
-\item Examine \tfile. There are two sets of waveforms that are requested. List the specified parameters for each set below.
+\item Examine \tfile. There are two sets of waveforms that are requested; each set is associated with a different time interval and sample rate. List the specified parameters for each set below.
 
 \begin{itemize}
 \item networks:
@@ -114,9 +114,17 @@ This is the PDE (Preliminary Determination of Epicenter from National Earthquake
 \item channels:
 \end{itemize}
 
-\item Run \tfile\ to fetch the database of waveforms and save them as local files. If successful, you should see a large set of seismograms displayed. In that case, set \verb+Dload=False+ and proceed.
+\item Notice that \verb+sumtra_loop.py+ is called from \tfile. Try to determine what \verb+sumtra_loop.py+ is doing. Notice that it will write the file \verb+sumatra_modes.txt+ to the directory \verb+./datawf/sumatra_fft/+.
 
-\item  Run \tfile\ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records.
+%==================================================
+
+\item Run \tfile\ to fetch the database of waveforms and save them as local files. If successful, you should see a large set of seismograms displayed.
+
+\item Examine the stations that were cut from the analysis by \verb+sumtra_loop.py+. Describe three ``errors'' in these records.
+
+\item Your seismograms and their spectra are saved locally in the folder \verb+datawf+ in subfolders \verb+sumatraLH+, \verb+sumatraBH+, and \verb+sumatra_fft+.
+
+Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
 
 \item Browse all remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes. You can identify the subset by the list of indices in \verb+ipick+.
 
