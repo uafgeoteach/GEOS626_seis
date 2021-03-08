@@ -1,0 +1,165 @@
+  0   0   AAK00     LHZ   II   ['AAK_LHZ_II']    1
+  1   1  ABKT00     LHZ   II  ['ABKT_LHZ_II']    1
+  2   0   ADK00     LHZ   IU   ['ADK_LHZ_IU']    0
+  3   2   AFI00     LHZ   IU   ['AFI_LHZ_IU']    1
+  4   0   AFI10     LHZ   IU   ['AFI_LHZ_IU']    0
+  5   3   AIS00     LHZ    G    ['AIS_LHZ_G']    1
+  6   4   ALE00     LHZ   II   ['ALE_LHZ_II']    1
+  7   5   ALE10     LHZ   II   ['ALE_LHZ_II']    1
+  8   6  ANMO00     LHZ   IU  ['ANMO_LHZ_IU']    1
+  9   7  ANMO10     LHZ   IU  ['ANMO_LHZ_IU']    1
+ 10   8  ANTO00     LHZ   IU  ['ANTO_LHZ_IU']    1
+ 11   9   ARU00     LHZ   II   ['ARU_LHZ_II']    1
+ 12  10  ASCN00     LHZ   II  ['ASCN_LHZ_II']    1
+ 13  11  ASCN10     LHZ   II  ['ASCN_LHZ_II']    1
+ 14  12     ATD     LHZ    G    ['ATD_LHZ_G']    1
+ 15  13  BBSR00     LHZ   IU  ['BBSR_LHZ_IU']    1
+ 16  14   BFO00     LHZ   II   ['BFO_LHZ_II']    1
+ 17  15  BILL00     LHZ   IU  ['BILL_LHZ_IU']    1
+ 18  16  BORG00     LHZ   II  ['BORG_LHZ_II']    1
+ 19  17  BORG10     LHZ   II  ['BORG_LHZ_II']    1
+ 20  18  BRVK00     LHZ   II  ['BRVK_LHZ_II']    1
+ 21  19     CAN     LHZ    G    ['CAN_LHZ_G']    1
+ 22  20  CASY00     LHZ   IU  ['CASY_LHZ_IU']    1
+ 23  21  CASY10     LHZ   IU  ['CASY_LHZ_IU']    1
+ 24  22   CCM00     LHZ   IU   ['CCM_LHZ_IU']    1
+ 25  23  CHTO00     LHZ   IU  ['CHTO_LHZ_IU']    1
+ 26  24  CMLA00     LHZ   II  ['CMLA_LHZ_II']    1
+ 27   0  COCO00     LHZ   II  ['COCO_LHZ_II']    0
+ 28  25  COLA00     LHZ   IU  ['COLA_LHZ_IU']    1
+ 29  26  COLA10     LHZ   IU  ['COLA_LHZ_IU']    1
+ 30  27   COR00     LHZ   IU   ['COR_LHZ_IU']    1
+ 31  28  CRZF00     LHZ    G   ['CRZF_LHZ_G']    1
+ 32  29  CTAO00     LHZ   IU  ['CTAO_LHZ_IU']    1
+ 33   0   DAV00     LHZ   IU   ['DAV_LHZ_IU']    0
+ 34   0  DGAR00     LHZ   II  ['DGAR_LHZ_II']    0
+ 35  30  DGAR10     LHZ   II  ['DGAR_LHZ_II']    1
+ 36  31   DRV00     LHZ    G    ['DRV_LHZ_G']    1
+ 37  32  DWPF00     LHZ   IU  ['DWPF_LHZ_IU']    1
+ 38  33   ECH00     LHZ    G    ['ECH_LHZ_G']    1
+ 39  34   EFI00     LHZ   II   ['EFI_LHZ_II']    1
+ 40  35   ESK00     LHZ   II   ['ESK_LHZ_II']    1
+ 41  36   FDF00     LHZ    G    ['FDF_LHZ_G']    1
+ 42  37   FFC00     LHZ   II   ['FFC_LHZ_II']    1
+ 43   0  FUNA00     LHZ   IU  ['FUNA_LHZ_IU']    0
+ 44   0  FUNA10     LHZ   IU  ['FUNA_LHZ_IU']    0
+ 45  38  FURI00     LHZ   IU  ['FURI_LHZ_IU']    1
+ 46  39  FURI10     LHZ   IU  ['FURI_LHZ_IU']    1
+ 47  40   GNI00     LHZ   IU   ['GNI_LHZ_IU']    1
+ 48   0    GRFO     LHZ   IU  ['GRFO_LHZ_IU']    0
+ 49  41  GUMO00     LHZ   IU  ['GUMO_LHZ_IU']    1
+ 50  42  GUMO10     LHZ   IU  ['GUMO_LHZ_IU']    1
+ 51  43     HDC     LHZ    G    ['HDC_LHZ_G']    1
+ 52  44   HKT00     LHZ   IU   ['HKT_LHZ_IU']    1
+ 53  45   HNR00     LHZ   IU   ['HNR_LHZ_IU']    1
+ 54  46   HNR10     LHZ   IU   ['HNR_LHZ_IU']    1
+ 55   0  HOPE00     LHZ   II  ['HOPE_LHZ_II']    0
+ 56  47     HRV     LHZ   IU   ['HRV_LHZ_IU']    1
+ 57  48     HYB     LHZ    G    ['HYB_LHZ_G']    1
+ 58  49  INCN00     LHZ   IU  ['INCN_LHZ_IU']    1
+ 59  50  INCN10     LHZ   IU  ['INCN_LHZ_IU']    1
+ 60  51     INU     LHZ    G    ['INU_LHZ_G']    1
+ 61  52   JTS00     LHZ   II   ['JTS_LHZ_II']    1
+ 62  53  KDAK00     LHZ   II  ['KDAK_LHZ_II']    1
+ 63  54  KDAK10     LHZ   II  ['KDAK_LHZ_II']    1
+ 64   0   KEV00     LHZ   IU   ['KEV_LHZ_IU']    0
+ 65   0   KEV10     LHZ   IU   ['KEV_LHZ_IU']    0
+ 66  55  KIEV00     LHZ   IU  ['KIEV_LHZ_IU']    1
+ 67  56   KIP00     LHZ   IU   ['KIP_LHZ_IU']    1
+ 68  57   KIP10     LHZ   IU   ['KIP_LHZ_IU']    1
+ 69  58   KIV00     LHZ   II   ['KIV_LHZ_II']    1
+ 70  59  KMBO00     LHZ   IU  ['KMBO_LHZ_IU']    1
+ 71  60  KONO00     LHZ   IU  ['KONO_LHZ_IU']    1
+ 72  61  KONO10     LHZ   IU  ['KONO_LHZ_IU']    1
+ 73  62  KURK00     LHZ   II  ['KURK_LHZ_II']    1
+ 74  63  KWAJ00     LHZ   II  ['KWAJ_LHZ_II']    1
+ 75   0     LCO     LHZ   IU   ['LCO_LHZ_IU']    0
+ 76  64   LSZ00     LHZ   IU   ['LSZ_LHZ_IU']    1
+ 77  65   LSZ10     LHZ   IU   ['LSZ_LHZ_IU']    1
+ 78  66   LVC00     LHZ   IU   ['LVC_LHZ_IU']    1
+ 79  67   LVC10     LHZ   IU   ['LVC_LHZ_IU']    1
+ 80  68   LVZ00     LHZ   II   ['LVZ_LHZ_II']    1
+ 81  69   MA200     LHZ   IU   ['MA2_LHZ_IU']    1
+ 82  70  MAJO00     LHZ   IU  ['MAJO_LHZ_IU']    1
+ 83  71  MBAR00     LHZ   II  ['MBAR_LHZ_II']    1
+ 84  72   MBO00     LHZ    G    ['MBO_LHZ_G']    1
+ 85   0  MBWA00     LHZ   IU  ['MBWA_LHZ_IU']    0
+ 86  73  MBWA10     LHZ   IU  ['MBWA_LHZ_IU']    1
+ 87  74  MIDW00     LHZ   IU  ['MIDW_LHZ_IU']    1
+ 88  75   MPG00     LHZ    G    ['MPG_LHZ_G']    1
+ 89  76  MSEY00     LHZ   II  ['MSEY_LHZ_II']    1
+ 90  77   NNA00     LHZ   II   ['NNA_LHZ_II']    1
+ 91  78  NWAO00     LHZ   IU  ['NWAO_LHZ_IU']    1
+ 92  79   OBN00     LHZ   II   ['OBN_LHZ_II']    1
+ 93   0  OTAV00     LHZ   IU  ['OTAV_LHZ_IU']    0
+ 94   0  OTAV10     LHZ   IU  ['OTAV_LHZ_IU']    0
+ 95  80   PAB00     LHZ   IU   ['PAB_LHZ_IU']    1
+ 96  81   PAF00     LHZ    G    ['PAF_LHZ_G']    1
+ 97   0  PALK00     LHZ   II  ['PALK_LHZ_II']    0
+ 98  82  PAYG00     LHZ   IU  ['PAYG_LHZ_IU']    1
+ 99  83  PAYG10     LHZ   IU  ['PAYG_LHZ_IU']    1
+100   0     PEL     LHZ    G    ['PEL_LHZ_G']    0
+101  84   PET00     LHZ   IU   ['PET_LHZ_IU']    1
+102  85   PFO00     LHZ   II   ['PFO_LHZ_II']    1
+103  86   PFO10     LHZ   II   ['PFO_LHZ_II']    1
+104   0   PMG00     LHZ   IU   ['PMG_LHZ_IU']    0
+105   0   PMG10     LHZ   IU   ['PMG_LHZ_IU']    0
+106  87  PMSA00     LHZ   IU  ['PMSA_LHZ_IU']    1
+107   0  POHA00     LHZ   IU  ['POHA_LHZ_IU']    0
+108  88  POHA10     LHZ   IU  ['POHA_LHZ_IU']    1
+109  89     PPT     LHZ    G    ['PPT_LHZ_G']    1
+110   0  PTCN00     LHZ   IU  ['PTCN_LHZ_IU']    0
+111  90  QSPA00     LHZ   IU  ['QSPA_LHZ_IU']    1
+112  91  QSPA10     LHZ   IU  ['QSPA_LHZ_IU']    1
+113  92  QSPA20     LHZ   IU  ['QSPA_LHZ_IU']    1
+114  93  QSPA30     LHZ   IU  ['QSPA_LHZ_IU']    1
+115   0   RAO00     LHZ   IU   ['RAO_LHZ_IU']    0
+116  94   RAO10     LHZ   IU   ['RAO_LHZ_IU']    1
+117  95   RAR00     LHZ   IU   ['RAR_LHZ_IU']    1
+118  96   RAR10     LHZ   IU   ['RAR_LHZ_IU']    1
+119  97  RAYN00     LHZ   II  ['RAYN_LHZ_II']    1
+120  98  RCBR00     LHZ   IU  ['RCBR_LHZ_IU']    1
+121  99  RCBR10     LHZ   IU  ['RCBR_LHZ_IU']    1
+122 100   RER00     LHZ    G    ['RER_LHZ_G']    1
+123 101   RPN00     LHZ   II   ['RPN_LHZ_II']    1
+124 102   RPN10     LHZ   II   ['RPN_LHZ_II']    1
+125   0  RSSD00     LHZ   IU  ['RSSD_LHZ_IU']    0
+126   0  SAML00     LHZ   IU  ['SAML_LHZ_IU']    0
+127   0  SAML10     LHZ   IU  ['SAML_LHZ_IU']    0
+128 103   SBA00     LHZ   IU   ['SBA_LHZ_IU']    1
+129 104     SCZ     LHZ    G    ['SCZ_LHZ_G']    1
+130   0   SDV00     LHZ   IU   ['SDV_LHZ_IU']    0
+131   0   SDV10     LHZ   IU   ['SDV_LHZ_IU']    0
+132 105   SFJ00     LHZ   IU   ['SFJ_LHZ_IU']    1
+133   0  SHEL00     LHZ   II  ['SHEL_LHZ_II']    0
+134 106   SJG00     LHZ   IU   ['SJG_LHZ_IU']    1
+135 107  SNZO00     LHZ   IU  ['SNZO_LHZ_IU']    1
+136 108  SNZO10     LHZ   IU  ['SNZO_LHZ_IU']    1
+137 109   SSB00     LHZ    G    ['SSB_LHZ_G']    1
+138 110  SSPA00     LHZ   IU  ['SSPA_LHZ_IU']    1
+139 111   SUR00     LHZ   II   ['SUR_LHZ_II']    1
+140 112     TAM     LHZ    G    ['TAM_LHZ_G']    1
+141 113  TATO00     LHZ   IU  ['TATO_LHZ_IU']    1
+142 114  TATO10     LHZ   IU  ['TATO_LHZ_IU']    1
+143 115   TAU00     LHZ   II   ['TAU_LHZ_II']    1
+144 116  TEIG00     LHZ   IU  ['TEIG_LHZ_IU']    1
+145 117  TEIG10     LHZ   IU  ['TEIG_LHZ_IU']    1
+146 118  TIXI00     LHZ   IU  ['TIXI_LHZ_IU']    1
+147 119   TLY00     LHZ   II   ['TLY_LHZ_II']    1
+148   0  TRIS00     LHZ   IU  ['TRIS_LHZ_IU']    0
+149   0  TRIS10     LHZ   IU  ['TRIS_LHZ_IU']    0
+150 120  TRQA00     LHZ   IU  ['TRQA_LHZ_IU']    1
+151 121  TRQA10     LHZ   IU  ['TRQA_LHZ_IU']    1
+152 122   TUC00     LHZ   IU   ['TUC_LHZ_IU']    1
+153 123   ULN00     LHZ   IU   ['ULN_LHZ_IU']    1
+154 124     UNM     LHZ    G    ['UNM_LHZ_G']    1
+155   0  WAKE00     LHZ   IU  ['WAKE_LHZ_IU']    0
+156 125  WAKE20     LHZ   IU  ['WAKE_LHZ_IU']    1
+157 126   WCI00     LHZ   IU   ['WCI_LHZ_IU']    1
+158 127  WRAB00     LHZ   II  ['WRAB_LHZ_II']    1
+159 128  WRAB10     LHZ   II  ['WRAB_LHZ_II']    1
+160 129   WUS00     LHZ    G    ['WUS_LHZ_G']    1
+161 130     WVT     LHZ   IU   ['WVT_LHZ_IU']    1
+162   0  XMAS00     LHZ   IU  ['XMAS_LHZ_IU']    0
+163 131   YAK00     LHZ   IU   ['YAK_LHZ_IU']    1
+164 132   YSS00     LHZ   IU   ['YSS_LHZ_IU']    1
