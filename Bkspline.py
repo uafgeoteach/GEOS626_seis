@@ -54,9 +54,14 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
         
     if ncol == 1:
         ff = np.zeros((ndata,1))
-        ff[inds2] = ((-0.25*dif[inds2]  + 0.75)*dif[inds2]  - 0.75)*dif[inds2] + 0.25
-        ff[inds3] = (0.75*r[inds3] - 1.5) * r[inds3]**2  + 1
-        ff[inds4] = 1
+        if len(inds2) != 0:
+            ff[inds2] = ((-0.25*dif[inds2]  + 0.75)*dif[inds2]  - 0.75)*dif[inds2] + 0.25
+        
+        if len(inds3) != 0:
+            ff[inds3] = (0.75*r[inds3] - 1.5) * r[inds3]**2  + 1
+            
+        if len(inds4) != 0:
+            ff[inds4] = 1
         
     else:
         cosdel = np.cos(th)*costh + np.sin(th) * sinth * np.cos(ph - ph_vec)
