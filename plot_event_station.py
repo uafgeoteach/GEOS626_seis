@@ -37,8 +37,8 @@ def plot_event_station(elat,elon,w=[],slat=[],slon=[],stas=[]):
                  transform=ccrs.PlateCarree())
     else:
         for i in range(len(slat)):
-            sln=slon[i]
-            slt=slat[i]
+            sln=float(slon[i])
+            slt=float(slat[i])
             sta=stas[i]
             ax.scatter(sln, slt, marker='o',c='r', s=75, transform=ccrs.PlateCarree())
             plt.text(sln - 2, slt - 2, sta,
