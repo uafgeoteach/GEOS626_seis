@@ -493,7 +493,8 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         wtemp=Stream()
         for tr in w:
             fval=statistics.mean(tr.data)
-            tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
+            #tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
+            tr.trim((tr.stats.starttime),(tr.stats.endtime), pad=True, fill_value=fval)
             wtemp.append(tr)
         w=wtemp
         
@@ -506,10 +507,11 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         wtemp=Stream()
         for tr in w:
             fval=statistics.mean(tr.data)
-            tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
+            tr.trim((tr.stats.starttime),(tr.stats.endtime), pad=True, fill_value=fval)
+            #tr.trim(min(starttime), max(endtime), pad=True, fill_value=fval)
             wtemp.append(tr)
         w=wtemp
-        
+        print(max(w[0]))
         # these operations might depend on whether the input is displacements
         # (which could have static offsets) or velocities
         print('pre-processing: detrend, demean, taper');
@@ -555,7 +557,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
             if T2[0] >= Tmax_for_mHz:
                 stfilt = ('T = %.1f-%.1f s (%.1f-%.1f mHz)' % (T1[0],T2[0],1/T2[0]*1e3,1/T1[0]*1e3))
             try:
-                '''
+                
                 for tr in w:
                     #sos = butter(5, [1/T2[0], 1/T1[0]], 'bandpass', output='sos');
                     lowcut=1/T2[0]
@@ -568,21 +570,19 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                     y = sosfiltfilt(sos, tr.data.copy())
                     tr.data=y
                     wfilt.append(tr)
-                    '''
-                wfilt=w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],zerophase=True)
+                    
+                #wfilt=w.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],zerophase=True)
             except:
                 print("filter didn't work")
-        w=wfilt        
-        '''
-        #w = filtfilt(f,w);   % apply filter
-        wtemp=Stream()
-        print(1/T2[0],1/T1[0])
-        b, a = signal.butter(2,[1/T2[0],1/T1[0]], 'bandpass', output='zpk')
+        w=wfilt
+        
+        '''wtemp=Stream()
         for tr in w:
-            tr.data=signal.filtfilt(b,a,tr.data)
+            fval=statistics.mean(tr.data)
+            dmean=tr.data/abs(fval)
+            tr.data=dmean
             wtemp.append(tr)
-        w=wtemp
-        '''
+        w=wtemp'''
         
         # apply identical filtering to synthetics, if present
         
@@ -593,14 +593,14 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
             wsyn.filter("bandpass", freqmin=1/T2[0], freqmax=1/T1[0],corners=npoles,zerophase=True)
     ##for trr in w: 
         ##trr.data=trr.data/max(abs(trr.data))
-    print(len(w))
     # integrate or differentiate
     # note: units of w will automatically change
     units = 'nm / sec'
     if iintp==1:
         if ifilter==0: 
             w.detrend()
-        w=w.integrate('spline')
+        w=w.integrate()
+        units = 'nm'
         if isyn==1:
             if ifilter==0:
                 wsyn.detrend()
@@ -608,6 +608,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         
     if iintp==-1:
         w.differentiate()        # help waveform/diff
+        units = 'nm / sec^2'
         if isyn==1:
             wsyn.differentiate()
     
@@ -624,7 +625,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     fttimes=[]
     for tra in w:
         #print(max(abs(tra.data)))
-        wmaxvec.append(max(abs(tra.data)))
+        wmaxvec.append(max(abs(tra.data[100:-100])))
         ftrs.append(tra.data)
         fttimes.append(tra.times("timestamp"))
         #tra.plot()
@@ -739,7 +740,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     for a in range(len(azbin)):
         azbin[a]=azbin[a]%360
     # vertical separation between seismograms
-    wsep = 1.5*statistics.median(wmaxvec)
+    wsep = 1.5*statistics.mean(wmaxvec)
     yshift = wsep*nfac
     
     if inorm[0]==1:
@@ -801,7 +802,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
         
         #tempfh = figure('Visible',displayfigs); hold on;
         figname='fig'+str(pp)
-        figname=plt.figure(figsize=(8,11))
+        figname=plt.figure(figsize=(9,11))
         ax = plt.subplot(111)
 
         #fig=plt.figure()
@@ -841,13 +842,14 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                         dy[jj] = dist[ii]
                 #norm=np.linalg.norm(di3)
                 
-                dplot = di3 /nvec[ii]      # key amplitude scaling
+                dplot = di3/nvec[ii]      # key amplitude scaling
                 dplotshift = dplot + dy[jj]
                 
                 # get the max value of the seismogram within the plotted time interval
                 #btplot = and(tplot > tlims(1),tplot < tlims(2));
                 #dplotmax = max([dplotmax max(abs(dplot(btplot)))]);
                 #plt.plot(ti3,dplot,'b')
+              
                 ax.plot(tplot,dplotshift,'b', linewidth=0.5);
                 # PLOT LABELS FOR EACH WAVEFORM
                 txtplace=max(rlabels, key=len)
@@ -861,7 +863,7 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
                 
                 if jj==0:
                     imx = np.argmax(abs(di3))
-                    
+                    mx=di3.max()
                     stmx = ('%s max %.2e %s at t = %.1f s ' % (sta[ii],di3[imx],units,tplot[imx]))
                 
                 '''
