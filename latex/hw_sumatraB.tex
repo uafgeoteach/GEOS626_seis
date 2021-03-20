@@ -231,8 +231,10 @@ See \citet[][p. 106]{SteinWysession} for background.
 %
 \begin{itemize}
 \item The Earth is flat.
-\item The travel time between the fault and any station is encapsulated with the simple velocity $v = 11$~km/s. This is the mean velocity for stations between $30^\circ < \Delta < 85^\circ$ of the source, assuming Jeffreys--Bullen P travel times and arc distances (not distances along the P wave ray path).
+\item The travel time between the fault and any station is encapsulated with the simple velocity $v = 11$~km/s. This is the mean apparent velocity for stations between $30^\circ < \Delta < 85^\circ$ of the source, assuming Jeffreys--Bullen P travel times and arc distances (not distances along the P wave ray path); see \refFig{fig:JB}.
 \item All stations are ``far'' from the fault, such that the distance from the station to the starting point is approximately equal to the distance from the station to the stopping point.
+\item The fault is positive in length: $L > 0$.
+\item The rupture speed is positive and less than the apparent P-wave speed: $0 < v_r < v$.
 \end{itemize}
 %
 The apparent rupture time as measured on a seismogram is given by \citep[][Section 4.3.2]{SteinWysession}
@@ -299,7 +301,7 @@ List the station name, distance $\Delta$, and azimuth $\alpha$ for each set of s
 \item (0.4) Using your data, estimate $T_{\rm min}$ and $T_{\rm max}$, then calculate the following quantities:
 %
 \begin{enumerate}
-\item rupture direction $\alpha_0$
+\item rupture direction $\alpha_0$ (this is inferred, not calculated)
 \item rupture time $\overline{T}_r$ (show work)
 \item rupture length $L$ (show work)
 \item rupture velocity $v_r$ (show work)
@@ -379,9 +381,9 @@ Hint: The variable \verb+nfac+ will change the amplitudes of the plotted wavefor
 %-------------------------------------------------------------
 
 \clearpage\pagebreak
+\input{wave_params_table}
 
-%\pagestyle{empty}
-
+\clearpage\pagebreak
 \begin{figure}
 \centering
 \begin{tabular}{cc}
@@ -397,6 +399,22 @@ These figures are generated from {\tt modes\_PREMobs.ipynb}.
 \label{fig:premmodes}
 \end{figure}
 
+% see get_JB_Ptime.m
+\clearpage\pagebreak
+\begin{figure}
+\centering
+\includegraphics[width=15cm]{sumatra_JBtraveltime.eps}
+\caption[]
+{{
+P wave traveltimes from Jeffreys--Bullen tables.
+The calculations are based on a source depth of 10~km.
+(a) Apparent P velocity as a function epicentral distances, based on the Jeffreys--Bullen travel time tables. 
+The mean velocity over the epicentral distance range $30^\circ < \Delta < 85^\circ$ is 10.8~km/s, which would provide a very rough approximation for the P wave velocity for all stations.
+(b) Linear fit transformed to traveltime: $P_t = \Delta_{\rm km} / (0.616 \Delta + 7.25)$.
+}}
+\label{fig:JB}
+\end{figure}
+
 %\begin{figure}
 %\begin{center}
 %\includegraphics[width=15cm]{modes_love_n5_blank.eps}
@@ -408,9 +426,6 @@ These figures are generated from {\tt modes\_PREMobs.ipynb}.
 %\label{fig:love_eigfun_n0}
 %\end{figure}
 
-\clearpage\pagebreak
-
-\input{wave_params_table}
 
 %-------------------------------------------------------------
 \end{document}

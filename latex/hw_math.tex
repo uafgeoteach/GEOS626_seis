@@ -130,46 +130,26 @@ Hint: Let $A\bu = \bv$ and show that $\|\bu\| = \|\bv\|$.
 \item (0.6) Show that 
 %
 \begin{eqnarray}
-\hlf \left( \bd - \bG\bem \right)^T \left( \bd - \bG\bem \right)
-&=& \hlf \bem^T\bA\bem + \bb^T\bem + c
-\label{lsq1}
+\hlf \left(\bG\bem - \bd \right)^T \left(\bG\bem - \bd\right)
+\end{eqnarray}
+%
+can be written as 
+%
+\begin{eqnarray}
+a + \bb^T\bem + \hlf \bem^T\bC\bem,
 \end{eqnarray}
 %
 where
 %
 \begin{equation}
-\bA = \bG^T\bG
+a = \hlf\bd^T\bd
 \,,\hspace{20pt}
 \bb = -\bG^T\bd
 \,,\hspace{20pt}
-c = \hlf\bd^T\bd
+\bC = \bG^T\bG
 \,.
 \end{equation}
 %
-See Note \footnote{The standard construction of a least squares problem is often given by
-%
-\begin{equation}
-\bG\bem = \bd,
-\label{lsq}
-\end{equation}
-%
-which has solution
-%
-\begin{equation}
-\bem = \left( \bG^T\bG \right)^{-1} \bG^T \bd.
-\label{lsq_sol}
-\end{equation}
-%
-This formulation in \refEq{lsq} is equivalent to minimizing the function
-%
-\begin{equation}
-F(\bem) = \hlf \sum_{i=1}^N \left(\;d_i - \left[ \bG\bem \right]_i \;\right)^2
-\;=\; \hlf \left\| \bd  - \bG\bem \right\|_{L2}^2
-\;=\; \hlf \left( \bd  - \bG\bem \right)^T \left( \bd - \bG\bem \right)
-\end{equation}
-}
-for context for this problem.
-
 Hint: For a scalar $a$, note that $a = a^T$.
 
 %----------------

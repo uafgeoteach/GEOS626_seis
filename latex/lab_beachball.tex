@@ -11,12 +11,13 @@
 
 \renewcommand{\baselinestretch}{1.25}
 
+% note: carlcommands is loaded in hw626_header.tex
 \input{waltcommands}
-\newcommand{\tvec}{\textcolor{red}{\mbt}}
-\newcommand{\bvec}{\textcolor{blue}{\mbb}}
-\newcommand{\pvec}{\textcolor{black}{\mbp}}
-\newcommand{\nvec}{\mbn}
-\newcommand{\svec}{\mbs}
+\newcommand{\fvect}{\textcolor{red}{\mbT}}
+\newcommand{\fvecb}{\textcolor{blue}{\mbB}}
+\newcommand{\fvecp}{\textcolor{black}{\mbP}}
+\newcommand{\fvecn}{\mbN}
+\newcommand{\fvecs}{\mbS}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -55,7 +56,7 @@ Last compiled: \today \\
 
 \item I will loan you a painted wooden model of a double couple moment tensor (``beachball''), as well as five dowel segments.
 
-\item A symmetric matrix is guaranteed to have three real eigenvalues. We follow the convention of eigenvalue ordering $\lambda_1 \ge \lambda_2 \ge \lambda_3$ with corresponding ordered eigenvectors \tvec\ (``tension axis''), \bvec\ (``neutral axis''), \pvec\ (``pressure axis'') (so $\lambda_t \ge \lambda_b \ge \lambda_p$). For this lab, we consider the double couple moment tensor, for which
+\item A symmetric matrix is guaranteed to have three real eigenvalues. We follow the convention of eigenvalue ordering $\lambda_1 \ge \lambda_2 \ge \lambda_3$ with corresponding ordered eigenvectors \fvect\ (``tension axis''), \fvecb\ (``neutral axis''), \fvecp\ (``pressure axis'') (so $\lambda_t \ge \lambda_b \ge \lambda_p$). For this lab, we consider the double couple moment tensor, for which
 %
 \begin{eqnarray*}
 \lambda_1 &=& \lambda
@@ -67,7 +68,7 @@ Last compiled: \today \\
 %
 where $\lambda > 0$.
 
-\item We follow the seismological convention that quadrants containing the tension axis (\tvec) are colored solid, while the quadrants containing the pressure axis (\pvec) are colored white.
+\item We follow the seismological convention that quadrants containing the tension axis (\fvect) are colored solid, while the quadrants containing the pressure axis (\fvecp) are colored white.
 
 \item A moment tensor can be written as \citep[][eq.~1]{TapeTape2012beach}
 %
@@ -75,7 +76,7 @@ where $\lambda > 0$.
 M = U D U^{-1}
 \end{equation}
 %
-where $U = [\tvec\; \bvec \; \pvec]$ is the (orthogonal) orientation matrix and 
+where $U = [\fvect\; \fvecb \; \fvecp]$ is the (orthogonal) orientation matrix and 
 %
 \begin{equation}
 D = \begin{pmatrix} \lambda_1 & 0 & 0 \\ 0 & \lambda_2 & 0 \\ 0 & 0 & \lambda_3 \end{pmatrix}
@@ -91,11 +92,11 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 \section*{Exercises}
 
 \begin{enumerate}
-\item Insert three dowels to give an eigenframe for the moment tensor. Use a red dowel for the tension vector \tvec, a blue for the neutral vector \bvec, and a yellow for the pressure vector~\pvec. If necessary, reverse one vector so that the triple \tvec, \bvec, \pvec\ is right-handed.
+\item Insert three dowels to give an eigenframe for the moment tensor. Use a red dowel for the tension vector \fvect, a blue for the neutral vector \fvecb, and a yellow for the pressure vector~\fvecp. If necessary, reverse one vector so that the triple \fvect, \fvecb, \fvecp\ is right-handed.
 
 %---------------------------
 
-\item Rotate the ball \dg{180} about any one of \tvec, \bvec, or \pvec.
+\item Rotate the ball \dg{180} about any one of \fvect, \fvecb, or \fvecp.
 %
 \begin{enumerate}
 \item Does the eigenframe change? (Think: eigenframe = dowels)
@@ -111,42 +112,42 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 \item
 
 \begin{enumerate}
-\item Insert a black dowel for the fault normal vector \nvec. How many possibilities are there?
+\item Insert a black dowel for the fault normal vector \fvecn. How many possibilities are there?
 
-\item Now insert a black dowel for the slip vector \svec. There is only one possibility. The slip vector points in the direction of the hemisphere (or ``block'') containing the normal vector.
+\item Now insert a black dowel for the slip vector \fvecs. There is only one possibility. The slip vector points in the direction of the hemisphere (or ``block'') containing the normal vector.
 
-\item Describe the motion of the fault blocks associated with your \nvec\ and \svec.
+\item Describe the motion of the fault blocks associated with your \fvecn\ and \fvecs.
 
-\item How does the motion change if you interchange \nvec\ and \svec?
+\item How does the motion change if you interchange \fvecn\ and \fvecs?
 
-\item How does the motion change if you reverse both \nvec\ and \svec?
+\item How does the motion change if you reverse both \fvecn\ and \fvecs?
 
 \end{enumerate}
 
 %---------------------------
 
-\item Change the orientation of the beachball (moment tensor) in some way, and let $\omega$ be the angle, in matrix space, between the initial moment tensor and the final moment tensor. Then $\omega$ measures how different the reoriented ball is from the original ball; $\omega=0$ means the two balls are identical, $\omega=\pi$ means the balls are negatives of each other.
+\item Remove \fvecn\ and \fvecs\ for now. the Change the orientation of the beachball (moment tensor) in some way, and let $\omega$ be the angle, in matrix space, between the initial moment tensor and the final moment tensor. Then $\omega$ measures how different the reoriented ball is from the original ball; $\omega=0$ means the two balls are identical, $\omega=\pi$ means the balls are negatives of each other.
 
 \begin{enumerate}
 \item Describe a rotation that will give $\omega=\pi$.
 
 \item Describe a non-trivial rotation that will give $\omega=0$.
 
-\item Convince yourself that if the reorientation is a rotation of \dg{90} about \pvec, then $\omega$ is small to moderate.
+\item Convince yourself that if the reorientation is a rotation of \dg{90} about \fvecp, then $\omega$ is small to moderate.
 
-\item CHALLENGE: Derive $\omega=\pi/3$ for a rotation of \dg{90} about \pvec.
+\item CHALLENGE: Derive $\omega=\pi/3$ for a rotation of \dg{90} about \fvecp.
 
-\item CHALLENGE: Derive $\omega=\pi/3$ for a rotation of \dg{90} about \tvec.
+\item CHALLENGE: Derive $\omega=\pi/3$ for a rotation of \dg{90} about \fvect.
 
 \end{enumerate}
 
 %---------------------------
 
-%\item Rotate the ball \dg{90} about \bvec. Find $\omega$.
+%\item Rotate the ball \dg{90} about \fvecb. Find $\omega$.
 
 %---------------------------
 
-%\item Rotate the ball \dg{180} about \nvec\ or \svec. Find $\omega$.
+%\item Rotate the ball \dg{180} about \fvecn\ or \fvecs. Find $\omega$.
 
 %---------------------------
 
@@ -218,8 +219,8 @@ Do this with a partner: one of you does the expression on the left-hand side, th
 \citep[Figure~8 of][]{TapeTape2013}. The tensor $D(\xx,\,\yy)$.
 %The square is the plane of the crack for the crack tensor.
 (a)~$\xx=\yy=0$. This beachball is the double couple $D=D(0,0)$ in a reference orientation.
-(b)~$\xx=\pi/4$ and $\yy=0$. This beachball is the result of rotating the first ball through angle \xx\ about its slip vector~\svec.
-(c)~$\xx=\yy=\pi/4$. This ball is the result of rotating the second ball through angle \yy\ about its neutral vector \bvec.
+(b)~$\xx=\pi/4$ and $\yy=0$. This beachball is the result of rotating the first ball through angle \xx\ about its slip vector~\fvecs.
+(c)~$\xx=\yy=\pi/4$. This ball is the result of rotating the second ball through angle \yy\ about its neutral vector \fvecb.
 \label{fig:XXandYY}
 }
 \end{figure}

@@ -23,17 +23,14 @@
   {/home/carltape/latex/notes/cmt/TapeTape/figures/}
 }
 
-%\newcommand{\tvec}{\textcolor{red}{\mbt}}
-%\newcommand{\bvec}{\textcolor{blue}{\mbb}}
-%\newcommand{\pvec}{\textcolor{yellow}{\mbp}}
-\newcommand{\tvec}{\mbt}
-\newcommand{\bvec}{\mbb}
-\newcommand{\pvec}{\mbp}
-\newcommand{\nvec}{\mbn}
-\newcommand{\svec}{\mbs}
+\newcommand{\fvect}{\textcolor{red}{\mbT}}
+\newcommand{\fvecb}{\textcolor{blue}{\mbB}}
+\newcommand{\fvecp}{\textcolor{black}{\mbP}}
+\newcommand{\fvecn}{\mbN}
+\newcommand{\fvecs}{\mbS}
 
-\newcommand{\eone}{\textcolor{red}{\e_1}}
-\newcommand{\etwo}{\textcolor{blue}{\e_2}}
+\newcommand{\eone}{\textcolor{red}{\mbe_1}}
+\newcommand{\etwo}{\textcolor{blue}{\mbe_2}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -143,18 +140,18 @@ See Figure~\ref{fig:templateDC}.
 \begin{enumerate}
 \item Write the matrix of the moment tensor for each of the vector fields.
 
-\item The $\tvec$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $\pvec$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\tvec$ and $\pvec$ in the right-hand plot.
+\item The $\fvect$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $\fvecp$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\fvect$ and $\fvecp$ in the right-hand plot.
 
-\item The fault normal vector is $\nvec$. The fault slip vector is $\svec$.
-The eigenvectors $\tvec$ and $pvec$ are not the fault vectors. For a double couple moment tensor only, the directions of the fault and slip vectors can be obtained from the eigenvectors as\footnote{This is not the only choice for defining $\nvec$ and $\svec$.}
+\item The fault normal vector is $\fvecn$. The fault slip vector is $\fvecs$.
+The eigenvectors $\fvect$ and $pvec$ are not the fault vectors. For a double couple moment tensor only, the directions of the fault and slip vectors can be obtained from the eigenvectors as\footnote{This is not the only choice for defining $\fvecn$ and $\fvecs$.}
 %
 \begin{eqnarray*}
-\nvec = (\tvec + \pvec)/\sqrt{2}
+\fvecn = (\fvect + \fvecp)/\sqrt{2}
 \\
-\svec = (\tvec - \pvec)/\sqrt{2}
+\fvecs = (\fvect - \fvecp)/\sqrt{2}
 \end{eqnarray*}
 %
-Sketch $\nvec$ and $\svec$ at the application point $\eone$ in the right-hand plot.
+Sketch $\fvecn$ and $\fvecs$ at the application point $\eone$ in the right-hand plot.
 
 \item What do the basis vectors in the left-hand plot represent?
 

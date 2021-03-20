@@ -5,6 +5,8 @@
 
 \renewcommand{\baselinestretch}{1.1}
 
+\newcommand{\fmag}{frequency--magnitude}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -12,7 +14,7 @@
 \begin{spacing}{1.2}
 \centering
 {\large \bf Problem Set 1: \\
-The Gutenberg--Richter frequency--magnitude relation [gr]} \\
+The Gutenberg--Richter \fmag\ relation [gr]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
 Assigned: January 14, 2021 --- Due: January 21, 2021 \\
 Last compiled: \today
@@ -30,7 +32,7 @@ Last compiled: \today
 \item to practice using Python for scientific computing and plotting
 \item to think critically about histograms
 \item to review and apply some concepts of differentiation
-\item to understand the frequency--magnitude relation, including some of its subtler points
+\item to understand the \fmag\ relation (\refeq{GR})\footnote{This empirical formula is referred to as a + b, where a = ``\fmag\'' or ``Gutenberg--Richter'' and b = ``relation'' or ``relationship'' or ``distribution'' or ``law''.}, including some of its subtler points
 \end{enumerate}
 %
 If you are new to Python, let me know.
@@ -62,9 +64,9 @@ If you want to use Latex for your homeworks, see the templates in the folder \ve
 %------------------------
 
 \pagebreak
-\subsection*{The Gutenberg--Richter frequency--magnitude relation}
+\subsection*{The Gutenberg--Richter \fmag\ relation}
 
-The Gutenberg--Richter frequency-magnitude relation \citep{GutenbergRichter1944} is one of the cornerstone empirical relationships in seismology. It is given by
+The Gutenberg--Richter \fmag\ relation \citep{GutenbergRichter1944} is one of the cornerstone empirical relationships in seismology. It is given by
 %
 \begin{equation}
 \log_{10} N = a - b\,M,
@@ -76,7 +78,8 @@ where
 \begin{itemize}
 \item $N$ is the cumulative number of earthquakes having magnitudes larger than $M$ that occur in region $R$ within a particular time $T$
 \item $M$ is the earthquake magnitude; we take this to be moment magnitude $\mw$
-\item $b$ controls the slope of the seismicity distribution in region $R$ within a particular time $T$; $b \approx 1$ for most earthquake catalogs. The line will always increase to the left, so \refEq{GR} has a negative slope and therefore $b > 0$ by definition.
+\item $b$ controls the slope of the seismicity distribution in region $R$ within a particular time $T$. The line will always increase to the left, so \refEq{GR} has a negative slope and therefore $b > 0$ by definition.
+\item $b \approx 1$ for most earthquake catalogs
 \item $a$ indicates the seismic activity in region $R$ within a particular time $T$
 \end{itemize}
 %
@@ -90,9 +93,9 @@ A subtle point is that in practice the magnitudes are {\em binned}, then a line 
 where the index $i$ refers to the magnitude bin, with $M_i$ being the magnitude at the left boundary of the bin.
 
 \begin{itemize}
-\item The {\em cumulative distribution} is the cumulative number of events with $M \ge M_i$; the frequency-magnitude relation is expressed as a cumulative distribution.
+\item The {\em cumulative distribution} is the cumulative number of events with $M \ge M_i$; the \fmag\ relation is expressed as a cumulative distribution.
 \item The {\em incremental distribution} is the number of events per magnitude bin, $M_i \le M \le M_{i+1}$.
-\item A {\em magnitude interval} is a range of magnitude, \eg the magnitude interval $[8.7,9.0]$.
+\item A {\em magnitude interval} is a range of magnitude, \eg the magnitude interval $[8.7,9.0]$. For the cumulative distribution, a magnitude interval should be expressed as an open interval, such as $M \ge 6.2$, rather than $6.2 \le M \le 6.3$.
 \end{itemize}
 
 %\pagebreak
@@ -155,7 +158,8 @@ Which distribution---incremental or cumulative---has more scatter?
 \begin{enumerate}
 \item (0.6) Find a best-fitting line, $\log_{10} N = a - b M$, for the `most linear' section of the $\log_{10}$-scaled cumulative distribution. You can simply pick two points and compute the line, or use a command such as \verb+polyfit+ (and \verb+polyval+) to apply a least-squares fit to a set of points. (Do not fit a line to the entire distribution!) What are your values for $a$ and $b$? (Show your work.)
 
-\item (1.0) Plot your best-fitting line over the full range of magnitudes and include this plot in your write-up. Include both the incremental and cumulative distributions in your plot.
+\item (1.0) Plot your best-fitting line along with the full data set.
+Include both the incremental and cumulative distributions in your plot.
 
 \item (0.3) $a$ is the $y$-intercept. What is its physical meaning?
 
@@ -173,7 +177,7 @@ Note: The expected value does not have to agree with what actually occurred with
 
 %-------
 
-\item (0.2) The ``catalog completeness'' \citep[\eg][]{WiemerWyss2000} $M_c$ represents the smallest magnitude above which the frequency-magnitude distribution is representative for a particular seismicity catalog. What is the catalog completeness for GCMT? List your answer with 0.1 precision. (Provide a brief explanation, but no computation is necessary.)
+\item (0.2) The ``catalog completeness'' \citep[\eg][]{WiemerWyss2000} $M_c$ represents the smallest magnitude above which the \fmag\ distribution is representative for a particular seismicity catalog. What is the catalog completeness for GCMT? List your answer with 0.1 precision. (Provide a brief explanation, but no computation is necessary.)
 
 \end{enumerate}
 
@@ -227,7 +231,7 @@ The incremental distribution is given by
 \end{equation}
 %
 \begin{enumerate}
-\item (1.7) Using the discrete frequency-magnitude relation (\refeq{GRd}), show that the incremental distribution can be written as
+\item (1.7) Using the discrete \fmag\ relation (\refeq{GRd}), show that the incremental distribution can be written as
 %
 \begin{equation}
 \log_{10}(-\Delta N_i) = a + \Delta a - b M_i
@@ -275,7 +279,7 @@ List the expression for $\Delta a$.
 
 %-------------------------------------------------------------
 
-%\pagebreak
+\pagebreak
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------

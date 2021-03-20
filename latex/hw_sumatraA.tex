@@ -136,15 +136,32 @@ $A(\omega)$ is clearly the amplitude in the sense that
 
 \end{itemize}
 
+%=============================================================
+
 \begin{enumerate}
 
-\item (0.1) Let $z$ be a complex number and $z^*$ its complex conjugate. Derive the following expressions in two different ways: (1)~$z = r e^{i\theta}$, (2)~$z = a+bi$.
+\item (0.1) Let $z$ be a complex number and $z^*$ its complex conjugate.
+
+\begin{enumerate}
+
+\item Derive the following expressions using $z = r e^{i\theta}$:
 %
 \begin{enumerate}
-\item $z_1 z_2$ (derive new $r$ and $\theta$ or $a$ and $b$)
-\item $z_1 / z_2$ (derive new $r$ and $\theta$ or $a$ and $b$)
+\item $z_1 z_2$ (derive new $r$ and $\theta$)
+\item $z_1 / z_2$ (derive new $r$ and $\theta$)
 \item $(z_1 z_2)^* = z_1^* z_2^*$
 \item $|z| = \sqrt{z^* z}$
+\end{enumerate}
+
+\item Derive the following expressions using $z = a+bi$.
+%
+\begin{enumerate}
+\item $z_1 z_2$ (derive new $a$ and $b$)
+\item $z_1 / z_2$ (derive new $a$ and $b$)
+\item $(z_1 z_2)^* = z_1^* z_2^*$
+\item $|z| = \sqrt{z^* z}$
+\end{enumerate}
+
 \end{enumerate}
 
 %-----------
@@ -238,13 +255,13 @@ where the prime ($'$) represents differentiation with respect to $u$.
 with slope $m$.
 Let $A(\omega) = A_0(\omega)$ represent the amplitude spectrum for a displacement time series $\fft(t)$. Let $A(\omega)$ be flat ($m=0$).
 
-What is the slope of the amplitude spectrum for velocity, $A_1(\omega)$, in log-log space?
+What is the slope of the amplitude spectrum for velocity $A_1(\omega)$ in log-log space?
 
 Hint: Write \refEq{Alin} as $g_0(u)$.
 
 \item Now let $A(\omega) = A_0(\omega)$ have slope $m=-2$ in log-log space.
 
-What is the slope of the acceleration spectrum, $A_2(\omega)$, in log-log space?
+What is the slope of the acceleration spectrum $A_2(\omega)$ in log-log space?
 
 \end{enumerate}
 
@@ -332,13 +349,18 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 
 %-------------------
 
-\item (0.4) Does your spectrum $|X_a(\omega)|$ look different from the one in \citet{Park2005}? Why might this be the case? In other words, what ``choices'' were taken that could influence some of the details in the spectrum?
+\item (0.4) 
+%
+\begin{enumerate}
+\item (0.2) Explain how your spectrum $|X_a(\omega)|$ differs from the one in \citet{Park2005}.
+\item (0.2) Why might this be the case? In other words, what ``choices'' were taken that could influence some of the details in the spectrum?
+\end{enumerate}
 
 \end{enumerate}
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 3 (2.0). Spectral analysis of noise}
 
 Run \tfilenoise. This will generate a time series at CAN for 10 days prior to the Sumatra earthquake.
@@ -378,7 +400,7 @@ where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \section*{Problem 4 (4.0). Spectral analysis of the Sumatra earthquake recorded at Canberra}
 
 \begin{itemize}
@@ -421,7 +443,7 @@ In your 3-hour spectrum can you identify any of the normal modes in the range $[
 \begin{enumerate}
 \item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
 
-If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+scipy.signal.filtfilt+, \verb+scipy.signal.hilbert()+, and \verb+smooth+ in this order.
+If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+scipy.signal.filtfilt+, \verb+scipy.signal.hilbert()+, \verb+abs+, and \verb+smooth+ in this order.
 
 \item (0.2) What else do you notice in the filtered seismogram?
 \end{enumerate}
