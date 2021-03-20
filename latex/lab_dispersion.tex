@@ -47,7 +47,8 @@ Last compiled: \today \\
 
 \item A key point is that in this lab the emphasis is on {\bf phase}, which we use to calculate traveltime differences. In the solar motion lab the emphasis was on {\bf amplitude}, which we used to identify the planets that influenced the sun's motion. (We did use phase to identify which planet was revolving about the sun in a negative sense.)
 
-\item The key Matlab functions for the lab are \verb+hilbert+, \verb+fft+, and \verb+ifft+. The function \verb+bandpass.m+ is only in the class repository.
+\item The key Python functions for the lab are \verb+scipy.signal.hilbert()+, \verb+numpy.fft.fft()+, and \verb+numpy.fft.ifft()+. Also required are \verb+scipy.signal.butter()+ and \verb+scipy.signal.filtfilt()+ for bandpass filtering.
+%The function \verb+bandpass.m+ is only in the class repository.
 
 \end{itemize}
 
@@ -68,7 +69,7 @@ Using the seismograms in \refFig{fig:seis}, your task is to calculate the group 
 \item Which station records larger amplitudes?
 \end{enumerate}
 
-\item Run the sample program \verb+lab_dispersion.m+ and examine the amplitude spectrum of the two time series. 
+\item Run the sample program \verb+lab_dispersion.ipynb+ and examine the amplitude spectrum of the two time series. 
 %
 \begin{enumerate}
 \item What is the range of dominant frequencies?
@@ -81,7 +82,7 @@ Using the seismograms in \refFig{fig:seis}, your task is to calculate the group 
 \end{equation*}
 %
 What does the first entry of $\ffw(\omega)$ correspond to? \\
-(See \verb+notes_fft.pdf+ or the note \verb+explore these to see...+ in your matlab script.)
+(See \verb+notes_fft.pdf+ or the note \verb+explore these to see...+ in your Python script.)
 \item How many entries are in:
 \begin{itemize}
 \item the time series
@@ -90,7 +91,7 @@ What does the first entry of $\ffw(\omega)$ correspond to? \\
 \end{itemize}
 \end{enumerate}
 
-\item Uncomment the plotting commands to plot the envelope functions of the time series. The envelope function is calculated from the Hilbert transform (\verb+hilbert+). You will need the envelope functions in the next problem.
+\item Uncomment the plotting commands to plot the envelope functions of the time series. The envelope function is calculated from the Hilbert transform (\verb+scipy.signal.hilbert+). You will need the envelope functions in the next problem.
 
 \end{enumerate}
 
@@ -99,11 +100,13 @@ What does the first entry of $\ffw(\omega)$ correspond to? \\
 \section{Group speed}
 
 \begin{enumerate}
-\item Check out the input parameters defined at the start of \verb+lab_dispersion.m+. You will want to use all of these in this problem.
+\item Check out the input parameters defined at the start of \verb+lab_dispersion.ipynb+. You will want to use all of these in this problem.
 
-\item What does the function \verb+bandpass.m+ do?
+\item Explain the input commands and parameters need to bandpass filter.
 
-\item Using \verb+bandpass.m+, compute a bandpass-filtered version of the PAS time series. Given a target period of $f_0 = 1/20$~Hz, use the bandpass frequency limits of $f_a = f_0(1-p)$ and $f_b = f_0(1+p)$ where $p = 0.2$.
+%\item What does the function \verb+bandpass.m+ do?
+
+\item Using \verb+scipy.signal.butter()+ and \verb+scipy.signal.filtfilt()+, compute a bandpass-filtered version of the PAS time series. Given a target period of $f_0 = 1/20$~Hz, use the bandpass frequency limits of $f_a = f_0(1-p)$ and $f_b = f_0(1+p)$ where $p = 0.2$.
 
 \item In a $4 \times 1$ subplot figure, plot the bandpass-filtered versions of PAS for the target periods of 20, 30, 40, and 50~s; plot one time series per subplot. Superimpose the envelope function on each time series.
 
@@ -118,7 +121,7 @@ U(T) = \frac{\Delta x}{t_2(T) - t_1(T)},
 %
 where $\Delta x = 331$~km. Enter your values in \refTab{tab:group}.
 
-Hint: Use \verb+[~,imax] = max(h)+ to get the index of the maximum of \verb+h+, then \verb+ti(imax)+ to get the corresponding time.
+Hint: Use \verb+imax = numpy.argmax(numpy.around(h,4))+ to get the index of the maximum of \verb+h+, then \verb+ti[imax]+ to get the corresponding time.
 
 \item Plot $U$ versus $T$ for the four measurements.
 \end{enumerate}
@@ -131,12 +134,12 @@ Hint: Use \verb+[~,imax] = max(h)+ to get the index of the maximum of \verb+h+, 
 \begin{enumerate}
 
 \item Phase speed measurements are more difficult than group speed measurements. We need to compute the {\em harmonics} of the time series in \refFig{fig:seis}. A harmonic refers is a signal with a single frequency (``monochromatic'').
-You will {\bf not} be using \verb+bandpass.m+.
+You will {\bf not} need to bandpass the signal.
 %
 \begin{itemize}
 \item Determine how the frequency vector in Matlab is stored (recall \verb+lab_fft.pdf+ and \verb+notes_fft.pdf+), then try to compute the harmonics of both time series for the target periods of 20, 30, 40, and 50~s. (See \refFig{fig:spec}.)
 \item For each period, make a plot with the harmonic of PAS and the harmonic of NEE, each normalized to 1.
-\item Plot using the time limits 2100 to 3100 s (\verb+xlim([2100 3100])+).
+\item Plot using the time limits 2100 to 3100 s (\verb+plt.xlim([2100, 3100])+).
 \end{itemize}
 
 \item Experiment with adding two harmonics together. Plot the time series that is the sum of the 20~s and 50~s harmonics for PAS.
@@ -169,9 +172,9 @@ Solve for $\Delta t$ for the case with $N = 0$. Compute the min and max values f
 
 \item Plot the unit-normalized harmonics for PAS and NEE for periods 20, 30, 40, and 50~s.
 
-Plot using the time limits 2580 to 2780 s (\verb+xlim([2580 2780])+).
+Plot using the time limits 2580 to 2780 s (\verb+plt.xlim([2580, 2780])+).
 
-\item Measure the phase between PAS and NEE for the 20~s harmonic; use the command \verb+markt+ (note \footnote{Click on the figure, then type {\tt markt} in the command window, then click on the figure. You can zoom in on the peaks, but you must get out of the ``magnify mode'' to use {\tt markt}.}) to click points on your plots. 
+\item Measure the phase between PAS and NEE for the 20~s harmonic; use the function \verb+markt+ defined for you (note \footnote{See lab_fft.ipynb or hw_inv.ipynb to see how to interact with figures}) to click points on your plots. 
 %
 \begin{eqnarray*}
 t_1 &=& 
