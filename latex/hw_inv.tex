@@ -34,7 +34,7 @@ Last compiled: \today
 
 %\item A PDF of \citet{PREM} is available on the course website on Blackboard.
 
-\item Before you start, make sure you have done the lab exercise associated with \verb+lab_linefit.m+
+\item Before you start, make sure you have done the lab exercise associated with \verb+lab_linefit.ipynb+
 
 \end{itemize}
 
@@ -82,9 +82,9 @@ The entries in $\bem$ are the numbers listed in Table~1 of \citet{PREM}.
 % BUT THINKING ABOUT TRAVEL TIMES, USING VS (HERE) MIGHT BE BETTER TO USE
 
 \begin{enumerate}
-\item (0.6) Write a Matlab function that inputs a vector of radial (or depth) values and outputs a vector of $\vs$ values; include your code.
+\item (0.6) Write a Python function that inputs a vector of radial (or depth) values and outputs a vector of $\vs$ values; include your code.
 
-Hint: Use the command \verb+polyval+ to save some time.
+Hint: Use the command \verb+np.polyval+ to save some time.
 
 \item (0.2) Compute $\vs$ for depths of 1.5~km, 10~km, 20~km, and 50~km.
 %
@@ -185,9 +185,9 @@ List the expressions for $x_i$ and $y_i$ in terms of $a$, $b$, $c$, and $\theta_
 
 \item (1.0) Now assume an input set of $N$ polar angles, $\btheta = (\theta_1, \theta_2, \ldots, \theta_N)$, and you want to determine the corresponding output $(x,y)$-points describing the ellipse.
 
-Write a Matlab function \verb+[x,y] = getellipse(m,theta)+ (include your code) that generates the proper output. Plot the result for the model $\bem = (0.1,\,0.3,\,0.5)$ using input \makebox{angles $\btheta = (0, \ldots, 2\pi)$}. Use the command \verb+axis equal, axis([-5 5 -5 5])+ for your plot.
+Write a Python function \verb+getellipse(m,theta)+ that returns \verb+x+ and \verb+y+ values (include your code) that generates the proper output. Plot the result for the model $\bem = (0.1,\,0.3,\,0.5)$ using input \makebox{angles $\btheta = (0, \ldots, 2\pi)$}. Use the command \verb+plt.axis([-5, 5, -5, 5])+ for your plot.
 
-Hint: For $N$ linearly spaced angles, use \verb+theta = linspace(0,2*pi,N)'+.
+Hint: For $N$ linearly spaced angles, use \verb+theta = np.linspace(0,2*np.pi,N)+.
 
 \end{enumerate}
 
@@ -238,7 +238,7 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 
 \item (1.0)
 \begin{enumerate}
-\item (0.5) Using Matlab, implement your result in 3-1-c and solve for $\bem$ using the data
+\item (0.5) Using Python, implement your result in 3-1-c and solve for $\bem$ using the data
 %
 \begin{equation*}
 (x_i,\;y_i) \;:\; (3,3),\;(1,-2),\;(0,3),\;(-1,2),\;(-2,-2),\;(0,-4),\;(-2,0),\;(2,0).
@@ -246,7 +246,7 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 
 %(Hint: The design matrix $\bG$ should be $8 \times 3$.)
 
-\item (0.0) Check that the result is the same as if you simply use the ``\verb+\+'' command: \verb+m = G\d+.
+\item (0.0) Check that the result is the same as if you simply use the ``\verb+\+'' command: \verb+m = np.linalg.pinv(G)*d+.
 
 \item (0.5) Produce a plot showing both the data and the best-fitting ellipse.
 
@@ -256,28 +256,30 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 
 \item (0.5) Pick a set of your own points, then generate a plot containing your points and the best-fitting ellipse. Note that you should {\bf pick points that are in the vicinity of the boundary of some ellipse centered at the origin}.
 
-You may find it easier to use the lines of code below to select your points. You can copy these lines of code directly from the PDF, then paste them into Matlab.
+There is a cell in the Notebook provided for you that allows you to choose points on a plot, and saves the points to two arrays.
+
+%You may find it easier to use the lines of code below to select your points. You can copy these lines of code directly from the PDF, then paste them into Jupyter.
 
 \pagebreak
-\small
-\begin{spacing}{1.0}
-\begin{verbatim}
-figure;
-sd = 3;
-hold off, axis equal, axis([-sd sd -sd sd]), axis manual, hold on, grid on
-x = []; y = []; button = 1;
-disp('Now we get another best-fitting ellipse centered at (0,0).');
-disp('Click on your input points using the mouse.');
-disp('Hit any key after the final point is entered.');
-plot([-sd sd], [0 0], 'k', [0 0], [-sd sd], 'k');
-while button==1
-    [xx,yy,button] = ginput(1);
-    disp(sprintf('    (%.2f, %.2f)',xx,yy));
-    x = [x; xx]; y = [y; yy]; plot(xx,yy,'x')
-end
-whos x y
-\end{verbatim}
-\end{spacing}
+%\small
+%\begin{spacing}{1.0}
+%\begin{verbatim}
+%figure;
+%sd = 3;
+%hold off, axis equal, axis([-sd sd -sd sd]), axis manual, hold on, grid on
+%x = []; y = []; button = 1;
+%disp('Now we get another best-fitting ellipse centered at (0,0).');
+%disp('Click on your input points using the mouse.');
+%disp('Hit any key after the final point is entered.');
+%plot([-sd sd], [0 0], 'k', [0 0], [-sd sd], 'k');
+%while button==1
+%    [xx,yy,button] = ginput(1);
+%    disp(sprintf('    (%.2f, %.2f)',xx,yy));
+%    x = [x; xx]; y = [y; yy]; plot(xx,yy,'x')
+%end
+%whos x y
+%\end{verbatim}
+%\end{spacing}
 
 \end{enumerate}
 
