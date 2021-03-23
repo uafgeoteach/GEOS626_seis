@@ -451,13 +451,13 @@ Then compute $\Mmat_2$ for
 %
  Verify that the two moment tensors are the same (to two significant figures or so). Note \footnote{The GCMT catalog lists angles rounded to integer values. Their moment tensor elements are listed with greater precision, so I use these to obtain more precise fault angles to use.}.
 
-\item (0.2) Verify that they are close to the GCMT solution. To make this comparison you will need to normalize both moment tensors so that they have the same magnitude.
+\item (0.2) Verify that they are close to the GCMT solution. To make this comparison, you will need to normalize both moment tensors so that they have the same magnitude.
 %
 \begin{equation}
 \frac{\Mmat_1}{\|\Mmat_1\|} \approx \frac{\Mmat_{\rm denali} }{\|\Mmat_{\rm denali}\|}
 \end{equation}
 %
-Matrix normalization can be done with \verb+M/norm(M(:))+. The syntax \verb+M(:)+ is critical\footnote{Warning: {\tt norm(M)} will {\em not} give you the desired result. {\tt norm(M)} will return the largest singular value of matrix~$\Mmat$.}, since this turns $M$ into a nine-vector, and then \verb+norm+ returns the magnitude (\ie Euclidean length).
+See example code in \verb+hw_mt.ipynb+ for how to normalize a matrix; in essence, you turn the $3 \times 3$ matrix into a $9 \times 1$ vector, then take the norm, then divide each entry by the norm. (Note \footnote{{\tt norm(M)} will {\em not} give you the desired result. It will instead return the largest singular value of matrix~$\Mmat$.})
 
 \item (0.1) After normalization, why do we expect our moment tensor to {\em not} be identical to the GCMT version (besides numerical errors)?
 
