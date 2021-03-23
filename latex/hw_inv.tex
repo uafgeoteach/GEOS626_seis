@@ -34,6 +34,8 @@ Last compiled: \today
 
 %\item A PDF of \citet{PREM} is available on the course website on Blackboard.
 
+\item Notation (see \verb+notes_taylor.pdf+): $\ndata$ is number of data, $\nparm$ is the number of (unknown) model parameters.
+
 \item Before you start, make sure you have done the lab exercise associated with \verb+lab_linefit.ipynb+
 
 \end{itemize}
@@ -183,17 +185,17 @@ f(\bem,\,\theta_i) = (x_i,\,y_i).
 %
 List the expressions for $x_i$ and $y_i$ in terms of $a$, $b$, $c$, and $\theta_i$.
 
-\item (1.0) Now assume an input set of $N$ polar angles, $\btheta = (\theta_1, \theta_2, \ldots, \theta_N)$, and you want to determine the corresponding output $(x,y)$-points describing the ellipse.
+\item (1.0) Now assume an input set of $\ndata$ polar angles, $\btheta = (\theta_1, \theta_2, \ldots, \theta_{\ndata})$, and you want to determine the corresponding output $(x,y)$-points describing the ellipse.
 
 Write a Python function \verb+getellipse(m,theta)+ that returns \verb+x+ and \verb+y+ values (include your code) that generates the proper output. Plot the result for the model $\bem = (0.1,\,0.3,\,0.5)$ using input \makebox{angles $\btheta = (0, \ldots, 2\pi)$}. Use the command \verb+plt.axis([-5, 5, -5, 5])+ for your plot.
 
-Hint: For $N$ linearly spaced angles, use \verb+theta = np.linspace(0,2*np.pi,N)+.
+Hint: For $\ndata$ linearly spaced angles, use \verb+theta = np.linspace(0,2*np.pi,ndata)+.
 
 \end{enumerate}
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \subsection*{Problem 3 (4.0). Inverse problem: fitting an ellipse to a set of data}
 
 From Problem 2, you should now have a plotting tool for an arbitrary ellipse model $\bem$.
@@ -203,12 +205,12 @@ For this problem, you do not need the parameter $\theta$.
 \item (0.5) 
 
 \begin{enumerate}
-\item (0.0) Let's assume that we have a set of $N=8$ points: $(x_1,y_1), \ldots, (x_N,y_N)$. \\
+\item (0.0) Let's assume that we have a set of $\ndata=8$ points: $(x_1,y_1), \ldots, (x_{\ndata},y_{\ndata})$. \\
 Using \refEq{ellipse}, write down a system of 8 equations containing the unknowns $a$, $b$, and $c$.
 
-\item  (0.4) In schematic matrix form, write down the least-squares problem $\bG\bem=\bd$ whose unknown vector is $\bem = (a,b,c)^T$, and show the dimensions of each array.
+\item  (0.4) In schematic matrix form, write down the least-squares problem $\bG\bem=\dvec$ whose unknown vector is $\bem = (a,b,c)^T$, and show the dimensions of each array.
 
-\item (0.1) Solve $\bG\bem=\bd$ for $\bem$ in symbolic form (\ie with $\bG$, $\bem$, and $\bd$ only), and assume that $\bG$ has rank $M = 3$ and $N > M$ (``overdetermined''). Show your steps.
+\item (0.1) Solve $\bG\bem=\dvec$ for $\bem$ in symbolic form (\ie with $\bG$, $\bem$, and $\dvec$ only), and assume that $\bG$ has rank $\nparm = 3$ and $\ndata > \nparm$ (``overdetermined''). Show your steps.
 \end{enumerate}
 
 %-----------------
@@ -216,11 +218,11 @@ Using \refEq{ellipse}, write down a system of 8 equations containing the unknown
 \item (1.0) Starting with the least-squares misfit function
 %
 \begin{equation}
-F(\bem) = \hlf (\bd - \bG\bem)^T(\bd - \bG\bem)
+F(\bem) = \hlf (\bG\bem - \dvec)^T(\bG\bem - \dvec)
 \end{equation}
 %
 derive the expressions for the gradient, $\bgamma(\bem)$, and the Hessian, $\bH(\bem)$. \\
-Your answer should include only these variables: $a$, $b$, $c$, $x_i$, $y_i$, and $N$.
+Your answer should include only these variables: $a$, $b$, $c$, $x_i$, $y_i$, and $\ndata$.
 
 Hint: See the class notes on the linear regression example (\verb+notes_taylor.pdf+).
 
@@ -229,7 +231,7 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 \item (1.0) Show that your previous answers can be expressed as
 %
 \begin{eqnarray}
-\bgamma(\bem) &=& -\bG^T\bd + \bG^T\bG\bem
+\bgamma(\bem) &=& -\bG^T\dvec + \bG^T\bG\bem
 \\
 \bH(\bem) &=& \bG^T\bG
 \end{eqnarray}
@@ -246,7 +248,7 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 
 %(Hint: The design matrix $\bG$ should be $8 \times 3$.)
 
-\item (0.0) Check that the result is the same as if you simply use the ``\verb+\+'' command: \verb+m = np.linalg.pinv(G)*d+.
+\item (0.0) Check that the result is the same as if you simply use the ``\verb+\+'' command: \verb+mest = np.linalg.pinv(G)*dobs+.
 
 \item (0.5) Produce a plot showing both the data and the best-fitting ellipse.
 
