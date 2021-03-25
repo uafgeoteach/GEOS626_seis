@@ -15,6 +15,6 @@ def gridvec(xmin,xmax,numx,ymin,ymax):
     xvec = np.reshape(X,(a*b,1))
     yvec = np.reshape(Y,(a*b,1))
     
-    num = len(yvec0)
+    numy = len(yvec0)
     
-    return xvec, yvec, num
+    return xvec, yvec, numy, X, Y
