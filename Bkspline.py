@@ -11,7 +11,11 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
         OUTPUT:
             ff              = value of the spline function (and derivatives)
                               evaluated at the specified lon-lat points"""
-        
+    
+    # allow for scalar input values
+    lon_vec = np.atleast_1d(lon_vec)
+    lat_vec = np.atleast_1d(lat_vec)
+    
     # convert to theta-phi
     deg = 180/np.pi
     ph     = clon/deg
