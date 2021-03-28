@@ -108,7 +108,7 @@ http://lucien.saviot.free.fr/terre/index.en.html
 wsub=w.select(station='CAN')
 \end{verbatim}
 
-Or to remove traces from stream, try Stream.remove() and Stream.pop():
+Or to remove traces from stream, try \verb+Stream.remove()+ and \verb+Stream.pop()+:
 
 \begin{verbatim}
 wcut=w.remove(station='CAN')
@@ -143,6 +143,8 @@ List them in increasing frequency.
 %\item What toroidal and spheroidal modes observed in 1980 are not present in Figure~1 of \citet{Park2005}?
 %\item What two modes are on top of each other?
 \item (0.2) Using Ruedi Widmer--Schnidrig's interactive website (above), check out the eigenfunctions for \snl{0}{2}, \snl{1}{2}, and \snl{2}{2}. Describe the differences qualitatively. Explain two reasons why \snl{2}{2} will be difficult to observe.
+
+Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mode having degree $l=2$ and radial order (or overtone number) $n=0$.
 \end{enumerate}
 
 %---------
@@ -376,7 +378,6 @@ Hint: The variable \verb+nfac+ will change the amplitudes of the plotted wavefor
 
 %-------------------------------------------------------------
 %\pagebreak
-\bibliographystyle{agu08}
 \bibliography{carl_abbrev,carl_him,carl_main,carl_slab}
 %-------------------------------------------------------------
 
