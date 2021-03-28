@@ -5,13 +5,6 @@
 
 \renewcommand{\baselinestretch}{1.0}
 
-\newcommand{\Tnl}{\mbox{${}_nT_l$}}   % eigenfun
-\newcommand{\Wnl}{\mbox{${}_nW_l$}}   % eigenfun
-\newcommand{\Ynl}{\mbox{${}_nY_l$}}   % spherical harmonics
-\newcommand{\omnl}{\mbox{${}_{n\hspace{-0.2 mm}}\omega_l$}}  % eigfreq
-\newcommand{\fnl}{\mbox{${}_{n\hspace{-0.2 mm}}f_l$}}        % eigfreq
-\newcommand{\blank}{xxxx}
-
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -29,7 +22,8 @@ Last compiled: \today \\
 \subsection*{Overview and instructions}
 
 \begin{itemize}
-\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python. (For example, the emphasis on global variables may no longer be needed.)
+\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python.
+%(For example, the emphasis on global variables may no longer be needed.)
 
 \item This problem set provides a hands-on introduction to how normal modes of a particular earth model can be computed. The goal is to gain a better understanding for the concepts of normal modes, eigenfrequencies, eigenfunctions, and dispersion.
 
@@ -475,7 +469,7 @@ dWT(2,1) = ((l-1)*(l+2)*mu/(r*r) - rho*omega*omega)*WT(1) - 3*WT(2)/r;
 \subsection{\tt earthfun.m}
 \label{sec:earthfun}
 
-This is a fourth Matlab script---a template that you can adapt in order to implement a simple (linear or cubic) profile of $\rho(r)$ and $\mu(r)$, in stead of a homogeneous model of $\rho$ and $\mu$.
+This is a fourth script---a template that you can adapt in order to implement a simple (linear or cubic) profile of $\rho(r)$ and $\mu(r)$, in stead of a homogeneous model of $\rho$ and $\mu$.
 %
 \small
 \begin{verbatim}
@@ -537,8 +531,7 @@ So ``the mode'' or ``the solution'' \tnl{n}{l} (to \refeq{ODEs}) has three parts
 \tnl{n}{l} \hspace{10pt} \left\{
 \begin{tabular}{ll}
 $\omnl$  \\
-$\Wnl(r)$ \\
-$\Tnl(r)$ 
+$\Wnl(r)$ and $\Tnl(r)$ (see \refeq{Tr})
 \end{tabular} \right.
 \end{equation}
 %
@@ -554,7 +547,7 @@ $\Tnl(r)$
 \item List and name the variables that describe the Earth structure.
 %How many material variables are present?
 
-\item What is the physical meaning of $Wnl(r)$ and $Tnl(r)$?
+\item What is the physical meaning of $\Wnl(r)$ and $\Tnl(r)$?
 \end{enumerate}
 
 %---------
@@ -581,7 +574,7 @@ $\Tnl(r)$
 \begin{enumerate}
 \item How many solutions to \refEq{ODEs} do you obtain over this range of frequencies?
 
-\item Describe the key (new) step used in obtaining these solutions.
+\item Describe the key step used in obtaining these solutions.
 
 \item What is the value of $n$ for the first root that is encountered?
 
@@ -667,7 +660,7 @@ where $i$ is the measurement index that represents some particular $n$-$l$ pair,
 \begin{enumerate}
 \item (0.1) Write the expression for $F(\bem)$ in the case of $N=1$.
 
-\item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations will be loaded within \verb+spshell.ipynb+ if you comment out the last \verb+break+ statement.
+\item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations can be loaded at the bottom of \verb+spshell.ipynb+. List your answer in mHz with 0.001 precision.
 
 Tip: Initialize an $a \times b$ matrix as \verb+Fobs = NaN(a,b)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres(:)+. See example code at the bottom of \verb+spshell.ipynb+.
 
@@ -763,7 +756,7 @@ Note: As suggested in \verb+earthfun.m+, it may be helpful to use \verb+rspan+ a
 This cubic function is a fit to the PREM profiles, so check that the numbers are sensible before moving on (no work needed).
 
 \begin{enumerate}
-\item (0.2) Show your matlab code for the cubic function.
+\item (0.2) Show your code for the cubic function.
 \item (0.2) Generate a new dispersion plot with both predictions and observations, as in Problem~1-\ref{prob:disp}.
 \item (0.1) List the misfit in \refTab{tab:homo}.
 \end{enumerate}
@@ -833,7 +826,7 @@ I_2 &=& \int_0^a \mu(r) \left[W(r)\right]^2 \rmd r
 \end{eqnarray}
 %
 where $c$ is phase speed (\refTab{tab:waveparm}). % and expressions for $I_2$ and $I_1$ are in DT.
-The phase speed, $c$, and the group speed, $U$, have units of rad/s. Multiplication by $a$ (earth radius) will give the group speed in km/s ($U' = Ua$).
+The phase speed $c$ and the group speed $U$ have units of rad/s. Multiplication by $a$ (earth radius) will give the group speed in km/s ($U' = Ua$).
 %
 \begin{enumerate}
 \item (0.8) Show you lines of code.
@@ -866,7 +859,7 @@ Let $f_a$ denote the root obtained with the default numerical tolerance in \verb
 \item
 List $f_a$ and $f_b$ in mHz.
 
-Note: Use \verb+format long+ to list the output with as many digits as you need to make the comparison.
+Note: List the output with as many digits as you need to make the comparison.
 
 \item Use $|\ln(f_a/f_b)|$ to quantify the difference between $f_a$ and $f_b$.
 
@@ -944,6 +937,7 @@ frequency & $f$ & \hspace{2cm}mHz & \blank & \hspace{2cm}mHz & \blank \\  \hline
 angular frequency & $\omega$ & \hspace{2cm}mHz & \blank  & \hspace{2cm}mHz & \blank \\  \hline
 wavelength & $\lambda$ & \hspace{2cm}rad & \hspace{2cm}km & \hspace{2cm}rad & \hspace{2cm}km \\  \hline
 wavenumber & $k$ & \hspace{2cm} & \hspace{2cm}1/km & \hspace{2cm} & \hspace{2cm}1/km \\  \hline
+degree & $l$ & \hspace{2cm} & \blank & \hspace{2cm} & \blank \\  \hline
 phase speed & $c$ & \hspace{2cm}rad/s & \hspace{2cm}km/s & \hspace{2cm}rad/s & \hspace{2cm}km/s \\  \hline\hline
 group speed ($\#$3-\ref{prob:0T40_cubic}) & $U$ & \blank & \blank & \hspace{2cm}rad/s & \hspace{2cm}km/s \\  \hline
 \hline

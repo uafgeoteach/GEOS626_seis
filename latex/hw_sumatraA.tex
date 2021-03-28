@@ -36,8 +36,9 @@ The goals of this problem set are:
 %
 \begin{enumerate}
 \item to review complex numbers and functions
-\item to practice deconvolving the instrument response from a raw seismogram recorded in ``counts''
+\item to practice deconvolving the instrument response from a raw seismogram recorded in ``counts'' using two approaches: (a) ObsPy (black-box) and (b) manually
 \item to introduce you to the frequency dependence of the seismic wavefield, especially with regard to seismological investigations of earthquake sources and Earth structure
+\item to examine different time windows of seismograms and understand seismic spectra
 \end{enumerate}
 
 \section*{Instructions}
@@ -55,7 +56,8 @@ The goals of this problem set are:
 \item \tfilebp\
 \end{itemize}
 %
-Make a copy of each of these files. The label \verb+CAN+ is for a station at Canberra, Australia, featured in \citet[][Figure~1]{Park2005}.
+%Make a copy of each of these files.
+The label \verb+CAN+ is for a station at Canberra, Australia, featured in \citet[][Figure~1]{Park2005}.
 
 %\item The main function to extract waveforms from our local database is \verb+sumatra_read_seis.m+. Note that this is called within the template scripts.
 
@@ -308,7 +310,7 @@ Hint: Aftershocks would be one feature.
 Label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
 \item (0.2) Interpret the largest-amplitude spikes in the spectrum.
 
-Tip: Use \verb+markp+ (see {\tt lab\_fft.ipynb}) (change \verb+\%matplotlib inline+ to \verb+\%matplotlib notebook+) to get the period associated with any peak.
+Tip: Use \verb+markp+ to get the period associated with any peak. See {\tt lab\_fft.ipynb} and change {\tt \%matplotlib inline} to {\tt \%matplotlib notebook} to get the period associated with any peak.
 
 \item (0.1) What is the maximum allowable frequency and why?
 \item (0.1) What is the minimum (non-zero) allowable frequency and why? \\
@@ -352,7 +354,7 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 \item (0.4) 
 %
 \begin{enumerate}
-\item (0.2) Explain how your spectrum $|X_a(\omega)|$ differs from the one in \citet{Park2005}.
+\item (0.2) Explain how your spectrum $|X_a(\omega)|$ differs from the one in Figure 1 of \citet{Park2005}.
 \item (0.2) Why might this be the case? In other words, what ``choices'' were taken that could influence some of the details in the spectrum?
 \end{enumerate}
 
@@ -368,17 +370,18 @@ Run \tfilenoise. This will generate a time series at CAN for 10 days prior to th
 \begin{enumerate}
 \item (0.2) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
 
-\item (0.3) Extract {\bf a multi-day time series that does not contain any earthquake-like signals}. Include this plot. What is the dominant period? Mark the Nyquist frequency on the $x$-axis.
+\item (0.2) Extract {\bf a multi-day time series that does not contain any earthquake-like signals}. Include this plot. What is the dominant period?
 
+Tip: \verb+str = st1.trim(starttime,endtime)+ \\
 %Tip: Use the command \verb+plot(w,'xunit','h')+ to plot in hours.
 Tip: divide the array \verb+times+ by 3600 to plot in hours.
+
+\item (0.1) Compute and plot the amplitude spectrum using log-log scaling and the frequency limits $10^{-4}$~Hz to $10^1$~Hz. Mark where the the Nyquist frequency is on your plot.
 
 \item (1.5)
 
 \begin{enumerate}
-\item (1.0) Now use your earthquake-free time series.
-Following the procedure in Problem~2, deconvolve the instrument response.
-Plot the amplitude spectrum of acceleration using log-log scaling and the frequency limits $10^{-4}$~Hz to $10^1$~Hz.
+\item (1.0) Now, following the procedure in Problem~2, deconvolve the instrument response from your earthquake-free time series. (Use the same scaling and x-limits as before.)
 
 Tip: If you want a smoother spectral curve, try something like
 
@@ -443,7 +446,7 @@ In your 3-hour spectrum can you identify any of the normal modes in the range $[
 \begin{enumerate}
 \item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
 
-If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+scipy.signal.filtfilt+, \verb+scipy.signal.hilbert()+, \verb+abs+, and \verb+smooth+ in this order.
+If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+scipy.signal.filtfilt+, \verb+scipy.signal.hilbert+, \verb+abs+, and \verb+smooth+ in this order.
 
 \item (0.2) What else do you notice in the filtered seismogram?
 \end{enumerate}
@@ -456,7 +459,7 @@ If you want to prepare for a future homework problem, then follow the filtering 
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------
-\pagebreak
+%\pagebreak
 \bibliographystyle{agu08}
 \bibliography{carl_abbrev,carl_main,carl_him}
 %-------------------------------------------------------------
