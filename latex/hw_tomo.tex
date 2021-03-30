@@ -5,6 +5,9 @@
 
 \usepackage{pifont}  % \ding
 
+\newcommand{\tfiletomo}{{\tt hw\_tomo.ipynb}}
+\newcommand{\tfileGik}{{\tt hw\_tomo.ipynb}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -13,7 +16,7 @@
 \centering
 {\large \bf Problem Set 9: Seismic tomography using ray theory [tomo]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: TBD --- Due: TBD \\
+Assigned: March 30, 2021 --- Due: April 6, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -22,6 +25,8 @@ Last compiled: \today
 \subsection*{Overview}
 
 \begin{itemize}
+\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python.
+
 \item The objective of this assignment is to design a synthetic seismic tomography experiment and to familiarize yourselves with the fundamental aspects of a tomographic inversion:
 %
 \begin{itemize}
@@ -41,8 +46,8 @@ At the end I have listed some additional references.
 \item 
 %The practical aspects of the assignment are entirely based on Matlab (plus its Mapping Toolbox), and I have provided several scripts that you will need.
 % in a reference directory available from the Blackboard website.
-The data files and Matlab scripts that you need are in the directory \verb+tomo/+. \\
-The two template scripts are \verb+compute_Gik_ray_template.m+ and \verb+tomo_template.m+.
+The two template scripts are \tfileGik\ and \tfiletomo.
+The data files you need are in the directory \verb+data/+. \\
 
 \end{itemize}
 
@@ -53,14 +58,14 @@ The two template scripts are \verb+compute_Gik_ray_template.m+ and \verb+tomo_te
 \begin{enumerate}
 \item (0.0) {\em Model parameterization}. A tomographic model is typically described in terms of a perturbation in wave speed structure from some reference model, \ie $\delta\ln c = \delta c/c$.
 (Note~\footnote{See the section entitled ``ASIDE: the natural log function used to express tomographic models'' in the math review homework solutions.})
-This function may be expanded in terms of a set of $M$ basis functions:
+This function may be expanded in terms of a set of $\nparm$ basis functions:
 %
 \begin{equation}
-\delta\ln c(\bx)=\sum_{k=1}^M \delta m_k\,B_k(\bx),
+\delta\ln c(\bx)=\sum_{k=1}^\nparm \delta m_k\,B_k(\bx),
 \label{dlnv}
 \end{equation}
 %
-where $\delta m_k$, $k=1,\ldots,M$, represent the model coefficients describing the model perturbation.  Here we choose to use spherical spline basis functions \citep{WangDahlen1995spline,Wang1998}.
+where $\delta m_k$, $k=1,\ldots,\nparm$, represent the model coefficients describing the model perturbation.  Here we choose to use spherical spline basis functions \citep{WangDahlen1995spline,Wang1998}.
 \refFig{fig:basis}b shows an example of a spherical spline basis function.
 
 Do the lab exercise in \verb+lab_tomo.pdf+.
@@ -91,14 +96,14 @@ Show how \refEq{ray_tomography} leads to
 where the data vector is given by
 %
 \begin{equation}
-\bDelta\bd = (\delta T_1,\ldots,\delta T_i,\ldots,\delta T_N)^T,
+\bDelta\bd = (\delta T_1,\ldots,\delta T_i,\ldots,\delta T_\ndata)^T,
 \label{d}
 \end{equation}
 %
 and the model vector is given by
 %
 \begin{equation}
-\bDelta\bem = (\delta m_1,\ldots,\delta m_k,\ldots,\delta m_M)^T,
+\bDelta\bem = (\delta m_1,\ldots,\delta m_k,\ldots,\delta m_\nparm)^T,
 \label{m}
 \end{equation}
 
@@ -107,12 +112,12 @@ and the model vector is given by
 
 %-----------------
 
-\item (0.0) Run \verb+compute_Gik_ray_template.m+ and type \verb+whos+ to identify the dimensions of the variables.
+\item (0.0) Run \tfileGik\ and identify the dimensions of the variables.
 
 %-----------------
 
 \item (3.0) {\em Compute an entry of the partial derivatives matrix}. \\
-Modify \verb+compute_Gik_ray_template.m+ to compute the $N \times M$ partial derivatives matrix~$\bG$.
+Modify \tfileGik\ to compute the $\ndata \times \nparm$ (ndata $\times$ nparm) partial derivatives matrix~$\bG$.
 Take into account the following details:
 %
 \begin{itemize}
@@ -120,7 +125,7 @@ Take into account the following details:
 
 \item Because the reference model is homogeneous, the ray paths are simply great circles.  Use the built-in Matlab function \verb+gcwaypts+ to compute the ray paths, and use 1000 segments or so to effectively describe the ray path (\verb+nseg+). The function \verb+distance+ will compute the great-circle distance (in degrees) between two points on a sphere.
 
-\item Each measurement involves a single source--receiver pair. Use the source--receiver ordering provided in \verb+compute_Gik_ray_template.m+ (see also \refFig{fig:geometry}b), which is
+\item Each measurement involves a single source--receiver pair. Use the source--receiver ordering provided in \tfileGik\ (see also \refFig{fig:geometry}b), which is
 %
 \begin{verbatim}
 i = (isrc-1)*nrec + irec
@@ -129,7 +134,7 @@ i = (isrc-1)*nrec + irec
 Here index $i$ is the row index (or measurement index), \verb+isrc+ is the source index, and \verb+irec+ is the receiver index.
 For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125.
 
-\item Use $M=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
+\item Use $nparm=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
 
 \item When properly coded, it should take $<$0.1~s to compute a row of $\bG$ and therefore about 3~minutes to compute the entire matrix. Make sure that your code is reasonably fast (though getting the right answer is most important).
 
@@ -171,9 +176,9 @@ load Gik             % will load the file Gik.mat with the one variable Gik
 Instructions:
 %
 \begin{itemize}
-\item At this point, you should have saved your partial derivatives matrix $\bG$. \\ Now modify \verb+tomo_template.m+.
+\item At this point, you should have saved your partial derivatives matrix $\bG$. \\ Now modify \tfiletomo.
 
-\item In order to do the inverse problem, you will need the data vector of traveltime measurements (\refeq{d}). Load the column vector \verb+measure_vec.dat+ into Matlab, and check that it has dimension $3300 \times 1$.
+\item In order to do the inverse problem, you will need the data vector of traveltime measurements (\refeq{d}). Load the column vector \verb+measure_vec.dat+, and check that it has dimension $3300 \times 1$.
 
 \item For this problem, we will make the notation change $\bDelta\bem \rightarrow \bem$ and $\bDelta\bd \rightarrow \bd$, in order to simplify the notation.
 \end{itemize}
@@ -236,7 +241,7 @@ What happens as $\lambda \rightarrow \infty$?
 Notes:
 %
 \begin{itemize}
-\item I have pre-computed the necessary matrix $\bB$ in \verb+tomo_template.m+, such that the function value $\delta\ln c(\phi_j, \theta_j)$ is computed by the dot product $\bB(j,:) \cdot \bem$. This operation is represented by \refEq{dlnv} and can be thought of as
+\item I have pre-computed the necessary matrix $\bB$ in \tfiletomo, such that the function value $\delta\ln c(\phi_j, \theta_j)$ is computed by the dot product $\bB(j,:) \cdot \bem$. This operation is represented by \refEq{dlnv} and can be thought of as
 %
 \begin{equation}
 \bc_{\lambda} = \bB \bem_{\lambda},
@@ -312,8 +317,8 @@ Hint: Think about the modes homework.
 \caption[Basis function]
 {{
 Example computation for an entry, $G_{ik}$, of the partial derivatives matrix $\bG$, using rays. The row index $i$ is the source-receiver combination, the column index $k$ is the basis function index. The source is denoted by the \ding{73}, the receiver is denoted by the $\triangle$, and the $\circ$ shows the center-point of the spherical spline in (b).
-(a)~Ray path for source number~1 and receiver number~126, corresponding to the $i=126$ index of the $N=3300$ ray paths.
-(b)~$B_{203}(\bx)$, the spherical spline basis function for index $k=203$. Also shown are the center-points of the $M=286$ spherical splines.
+(a)~Ray path for source number~1 and receiver number~126, corresponding to the $i=126$ index of the $\ndata=3300$ ray paths.
+(b)~$B_{203}(\bx)$, the spherical spline basis function for index $k=203$. Also shown are the center-points of the $\nparm=286$ spherical splines.
 (c)~Spline $B_{203}$ evaluated along the ray path. The value of the phase speed for the reference model is constant, so $G_{ik} = (-1/c) \int_{{\rm ray}_i} B_k\,\rmd s$. In this example, $G_{ik} = -1/(3500\,{\rm m\,s^{-1}})\;(2.45 \times 10^4\,{\rm m})  = -6.98$~s. 
 \label{fig:basis}
 }}
