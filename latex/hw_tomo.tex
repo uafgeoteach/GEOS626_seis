@@ -25,7 +25,7 @@ Last compiled: \today
 \subsection*{Overview}
 
 \begin{itemize}
-\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python.
+%\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python.
 
 \item The objective of this assignment is to design a synthetic seismic tomography experiment and to familiarize yourselves with the fundamental aspects of a tomographic inversion:
 %
@@ -131,10 +131,9 @@ Take into account the following details:
 i = (isrc-1)*nrec + irec
 \end{verbatim}
 %
-Here index $i$ is the row index + 1 (or measurement index), \verb+isrc+ is the source index, and \verb+irec+ is the receiver index.
-For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125.
+Here index $i$ is the row index (or measurement index) for $\bG$, \verb+isrc+ is the source index, and \verb+irec+ is the receiver index. For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125.
 
-\item Use $nparm=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
+\item Use $\nparm=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
 
 \item When properly coded, it should take $<$0.1~s to compute a row of $\bG$ and therefore about 3~minutes to compute the entire matrix. Make sure that your code is reasonably fast (though getting the right answer is most important).
 
@@ -143,9 +142,11 @@ For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing
 \begin{enumerate}
 \item (0.2) What are the units for $d_i$, $m_k$, and $G_{ik}$?
 
-\item (2.4) Check that the value of $G_{ik}$ with $i=126$ and $k=204$ is $-10.3747$. \\ Show your code for calculating $G_{ik}$, and show the output for \verb+Gik(126,204)+. Remember that Python is 0-indexed.
+\item (2.4) Check that the value of $G_{ik}$ with $i=126$ and $k=204$ is $-10.3747$. \\ Show your code for calculating $G_{ik}$ and also your numerical output value.
 
 Note: Based on the indexing above, the $i=126$ measurement corresponds to the ray path between the \verb+isrc=1+ source and the \verb+irec=126+ receiver.
+
+Note: Python is 0-indexed, so the $i$th row in the $\bG$ array will be accessed using $i-1$.
 
 \item (0.2) What does each row of $\bG$ correspond to?
 
@@ -157,13 +158,13 @@ Note: Based on the indexing above, the $i=126$ measurement corresponds to the ra
 \item (0.0) Save the partial derivatives matrix
 %
 \begin{verbatim}
-np.save('./Gik',Gik)    % will save the file Gik.mat with the one variable Gik
+np.save('./Gik',Gik)  % will save the file Gik.mat with the one variable Gik
 \end{verbatim}
 %
 so that you can load it for the next problem.
 %
 \begin{verbatim}
-Gik = np.load('./Gik.npy')             % will load the file Gik.mat with the one variable Gik
+Gik = np.load('./Gik.npy')   % will load the file Gik.mat with the one variable Gik
 \end{verbatim}
 
 \end{enumerate}
@@ -178,7 +179,7 @@ Instructions:
 \begin{itemize}
 \item At this point, you should have saved your partial derivatives matrix $\bG$. \\ Now modify \tfiletomo.
 
-\item In order to do the inverse problem, you will need the data vector of traveltime measurements (\refeq{d}). Load the column vector \verb+measure_vec.dat+, and check that it has dimension $3300 \times 1$.
+\item In order to do the inverse problem, you will need the data vector of traveltime measurements (\refeq{d}). Load the column vector \verb+measure_vec.dat+, and check that it has dimension \mbox{$3300 \times 1$}.
 
 \item For this problem, we will make the notation change $\bDelta\bem \rightarrow \bem$ and $\bDelta\bd \rightarrow \bd$, in order to simplify the notation.
 \end{itemize}
@@ -213,7 +214,8 @@ List the sum of the squares of the entries of the model vector $\bem_{\lambda}$;
 
 \item (0.0) Compute $\bem_{\lambda}$ for a range of $\lambda$ values: for example, try
 
-\verb+lamvec = 10.^linspace(log10(minlam), log10(maxlam), numlam);+
+\verb+lamvec = 10**np.linspace(np.log10(minlam),np.log10(maxlam),num=numlam)+
+%\verb+lamvec = 10.^linspace(log10(minlam), log10(maxlam), numlam);+
 
 with $\lambda_{\rm min} = 0.1$ and $\lambda_{\rm max} = 1000$ (specify a value for \verb+numlam+).
 
@@ -232,7 +234,7 @@ I recommend transforming the quantities by $\log_{10}$, then using the \verb+plo
 \item (1.0) 
 
 \begin{enumerate}
-\item (0.6) Plot some of these model vectors by expanding them in the spherical spline basis functions. Use the same color scale for each plot: \verb+vmin=-0.05,vmax=0.05+ parameters in \verb+plt.pcolormesh()+. (See~Note\footnote{If you want the {\tt seis} color scale from GMT, then set \verb+cmap=seis_cmap+.}.) {\bf Superimpose the source locations in each plot.}
+\item (0.6) Plot some of these model vectors by expanding them in the spherical spline basis functions. Use the same color scale for each plot: \verb+vmin=-0.05,vmax=0.05+ parameters in \verb+plt.pcolormesh()+. (See~Note\footnote{If you want the {\tt seis} color scale from GMT, then set {\tt cmap=seis\_cmap}.}.) {\bf Superimpose the source locations in each plot.}
 
 \item (0.4) Comment on any trends that you see in phase speed maps that you produce. \\
 What happens as $\lambda \rightarrow \infty$?
