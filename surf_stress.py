@@ -4,7 +4,7 @@ from stress_disp_tor import stress_disp_tor
 import spshell_config
 
 
-def surf_stress(f):
+def surf_stress(f, return_wt_rvec=False):
     """ Python adaptation of surf_stress.m by Carl Tape
         Coding by Amanda McPherson, Dec 2020
         
@@ -13,14 +13,14 @@ def surf_stress(f):
         
         INPUT:
             f = (scalar) frequency to evaluate at
+            return_wt_rvec (bool): If True, return WT and rvec in addition to WT[1,-1]
             
         OUTPUT:
             WT[1,-1} = stress value at the earth's surface (r = rspan[1])
-            
-        UPDATES GLOBAL VARIABLES:
-            rvec = radii at which displacement and stress eigenfunctions were evaluated at
-            WT = displacement and stress eigenfunctions"""
-    
+            Optionally:
+                WT = displacement and stress eigenfunctions
+                rvec = radii at which displacement and stress eigenfunctions were evaluated at"""
+
     WT0 = np.array([1.0, 0.0]) # initial values of [displacement, stress]
     omega = 2*np.pi*f # angular frequency for stress_disp_tor
     
@@ -30,7 +30,8 @@ def surf_stress(f):
     sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=5E4, args=(omega,))
     WT = sol.y
     rvec = sol.t
-    spshell_config.WT = WT
-    spshell_config.rvec = rvec
     
-    return WT[1,-1]   # stress value at earth's surface (r = rspan[1])
+    if return_wt_rvec:
+        return WT[1,-1], WT, rvec
+    else:
+        return WT[1,-1]   # stress value at earth's surface (r = rspan[1])
