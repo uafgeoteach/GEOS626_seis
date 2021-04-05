@@ -9,7 +9,7 @@ def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
     Coding by Amanda McPherson, Dec 2020
     Some edits by Liam Toney, April 2021
 
-    Integrates using the RK45 method, and calls stress_disp_tor to calculate the
+    Integrates using the RK45 method, and calls stress_disp_tor() to calculate the
     derivatives of displacement and stress
 
     Args:
@@ -29,7 +29,7 @@ def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
     """
 
     WT0 = np.array([1.0, 0.0]) # initial values of [displacement, stress]
-    omega = 2*np.pi*f # angular frequency for stress_disp_tor
+    omega = 2*np.pi*f # angular frequency for stress_disp_tor()
 
     # note: the dimension of rvec and WT is the number of points needed for
     # the numerical integration -- this will vary. You can adjust it via the 'max_step' parameter (try 1e2 or 1e3)
@@ -41,4 +41,4 @@ def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
     if return_wt_rvec:
         return WT[1,-1], WT, rvec
     else:
-        return WT[1,-1]   # stress value at earth's surface (r = rspan[1])
+        return WT[1,-1]   # stress value at Earth's surface (r = rspan[1])
