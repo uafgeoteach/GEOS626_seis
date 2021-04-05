@@ -2,6 +2,7 @@ import numpy as np
 from earthfun import earthfun
 import spshell_config
 
+
 def stress_disp_tor(r, WT_0, omega):
     """ Python adaptation of stress_disp_tor.m by Carl Tape
         Coding by Amanda McPherson, Dec 2020
