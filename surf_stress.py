@@ -3,7 +3,7 @@ from scipy.integrate import solve_ivp
 from stress_disp_tor import stress_disp_tor
 
 
-def surf_stress(f, rspan, max_step=5e4, return_wt_rvec=False):
+def surf_stress(f, l, imod, rspan, max_step=5e4, return_wt_rvec=False):
     """Python adaptation of surf_stress.m by Carl Tape.
 
     Coding by Amanda McPherson, Dec 2020
@@ -14,6 +14,8 @@ def surf_stress(f, rspan, max_step=5e4, return_wt_rvec=False):
 
     Args:
         f (int or float): Frequency to evaluate at
+        l:
+        imod:
         rspan:
         max_step (int or float): Step size for ODE solver
         return_wt_rvec (bool): If True, return WT and rvec in addition to WT[1,-1]
@@ -30,7 +32,7 @@ def surf_stress(f, rspan, max_step=5e4, return_wt_rvec=False):
     # note: the dimension of rvec and WT is the number of points needed for
     # the numerical integration -- this will vary. You can adjust it via the 'max_step' parameter (try 1e2 or 1e3)
     rspan_t = tuple(rspan.tolist())
-    sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=max_step, args=(omega,))
+    sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=max_step, args=(l, omega, imod))
     WT = sol.y
     rvec = sol.t
 

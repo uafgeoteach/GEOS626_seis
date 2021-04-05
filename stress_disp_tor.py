@@ -3,7 +3,7 @@ from earthfun import earthfun
 import spshell_config
 
 
-def stress_disp_tor(r, WT_0, omega):
+def stress_disp_tor(r, WT_0, l, omega, imod):
     """ Python adaptation of stress_disp_tor.m by Carl Tape
         Coding by Amanda McPherson, Dec 2020
         
@@ -12,13 +12,13 @@ def stress_disp_tor(r, WT_0, omega):
         INPUT:
             r - radius at which to evaluate the derivatives 
             WT_0 - numpy array. WT_0[0] is W(r) and WT_0[1] is T(r)
+            l
             omega - angular frequency
+            imod
             
         OUTPUT:
             dWT - numpy array. dWT[0] is the derivative of W(r), and dWT[1] is the derivative of T(r) """
     
-    l = spshell_config.l
-    imod = spshell_config.imod
     rho = spshell_config.rho
     mu = spshell_config.mu
     
