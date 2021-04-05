@@ -1,10 +1,9 @@
 import numpy as np
 from scipy.integrate import solve_ivp
 from stress_disp_tor import stress_disp_tor
-import spshell_config
 
 
-def surf_stress(f, return_wt_rvec=False, max_step=5e4):
+def surf_stress(f, rspan, return_wt_rvec=False, max_step=5e4):
     """ Python adaptation of surf_stress.m by Carl Tape
         Coding by Amanda McPherson, Dec 2020
         
@@ -13,7 +12,9 @@ def surf_stress(f, return_wt_rvec=False, max_step=5e4):
         
         INPUT:
             f = (scalar) frequency to evaluate at
+            rspan:
             return_wt_rvec (bool): If True, return WT and rvec in addition to WT[1,-1]
+            max_step (int or float):
             
         OUTPUT:
             WT[1,-1} = stress value at the earth's surface (r = rspan[1])
@@ -26,7 +27,7 @@ def surf_stress(f, return_wt_rvec=False, max_step=5e4):
     
     # note: the dimension of rvec and WT is the number of points needed for
     # the numerical integration -- this will vary. You can adjust it via the 'max_step' parameter (try 1E2 or 1E3)
-    rspan_t = tuple(spshell_config.rspan.tolist())
+    rspan_t = tuple(rspan.tolist())
     sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=max_step, args=(omega,))
     WT = sol.y
     rvec = sol.t
