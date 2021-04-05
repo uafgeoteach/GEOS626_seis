@@ -3,7 +3,7 @@ from scipy.integrate import solve_ivp
 from stress_disp_tor import stress_disp_tor
 
 
-def surf_stress(f, rspan, return_wt_rvec=False, max_step=5e4):
+def surf_stress(f, rspan, max_step=5e4, return_wt_rvec=False,):
     """ Python adaptation of surf_stress.m by Carl Tape
         Coding by Amanda McPherson, Dec 2020
         
@@ -13,8 +13,8 @@ def surf_stress(f, rspan, return_wt_rvec=False, max_step=5e4):
         INPUT:
             f = (scalar) frequency to evaluate at
             rspan:
-            return_wt_rvec (bool): If True, return WT and rvec in addition to WT[1,-1]
             max_step (int or float):
+            return_wt_rvec (bool): If True, return WT and rvec in addition to WT[1,-1]
             
         OUTPUT:
             WT[1,-1} = stress value at the earth's surface (r = rspan[1])
