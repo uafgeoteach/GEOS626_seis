@@ -4,7 +4,7 @@ from stress_disp_tor import stress_disp_tor
 import spshell_config
 
 
-def surf_stress(f, return_wt_rvec=False):
+def surf_stress(f, return_wt_rvec=False, max_step=5e4):
     """ Python adaptation of surf_stress.m by Carl Tape
         Coding by Amanda McPherson, Dec 2020
         
@@ -27,7 +27,7 @@ def surf_stress(f, return_wt_rvec=False):
     # note: the dimension of rvec and WT is the number of points needed for
     # the numerical integration -- this will vary. You can adjust it via the 'max_step' parameter (try 1E2 or 1E3)
     rspan_t = tuple(spshell_config.rspan.tolist())
-    sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=5E4, args=(omega,))
+    sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=max_step, args=(omega,))
     WT = sol.y
     rvec = sol.t
     
