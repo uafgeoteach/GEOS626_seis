@@ -23,7 +23,7 @@ def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
         return_wt_rvec (bool): If True, return WT and rvec in addition to WT[1,-1]
 
     Returns:
-        WT[1,-1] = stress value at the earth's surface (r = rspan[1])
+        WT[1,-1] = stress value at the Earth's surface (r = rspan[1])
         [WT = displacement and stress eigenfunctions]
         [rvec = radii at which displacement and stress eigenfunctions were evaluated at]
     """
