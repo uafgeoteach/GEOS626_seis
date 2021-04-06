@@ -1,8 +1,8 @@
 \begin{table}[h]
 \caption[]{{
-Functions used in {\tt genlsq.m}.
+Functions used in {\tt genlsq.ipynb}.
 Assume $\nparm$ model parameters and $\ndata$ observations (in our problem, $\nparm=4$ model parameters and $\ndata=12$ arrival times).
-Note that that Matlab in-line function definitions may contain additional variables that are fixed for the problem.
+Note that that Python in-line function definitions may contain additional variables that are fixed for the problem.
 Do not list numbers for the dimensions; instead use $\nparm$ and $\ndata$ (and 1).
 \label{tab:funs}
 }}
@@ -23,14 +23,14 @@ function & description \hspace{3cm} & variables  & notation  & dimension & dimen
 
 \begin{table}[h]
 \caption[]{{
-Classification of variables for generalized least squares. In the first column, list the name of the corresponding variable in {\tt genlsq$\_$template.m}. Assume $\nparm$ model parameters and $\ndata$ observations (in our problem, $\ndata=12$ arrival times). Do not list numbers for the dimensions; instead use $\nparm$ and $\ndata$ (and 1).
+Classification of variables for generalized least squares. In the first column, list the name of the corresponding variable in {\tt hw$\_$genlsq.ipynb}. Assume $\nparm$ model parameters and $\ndata$ observations (in our problem, $\ndata=12$ arrival times). Do not list numbers for the dimensions; instead use $\nparm$ and $\ndata$ (and 1).
 \label{tab:vars}
 }}
 \begin{spacing}{1.4}
 \hspace{-1cm}
 \begin{tabular}{c|c|c|c|l|l}
 \hline
-our notation & Tarantola notation & {\tt genlsq.m} & dimension & description \hspace{2cm} & units \hspace{0.5cm} \\
+our notation & Tarantola notation & {\tt genlsq.ipynb} & dimension & description \hspace{2cm} & units \hspace{0.5cm} \\
 \hline\hline 
 $\bem_n$
 & --
@@ -60,7 +60,7 @@ $\bG_n = \bG(\bem_n)$
 &
 & --
 \\ \hline
-$\dvec$
+$\bd$
 &
 &
 &
@@ -79,7 +79,7 @@ $F(\bem_n)$
 &
 &
 \\ \hline
-$\covdi (\bd_n - \dvec)$
+$\covdi (\bd_n - \bd)$
 & --
 & --
 &
