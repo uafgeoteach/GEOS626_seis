@@ -90,7 +90,7 @@ posterior model vector              & $\widetilde{\bem}$         & $\mvec_{\rm M
 \end{tabular}
 \vspace{0.2cm}
 
-A Matlab solution to a least squares problem may be as simple as \verb+m = G\d+, but what is the meaning (and computation) behind this expression? The objective of this assignment is to demystify some of the black-box elements of least-squares inverse problems. This will involve a combination of reading \citet{Tarantola2005}, solving some equations, and implementing the equations within Matlab. We approach these topics with the classic example of earthquake location.
+A Python solution to a least squares problem may be as simple as \verb+numpy.linalg.solve(G,d)+ or \verb+numpy.linalg.pinv(G)@d+, but what is the meaning (and computation) behind these expressions? The objective of this assignment is to demystify some of the black-box elements of least-squares inverse problems. This will involve a combination of reading \citet{Tarantola2005}, solving some equations, and implementing the equations within Jupyter Notebook. We approach these topics with the classic example of earthquake location.
 
 % comment out for 627:
 See \citet[][Chapter 7]{SteinWysession} for an introduction to the earthquake location problem. However, note that they do not approach the problem from a generalized least squares perspective, as we do in this assignment. In particular, they do not consider the model misfit term $(\mvec-\mprior)^T \cpriori (\mvec-\mprior)$. But they do introduce the concept of the data covariance matrix and posterior model covariance matrix on p. 421.
