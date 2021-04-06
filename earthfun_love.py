@@ -23,13 +23,6 @@ def earthfun_love(r, rspan, crho, cmu, mrho, mmu, cthick):
         Tuple of (rho, mu)
     """
 
-    if r > rspan[1] - cthick:
-        # crust
-        rho = crho
-        mu = cmu
-    else:
-        # mantle
-        rho = mrho
-        mu = mmu
+    # Enter code here!
 
     return rho, mu
