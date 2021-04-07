@@ -215,14 +215,19 @@ Using \refEq{ellipse}, write down a system of 8 equations containing the unknown
 
 %-----------------
 
-\item (1.0) Starting with the least-squares misfit function
+\item (1.0) 
+\begin{enumerate}
+\item (0.4) Using your $\bG$, $\bem$, and $\dvec$ for the ellipse problem, write the least-squares misfit function
 %
 \begin{equation}
 F(\bem) = \hlf (\bG\bem - \dvec)^T(\bG\bem - \dvec)
 \end{equation}
 %
-derive the expressions for the gradient, $\bgamma(\bem)$, and the Hessian, $\bH(\bem)$. \\
-Your answer should include only these variables: $a$, $b$, $c$, $x_i$, $y_i$, and $\ndata$.
+in terms of $a$, $b$, $c$, $x_i$, $y_i$, and $\ndata$.
+
+\item (0.6) By applying partial derivatives, determine expressions for the gradient $\bgamma(\bem)$ and the Hessian $\bH(\bem)$.
+
+\end{enumerate}
 
 Hint: See the class notes on the linear regression example (\verb+notes_taylor.pdf+).
 
@@ -248,7 +253,8 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 
 %(Hint: The design matrix $\bG$ should be $8 \times 3$.)
 
-\item (0.0) Check that the result is the same as if you simply use the ``\verb+\+'' command: \verb+mest = np.linalg.pinv(G)*dobs+.
+\item (0.0) Check that the result is the same when you use the pseudoinverse: \\
+\verb+mest = np.linalg.pinv(G)*dobs+.
 
 \item (0.5) Produce a plot showing both the data and the best-fitting ellipse.
 
@@ -262,7 +268,6 @@ There is a cell in the Notebook provided for you that allows you to choose point
 
 %You may find it easier to use the lines of code below to select your points. You can copy these lines of code directly from the PDF, then paste them into Jupyter.
 
-\pagebreak
 %\small
 %\begin{spacing}{1.0}
 %\begin{verbatim}
