@@ -210,17 +210,18 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 Notes:
 %
 \begin{itemize}
-\item You will need to rename \verb+spshell.ipynb+ to \verb+spshell_love.ipynb+ and then make significant modifications. In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
+\item You will need to rename \verb+spshell.ipynb+ to \verb+spshell_love.ipynb+ and then make significant modifications. 
+%In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
 %(You might even find that starting from scratch is easier.)
 
-The following global variables are declared in \verb+spshell_love_config+:
+%The following global variables are declared in \verb+spshell_love_config+:
 %
-\begin{verbatim}
-rvec WT rspan k omega
-cthick mmu mrho crho cmu mbeta
-\end{verbatim}
+%\begin{verbatim}
+%rvec WT rspan k omega
+%cthick mmu mrho crho cmu mbeta
+%\end{verbatim}
 %
-Note that \verb+rvec+ and \verb+WT+ are defined in \verb+surf_stress_love.py+, not \verb+spshell_love.py+.
+Note that \verb+rvec+ and \verb+WT+ are defined in \verb+surf_stress_love.py+, not \verb+spshell_love.ipynb+.
 
 \item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$.
 %\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$. Furthermore, consider the order in which $k_n$ are computed in your search.
@@ -241,11 +242,11 @@ Hint: You will want to update (only) two global variables, \verb+omega+ and \ver
 \end{itemize}
 
 \begin{enumerate}
-\item (0.0) Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What are your new values for \verb+rspan(1)+ and \verb+rspan(2)+? Label \verb+rspan(1)+ and \verb+rspan(2)+ in your sketch from Problem~1-\ref{prob:setup}.
+\item (0.0) Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What are your new values for \verb+rspan[0]+ and \verb+rspan[1]+? Label \verb+rspan[0]+ and \verb+rspan[1]+ in your sketch from Problem~1-\ref{prob:setup}.
 
 \item (0.0) Given a period of $T = 20$, list the starting and finishing $k$ values in your \verb+kvec+.
 
-Also list values for \verb+earthfun_love(rspan(1))+ and \verb+earthfun_love(rspan(2))+ and check that they are consistent with what you expect.
+Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspan[1])+ and check that they are consistent with what you expect.
 
 \item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$.
 
@@ -254,17 +255,17 @@ Also list values for \verb+earthfun_love(rspan(1))+ and \verb+earthfun_love(rspa
 
 \item (0.5) Show your code for \verb+stress_disp_love.py+ and \verb+earthfun_love.py+.
 
-\item (0.5) In $\sim$3 sentences, explain what \verb+spshell_love.py+ is doing in order to find $k_0$.
+\item (0.5) In $\sim$3 sentences, explain what \verb+spshell_love.ipynb+ is doing in order to find $k_0$.
 
 \end{enumerate}
 
 \item (1.0) Show a plot of the eigenfunctions; draw a line at the base of the layer.
 
-Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+set(gca,'ydir','reverse');+ to flip the direction of the $y$-axis.
+Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis();+ to flip the direction of the $y$-axis.
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
-\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+.
+\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+ by changing \verb+max_step+ in the second cell.
 
 Show your code and output to demonstrate your findings. Do not show the already-provided code \verb+surface_stress_love.py+.
 
