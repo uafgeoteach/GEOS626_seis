@@ -157,7 +157,7 @@ HINT: You may find it useful to use the two matrix identities that we derived in
 Is $g$ a linear function of $t_s$? Is it a linear function of $x_s$, $y_s$, or $V$?
 Is it a linear function of $\mvec$?
 
-\item (0.2) Apply the variable transformation $v = \ln(V/V_0)$, where $V_0$ is a normalizing constant such that $v$ is unitless. Write $g(\mvec)$ in terms of the model parameters $t_s$, $x_s$, $y_s$, and $v$.
+\item (0.2) Apply the variable transformation $v = \ln(V/V_0)$, where $V_0$ is a normalizing constant such that $v$ is unitless. Write $g(\mvec)$ in terms of the model parameters $x_s$, $y_s$, $t_s$, and $v$.
 
 \item (0.7) Write expressions for the partial derivatives of $g(\mvec)$: $\partial g/ \partial x_s$, $\partial g/ \partial y_s$, etc.
 
@@ -191,7 +191,7 @@ You then record the P wave arrival times at all other stations. You choose an {\
 \clearpage\pagebreak
 \begin{enumerate}
 \item (0.5)
-Run \verb+hw_genlsq.ipynb+, then hit ``0'' to exit. You should generate six figures, one of which is \refFig{fig:srcrec}. Examine \verb+hw_genlsq.ipynb+ and \verb+forward_epicenter.ipynb+ to see what is being plotted in these figures. Answer the following questions ``in words,'' that is, without excerpts from the code.
+Run \verb+hw_genlsq.ipynb+\footnote{You do not need to enter any value at the prompt. If you hit ``0'' and hit return, then it will exit. If you hit any non-zero number and hit return, you will see an error message.} You should generate six figures, one of which is \refFig{fig:srcrec}. Examine \verb+hw_genlsq.ipynb+ and \verb+forward_epicenter.ipynb+ to see what is being plotted in these figures. Answer the following questions ``in words,'' that is, without excerpts from the code.
 
 \begin{enumerate}
 \item (0.0) In the code, how is the prior model and the prior model covariance matrix determined?
@@ -259,7 +259,8 @@ Now make a copy of the program: \verb+cp hw_genlsq.ipynb genlsq.ipynb+
 
 \begin{enumerate}
 
-\item (0.0) Try the following tests to better understand \refFig{fig:srcrec}. Be sure to undo your changes when you are done.
+\item (0.0) Try the following tests to better understand \refFig{fig:srcrec}. \\
+{\bf Be sure to undo your changes when you are done.}
 %
 \begin{enumerate}
 \item Change \verb+run_forward_epicenter+ to \verb+True+ and run \verb+forward_epicenter.ipynb+ a couple times. \\

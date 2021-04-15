@@ -5,6 +5,11 @@
 
 \renewcommand{\baselinestretch}{1.0}
 
+\newcommand{\tfileA}{{\tt hw\_modesA.ipynb}}
+\newcommand{\tfileB}{{\tt surf\_stress.py}}
+\newcommand{\tfileC}{{\tt stress\_disp\_tor.py}}
+\newcommand{\tfileD}{{\tt earthfun.py}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -30,9 +35,9 @@ Last compiled: \today \\
 \item The necessary starting Python scripts and data are available in the class github directory. The relevant files are:
 %
 \begin{itemize}
-\item \verb+spshell.ipynb+ (\refSec{sec:shell})
-\item \verb+surf_stress.py+ (\refSec{sec:surf})
-\item \verb+stress_disp_tor.py+ (\refSec{sec:stress})
+\item \tfileA\ (\refSec{sec:shell})
+\item \tfileB\ (\refSec{sec:surf})
+\item \tfileC\ (\refSec{sec:stress})
 \end{itemize}
 
 \item Background reading:
@@ -167,7 +172,7 @@ The form of the function $F$ is described in \refEq{ODEs}, and we must solve tho
 \includegraphics[width=12cm]{modes_workflow.eps}
 \caption[]
 {{
-Solving the eigenvalue problem for the vibrating shell is accomplished using three scripts. The main purpose of each script is described in the above chart, which also shows the dependencies: {\tt spshell.ipynb} calls {\tt surf\_stress.py}, which requires {\tt stress\_disp\_tor.py}.
+Solving the eigenvalue problem for the vibrating shell is accomplished using three scripts. The main purpose of each script is described in the above chart, which also shows the dependencies: \tfileA\ calls \tfileB, which requires \tfileC.
 \label{fig:workflow}
 }}
 \end{figure}
@@ -181,13 +186,13 @@ Our solution will involve three different Python scripts (\refFig{fig:workflow})
 
 \subsubsection{Computing the Surface Stress}
 
-To integrate the equations and evaluate the surface traction I created two scripts. The first script (\verb+stress_disp_tor.py+; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). $\mu$, $\rho$, $\omega$, and $l$ are all parameters of \verb+surf_stress.py+ and \verb+stress_disp_tor.py+so that they can be set and changed from the main script (\verb+spshell.ipynb+). It's a good idea to keep this script as simple and short as you can, since it's executed often.
+To integrate the equations and evaluate the surface traction I created two scripts. The first script (\tfileC; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). $\mu$, $\rho$, $\omega$, and $l$ are all parameters of \tfileB\ and \tfileC\ so that they can be set and changed from the main script (\tfileA). It's a good idea to keep this script as simple and short as you can, since it's executed often.
 
-The second script (\verb+surf_stress.py+; \refSec{sec:surf}) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
+The second script (\tfileB; \refSec{sec:surf}) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
 
 \subsubsection{Finding the Roots}
 
-The third script (\verb+spshell.ipynb+; \refSec{sec:shell}) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
+The third script (\tfileA; \refSec{sec:shell}) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
 
 Once I know two frequency values that bracket a root, I use the function \verb+fzero+ to find that root; \verb+fzero+ uses a bisection-interpolation procedure to find the root of the function. You must pass the name of the script used to calculate the surface stress and the bounding values of frequency to the \verb+fzero+ routine, and it returns the value of the root. Python allows you to control the options in the search for roots, but I found the default values suitable for this problem.
 
@@ -551,7 +556,7 @@ $\Wnl(r)$ and $\Tnl(r)$ (see \refeq{Tr})
 
 %---------
 
-\item (0.0) Execute the script \verb+spshell.ipynb+ and analyze the output. Two figures are generated, one for a set of $W(r)$, the other for a set of $T(r)$ (\refFig{fig:Tr}).
+\item (0.0) Execute the script \tfileA\  and analyze the output. Two figures are generated, one for a set of $W(r)$, the other for a set of $T(r)$ (\refFig{fig:Tr}).
 %
 \begin{enumerate}
 \item What is the range of frequencies that you are evaluating? List $f_{\rm min}$ and $f_{\rm max}$ in mHz. Draw two lines for $f = f_{\rm min}$ and $f = f_{\rm max}$ in \refFig{fig:dots}a.
@@ -639,7 +644,7 @@ Note: Some points $(l,\,\fnl)$ will be outside the plotting range.
 
 \item (0.3) On your dispersion diagram, plot the observations in \refTab{tab:modes_obs} with a different symbol (or color) from the predictions. (Make sure you plot all predicted frequencies, not just the ones with matching observations.)
 
-Note: See code at the bottom of \verb+spshell.ipynb+ to read in the observations.
+Note: See code at the bottom of \tfileA\ to read in the observations.
 
 \end{enumerate}
 
@@ -659,9 +664,9 @@ where $i$ is the measurement index that represents some particular $n$-$l$ pair,
 \begin{enumerate}
 \item (0.1) Write the expression for $F(\bem)$ in the case of $N=1$.
 
-\item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations can be loaded at the bottom of \verb+spshell.ipynb+. List your answer in mHz with 0.001 precision.
+\item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations can be loaded at the bottom of \tfileA. List your answer in mHz with 0.001 precision.
 
-Tip: Initialize an $a \times b$ matrix as \verb+Fobs = np.full((a,b),np.nan)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres.flatten(order='F')+. See example code at the bottom of \verb+spshell.ipynb+.
+Tip: Initialize an $a \times b$ matrix as \verb+Fobs = np.full((a,b),np.nan)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres.flatten(order='F')+. See example code at the bottom of \tfileA.
 
 \begin{itemize}
 \item Show your code excerpt for the calculation.
@@ -708,7 +713,7 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 
 %---------------
 
-\item (1.0) {\bf Linear earth.} Adapt \verb+earthfun.py+ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
+\item (1.0) {\bf Linear earth.} Adapt \tfileD\ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
 %
 \begin{eqnarray*}
 \rho(a) &=& 2690 \; {\rm kg/m^3}
@@ -722,12 +727,12 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 %
 where $r=a$ is the surface and $r=b$ is the core-mantle boundary. (The values are an approximation to PREM's $\rho(r)$ and $\mu(r)$.) Thus, our Earth model $\bem$ can be thought of as having four parameters, the intercept and slope of $\rho(r)$ and $\mu(r)$: $\bem = (\rho_0,\rho_1,\mu_0,\mu_1)$.
 
-Test your \verb+earthfun.py+ for a few values of $r$ to make sure that the output values of $\rho$ and $\mu$ are sensible (no work needed).
+Test your \tfileD\ for a few values of $r$ to make sure that the output values of $\rho$ and $\mu$ are sensible (no work needed).
 
 %Note: As suggested in \verb+earthfun.m+, it may be helpful to use \verb+rspan+ as a global variable.
 
 \begin{enumerate}
-\item (0.4) Show your code for \verb+earthfun.py+.
+\item (0.4) Show your code for \tfileD.
 \item (0.3) Generate a new dispersion plot with both predictions and observations, as in Problem 1-\ref{prob:disp}.
 \item (0.1) List the misfit in \refTab{tab:homo}.
 \item (0.2) What parameters would you search over if you wanted to obtain an optimal linear earth model?
@@ -801,7 +806,7 @@ Qualitatively, how do these compare with the predictions for PREM, shown in \ref
 
 %-------------
 
-\item (0.0) In the next two parts, you will need to use discretized versions of $\rho(r)$ and $\mu(r)$. This discretization is already done within \verb+surf_stress.py+. When you plot $W(r)$ and $T(r)$, you are using discretized versions of these functions, where \verb+rvec+ is the discretized radius values associated with the eigenfunctions.
+\item (0.0) In the next two parts, you will need to use discretized versions of $\rho(r)$ and $\mu(r)$. This discretization is already done within \tfileB. When you plot $W(r)$ and $T(r)$, you are using discretized versions of these functions, where \verb+rvec+ is the discretized radius values associated with the eigenfunctions.
 
 Use the discretized radius \verb+rvec+ to compute discretized versions of $\mu(r)$ and $\rho(r)$. This can be done with the command
 %
@@ -846,7 +851,7 @@ Notes:
 \begin{itemize}
 \item Again you will need the discretized versions of $\rho(r)$ and $\mu(r)$.
 
-\item To check the solution, use the quantity \verb+np.linalg.norm(a - b)/np.linalg.norm(a)+ where \verb+a+ is the left-hand side and \verb+b+ is the right-hand side of \refEq{ODEs}. You want this value to be $< 10^{-3}$; you may need to lower the tolerance in the \verb+ode45+ solver in \verb+surf_stress.py+, which can be done by changing the \verb+max_step+ variable in the second cell.
+\item To check the solution, use the quantity \verb+np.linalg.norm(a - b)/np.linalg.norm(a)+ where \verb+a+ is the left-hand side and \verb+b+ is the right-hand side of \refEq{ODEs}. You want this value to be $< 10^{-3}$; you may need to lower the tolerance in the \verb+ode45+ solver in \tfileB, which can be done by changing the \verb+max_step+ variable in the second cell.
 
 \item Use the command \verb+np.gradient(h,r)+ to obtain $dh/dr$ where \verb+h+ and \verb+r+ are equal-length vectors. This numerical approximation of $dh/dr$ will be good if \verb+r+ is densely sampled.
 \end{itemize}
@@ -931,12 +936,12 @@ List your values with three significant figures.
 \begin{tabular}{||c|c|l|l||l|l||}
 \hline
 & & \multicolumn{2}{c||}{homogeneous model ($\#$1-\ref{prob:0T40_homo} )} & \multicolumn{2}{c||}{cubic model ($\#$3-\ref{prob:0T40_cubic})}  \\ \hline\hline
-period & $T$ & \hspace{2cm}s & \blank & \hspace{2cm}s & \blank \\  \hline
-frequency & $f$ & \hspace{2cm}mHz & \blank & \hspace{2cm}mHz & \blank \\  \hline
-angular frequency & $\omega$ & \hspace{2cm}mHz & \blank  & \hspace{2cm}mHz & \blank \\  \hline
+period & $T$ & \hspace{2cm}s & same & \hspace{2cm}s & same \\  \hline
+frequency & $f$ & \hspace{2cm}mHz & same & \hspace{2cm}mHz & same \\  \hline
+angular frequency & $\omega$ & \hspace{2cm}mHz & same  & \hspace{2cm}mHz & same \\  \hline
 wavelength & $\lambda$ & \hspace{2cm}rad & \hspace{2cm}km & \hspace{2cm}rad & \hspace{2cm}km \\  \hline
 wavenumber & $k$ & \hspace{2cm} & \hspace{2cm}1/km & \hspace{2cm} & \hspace{2cm}1/km \\  \hline
-degree & $l$ & \hspace{2cm} & \blank & \hspace{2cm} & \blank \\  \hline
+degree & $l$ & \hspace{2cm} & same & \hspace{2cm} & same \\  \hline
 phase speed & $c$ & \hspace{2cm}rad/s & \hspace{2cm}km/s & \hspace{2cm}rad/s & \hspace{2cm}km/s \\  \hline\hline
 group speed ($\#$3-\ref{prob:0T40_cubic}) & $U$ & \blank & \blank & \hspace{2cm}rad/s & \hspace{2cm}km/s \\  \hline
 \hline

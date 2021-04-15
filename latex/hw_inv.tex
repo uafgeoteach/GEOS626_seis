@@ -210,7 +210,7 @@ Using \refEq{ellipse}, write down a system of 8 equations containing the unknown
 
 \item  (0.4) In schematic matrix form, write down the least-squares problem $\bG\bem=\dvec$ whose unknown vector is $\bem = (a,b,c)^T$, and show the dimensions of each array.
 
-\item (0.1) Solve $\bG\bem=\dvec$ for $\bem$ in symbolic form (\ie with $\bG$, $\bem$, and $\dvec$ only), and assume that $\bG$ has rank $\nparm = 3$ and $\ndata > \nparm$ (``overdetermined''). Show your steps.
+\item (0.1) Solve $\bG\bem=\dvec$ for $\bem$ in symbolic form (\ie with $\bG$, $\bem$, and $\dvec$ only), assuming a $\ndata \times \nparm$ matrix $\bG$ with $\ndata > \nparm$. (Note \footnote{To be precise, we assume that $\bG$ is rank $\nparm$. The scanrio with $\ndata > \nparm$ is known as ``overdetermined,'' since you have more data than needed to estimate the model parameters.}) Show your steps.
 \end{enumerate}
 
 %-----------------
@@ -254,7 +254,7 @@ Hint: See the class notes on the linear regression example (\verb+notes_taylor.p
 %(Hint: The design matrix $\bG$ should be $8 \times 3$.)
 
 \item (0.0) Check that the result is the same when you use the pseudoinverse: \\
-\verb+mest = np.linalg.pinv(G)*dobs+.
+\verb+mest = np.linalg.pinv(G)@dobs+.
 
 \item (0.5) Produce a plot showing both the data and the best-fitting ellipse.
 

@@ -3,9 +3,19 @@
 
 \input{hw626_header}
 
-\renewcommand{\baselinestretch}{1.0}
+%\renewcommand{\baselinestretch}{1.1}
 
 \newcommand{\cutoff}[1]{{#1}_{x\bar{n}}}
+
+\newcommand{\tfileA}{{\tt hw\_modesA.ipynb}}
+\newcommand{\tfileB}{{\tt surf\_stress.py}}
+\newcommand{\tfileC}{{\tt stress\_disp\_tor.py}}
+\newcommand{\tfileD}{{\tt earthfun.py}}
+
+\newcommand{\tfileAA}{{\tt hw\_modesB.ipynb}}
+\newcommand{\tfileBB}{{\tt surf\_stress\_love.py}}
+\newcommand{\tfileCC}{{\tt stress\_disp\_love.py}}
+\newcommand{\tfileDD}{{\tt earthfun\_love.py}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -15,7 +25,7 @@
 \centering
 {\large \bf Problem Set 7: Love waves for a layered Earth\footnote{This problem set was adapted from one by Charles Ammon, Penn State University.} [modesB]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: TBD --- Due: TBD \\
+Assigned: April 15, 2021 --- Due: April 22, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -40,15 +50,18 @@ Chapter 7 of \citet{AkiRichardsE2}
 
 \item A table of wave parameters is listed in \refTab{tab:waveparm}. For the flat-layered model, the factors such as degree $l$ and earth radius $a$ are not relevant; therefore the final two columns are not relevant to this problem.
 
-\item Shear velocity $\vs$ (or $\beta$) and compressional velocity $\vp$ (or $\alpha$) pertain to body waves. Phase velocity $c$ and group velocity $U$ pertain to surface waves.
-
+\item Miscellaneous.
+\begin{itemize}
+\item Shear velocity $\vs$ (or $\beta$) and compressional velocity $\vp$ (or $\alpha$) pertain to body waves.
+\item Phase velocity $c$ and group velocity $U$ pertain to surface waves.
 \item It is best to think of the velocities as speeds, since velocity is associated with a direction. When we discuss the velocity of waves through a solid medium, we generally are not tracking the direction of wave propagation.
+\end{itemize}
 
 \end{itemize}
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Background}
 
 In the modes problem set you solved a system of coupled, first-order differential equations.
@@ -93,7 +106,7 @@ Here the layer represents the crust, and the halfspace represents the upper mant
 
 \begin{enumerate}
 
-\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \verb+surf_stress_love.py+; just write down the analogous boundary conditions to those from the toroidal shell problem.
+\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \tfileBB; just write down the analogous boundary conditions to those from the toroidal shell problem.
 
 %----------------
 
@@ -183,7 +196,7 @@ In order to avoid numerical overflow during integration, we will use a coordinat
 %\pagebreak
 \subsection*{Problem 2 (8.0). Implementation}
 
-The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \verb+surf_stress_love.py+ with the initial conditions
+The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \tfileBB\ with the initial conditions
 %
 \begin{eqnarray}
 W(r_b) &=& 1.0
@@ -205,12 +218,10 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 
 \begin{enumerate}
 
-\item (4.0) Adapt the four scripts from the modes homework to solve \refEq{rODEs}.
-
-Notes:
+\item (4.0) Adapt the four scripts from the modes homework to solve \refEq{rODEs}:
 %
 \begin{itemize}
-\item You will need to rename \verb+spshell.ipynb+ to \verb+spshell_love.ipynb+ and then make significant modifications. 
+\item You will need to copy \tfileA\ to \tfileAA\ and then make significant modifications. 
 %In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
 %(You might even find that starting from scratch is easier.)
 
@@ -221,41 +232,42 @@ Notes:
 %cthick mmu mrho crho cmu mbeta
 %\end{verbatim}
 %
-Note that \verb+rvec+ and \verb+WT+ are defined in \verb+surf_stress_love.py+, not \verb+spshell_love.ipynb+.
+Note that \verb+rvec+ and \verb+WT+ are defined in \tfileBB, not \tfileAA.
 
-\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$.
+One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$.
 %\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$. Furthermore, consider the order in which $k_n$ are computed in your search.
 Your answers in Problem~1-\ref{prob:model1} should be helpful here.
 Use the Python command \verb+np.linspace()+ to generate a vector \verb+kvec+ containing \verb+numk+ values (try \verb+numk=100+).
 
 % the only changes needed will be for the ode45 solver
-\item I have provided \verb+surf_stress_love.py+ as a replacement for \verb+surf_stress.py+.
+\item I have provided \tfileBB\ as a replacement for \tfileB.
 
-\item You will need to adapt \verb+earthfun_love.py+ to return $\rho(r)$ and $\mu(r)$.
+\item You will need to adapt \tfileC\ (\refeq{ODEs}) to be \tfileCC\ (\refeq{rODEs}).
 
-Note: \verb+imod+ is not needed, as before.
+Hint: What arguments related to \tfileD\ were needed in \tfileC? What arguments related to \tfileDD\ are needed in \tfileCC?
+%Hint: You will want to update (only) two global variables, \verb+omega+ and \verb+k+.
 
-\item You will need to adapt \verb+stress_disp_tor.py+ (\refeq{ODEs}) to be \verb+stress_disp_love.py+ (\refeq{rODEs}).
+\item You will need to adapt \tfileDD\ to return $\rho(r)$ and $\mu(r)$.
 
-Hint: You will want to update (only) two global variables, \verb+omega+ and \verb+k+.
+%Note: \verb+imod+ is not needed, as before.
 
 \end{itemize}
 
 \begin{enumerate}
-\item (0.0) Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What are your new values for \verb+rspan[0]+ and \verb+rspan[1]+? Label \verb+rspan[0]+ and \verb+rspan[1]+ in your sketch from Problem~1-\ref{prob:setup}.
+\item (0.0) Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What will the values be for \verb+rspan[0]+ and \verb+rspan[1]+? Label \verb+rspan[0]+ and \verb+rspan[1]+ in your sketch from Problem~1-\ref{prob:setup}.
 
-\item (0.0) Given a period of $T = 20$, list the starting and finishing $k$ values in your \verb+kvec+.
+\item (0.0) Given a period of $T = 20$~s, list the starting and finishing $k$ values in your \verb+kvec+.
 
 Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspan[1])+ and check that they are consistent with what you expect.
 
-\item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$.
+\item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$~s.
 
 \begin{enumerate}
 \item (0.5) Check that your root is $k_0 = 8.52 \times 10^{-5}$~1/m and list the line in your Python script that solved for $k_0$.
 
-\item (0.5) Show your code for \verb+stress_disp_love.py+ and \verb+earthfun_love.py+.
+\item (0.5) Show your code for \tfileCC\ and \tfileDD.
 
-\item (0.5) In $\sim$3 sentences, explain what \verb+spshell_love.ipynb+ is doing in order to find $k_0$.
+\item (0.5) In $\sim$3 sentences, explain how your code finds $k_0$.
 
 \end{enumerate}
 
@@ -265,9 +277,10 @@ Suggestion: For plotting purposes only, you may find it simpler to transform you
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
-\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+ by changing \verb+max_step+ in the second cell.
+\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+ by changing \verb+MAX_STEP+ (in \tfileAA).
 
-Show your code and output to demonstrate your findings. Do not show the already-provided code \verb+surface_stress_love.py+.
+Show your code and output to demonstrate your findings.
+(Do not show the already-provided code \tfileBB.)
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
@@ -299,8 +312,6 @@ After you do the check, you can go back to using the default tolerance.
 
 %----------------
 
-\pagebreak
-
 \item (1.0)
 \begin{enumerate}
 \item (0.8) Loop over a range of frequencies to construct the dispersion plot you sketched in Problem~1-\ref{prob:model1}. Use an equally spaced frequency vector ($\sim$50 values) ranging between periods of 3.0 seconds and 20.0 seconds.
@@ -315,6 +326,7 @@ After you do the check, you can go back to using the default tolerance.
 
 %----------------
 
+\pagebreak
 \item (1.0) We now consider the fundamental mode only.
 
 \begin{enumerate}

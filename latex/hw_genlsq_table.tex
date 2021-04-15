@@ -30,11 +30,18 @@ Classification of variables for generalized least squares. In the first column, 
 \hspace{-1cm}
 \begin{tabular}{c|c|c|c|l|l}
 \hline
-our notation & Tarantola notation & {\tt genlsq.ipynb} & dimension & description \hspace{2cm} & units \hspace{0.5cm} \\
+our notation & Tarantola notation & code & dimension & description \hspace{2cm} & units \hspace{0.5cm} \\
 \hline\hline 
+$\mprior$
+& same
+& 
+& $\nparm \times 1$ 
+& prior model vector
+&
+\\ \hline
 $\bem_n$
-& --
-& --
+& same
+& \verb+m+
 & $\nparm \times 1$ 
 & model vector
 &
@@ -44,21 +51,21 @@ $\cprior$
 & \verb+cprior+
 &
 &
-& --
+& \blank\
 \\ \hline
 $\covd$
-& --
+& same
 &
 &
 &
-& --
+& \blank\
 \\ \hline
 $\bG_n = \bG(\bem_n)$
-& --
+& same
 & 
 &
 &
-& --
+& \blank\
 \\ \hline
 $\dvec$
 &
@@ -67,7 +74,7 @@ $\dvec$
 & 
 \\ \hline
 $\bd_n = \bg(\bem_n)$
-& --
+& same
 &
 &
 & 
@@ -80,24 +87,24 @@ $F(\bem_n)$
 &
 \\ \hline
 $\covdi (\bd_n - \dvec)$
-& --
-& --
+& \blank\
+& \blank\
 &
-& --
+& \blank\
 \\ \hline
 $\bG^T\covdi$
-& --
-& --
+& \blank\
+& \blank\
 &
-& --
-& --
+& \blank\
+& \blank\
 \\ \hline
 $\cprior^{-1} (\bem_n - \mprior)$
-& --
-& --
+& \blank\
+& \blank\
 &
-& --
-& --
+& \blank\
+& \blank\
 \\ \hline
 \hline
 $\cpost$
@@ -105,35 +112,35 @@ $\cpost$
 & \verb+cpost+
 &
 & 
-& --
+& \blank\
 \\ \hline
 $\bgamma$
-& --
+& same
 & \verb+g+
 &
 &
-& --
+& \blank\
 \\ \hline
 $\bgammah$
-& --
+& same
 & \verb+ghat+
 &
 &
-& --
+& \blank\
 \\ \hline
 $\bH$
-& --
+& same
 & \verb+H+
 &
 &
-& --
+& \blank\
 \\ \hline
 $\bHh$
-& --
+& same
 & \verb+Hhat+
 &
 &
-& --
+& \blank\
 \\ \hline
 \hline
 \end{tabular}
