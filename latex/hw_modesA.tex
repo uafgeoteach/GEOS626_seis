@@ -181,7 +181,7 @@ Our solution will involve three different Python scripts (\refFig{fig:workflow})
 
 \subsubsection{Computing the Surface Stress}
 
-To integrate the equations and evaluate the surface traction I created two scripts. The first script (\verb+stress_disp_tor.py+; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). I set up $\mu$, $\rho$, $\omega$, and $l$ as {\bf global variables} so that they can be set and changed from the main script (\verb+spshell.ipynb+). The same global values are used in all the scripts. It's a good idea to keep this script as simple and short as you can, since it's executed often.
+To integrate the equations and evaluate the surface traction I created two scripts. The first script (\verb+stress_disp_tor.py+; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). $\mu$, $\rho$, $\omega$, and $l$ are all parameters of \verb+surf_stress.py+ and \verb+stress_disp_tor.py+so that they can be set and changed from the main script (\verb+spshell.ipynb+). It's a good idea to keep this script as simple and short as you can, since it's executed often.
 
 The second script (\verb+surf_stress.py+; \refSec{sec:surf}) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
 
@@ -248,7 +248,7 @@ close all; clear all; clc
 
 % global variables
 % WARNING: DO NOT CHANGE THE DIMENSION OF ANY OF THESE VARIABLES
-global l rvec WT rspan imod rho mu % omega
+%global l rvec WT rspan imod rho mu % omega
 
 %------------------------------------------------
 % USER INPUT
@@ -410,7 +410,7 @@ fprintf('/// l = %i, nroots = %i (nmax = %i, fmax = %.3f mHz)\n',...
 \begin{verbatim}
 function value = surf_stress(f)
 
-global omega rvec WT rspan % mu rho l
+%global omega rvec WT rspan % mu rho l
 
 WT0 = [1.0 0.0];        % the initial values of [displacement stress],
                         % at the bottom of the shell (core-mantle-boundary)
@@ -446,7 +446,7 @@ value = WT(end,2);      % stress value at earth's surface (at r = rspan(2))
 \begin{verbatim}
 function dWT = stress_disp_tor(r,WT)
 
-global omega l imod rho mu % rspan rvec WT
+%global omega l imod rho mu % rspan rvec WT
 
 % The input values of WT(1) and WT(2) are W(r) and T(r) respectively.
 % The returned deriatives are stored in dWT
@@ -477,7 +477,7 @@ function [rho,mu] = earthfun(r)
 %
 % called by stress_disp_tor.m
 
-global rspan imod
+%global rspan imod
 
 switch imod
     case 1
@@ -535,7 +535,7 @@ $\Wnl(r)$ and $\Tnl(r)$ (see \refeq{Tr})
 \end{equation}
 %
 
-\item In this problem we will assume a homogeneous earth model with density $\rho = 4380$~kg/m$^3$ and shear modulus (rigidity) \makebox{$\mu = 1.54 \times 10^{11}$~Pa}. Before you proceed, make sure you follow the basic structure of the program; in particular, pay attention to the use of {\bf global variables} within each of the scripts. (For example, you cannot change the dimension of any global variable.)
+\item In this problem we will assume a homogeneous earth model with density $\rho = 4380$~kg/m$^3$ and shear modulus (rigidity) \makebox{$\mu = 1.54 \times 10^{11}$~Pa}. Before you proceed, make sure you follow the basic structure of the program.
 \end{itemize}
 
 \begin{enumerate}
@@ -633,7 +633,7 @@ Hint: What is $f_{\rm min}$?
 \item (1.5) A dispersion plot based on PREM is shown in Figure 2.9-10 of \citet{SteinWysession}; the inset figure, shown in \refFig{fig:dots} of this homework, is relevant to this problem. 
 %
 \begin{enumerate}
-\item (1.2) Reproduce a similar plot for your homogeneous earth model. Use \lrange{1}{10} and plot with axes ranges \verb+[0 11 0 4]+, where the $y$-axis is frequency in mHz and the $x$-axis is $l$.
+\item (1.2) Reproduce a similar plot for your homogeneous earth model. Use \lrange{1}{10} and plot with axes ranges \verb+[0, 11, 0, 4]+, where the $y$-axis is frequency in mHz and the $x$-axis is $l$.
 
 Note: Some points $(l,\,\fnl)$ will be outside the plotting range.
 
@@ -661,7 +661,7 @@ where $i$ is the measurement index that represents some particular $n$-$l$ pair,
 
 \item (0.4) Compute $F(\bem)$ for all available observations (\refTab{tab:modes_obs}). These observations can be loaded at the bottom of \verb+spshell.ipynb+. List your answer in mHz with 0.001 precision.
 
-Tip: Initialize an $a \times b$ matrix as \verb+Fobs = NaN(a,b)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres(:)+. See example code at the bottom of \verb+spshell.ipynb+.
+Tip: Initialize an $a \times b$ matrix as \verb+Fobs = np.full((a,b),np.nan)+, then fill certain entries according to $n$ and $l$ listed in the observations. This ``observations matrix'' can be differenced with a corresponding ``predictions matrix''; the residual matrix can be turned into a vector as \verb+Fres.flatten(order='F')+. See example code at the bottom of \verb+spshell.ipynb+.
 
 \begin{itemize}
 \item Show your code excerpt for the calculation.
@@ -690,7 +690,7 @@ Hint: For this misfit analysis, note that you only have observations up to $n = 
 \item Find a value of $\mu$ that best fits all $N=20$ observed eigenfrequencies.
 \item List the value of $F(\bem)$ (\refeq{Fm}) for the best-fitting $\mu$.
 \item Justify your choice of the new $\mu$, either in words, Python output, or a figure.
-\item Show a dispersion plot as before (use \verb+axis([0 11 0 4])+) that contains all predictions and observations.
+\item Show a dispersion plot as before (use \verb+plt/axis([0, 11, 0, 4])+) that contains all predictions and observations.
 \end{itemize}
 
 \item (0.2) Repeat, but now use only the $N = 9$ observations for the fundamental mode ($n=0$). (This means that some of the observations in your plot will not have been used in determining the new~$\mu$.)
@@ -708,7 +708,7 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 
 %---------------
 
-\item (1.0) {\bf Linear earth.} Adapt \verb+earthfun.m+ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
+\item (1.0) {\bf Linear earth.} Adapt \verb+earthfun.py+ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
 %
 \begin{eqnarray*}
 \rho(a) &=& 2690 \; {\rm kg/m^3}
@@ -722,12 +722,12 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 %
 where $r=a$ is the surface and $r=b$ is the core-mantle boundary. (The values are an approximation to PREM's $\rho(r)$ and $\mu(r)$.) Thus, our Earth model $\bem$ can be thought of as having four parameters, the intercept and slope of $\rho(r)$ and $\mu(r)$: $\bem = (\rho_0,\rho_1,\mu_0,\mu_1)$.
 
-Test your \verb+earthfun.m+ for a few values of $r$ to make sure that the output values of $\rho$ and $\mu$ are sensible (no work needed).
+Test your \verb+earthfun.py+ for a few values of $r$ to make sure that the output values of $\rho$ and $\mu$ are sensible (no work needed).
 
-Note: As suggested in \verb+earthfun.m+, it may be helpful to use \verb+rspan+ as a global variable.
+%Note: As suggested in \verb+earthfun.m+, it may be helpful to use \verb+rspan+ as a global variable.
 
 \begin{enumerate}
-\item (0.4) Show your code for \verb+earthfun.m+.
+\item (0.4) Show your code for \verb+earthfun.py+.
 \item (0.3) Generate a new dispersion plot with both predictions and observations, as in Problem 1-\ref{prob:disp}.
 \item (0.1) List the misfit in \refTab{tab:homo}.
 \item (0.2) What parameters would you search over if you wanted to obtain an optimal linear earth model?
@@ -779,7 +779,7 @@ This cubic function is a fit to the PREM profiles, so check that the numbers are
 For this problem we use the {\bf cubic model} and we consider the fundamental mode ($n=0$) only. In other words, $\fnl$ for $n > 0$ will not be needed. We are not using any observations (such as \refTab{tab:modes_obs}).
 
 \begin{enumerate}
-\item (0.5) Consider the set of $l$, \verb+lvec = [10:30:400]+. Using the expressions in \refTab{tab:waveparm}, make two dispersion plots for the fundamental mode:
+\item (0.5) Consider the set of $l$, \verb+lvec = np.arange(10,400,30)+. Using the expressions in \refTab{tab:waveparm}, make two dispersion plots for the fundamental mode:
 %
 \begin{enumerate}
 \item (0.2) frequency (mHz) vs degree
@@ -801,12 +801,12 @@ Qualitatively, how do these compare with the predictions for PREM, shown in \ref
 
 %-------------
 
-\item (0.0) In the next two parts, you will need to use discretized versions of $\rho(r)$ and $\mu(r)$. This discretization is already done within \verb+surf_stress.m+. When you plot $W(r)$ and $T(r)$, you are using discretized versions of these functions, where \verb+rvec+ is the discretized radius values associated with the eigenfunctions.
+\item (0.0) In the next two parts, you will need to use discretized versions of $\rho(r)$ and $\mu(r)$. This discretization is already done within \verb+surf_stress.py+. When you plot $W(r)$ and $T(r)$, you are using discretized versions of these functions, where \verb+rvec+ is the discretized radius values associated with the eigenfunctions.
 
 Use the discretized radius \verb+rvec+ to compute discretized versions of $\mu(r)$ and $\rho(r)$. This can be done with the command
 %
 \begin{verbatim}
-[rhovec,muvec] = earthfun(rvec)
+rhovec, muvec = earthfun(rvec, rspan, imod)
 \end{verbatim}
 %
 if you have written \verb+earthfun+ to handle either an input vector or an input scalar.
@@ -830,7 +830,7 @@ The phase speed $c$ and the group speed $U$ have units of rad/s. Multiplication 
 \begin{enumerate}
 \item (0.8) Show you lines of code.
 
-Hint: For an adequate, crude numerical integration, use the command \verb+diff(rvec)+ to get a discretized vector of $dr$ that can be multiplied with the discretized version of $W(r)$. (Integration is summation.)
+Hint: For an adequate, crude numerical integration, use the command \verb+np.diff(rvec)+ to get a discretized vector of $dr$ that can be multiplied with the discretized version of $W(r)$. (Integration is summation.)
 
 \item (0.2) List both $U$ and $U'$ in \refTab{tab:eigfun}.
 \end{enumerate}
@@ -846,9 +846,9 @@ Notes:
 \begin{itemize}
 \item Again you will need the discretized versions of $\rho(r)$ and $\mu(r)$.
 
-\item To check the solution, use the quantity \verb+norm(a - b)/norm(a)+ where \verb+a+ is the left-hand side and \verb+b+ is the right-hand side of \refEq{ODEs}. You want this value to be $< 10^{-3}$; you may need to lower the tolerance in the \verb+ode45+ solver in \verb+surf_stress.m+.
+\item To check the solution, use the quantity \verb+np.linalg.norm(a - b)/np.linalg.norm(a)+ where \verb+a+ is the left-hand side and \verb+b+ is the right-hand side of \refEq{ODEs}. You want this value to be $< 10^{-3}$; you may need to lower the tolerance in the \verb+ode45+ solver in \verb+surf_stress.py+, which can be done by changing the \verb+max_step+ variable in the second cell.
 
-\item Use the command \verb+gradient(h,r)+ to obtain $dh/dr$ where \verb+h+ and \verb+r+ are equal-length vectors. This numerical approximation of $dh/dr$ will be good if \verb+r+ is densely sampled.
+\item Use the command \verb+np.gradient(h,r)+ to obtain $dh/dr$ where \verb+h+ and \verb+r+ are equal-length vectors. This numerical approximation of $dh/dr$ will be good if \verb+r+ is densely sampled.
 \end{itemize}
 
 \item (0.2)  How do the calculations of $_0f_{40}$ compare for with and without the lowered tolerance for the \verb+ode45+ solver? 
