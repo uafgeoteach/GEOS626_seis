@@ -1,9 +1,9 @@
-# l <= 10, n <= 3 toroidal mode observations listed in PREM, Table 5
-# col 1: n, radial order
+# subset of observed toroidal modes: PREM, Table 5, l <= 10, n <= 3
+# col 1: n, overtone number (radial order)
 # col 2: T (torsional mode)
-# col 3: l, angular order
-# col 4: observation period, s
-# col 5: standard deviation of observation period, s
+# col 3: l, degree (angular order)
+# col 4: observed period in seconds
+# col 5: standard deviation of observed period in seconds
 0 T 2 2636.38 0.08
 0 T 3 1705.95 0.15
 0 T 4 1305.92 0.07

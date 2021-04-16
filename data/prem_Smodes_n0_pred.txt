@@ -1,7 +1,7 @@
-# spheroidal modes listed in PREM, Table 5: l=0 and [l <= 10, n <= 3]
-# col 1: n, radial order
+# subset of spheroidal modes predicted for PREM [Table 5, l = 2-30, n = 0]
+# col 1: n, overtone number (radial order)
 # col 2: S (spheroidal mode)
-# col 3: l, angular order
+# col 3: l, degree (angular order)
 # col 4: predicted period, isotropic PREM, s
 # col 5: predicted group velocity, anisotropic model, km/s
 0 S 2  3233.45 7.086
