@@ -2,24 +2,13 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from stress_disp_love import stress_disp_love
 
-
-def surf_stress_love(k0, omega, mbeta, mmu, rspan, crho, cmu, mrho, cthick, max_step=5.3e3, return_wt_rvec=False):
-    """Modified from surf_stress_love.m by Carl Tape.
-
-    Adapted by Amanda McPherson (Jan 2021)
-    Some edits by Liam Toney, April 2021
-
-    surf_stress_love() calculates the stress at the surface of a
-    toroidal Earth.
-
-    Applied Seismology (GEOS 626) University of Alaska Fairbanks
-
-    Modified from surf_stress.py in the modesA homework
+def surf_stress_love(k0, omega, rspan, crho, cmu, mrho, mmu, cthick, max_step=5.3e3, return_wt_rvec=False):
+    """
+    surf_stress_love() calculates the stress at the surface of a layer-over-halfspace
 
     Args:
         k0 (int or float): Wavenumber
         omega:
-        mbeta:
         mmu:
         rspan:
         crho:
@@ -33,11 +22,15 @@ def surf_stress_love(k0, omega, mbeta, mmu, rspan, crho, cmu, mrho, cthick, max_
         WT[1,-1] = stress value at the Earth's surface (r = rspan[1])
         [WT = displacement and stress eigenfunctions]
         [rvec = radii at which displacement and stress eigenfunctions were evaluated at]
+    
+    Applied Seismology (GEOS 626) University of Alaska Fairbanks
+    contributors: Charles Ammon, Carl Tape, Amanda McPherson, Liam Toney
     """
 
     k = k0
 
     # calculate initial conditions at r=0 within the mantle halfspace
+    mbeta = np.sqrt(mmu/mrho)
     mk = omega/mbeta
     nub = np.sqrt(k**2 - mk**2)
 
