@@ -25,7 +25,7 @@
 \centering
 {\large \bf Problem Set 7: Love waves for a layered Earth\footnote{This problem set was adapted from one by Charles Ammon, Penn State University.} [modesB]} \\
 GEOS 626: Applied Seismology, Carl Tape \\
-Assigned: April 15, 2021 --- Due: April 22, 2021 \\
+Assigned: April 15, 2021 --- Due: April 27, 2021 \\
 Last compiled: \today
 \end{spacing}
 
@@ -33,7 +33,7 @@ Last compiled: \today
 
 \section*{Overview}
 
-This problem set is a direct extension of the problem set ``Toroidal modes of a spherically symmetric earth.'' Here we examine mode solutions for Love waves of a simple model of a layer over a halfspace. The layer represents the crust, the halfspace the upper mantle.
+This problem set is a direct extension of the problem set ``Toroidal modes of a spherically symmetric earth.'' Here we examine mode solutions for Love waves of a simple model of a layer over a halfspace. The layer represents the crust, the halfspace the upper mantle.\footnote{You might find it easier to think of this as a two-layer model. Technically the crust is the only part has an upper and lower limit, so this is why it is considered the only layer.}
 
 \begin{itemize}
 \item Goals:
@@ -172,6 +172,10 @@ What about for $T = 6$ s? Put dots in your sketch to indicate your solutions.
 What is the corresponding range of wavenumbers $k$?
 
 Make sure that the values in each range are ordered such that the mode branches are encountered in increasing order ($n = 0,1,\ldots$).
+
+\item (0.0) Given a period $T = 20$~s ($f = 1/T$), plot and label the following points in \refFig{fig:dots}: $(k_m, f)$, $(k_0, f)$, $(k_c, f)$
+
+Draw or plot the set of dots representing the $(k_i, f)$ ($i = 1,2,\ldots$) points that represent test eigenfunctions that do not satisfy the boundary conditions. No text labels needed---just dots.
 
 \end{enumerate}
 
@@ -317,11 +321,13 @@ After you do the check, you can go back to using the default tolerance.
 \item (0.8) Loop over a range of frequencies to construct the dispersion plot you sketched in Problem~1-\ref{prob:model1}. Use an equally spaced frequency vector ($\sim$50 values) ranging between periods of 3.0 seconds and 20.0 seconds.
 %
 \begin{itemize}
-\item Sketch (by hand or in Python) vertical bars corresponding to $\cutoff{f}$.
+\item Sketch (by hand or in Python) vertical lines corresponding to $\cutoff{f}$.
 \item Label the branches $n=0$, $n=1$, etc.
 \end{itemize}
 
-\item (0.2) Include an additional plot of phase speed versus period, and sketch (by hand or in Python) vertical bars corresponding to $\cutoff{T} = 1/\cutoff{f}$.
+\item (0.2) Include an additional plot of phase speed versus period, and sketch (by hand or in Python) vertical lines corresponding to $\cutoff{T} = 1/\cutoff{f}$.
+
+\item (0.0) Include an additional plot of frequency versus wavenumber, as shown in \refFig{fig:dots}.
 \end{enumerate}
 
 %----------------

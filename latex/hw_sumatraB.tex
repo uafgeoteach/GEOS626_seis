@@ -3,6 +3,10 @@
 
 \input{hw626_header}
 
+\newcommand{\tfilemodes}{{\tt hw\_sumatraB\_modes.ipynb}}
+\newcommand{\tfilelf}{{\tt hw\_sumatraB\_lf.ipynb}}
+\newcommand{\tfilehf}{{\tt hw\_sumatraB\_hf.ipynb}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -63,9 +67,9 @@ Be sure you understand what a bandpass filter is.
 \item The main scripts you will use are:
 %
 \begin{itemize}
-\item \verb+sumatra_modes.ipynb+
-\item \verb+sumatra_hf.ipynb+
-\item \verb+sumatra_lf.ipynb+
+\item \tfilemodes\
+\item \tfilehf\
+\item \tfilelf\
 \end{itemize}
 
 %---------
@@ -123,9 +127,9 @@ wcut=w.pop(index=2)
 %------------------------
 
 %\pagebreak
-\section*{Problem 1 (4.5). Splitting of normal mode frequencies}
+\section*{Problem 1 (4.4). Splitting of normal mode frequencies}
 
-The template script is \verb+sumatra_modes.ipynb+.
+The template script is \tfilemodes.
 %See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
 
 \begin{enumerate}
@@ -149,15 +153,17 @@ Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mo
 
 %---------
 
-\item (0.5) Run \verb+lab_sumatra.ipynb+ and examine the stations that were cut from the analysis. Describe three ``errors'' in these records, and list at least one station associated with each error.
+\item (0.4) Run \verb+lab_sumatra.ipynb+ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
 
 %---------
 
 \item (0.5)
 %
 \begin{enumerate}
-\item (0.4) Modify \verb+ipick+ and plot the seismograms of the stations you selected in \verb+lab_sumatra.pdf+.
+\item (0.4) Modify \verb+ipick+ and plot the spectrum for each station you selected in \verb+lab_sumatra+.
 %To save paper, use something like a $5 \times 4$ subplot.
+
+Show a list of station names, along with the distance and azimuth from the Sumatra epicenter to each station.
 
 \item (0.1) Compute the amplitude of the \snl{0}{0} peak for all your stations. \\
 List the median value.
@@ -169,38 +175,50 @@ List the median value.
 %
 \begin{enumerate}
 \item (0.4) Include a plot of the stacked spectrum over two ranges: 0.2--10~mHz and 0.2--1.0~mHz.
-\item (0.6) Qualitatively, describe the meaning of this spectrum, \eg what is the physical explanation for the spikes? It may be helpful to recall the modes homework.
+\item (0.6) Provide a detailed, qualitative, physical explanation for the occurence of spikes in the 0.2--10~mHz spectrum for any given station. (Recall the modes homework.)
 \end{enumerate}
 %
 % PROBABLY NO NEED TO REMIND EVERYONE ABOUT TIDES HERE, THOUGH IT IS THE LARGEST PEAK IN THE ENTIRE SPECTRUM
 
 %---------
 
-\item (0.5) Several peaks in the Sumatra spectrum are clearly split; the central peak is the ``degenerate'' frequency ($m=0$), and the split peaks are known as ``singlets'' ($m = -l,\ldots,l$). 
+\item (0.5) Several peaks in the Sumatra spectrum are clearly split into multiple peaks known as ``singlets''. For a mode with degree $l$, the theoretical number of singlets is $2l+1$, with the peaks labeled from left to right as $m = -l,\ldots,l$. The central singlet is for $m=0$.
 %
 \begin{enumerate}
 \item (0.2) Use \verb+w2fstack+ to generate a stack of \snl{0}{2}, and include this plot. \\
 Hint: Use a new frequency range.
 \item (0.1) Label the peaks \snlm{0}{2}{-2}, \ldots, \snlm{0}{2}{2} on the plot.
-\item (0.2) Measure the frequency of the central peak, $_0f_2^0$ ($m=0$), and the spacing between peaks, $\Delta f$.
-Assuming a linear model, write an expression for the singlet frequency $_0f_2^m(m)$.
+\item (0.2) 
+\begin{itemize}
+\item Measure the frequency of the central peak, $_0f_2^0$ ($m=0$), and the spacing between peaks, $\Delta f$. List these values (with units).
+\item Assuming a linear model, write an expression for the singlet frequency $_0f_2^m(m)$. List numerical values (and units).
+\end{itemize}
 \end{enumerate}
 
 %---------
 
-\item (0.5) Make a plot with  \snl{0}{2} spectra sorted by station latitude.
+\item (0.5) Consider the variation in \snl{0}{2} based on station latitude.
+%
+\begin{enumerate}
+\item (0.2) What pattern might you expect to see (and why?)
 
-Qualitatively, how does the relative sizes of the singlet peaks vary as a function of latitude?
+Recall \verb+hw_sumatraA+.
+See \citet[][Figure 3]{SSteinOkal2007} for additional background.
+
+\item (0.3) Make a plot with  \snl{0}{2} spectra sorted by station latitude.
+
+Qualitatively, how do the singlet peaks vary as a function of latitude?
 %How does the amplitude of the degenerate peak vary with latitude?
 
-See \citet[][Figure 3]{SSteinOkal2007} for additional background.
+\end{enumerate}
 
 %---------
 
 \item (0.5) Now consider the variation in \snl{0}{2} with source-station distance.
 %
 \begin{enumerate}
-\item (0.3) What pattern might you expect to see? (Hint: Think about the nodal lines for this mode.)
+\item (0.3) What pattern might you expect to see? \\
+Hint: Think about the nodal lines for this mode.
 
 \item (0.2) Make a plot with  \snl{0}{2} spectra sorted by source-station distance. Qualitatively, how does the relative sizes of the singlet peaks vary as a function of source-station distance?
 \end{enumerate}
@@ -224,10 +242,10 @@ See \citet[][p. 106]{SteinWysession} for background.
 %------------------------
 
 \pagebreak
-\section*{Problem 2 (4.0). Directivity}
+\section*{Problem 2 (3.1). Directivity I}
 
 \begin{enumerate}
-\item (0.0) Examine \verb+sumatra_hf.ipynb+ and make sure you understand how to do certain operations for plotting record sections. It would be helpful to check what each parameter in \verb+plotw_rs.py+ does (type \verb+open plotw_rs+).
+\item (0.0) Examine \tfilehf\ and make sure you understand how to do certain operations for plotting record sections. It would be helpful to check what each parameter in \verb+plotw_rs.py+ does (type \verb+open plotw_rs+).
 
 \item (1.0) We will repeat the analysis of \citet{Ni2005} but using even more simplifications than they did. {\bf Read \citet{Ni2005} carefully before you begin.} We will assume the following:
 %
@@ -254,11 +272,11 @@ where $v_r$ is the rupture velocity, $v$ is the velocity of the medium (11~km/s)
 \item (0.1) What $\alpha$ will produce a minimum $T_r(\alpha)$, $T_{\rm min}$?
 %What are $\alpha$ values for the minimum and maximum values of $T_r$?
 \item (0.1) What $\alpha$ will produce a maximum $T_r(\alpha)$, $T_{\rm max}$?
-\item (0.1) The range of $T_r$ is given by $T_{\rm max} - T_{\rm min}$. \\
+\item (0.2) The range of $T_r$ is given by $T_{\rm max} - T_{\rm min}$. \\
 What is the range, considering variations in $\alpha$ only?
-\item (0.2) What is $\overline{T}_r$, the azimuthal average of $T_r$? \\
+\item (0.1) What is $\overline{T}_r$, the azimuthal average of $T_r$? \\
 Hint: Integration is needed.
-\item (0.3) Show that, with our assumptions, \refeq{Tr} can be written in terms of only $T_{\rm min}$, $T_{\rm max}$, $\alpha$, and $\alpha_0$.
+\item (0.4) Show that, with our assumptions, \refeq{Tr} can be written in terms of only $T_{\rm min}$, $T_{\rm max}$, $\alpha$, and $\alpha_0$.
 
 Hint: \refEq{Tr} is an equation with 6 unknowns: $T_r$, $L$, $v_r$, $v$, $\alpha$, $\alpha_0$. Your equations for $T_{\rm min}$ and $T_{\rm max}$ give you two additional equations with two additional unknowns ($T_{\rm min}$, $T_{\rm max}$). You are asked to write an equation with 5 unknowns (including $T_r$). Therefore you start with a system of 3 equations with 8 unknowns, and you can reduce this to 1 equation with 5 unknowns. This is algebra, so no numbers should appear anywhere.
 
@@ -268,7 +286,7 @@ Hint: \refEq{Tr} is an equation with 6 unknowns: $T_r$, $L$, $v_r$, $v$, $\alpha
 
 \item (1.2) 
 \begin{enumerate}
-\item (1.0) Modify \verb+sumatra_hf.ipynb+ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
+\item (1.0) Modify \tfilehf\ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
 
 Notes:
 %
@@ -282,10 +300,10 @@ Notes:
 
 \item See the template code for how to align seismograms.
 
-\item You do not need to compute the smoothed envelopes---the bandpassed seismograms are enough. (Though computing the envelopes is easy to do; see previous homework solutions.) 
+\item You do not need to compute the smoothed envelopes---the bandpassed seismograms are enough. (Though computing the envelopes is straightforward; see \verb+hwsol_sumatraA+.)
 \end{itemize}
 
-\item (0.2) What is the range in time shifts that are applied to your seismograms in order to align them?
+\item (0.2) What are the minimum and maximum time shifts applied to your seismograms in order to align them?
 
 \end{enumerate}
 
@@ -293,7 +311,7 @@ Notes:
 
 \item (0.4) List three stations with values near $T_{\rm min}$ and three stations with values near $T_{\rm max}$.
 
-List the station name, distance $\Delta$, and azimuth $\alpha$ for each set of stations.
+List the station name, distance $\Delta$ (degrees), and azimuth $\alpha$ (degrees) for each of station.
 
 %Make a plot of $T_r$ vs $\alpha$ for your data \citep[see Figure~S1 of][]{Ni2005}.
 %(This will be very approximate, since it is difficult to measure $T_r$.)
@@ -302,20 +320,24 @@ List the station name, distance $\Delta$, and azimuth $\alpha$ for each set of s
 
 \item (0.4) Using your data, estimate $T_{\rm min}$ and $T_{\rm max}$, then calculate the following quantities:
 %
-\begin{enumerate}
+\begin{itemize}
 \item rupture direction $\alpha_0$ (this is inferred, not calculated)
 \item rupture time $\overline{T}_r$ (show work)
 \item rupture length $L$ (show work)
 \item rupture velocity $v_r$ (show work)
+\end{itemize}
+
 \end{enumerate}
 
-%-------------------
+%------------------------
 
-\item (1.0)
-%
+\pagebreak
+\section*{Problem 3 (1.0). Directivity II}
+
 \begin{enumerate}
-\item (0.4) Modify \verb+sumatra_lf.ipynb+ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
+\item (0.4) Modify \tfilelf\ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
 
+% XXX PYTHON XXX
 Note: You may find the command \verb+extract+ and \verb+max+ useful for quantifying the amplitude ratio, though quantification is not required. If you do quantify the ratios, use the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave.
 
 \item (0.3) Explain how the R1/R2 ratio can provide information on directivity.
@@ -324,17 +346,15 @@ Note: You may find the command \verb+extract+ and \verb+max+ useful for quantify
 Hint: Think about \refFig{fig:sumatra_chen}.
 \end{enumerate}
 
-\end{enumerate}
-
 %------------------------
 
 %\pagebreak
-\section*{Problem 3 (1.5). Miscellaneous}
+\section*{Problem 4 (1.5). Miscellaneous}
 
 In this problem, you will find it helpful to use an appropriate input for \verb+stasub+ so that \verb+client.get_waveforms+ will return only a subset of stations/waveforms.
 
 \begin{enumerate}
-\item (1.0) Modify \verb+sumatra_lf.ipynb+ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure S12 of \citet{Ammon2005} for reference and checking.
+\item (1.0) Modify \tfilelf\ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure~S12 of \citet{Ammon2005} for reference and checking.
 
 %Note: Use \verb+cutoff = [];+ and \verb+iint=0+ when calling \verb+getwaveform+; all filtering and integration can be applied within the plotting script (\verb+plotw_rs.m+).
 %
@@ -350,7 +370,8 @@ Notes:
 \begin{itemize}
 \item Note: Let us assume that \citet{Ammon2005} used the label H1 to denote the E channel (nominally east) and H2 to denote the N channel (nominally north).
 
-\item Converting to displacement is trivial (see \verb+plotw_rs.py+). If you use \verb+plotw_rs.py+, then you may want to output the modified (\ie filtered) \verb+w+ to analyze.
+\item Make sure you are looking at displacement, not velocity.
+%\item Converting to displacement is trivial (see \verb+plotw_rs.py+). If you use \verb+plotw_rs.py+, then you may want to output the modified (\ie filtered) \verb+w+ to analyze.
 
 \end{itemize}
 
@@ -359,14 +380,21 @@ Notes:
 \item (0.5) 
 %
 \begin{enumerate}
-\item (0.3) Modify \verb+sumatra_hf.ipynb+ to reproduce the azimuthal record section of P waves shown in Figure S11 of \citet{Ammon2005}. (Plot with one column, not two.) Order the seismograms starting with the direction of the rupture direction (\verb+azstart+ parameter in \verb+plotw_rs.py+).
-Hint: The variable \verb+nfac+ will change the amplitudes of the plotted waveforms.
-\item Qualitatively describe the variations in the P waves as a function of azimuth from the rupture direction. (Use the waveforms in Figure S11 of \citet{Ammon2005} if your own record section does not match.)
+\item (0.3) Modify \tfilehf\ to reproduce the azimuthal record section of P waves shown in Figure S11 of \citet{Ammon2005}.
+%
+\begin{itemize}
+\item What bandpass do you think they used?
+\item Plot the record section with one column, not two as in \citet{Ammon2005}.
+\item Plot (or sort) the seismograms by azimuth.
+%\item Order the seismograms starting with the direction of the rupture direction (\verb+azstart+ parameter in \verb+plotw_rs.py+).
+\item Hint: The variable \verb+nfac+ will change the amplitudes of the plotted waveforms.
+\end{itemize}
+
+\item (0.2) Qualitatively describe the variations in the P waves as a function of azimuth from the rupture direction. (Use the waveforms in Figure S11 of \citet{Ammon2005} if your own record section does not match.)
 \end{enumerate}
 
 %------------
 
-\pagebreak
 \item (0.0) {\bf\em Optional} \input{hw_sumatraB_CAN}
 
 \end{enumerate}
@@ -377,7 +405,7 @@ Hint: The variable \verb+nfac+ will change the amplitudes of the plotted wavefor
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------
-%\pagebreak
+\pagebreak
 \bibliography{carl_abbrev,carl_him,carl_main,carl_slab}
 %-------------------------------------------------------------
 
@@ -410,8 +438,8 @@ These figures are generated from {\tt modes\_PREMobs.ipynb}.
 P wave traveltimes from Jeffreys--Bullen tables.
 The calculations are based on a source depth of 10~km.
 (a) Apparent P velocity as a function epicentral distances, based on the Jeffreys--Bullen travel time tables. 
-The mean velocity over the epicentral distance range $30^\circ < \Delta < 85^\circ$ is 10.8~km/s, which would provide a very rough approximation for the P wave velocity for all stations.
-(b) Linear fit transformed to traveltime: $P_t = \Delta_{\rm km} / (0.616 \Delta + 7.25)$.
+The mean velocity over the epicentral distance range $30^\circ < \Delta_{\rm deg} < 85^\circ$ is 10.8~km/s, which would provide a very rough approximation for the P wave velocity for all stations.
+(b) Linear fit transformed to traveltime: $P_t = \Delta_{\rm km} \,/\, (0.616 \Delta_{\rm deg} + 7.25)$.
 }}
 \label{fig:JB}
 \end{figure}
