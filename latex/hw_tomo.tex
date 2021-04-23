@@ -39,7 +39,9 @@ Last compiled: \today
 
 \item This example problem can be thought of as a surface-wave tomography problem, whereby the unknown model is a spatial map of surface wave phase speed and the observations are measurements of surface wave traveltimes.
 
-\item The reading and notes on inverse problems from Homework 8 is relevant.
+The unknown phase speed map may reflect reality or it may be something that is made up.
+
+\item The reading and notes on inverse problems from \verb+hw_inv+ is relevant.
 At the end I have listed some additional references.
 \nocite{Tape2007,Menke,AsterE2,Tarantola2005}
 
@@ -131,7 +133,7 @@ Take into account the following details:
 i = (isrc-1)*nrec + irec
 \end{verbatim}
 %
-Here index $i$ is the row index (or measurement index) for $\bG$, \verb+isrc+ is the source index, and \verb+irec+ is the receiver index. For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125.
+Here index $i$ is the row index (or measurement index; $i = 1,\ldots,\ndata$) for $\bG$, \verb+isrc+ is the source index ($1, \ldots, N_{\rm src}$), and \verb+irec+ is the receiver index ($1, \ldots, N_{\rm rec}$). For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125: $i=(25-1)132 + 125$.
 
 \item Use $\nparm=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
 
@@ -146,7 +148,7 @@ Here index $i$ is the row index (or measurement index) for $\bG$, \verb+isrc+ is
 
 Note: Based on the indexing above, the $i=126$ measurement corresponds to the ray path between the \verb+isrc=1+ source and the \verb+irec=126+ receiver.
 
-Note: Python is 0-indexed, so the $i$th row in the $\bG$ array will be accessed using $i-1$.
+Note: Python is 0-indexed, so the $i$th row in the $\bG$ array will be accessed using $i-1$, and the $k$th column in the $\bG$ array will be accessed using $k-1$.
 
 \item (0.2) What does each row of $\bG$ correspond to?
 

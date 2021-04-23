@@ -127,6 +127,7 @@ g &=& \frac{\pi\beta_c}{H} \left( 1 - \frac{\beta_c^2}{\beta_m^2}\right)^{-1/2}
 %
 where $\beta_c$ is the crustal velocity, $\beta_m$ is the mantle velocity, and $H$ is the thickness of the layer. \refEq{wcn_Aki} is the version listed in \citet[][Eq. 7.8]{AkiRichardsE2}; \refEq{wcn_SW} is the version listed in  \citet[][p. 92]{SteinWysession}. I have used the notation $\bar{n}$ to distinguish it from the $n$ used for the indexing of mode branches. Note that $g$ is a function of the structural model only.
 
+\pagebreak
 \refEq{wcn} implies:
 %
 \begin{itemize}
@@ -198,7 +199,7 @@ In order to avoid numerical overflow during integration, we will use a coordinat
 %----------------
 
 %\pagebreak
-\subsection*{Problem 2 (8.0). Implementation}
+\subsection*{Problem 2 (6.0). Implementation}
 
 The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \tfileBB\ with the initial conditions
 %
@@ -330,9 +331,14 @@ After you do the check, you can go back to using the default tolerance.
 \item (0.0) Include an additional plot of frequency versus wavenumber, as shown in \refFig{fig:dots}.
 \end{enumerate}
 
+\end{enumerate}
+
 %----------------
 
-\pagebreak
+\subsection*{Problem 3 (2.0). Textbook results}
+
+\begin{enumerate}
+
 \item (1.0) We now consider the fundamental mode only.
 
 \begin{enumerate}
@@ -406,9 +412,9 @@ Notes:
 \begin{figure}
 \centering
 \begin{tabular}{cc}
-(a) & \includegraphics[width=12cm]{modes_disp_fig12b_icase7.eps} \\ \hline
-& \\
-(b) & \includegraphics[width=12cm]{modes_love_n5_imodel1_C.eps} 
+(a) & \includegraphics[width=10.5cm]{modes_disp_fig12b_icase7.eps} \\
+& \\ & \\
+(b) & \includegraphics[width=10.5cm]{modes_love_n5_imodel1_C.eps} 
 \end{tabular}
 \caption[]
 {{
