@@ -143,12 +143,12 @@ We have replaced the normalized radial integration limits $[0,1]$ with actual ra
 \item (1.0) Show that \refEq{dT1} above can be written as
 %
 \begin{equation}
-\frac{\delta T}{T} = \sum_{i=1}^N \sum_{k=0}^3 a_{ik} \int_{r_{i-1}}^{r_i} r^{k} \tilde{S}(r) \rmd r
-\;+\; \sum_{i=1}^N \sum_{k=0}^3 b_{ik} \int_{r_{i-1}}^{r_i} r^{k} \tilde{R}(r) \rmd r
+\frac{\delta T}{T} = \sum_{j=1}^N \sum_{k=0}^3 a_{jk} \int_{r_{j-1}}^{r_j} r^{k} \tilde{S}(r) \rmd r
+\;+\; \sum_{j=1}^N \sum_{k=0}^3 b_{jk} \int_{r_{j-1}}^{r_j} r^{k} \tilde{R}(r) \rmd r
 \label{dT2}
 \end{equation}
 %
-where $N$ is the number of layers in PREM, $r_0 = 0$, $r_N = D$, $a_{ik}$ represents the $\delta\vs(r)$ coefficient associated with the $i$th layer and the $k$th-order polynomial term, and $b_{ik}$ are the corresponding coefficients for $\delta\rho(r)$.
+where $N$ is the number of layers in PREM, $r_0 = 0$, $r_N = D$, $a_{ik}$ represents the $\delta\vs(r)$ coefficient associated with the $j$th layer and the $k$th-order polynomial term, and $b_{jk}$ are the corresponding coefficients for $\delta\rho(r)$.
 
 \item (0.1) How many observations are represented in \refEq{dT2}? 
 

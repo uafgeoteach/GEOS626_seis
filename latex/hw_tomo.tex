@@ -92,22 +92,24 @@ where $\rmd s$ denotes a segment of the $i$th ray.
 Show how \refEq{ray_tomography} leads to 
 %
 \begin{equation}
-\bDelta\bd = \bG\bDelta\bem,
+\bdelta\bd = \bG\,\bdelta\bem,
 \end{equation}
 %
 where the data vector is given by
 %
 \begin{equation}
-\bDelta\bd = (\delta T_1,\ldots,\delta T_i,\ldots,\delta T_\ndata)^T,
+\bdelta\bd = (\delta T_1,\ldots,\delta T_i,\ldots,\delta T_\ndata)^T,
 \label{d}
 \end{equation}
 %
 and the model vector is given by
 %
 \begin{equation}
-\bDelta\bem = (\delta m_1,\ldots,\delta m_k,\ldots,\delta m_\nparm)^T,
+\bdelta\bem = (\delta m_1,\ldots,\delta m_k,\ldots,\delta m_\nparm)^T,
 \label{m}
 \end{equation}
+%
+Write your final equation in matrix-vector schematic form, as done in \verb+lab_linefit+ (line) and \verb+hw_inv+ (ellipse).
 
 \item (0.2) Write the expression for the $G_{ik}$ entry of the partial derivatives matrix~$\bG$.
 \end{enumerate}
@@ -133,7 +135,7 @@ Take into account the following details:
 i = (isrc-1)*nrec + irec
 \end{verbatim}
 %
-Here index $i$ is the row index (or measurement index; $i = 1,\ldots,\ndata$) for $\bG$, \verb+isrc+ is the source index ($1, \ldots, N_{\rm src}$), and \verb+irec+ is the receiver index ($1, \ldots, N_{\rm rec}$). For example, row $i=3293$ of $\bG$ (and $\bDelta\bd$) corresponds to the pairing of source 25 with receiver 125: $i=(25-1)132 + 125$.
+Here index $i$ is the row index (or measurement index; $i = 1,\ldots,\ndata$) for $\bG$, \verb+isrc+ is the source index ($1, \ldots, N_{\rm src}$), and \verb+irec+ is the receiver index ($1, \ldots, N_{\rm rec}$). For example, row $i=3293$ of $\bG$ (and $\bdelta\bd$) corresponds to the pairing of source 25 with receiver 125: $i=(25-1)132 + 125$.
 
 \item Use $\nparm=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
 
@@ -142,7 +144,7 @@ Here index $i$ is the row index (or measurement index; $i = 1,\ldots,\ndata$) fo
 \end{itemize}
 
 \begin{enumerate}
-\item (0.2) What are the units for $d_i$, $m_k$, and $G_{ik}$?
+\item (0.2) What are the units for $\delta d_i$, $\delta m_k$, and $G_{ik}$?
 
 \item (2.4) Check that the value of $G_{ik}$ with $i=126$ and $k=204$ is $-10.3747$. \\ Show your code for calculating $G_{ik}$ and also your numerical output value.
 
@@ -183,49 +185,49 @@ Instructions:
 
 \item In order to do the inverse problem, you will need the data vector of traveltime measurements (\refeq{d}). Load the column vector \verb+measure_vec.dat+, and check that it has dimension \mbox{$3300 \times 1$}.
 
-\item For this problem, we will make the notation change $\bDelta\bem \rightarrow \bem$ and $\bDelta\bd \rightarrow \bd$, in order to simplify the notation.
+%\item For this problem, we will make the notation change $\bdelta\bem \rightarrow \bem$ and $\bdelta\bd \rightarrow \dvec$, in order to simplify the notation.
 \end{itemize}
 
 \begin{enumerate}
 \item (0.5)
 \begin{enumerate}
-\item (0.1) Write the symbolic expression for the solution $\bem$ to the least squares problem $\bG\bem=\bd$ in the case where $\bG^T\bG$ is full rank.
+\item (0.1) Write the symbolic expression for the solution $\bem$ to the least squares problem $\bG\bdelta\bem=\bdelta\bd$ in the case where $\bG^T\bG$ is full rank.
 
-\item (0.4) List the dimensions and units of $\bem$, $\bd$, $\bG$, $\bG^T\bG$, and $\bG^T\bd$.
+\item (0.4) List the dimensions and units of $\bdelta\bem$, $\bdelta\bd$, $\bG$, $\bG^T\bG$, and $\bG^T\bdelta\bd$.
 \end{enumerate}
 
 %------------
 
-\item (0.3) Compute $\bem$ using your formula.  What do you get, and why is this the case?
+\item (0.3) Compute $\bdelta\bem$ using your formula.  What do you get, and why is this the case?
 
 %------------
 
 \item (1.0) If $\bG^T\bG$ is not full rank, then a damping parameter $\lambda$ may be introduced to stabilize (or ``regularize'') the inversion.  One possible solution to the problem is:
 %
 \begin{equation}
-\bem_{\lambda} = \left(\bG^T\bG+\lambda^2\bI\right)^{-1}\bG^T\bd.
+\bdelta\bem_{\lambda} = \left(\bG^T\bG+\lambda^2\bI\right)^{-1}\bG^T\bdelta\bd.
 \end{equation}
 %
 \begin{enumerate}
 
-\item (0.6) Compute $\bem_{\lambda}$ for $\lambda = 10$. \\
-List the sum of the squares of the entries of the residual vector $\br_\lambda = \bG\bem_\lambda-\bd$; this is the {\em misfit norm} (squared).
-List the sum of the squares of the entries of the model vector $\bem_{\lambda}$; this is the {\em model norm} (squared).
+\item (0.6) Compute $\bdelta\bem_{\lambda}$ for $\lambda = 10$. \\
+List the sum of the squares of the entries of the residual vector $\br_\lambda = \bG\bdelta\,\bem_\lambda-\bdelta\bd$; this is the {\em misfit norm} (squared).
+List the sum of the squares of the entries of the model vector $\bdelta\bem_{\lambda}$; this is the {\em model norm} (squared).
 
 %------------
 
-\item (0.0) Compute $\bem_{\lambda}$ for a range of $\lambda$ values: for example, try
+\item (0.0) Compute $\bdelta\bem_{\lambda}$ for a range of $\lambda$ values: for example, try
 
 \verb+lamvec = 10**np.linspace(np.log10(minlam),np.log10(maxlam),num=numlam)+
 %\verb+lamvec = 10.^linspace(log10(minlam), log10(maxlam), numlam);+
 
-with $\lambda_{\rm min} = 0.1$ and $\lambda_{\rm max} = 1000$ (specify a value for \verb+numlam+).
+with $\lambda_{\rm min} = 0.01$ and $\lambda_{\rm max} = 1000$ (specify a value for \verb+numlam+).
 
 %------------
 
 \item (0.4) Plot the misfit norm ($y$-axis) versus model norm ($x$-axis) using log-scaled values.
 
-%The misfit norm is the sum of the squares of the residuals, where the $i$the residual is $(\bG\bem-\bd)_i$. The model norm is the sum of the squares of the model parameters $m_k$.
+%The misfit norm is the sum of the squares of the residuals, where the $i$the residual is $(\bG\bem-\dvec)_i$. The model norm is the sum of the squares of the model parameters $m_k$.
 
 I recommend transforming the quantities by $\log_{10}$, then using the \verb+plot+ command, rather than dealing with the \verb+plt.loglog()+ command.
 
@@ -245,13 +247,14 @@ What happens as $\lambda \rightarrow \infty$?
 Notes:
 %
 \begin{itemize}
-\item I have pre-computed the necessary matrix $\bB$ in \tfiletomo, such that the function value $\delta\ln c(\phi_j, \theta_j)$ is computed by the dot product $\bB(j,:) \cdot \bem$. This operation is represented by \refEq{dlnv} and can be thought of as
+\item I have pre-computed the necessary matrix $\bB$ in \tfiletomo, such that the function value $\delta\ln c(\phi_j, \theta_j)$ is computed by the dot product $\bB(j,:) \cdot \bdelta\bem$. This operation is represented by \refEq{dlnv} and can be thought of as
 %
 \begin{equation}
-\bc_{\lambda} = \bB \bem_{\lambda},
+\bdelta\bc_{\lambda} = \bB\,\bdelta\bem_{\lambda},
+\label{Bexpand}
 \end{equation}
 %
-where $\bc_{\lambda} = \delta\ln c(\phi, \theta)$ is a vector of phase speed perturbations.
+where $\bdelta\bc_{\lambda} = \delta\ln c(\phi, \theta)$ is a vector of phase speed perturbations.
 
 \item The simplest way to plot $\bc_{\lambda}$ is probably with the \verb+plt.scatter()+ command. \\ But using something like \verb+plt.pcolormesh()+ will produce prettier results.
 
@@ -284,7 +287,7 @@ For your answers to this problem, try to imagine explaining the concepts to a fe
 
 \item (0.6) After the first iteration, we no longer have a uniform ``reference'' model for phase speed. How will we need to adapt our algorithm to accommodate iterations of the phase speed model?
 
-Hint: How will $\bG$, $\bd$, and $\bem$ change?
+Hint: How will $\bG$, $\dvec$, and $\bem$ change?
 
 \item (0.6) In a real problem we might make measurements at several different periods. How can the phase speed for different periods be used to obtain a 3D model of shear wave structure?
 
