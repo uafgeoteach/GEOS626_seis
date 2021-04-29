@@ -184,7 +184,7 @@ Draw or plot the set of dots representing the $(k_i, f)$ ($i = 1,2,\ldots$) poin
 
 %----------------
 
-\item (0.3) Sketch/draw the setup for this problem and include the following features and labels: the layer, $r$-axis, $r$-origin, $H$, $\lambda_m$, $\rho_c$, $\mu_c$, $\rho_m$, $\mu_m$.
+\item (0.3) Make a 2D sketch the setup for this problem and include the following features and labels: the layer, $r$-axis, $r$-origin, $H$, $\lambda_m$, $\rho_c$, $\mu_c$, $\rho_m$, $\mu_m$.
 
 In order to avoid numerical overflow during integration, we will use a coordinate system with an origin ($r = 0$) that is within the halfspace, three times a mantle shear-wavelength below the base of the layer. The convention is such that $r$ points upward.
 
@@ -272,11 +272,13 @@ Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspa
 
 \item (0.5) Show your code for \tfileCC\ and \tfileDD.
 
-\item (0.5) In $\sim$3 sentences, explain how your code finds $k_0$.
+\item (0.5) In $<5$ sentences, explain how your code finds $k_0$.
 
 \end{enumerate}
 
 \item (1.0) Show a plot of the eigenfunctions; draw a line at the base of the layer.
+
+If the eigenfunction appears jagged, please adjust \verb+max_step+ to improve their accuracy.
 
 Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis();+ to flip the direction of the $y$-axis.
 
@@ -373,7 +375,7 @@ Notes:
 \item For numerical differentiation of $A(x)$ to get $dA/dx$, try \verb+gradient(A,x)+.
 \end{itemize}
 
-\item (0.4) Explain how measurements of phase speed and group speed can be used to infer structural properties.
+\item (0.4) Explain how measurements of phase speed and group speed can be used to infer structural properties (and ``image'' the Earth's interior).
 \end{enumerate}
 
 %----------------
