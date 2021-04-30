@@ -29,6 +29,9 @@ Last compiled: \today
 \subsection*{Overview}
 
 \begin{itemize}
+\item THIS DOCUMENT WAS LAST UPDATED IN 2016. At that time, users could run \slive\ notebooks on external machines for free. Today, users need to run the notebooks on their own machines or on their own cloud accounts. Since our class is hosted on AWS, we can clone the \slive\ repository there and try out the notebooks.
+
+MANY OF THE INSTRUCTIONS BELOW ARE OUTDATED, SINCE WE DID NOT HAVE TIME TO FULLY EXPLORE \slive\ IN THE 2021 CLASS.
 
 \item Background. \\
 The lab uses a suite of tools that are available online and have been published.
@@ -53,6 +56,7 @@ To see how to do this, go to the \slive\ mainpage, then click on the box ``More 
 
 %===========================================
 
+\pagebreak
 \subsection*{Instructions}
 
 \begin{enumerate}
@@ -67,7 +71,6 @@ To see how to do this, go to the \slive\ mainpage, then click on the box ``More 
 Note the disclaimer in the same pop-up window: {\em These notebooks are not persistent. Any changes will be discarded after being idle for 30 minutes.} So make a note of your changes if you want to save them to use again later.
 \end{itemize}
 
-\pagebreak
 \item Python crash course.
 \begin{itemize}
 \item Click on the tab ``Python Courses''.
@@ -77,7 +80,7 @@ Note the disclaimer in the same pop-up window: {\em These notebooks are not pers
 This means that your job is running on a machine ``out there''. (You might see other jobs, too.)
 
 \item Go back to your new tab. Read the instructions carefully and do the exercise.
-This tutorial provides instructions for using jupyter notebooks
+This tutorial provides instructions for using jupyter notebooks.
 
 \item Check your solutions with the notebook \verb+Python_Crash_Course-with_solutions.ipynb+
 \end{itemize}
@@ -88,7 +91,7 @@ This tutorial provides instructions for using jupyter notebooks
 \item Click on ``Instaseis''
 \item Click on the first tutorial \verb+Instaseis_Tutorial_01_introduction.ipynb+
 \item Read the instructions carefully and do the exercise.
-\item Go to the GCMT catalog (\url{www.globalcmt.org}), find an earthquake on your birthday, and generate synthetic seismograms at station COLA\footnote{You can get the coordinates for COLA (network IU) at \url{http://ds.iris.edu/mda/IU/COLA}.} in Fairbanks, Alaska. Check that your beachball is similar to the one shown in the GCMT webpage. {\bf Why is it not exactly the same?} Make sure that you understand the conventions for magnitude and scalar seismic moment, in particular, the units of dyne-cm (GCMT) and N-m (\slive).
+\item Go to the GCMT catalog (\url{www.globalcmt.org}), find an earthquake on your birthday, and generate synthetic seismograms at station COLA\footnote{You can get the coordinates for COLA (network IU) at \url{http://ds.iris.edu/mda/IU/COLA}.} in Fairbanks, Alaska. Check that your beachball is similar to the one shown in the GCMT webpage. {\bf Why is it not exactly the same?} (Note \footnote{Recall {\tt hw\_mt} for the 2002 Denali fault earthquake.}) Make sure that you understand the conventions for magnitude and scalar seismic moment, in particular, the units of dyne-cm (GCMT) and N-m (\slive).
 \item Try a few different depths and see how the seismograms change.
 \item Try a few different epicentral distances (change the source or station coordinates) and see how the seismograms change.
 \end{itemize}
@@ -97,14 +100,14 @@ This tutorial provides instructions for using jupyter notebooks
 A recording Canberra, Australia, was featured in our previous lab (\verb+lab_response.pdf+) and homework (\verb+hw_sumatraA.pdf+) on the 2004-12-26 \magw{9.2} Sumatra-Andaman earthaquake. An amplitude spectrum of this seismogram appears in Figure 1 of \citet{Park2005}.
 \begin{itemize}
 \item Click on the house-shaped icon to see the main menu.
-\item Click on ``Applied Seismology''
+\item Click on ``General Seismology''
 \item Click on the tutorial \verb+instrument_response.ipynb+
 \item Compare and contrast the output figures with those that you produced in your lab and homework, as well as the one published in \citet{Park2005}.
 \end{itemize}
 
 \item Seismic wave propagation.
 \begin{itemize}
-\item Click on the house-shaped icon to see the main menu.
+\item Click on the folder-shaped icon to see the main menu.
 \item Click on ``Computational Seismology''
 \item Click on ``FiniteDifference''
 \item Click on the tutorial \verb+fd_acoustic_2d.ipynb+
