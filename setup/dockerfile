@@ -1,0 +1,48 @@
+FROM jupyter/base-notebook:latest
+
+LABEL organization="Alaska Satellite Facility"
+LABEL author="Alex Lewandowski & Eric Lundell"
+LABEL date="2021-05-24"
+
+USER root
+
+RUN apt update && \
+    apt install --no-install-recommends -y \
+        software-properties-common \
+        git \
+        zip \
+        unzip \
+        wget \
+        vim \
+        rsync \
+        less \
+        snaphu \
+        curl && \
+    add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
+    apt update && \
+    apt upgrade -y
+
+RUN conda install -c conda-forge jupyter_contrib_nbextensions jupyter_nbextensions_configurator jupyter-resource-usage
+
+ENV YML_DIR ${HOME}/environment_ymls
+RUN mkdir $YML_DIR
+
+########### create seismo conda environment #############
+COPY seismo_env.yml ${YML_DIR}/seismo_env.yml
+RUN conda env create -f ${YML_DIR}/seismo_env.yml
+SHELL ["conda", "run", "-n", "seismo", "/bin/bash", "-c"]
+RUN python -m ipykernel install --name seismo --display-name "seismo"
+##############################################################
+
+############### Create more conda environments ###############
+# COPY new_env.yml ${YML_DIR}/new_env.yml
+# RUN conda env create -f ${YML_DIR}/new_env.yml
+# RUN python -m ipykernel install --name environment_name --display-name "display_name"
+##############################################################
+
+WORKDIR GEOS626_seis
+RUN chown -R jovyan:users $HOME
+USER jovyan
+
+EXPOSE 8888
+ENTRYPOINT ["jupyter", "notebook", "--no-browser", "--allow-root"]
