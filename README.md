@@ -10,7 +10,6 @@ The repository can be obtained from GitHub with this command:
 git clone --depth=1 https://github.com/uafgeoteach/GEOS626_seis.git
 ```
 
-### Dependencies
+### Setup
 
-- TBD
-- TBD
+A yml file (see setup/ folder) lists dependencies. This file, executed within conda or docker, enables a user to establish the software tools needed to execute the iPython notebooks. (A dockerfile is also provided in setup/)
