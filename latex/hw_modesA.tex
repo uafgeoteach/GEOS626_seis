@@ -17,7 +17,7 @@
 \begin{spacing}{1.2}
 \centering
 {\large \bf Problem Set 5: Toroidal modes of a spherically symmetric earth\footnote{This problem set was designed and written by Charles Ammon, Penn State University. I have made some modifications and also converted from Matlab to Python.}} \\
-GEOS 626: Applied Seismology, Carl Tape \\
+\cltag\ \\
 Assigned: February 16, 2021 --- Due: February 25, 2021 \\
 Last compiled: \today \\
 \end{spacing}
@@ -713,7 +713,7 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 
 %---------------
 
-\item (1.0) {\bf Linear earth.} Adapt \tfileD\ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
+\item (1.0) \ptag\ {\bf Linear earth.} Adapt \tfileD\ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
 %
 \begin{eqnarray*}
 \rho(a) &=& 2690 \; {\rm kg/m^3}
@@ -742,7 +742,7 @@ Test your \tfileD\ for a few values of $r$ to make sure that the output values o
 
 %---------------
 
-\item (0.5) {\bf Cubic earth.} Instead of using linear functions for $\rho(r)$ and $\mu(r)$, use the following cubic functions:
+\item (0.5) \ptag\ {\bf Cubic earth.} Instead of using linear functions for $\rho(r)$ and $\mu(r)$, use the following cubic functions:
 %
 \begin{eqnarray*}
 \rho(r) &=& (-2.84710 \times 10^{-16})r^3 + (3.84976 \times 10^{-9})r^2 - (1.76479 \times 10^{-2})r + 3.24479 \times 10^{4}
@@ -856,7 +856,7 @@ Notes:
 \item Use the command \verb+np.gradient(h,r)+ to obtain $dh/dr$ where \verb+h+ and \verb+r+ are equal-length vectors. This numerical approximation of $dh/dr$ will be good if \verb+r+ is densely sampled.
 \end{itemize}
 
-\item (0.2)  How do the calculations of $_0f_{40}$ compare for with and without the lowered tolerance for the \verb+ode45+ solver? 
+\item (0.2) \ptag\ How do the calculations of $_0f_{40}$ compare for with and without the lowered tolerance for the \verb+ode45+ solver? 
 Let $f_a$ denote the root obtained with the default numerical tolerance in \verb+ode45+. Let $f_b$ denote the root obtained with the lowered numerical tolerance. 
 %
 \begin{enumerate}

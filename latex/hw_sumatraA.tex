@@ -23,7 +23,7 @@
 \centering
 {\large \bf Problem Set 4: Analysis of the 2004 Sumatra-Andaman earthquake \\
 Part 1: Instrument response and spectral analysis [sumatraA] \\ }
-GEOS 626: Applied Seismology, Carl Tape \\
+\cltag\ \\
 Assigned: February 9, 2021 --- Due: February 16, 2021 \\
 Last compiled: \today
 \end{spacing}
@@ -168,7 +168,7 @@ $A(\omega)$ is clearly the amplitude in the sense that
 
 %-----------
 
-\item (0.2)
+\item (0.2) \ptag\ 
 
 \begin{enumerate}
 \item (0.1) Using integration by parts ($\int u\,dv = [u\,v] - \int v\,du$), show that 
@@ -188,7 +188,7 @@ Hint: You can assume that $h(t)$ is zero at $\pm\infty$. This is a reasonable as
 
 %-----------
 
-\item (0.1) \refEq{fftder1} holds for the first derivative of $\fft(t)$, which we denote as either $\dot{\fft}(t)$ or $\fft^{(1)}(t)$. The expression can be generalized for the $n$th derivative, which is (using two different notations)
+\item (0.1) \ptag\ \refEq{fftder1} holds for the first derivative of $\fft(t)$, which we denote as either $\dot{\fft}(t)$ or $\fft^{(1)}(t)$. The expression can be generalized for the $n$th derivative, which is (using two different notations)
 %
 \begin{eqnarray}
 \cF \left[ \fft^{(n)}(t) \right] &=& (i\omega)^n \, \cF \left[ \fft(t) \right]
@@ -213,7 +213,7 @@ A_n(\omega) = \omega^n A(\omega)
 
 %-----------
 
-\item (0.1) Amplitude spectra are almost always plotted in $\log_{10}$-$\log_{10}$ space, with $\log_{10}\omega$ on the $x$-axis and $\log_{10}A$ on the $y$-axis. We will use the natural log and ignore the unnecessary complication of using log-base-10. We will derive the relationship between
+\item (0.1) \ptag Amplitude spectra are almost always plotted in $\log_{10}$-$\log_{10}$ space, with $\log_{10}\omega$ on the $x$-axis and $\log_{10}A$ on the $y$-axis. We will use the natural log and ignore the unnecessary complication of using log-base-10. We will derive the relationship between
 %
 \begin{itemize}
 \item the slope in log-log space of an amplitude spectrum $A(\omega)$ for an input function $\fft(t)$
@@ -351,7 +351,7 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 
 %-------------------
 
-\item (0.4) 
+\item (0.4) \ptag\ 
 %
 \begin{enumerate}
 \item (0.2) Explain how your spectrum $|X_a(\omega)|$ differs from the one in Figure 1 of \citet{Park2005}.
@@ -436,7 +436,7 @@ In your 3-hour spectrum can you identify any of the normal modes in the range $[
 \item (0.7) Using Supplemental Figure S11 of \citet{Ammon2005} as a guide, extract ``the'' P-wave and include a plot of the time series. About how long is the P wave signal?
 \item (0.4) Plot the amplitude spectrum of the P wave on a log-log plot with frequency ranging from $10^{-3}$~Hz to $10^1$~Hz. (Make sure you are working with the BHZ data.)
 
-\item (0.4) If you had to estimate a corner frequency \citep[][p.~267]{SteinWysession}, what would it be? Justify your estimate in words or numbers.
+\item (0.4) \ptag\ If you had to estimate a corner frequency \citep[][p.~267]{SteinWysession}, what would it be? Justify your estimate in words or numbers.
 \end{enumerate}
 
 %--------------------
