@@ -28,8 +28,8 @@ ENV YML_DIR ${HOME}/environment_ymls
 RUN mkdir $YML_DIR
 
 ########### create seismo conda environment #############
-COPY seismo_env.yml ${YML_DIR}/seismo_env.yml
-RUN conda env create -f ${YML_DIR}/seismo_env.yml
+COPY seismo.yml ${YML_DIR}/seismo.yml
+RUN conda env create -f ${YML_DIR}/seismo.yml
 SHELL ["conda", "run", "-n", "seismo", "/bin/bash", "-c"]
 RUN python -m ipykernel install --name seismo --display-name "seismo"
 ##############################################################
