@@ -19,26 +19,26 @@ Calculate the eigenvalues of $\bA$, assuming that one of the eigenvalues is eith
 \begin{enumerate}
 \item (1.3) Calculate an eigenbasis $\bU$ of $\bA$. Solve by hand and show your work.
 
-\item (0.2) Use Matlab to check that $\bA\bU = \bU\bD$, where $\bU$ is your eigenbasis and $\bD$ is your diagonal matrix with eigenvalues on the diagonal. (Note: I am {\bf not} asking to use Matlab's \verb+eig+ command.) Show your commands and output.
+\item (0.2) Use Python to check that $\bA\bU = \bU\bD$, where $\bU$ is your eigenbasis and $\bD$ is your diagonal matrix with eigenvalues on the diagonal. (Note: I am {\bf not} asking to use Python command to obtain the eigenvalues.) Show your commands and output.
 
-\item (0.2) Using Matlab, normalize the columns of $\bU$ and again check that $\bA\bU = \bU\bD$ with your new $\bU$. Show your commands and output.
+\item (0.2) Using Python, normalize the columns of $\bU$ and again check that $\bA\bU = \bU\bD$ with your new $\bU$. Show your commands and output.
 
 \item (0.1) Describe (in words) the relationship between matrices $\bA$ and $\bD$ in terms of a linear transformation.
 
 \end{enumerate}
 
-\pagebreak
+%\pagebreak
 \item (1.5) \ptag\ {\bf Orthogonalization.}
 
 \begin{enumerate}
 \item (1.2) Use the Gram-Schmidt procedure (by hand) to derive matrices $\bQ$ and $\bR$ of the decomposition of $\bA = \bQ\bR$. See \refFigii{fig:proj}{fig:ortho} as a guide.
-\footnote{If you use Aster p.~301, note that his $\bw_k$ are {\em not} normalized. So his $\bw_k$ are my $\bh_k$, and my $\bw_k = \bh_k/\|\bh_k\|$. See \refFig{fig:ortho}.}
+\footnote{If you use \citet[][p.~326]{Aster}, note that his $\bw_k$ are {\em not} normalized. So his $\bw_k$ are my $\bh_k$, and my $\bw_k = \bh_k/\|\bh_k\|$. See \refFig{fig:ortho}.}
 
-\item (0.1) Using Matlab or not, check that $\bQ$ is orthogonal.
+\item (0.1) Using Python or not, check that $\bQ$ is orthogonal.
 
-\item (0.1) Using Matlab, check that $\bA = \bQ\bR$ with your $\bQ$ and $\bR$. Show your commands and output.
+\item (0.1) Using Python, check that $\bA = \bQ\bR$ with your $\bQ$ and $\bR$. Show your commands and output.
 
-\item (0.1) Compare your results with those obtained using Matlab's factorization in \verb+[Q,R] = qr(A)+. Show your commands and output.
+\item (0.1) Compare your results with those obtained using Python's factorization. Show your commands and output.
 \end{enumerate}
 
 \end{enumerate}
