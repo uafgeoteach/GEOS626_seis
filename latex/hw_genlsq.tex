@@ -80,7 +80,7 @@ Note these differences in notation (see \refTab{tab:vars}):
 \begin{tabular}{l|c|c|c}
 \hline
                                     & Tarantola         & Aster    & our \\ 
-variable                            & notation (p. 66) & notation (p. 261)  & notation \\ \hline
+variable                            & notation (p. 66) & notation (p. 286)  & notation \\ \hline
 prior model covariance matrix       & $\bC_{\rm M}$                & $\bC_{\rm M}$    & $\cprior$    \\ \hline
 posterior model covariance matrix   & $\widetilde{\bC}_{\rm M}$    & $\bC_{M'}$      & $\cpost$     \\ \hline
 prior model vector                  & $\mprior$                  & $\mprior$      & $\mprior$     \\ \hline
@@ -88,6 +88,8 @@ posterior model vector              & $\widetilde{\bem}$         & $\mvec_{\rm M
 \hline
 \end{tabular}
 \vspace{0.2cm}
+
+\nocite{Aster}
 
 A Python solution to a least squares problem may be as simple as \verb+numpy.linalg.solve(G,d)+ or \verb+numpy.linalg.pinv(G)@d+, but what is the meaning (and computation) behind these expressions? The objective of this assignment is to demystify some of the black-box elements of least-squares inverse problems. This will involve a combination of reading \citet{Tarantola2005}, solving some equations, and implementing the equations within Jupyter Notebook. We approach these topics with the classic example of earthquake location.
 
