@@ -2,5 +2,8 @@
 __pycache__/
 log
 .vscode
-home
-home/**
+home/.cache
+home/.config
+home/.ipython
+home/.jupyter
+home/.local/**
