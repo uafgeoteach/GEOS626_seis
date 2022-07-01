@@ -46,5 +46,5 @@ RUN chown -R jovyan:users $HOME
 USER jovyan
 
 EXPOSE 8888
-# ENTRYPOINT ["jupyter", "notebook", "--no-browser", "--allow-root"]
+
 ENTRYPOINT ["jupyter", "lab", "--no-browser", "--allow-root"]
