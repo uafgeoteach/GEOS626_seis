@@ -23,9 +23,3 @@ make
 ```
 
 This command will run a docker container, where you can start experimenting with jupyter lab.
-
-
-### **Warning**
----
-
-Do not delete the `/home/GEOS626_seis` directory, as this is where your notebook progress is saved.
