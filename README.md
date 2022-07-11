@@ -12,14 +12,26 @@ git clone --depth=1 https://github.com/uafgeoteach/GEOS626_seis.git
 
 ### Setup
 ---
-A yml file (see setup/ folder) lists dependencies. This file, executed within conda or docker, enables a user to establish the software tools needed to execute the iPython notebooks. (A dockerfile is also provided in setup/)
+A `.yml` file (see setup/ folder) lists dependencies. This file, executed within conda or docker, enables a user to establish the software tools needed to execute the iPython notebooks. (A dockerfile is also provided in setup/)
 
-### How to Run
+### How to Run Using Docker
 ---
-Once you are in the root of this repository (i.e. use `ls` and verify that `Makefile` exists), run the following command:
+
+First, go into setup directory by using following command:
+
+```bash
+# move into setup directory
+cd setup
+
+# (optional): check Makefile exists 
+ls | grep Makefile
+```
+
+
+Once you are in the setup directory, run following command to build and run docker container.
 
 ``` bash
 make
 ```
 
-This command will run a docker container, where you can start experimenting with jupyter lab.
+For more details, see `README.md` located in setup directory.
