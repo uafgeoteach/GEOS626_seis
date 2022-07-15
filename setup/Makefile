@@ -3,6 +3,9 @@ all: build run
 build:
 	docker build -f dockerfile -t geos626_seis:latest .
 
+build-no-cache:
+	docker build --pull --no-cache -f dockerfile -t geos626_seis:latest .
+
 run:
 	bash run_geos626_container.sh 2>&1 | tee log
 
