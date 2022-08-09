@@ -1,8 +1,8 @@
 FROM jupyter/base-notebook:latest
 
 LABEL organization="Alaska Satellite Facility"
-LABEL author="Alex Lewandowski & Eric Lundell"
-LABEL date="2021-05-24"
+LABEL author="Alex Lewandowski, Eric Lundell, Rui Kawahara"
+LABEL date="2022-07-01"
 
 USER root
 
@@ -34,15 +34,11 @@ SHELL ["conda", "run", "-n", "seismo", "/bin/bash", "-c"]
 RUN python -m ipykernel install --name seismo --display-name "seismo"
 ##############################################################
 
-############### Create more conda environments ###############
-# COPY new_env.yml ${YML_DIR}/new_env.yml
-# RUN conda env create -f ${YML_DIR}/new_env.yml
-# RUN python -m ipykernel install --name environment_name --display-name "display_name"
-##############################################################
+WORKDIR "/home/jovyan/GEOS626_seis"
 
-WORKDIR GEOS626_seis
 RUN chown -R jovyan:users $HOME
 USER jovyan
 
 EXPOSE 8888
-ENTRYPOINT ["jupyter", "notebook", "--no-browser", "--allow-root"]
+
+ENTRYPOINT ["jupyter", "lab", "--no-browser", "--allow-root"]

@@ -1,2 +1,8 @@
 .ipynb_checkpoints/
 __pycache__/
+log
+.vscode
+.cache
+.config
+.ipython
+.jupyter

@@ -11,5 +11,27 @@ git clone --depth=1 https://github.com/uafgeoteach/GEOS626_seis.git
 ```
 
 ### Setup
+---
+A `.yml` file (see setup/ folder) lists dependencies. This file, executed within conda or docker, enables a user to establish the software tools needed to execute the iPython notebooks. (A dockerfile is also provided in setup/)
 
-A yml file (see setup/ folder) lists dependencies. This file, executed within conda or docker, enables a user to establish the software tools needed to execute the iPython notebooks. (A dockerfile is also provided in setup/)
+### How to Run Using Docker
+---
+
+First, go into setup directory by using following command:
+
+```bash
+# move into setup directory
+cd setup
+
+# (optional): check Makefile exists 
+ls | grep Makefile
+```
+
+
+Once you are in the setup directory, run following command to build and run docker container.
+
+``` bash
+make
+```
+
+For more details, see `README.md` located in setup directory.
