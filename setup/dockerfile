@@ -6,8 +6,8 @@ LABEL date="2022-07-01"
 
 USER root
 
-RUN apt update && \
-    apt install --no-install-recommends -y \
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
         software-properties-common \
         git \
         zip \
@@ -18,9 +18,10 @@ RUN apt update && \
         less \
         snaphu \
         curl && \
+    apt-get install -y gpg-agent &&\
     add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
-    apt update && \
-    apt upgrade -y
+    apt-get update && \
+    apt-get upgrade -y
 
 RUN conda install -c conda-forge jupyter_contrib_nbextensions jupyter_nbextensions_configurator jupyter-resource-usage
 
