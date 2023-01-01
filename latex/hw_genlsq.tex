@@ -14,7 +14,12 @@
 \input{hw626_header}
 %\input{hw627_header}
 
-\renewcommand{\baselinestretch}{1.15}
+%\newcommand{\tfile}{{\tt lab\_iter.ipynb}}
+\newcommand{\tfile}{{\tt hw\_genlsq.ipynb}}
+\newcommand{\tfileFE}{{\tt forward\_epicenter.ipynb}}
+\newcommand{\tfileOM}{{\tt optimization\_method.ipynb}}
+
+\renewcommand{\baselinestretch}{1.1}
 
 \graphicspath{
   {./figures/}
@@ -28,9 +33,9 @@
 \begin{spacing}{1.2}
 \centering
 {\large \bf Problem Set 10: Earthquake location with generalized least squares [genlsq]} \\
-%{\large \bf Lab Exercise: Earthquake location with generalized least squares [genlsq]} \\
+%{\large \bf Lab Exercise: Earthquake location with generalized least squares [iter]} \\
 \cltag\ \\
-Assigned: April 7, 2021 --- Due: April 15, 2021 \\
+Assigned: April 7, \cyear\ --- Due: April 15, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -63,16 +68,16 @@ Generalized least squares was introduced by Tarantola \citep{TarantolaValette198
 Following \citet[][p.~205]{Tarantola2005}, the general form of a {\bf nonlinear least-squares misfit function} is
 %\footnote{Here I am using $\cprior$ whereas Tarantola uses $\covm$.}
 %
-\begin{eqnarray*}
+\begin{eqnarray}
 \misfitvar(\mvec) &=& \misfitvar_{\rm D}(\mvec) + \misfitvar_{\rm M}(\mvec) 
 \\
 &=& \hlf \left\| \bg(\mvec) - \dvec \right\|^2_{\rm D} + \hlf \left\| \mvec - \mprior \right\|^2_{\rm M}
-\nonumber \\
+\\
 &=& \hlf \left( \bg(\mvec) - \dvec\right)^T \; \covdi \left( \bg(\mvec) - \dvec \right)
 \;+\; \hlf \left( \mvec - \mprior \right)^T \; \cpriori \left( \mvec - \mprior \right).
-\nonumber
+\nonumber \\
 %\label{misfit_gen}
-\end{eqnarray*}
+\end{eqnarray}
 %
 Note these differences in notation (see \refTab{tab:vars}):
 
@@ -91,6 +96,7 @@ posterior model vector              & $\widetilde{\bem}$         & $\mvec_{\rm M
 
 \nocite{Aster}
 
+\medskip\noindent
 A Python solution to a least squares problem may be as simple as \verb+numpy.linalg.solve(G,d)+ or \verb+numpy.linalg.pinv(G)@d+, but what is the meaning (and computation) behind these expressions? The objective of this assignment is to demystify some of the black-box elements of least-squares inverse problems. This will involve a combination of reading \citet{Tarantola2005}, solving some equations, and implementing the equations within Jupyter Notebook. We approach these topics with the classic example of earthquake location.
 
 % comment out for 627:
@@ -105,10 +111,6 @@ Throughout the assignment, and in the code, keep in mind the interchangability o
 \end{eqnarray*}
 %
 The posterior model is the same as the final model of an iterative problem. And the ``target model'' is the same as the ``true model'': this is the model used to generate the ``target data'' or ``true data''. We will use the notation $\mpost$ and $\mtarget$.
-
-% 627: list inverse or seismo directory
-%\bigskip\noindent
-%{\bf To get the necessary scripts for this assignment, go into your {\tt seismo} directory and type {\tt git pull}.}
 
 %------------------------
 
@@ -162,16 +164,24 @@ Is it a linear function of $\mvec$?
 
 \item (0.7) Write expressions for the partial derivatives of $g(\mvec)$: $\partial g/ \partial x_s$, $\partial g/ \partial y_s$, etc.
 
-\item (0.2) Write the matrix form for $G_{ik} = \partial g_i/ \partial m_k$, where $i$ is the receiver (or arrival time) index. (Here the subscript $i$ for data index and $r$ for receiver index are the same, since there is one measurement per receiver.) Do not write out the full expressions.
-For example, the upper left element of your matrix should be $\partial g_1/\partial x_s$.
-Use $\cdots$ to indicate an element within a sequence.
+\item (0.0) What is the dimension of the matrix of partial derivatives $\bG$, represented by
+%
+\begin{equation}
+G_{ik} = \partial g_i/ \partial m_k
+\end{equation}
+%
+where $i$ is the receiver (or arrival time) index. (Here the subscript $i$ for data index and $r$ for receiver index are the same, since there is one measurement per receiver.)
+
+\item (0.2) Write the matrix-schematic form for $G_{ik}$. Do not write out the full expressions.
+For example, the upper left entry of your matrix should be $\partial g_1/\partial x_s$.
+Use $\cdots$ to indicate an entry within a sequence.
 
 \end{enumerate}
 
 %------------------------
 
-\pagebreak
-\subsection*{Problem 2 (0.9). Earthquake location: understanding the code}
+%\pagebreak
+\subsection*{Problem 2 (1.0). Earthquake location: understanding the code}
 
 \begin{itemize}
 \item Be sure you have done Problem 1 before starting this problem.
@@ -189,10 +199,14 @@ You then record the P wave arrival times at all other stations. You choose an {\
 
 %----------------------------------------------
 
-\clearpage\pagebreak
+%\clearpage\pagebreak
 \begin{enumerate}
 \item (0.5)
-Run \verb+hw_genlsq.ipynb+\footnote{You do not need to enter any value at the prompt. If you hit ``0'' and hit return, then it will exit. If you hit any non-zero number and hit return, you will see an error message.} You should generate six figures, one of which is \refFig{fig:srcrec}. Examine \verb+hw_genlsq.ipynb+ and \verb+forward_epicenter.ipynb+ to see what is being plotted in these figures. Answer the following questions ``in words,'' that is, without excerpts from the code.
+Run \tfile.
+%\footnote{You do not need to enter any value at the prompt. If you hit ``0'' and hit return, then it will exit. If you hit any non-zero number and hit return, you will see an error message.}
+You should generate six figures, one of which is \refFig{fig:srcrec}. Then the code will crash because some code still needs to be written.
+
+Examine \tfile\ and \tfileFE\ to see what is being plotted in these figures. Answer the following questions ``in words,'' that is, without excerpts from the code.
 
 \begin{enumerate}
 \item (0.0) In the code, how is the prior model and the prior model covariance matrix determined?
@@ -224,7 +238,7 @@ Run \verb+hw_genlsq.ipynb+\footnote{You do not need to enter any value at the pr
 \item (0.4) 
 
 \begin{enumerate}
-\item (0.0) Write down the quasi-Newton algorithm from \citet[][Eq.~6.319]{Tarantola2005}. Use $\nu_n = 1$, use $\cprior$ instead of $\covm$, and use $\bg(\mvec_n)$ to represent the predictions of the forward model.
+\item (0.0) Write down the quasi-Newton algorithm from \citet[][Eq.~6.319]{Tarantola2005}\footnote{Tarantola calls this the Newton aglorithm, but right before this, he states that he's using ``the (usual approximation of the) Hessian'' that does not include second derivatives of the forward model. This makes it the quasi-Newton algorithm. Also known as the Gauss-Newton algorithm.}. Use $\nu_n = 1$, use $\cprior$ instead of $\covm$, and use $\bd_n = \bg(\mvec_n)$ to represent the predictions of the forward model.
 
 \vspace{1cm}
 
@@ -241,11 +255,17 @@ What are the equations for $\bgammah$ and $\bHh$?
 
 \vspace{1cm}
 
-\item (0.1) List expressions for $\bH$ and $\bgamma$, and rewrite \refEq{mn} in terms of these variables. (See \verb+notes_tarantola.pdf+)
+\item (0.1) Rewrite \refEq{mn} in terms of $\bgamma$ and $\bH$ instead of $\bgammah$ and $\bHh$. \\ (See \verb+notes_tarantola.pdf+)
+
+\vspace{1cm}
+
+\item (0.1) List expressions for $\bH$ and $\bgamma$. These are what you will be coding in the lab.
 
 \vspace{1cm}
 
 \item (0.1) From Section 3.2.3, what is the equation for $\cpost$?
+
+\vspace{1cm}
 
 \end{enumerate}
 
@@ -253,10 +273,10 @@ What are the equations for $\bgammah$ and $\bHh$?
 
 %------------------
 
-\clearpage\pagebreak
+%\clearpage\pagebreak
 \subsection*{Problem 3 (2.5). Earthquake location: adapting the code}
 
-Now make a copy of the program: \verb+cp hw_genlsq.ipynb genlsq.ipynb+
+%Now make a copy of the program: \verb+cp hw_genlsq.ipynb genlsq.ipynb+
 
 \begin{enumerate}
 
@@ -264,10 +284,10 @@ Now make a copy of the program: \verb+cp hw_genlsq.ipynb genlsq.ipynb+
 {\bf Be sure to undo your changes when you are done.}
 %
 \begin{enumerate}
-\item Change \verb+run_forward_epicenter+ to \verb+True+ and run \verb+forward_epicenter.ipynb+ a couple times. \\
+\item In \tfileFE, change \verb+run_forward_epicenter+ to \verb+True+, then run the notebook a couple times. \\
 What dots remain fixed? What dots change?
 
-\item Change $\sigma_{x_s}$ from 10~km to 20~km, then run \verb+forward_epicenter.ipynb+. What do you see?
+\item Change $\sigma_{x_s}$ from 10~km to 20~km, then run \tfileFE. What do you see?
 
 \item Instead of generating samples of the prior model using \verb+np.random.randn+, see what happens when you use \verb+np.random.rand+. Why is this the case?
 \end{enumerate}
@@ -275,7 +295,7 @@ What dots remain fixed? What dots change?
 \item (1.0)
 %
 \begin{enumerate}
-\item (0.5) In the space provided in \verb+genlsq.ipynb+, implement the quasi-Newton algorithm.
+\item (0.5) In the space provided in \tfile\ (or \tfileOM, if present), implement the quasi-Newton algorithm using $\bH$ and $\bgamma$ (rather than using $\bHh$ and $\bgammah$).
 
 % comment out for 627:
 Show your lines of code.
@@ -288,18 +308,36 @@ Show your lines of code.
 
 %------------------
 
-\item (1.0) In the space provided in \verb+genlsq.ipynb+, compute the posterior model, posterior covariance matrix, and arrival time predictions.
+\item (1.0) In the space provided in \tfile, compute the:
+%
+\begin{itemize}
+\item posterior model
+\item posterior covariance matrix
+\item arrival time predictions
+\end{itemize}
 
 % comment out for 627:
 Show your lines of code.
 
-List $\mpost$ and $\cpost$ after \textcolor{red}{four iterations}. (The initial model is $\mvec_0$, the first iteration is $\mvec_1$.) Note that the posterior model is simply the final model of your iterative algorithm.
+List $\mpost$ and $\cpost$ after \textcolor{red}{eight iterations}. (The initial model is $\mvec_0$, the first iteration is $\mvec_1$.) Note that the posterior model is the final model of your iterative algorithm. Check that:
+%
+\begin{eqnarray}
+\mpost = \bem_{8} =
+\left[
+\begin{array}{rl}
+20.7327 & {\rm km} \\
+45.7992 & {\rm km} \\
+15.6755 & {\rm s} \\
+1.9781  &  \\
+\end{array}
+\right]
+\end{eqnarray}
 
 %------------------
 
 \item (0.5) 
 \begin{enumerate}
-\item (0.1) In the space provided in \verb+genlsq.ipynb+, use $\cpost$ to compute the posterior correlation matrix. Show your lines of code, and display the correlation matrix. A Python function equivalent to the Matlab command \verb+corrcov+ is provided. Do not use the function \verb+corrcov+ in your primary computation, but you can use this command to check.
+\item (0.1) In the space provided in \tfile, use $\cpost$ to compute the posterior correlation matrix. Show your lines of code, and display the correlation matrix. A Python function equivalent to the Matlab command \verb+corrcov+ is provided. Do not use the function \verb+corrcov+ in your primary computation, but you can use this command to check.
 
 \item (0.3) List the posterior standard deviations for each model parameter. Include units.
 
@@ -310,8 +348,8 @@ List $\mpost$ and $\cpost$ after \textcolor{red}{four iterations}. (The initial 
 
 %------------------
 
-\pagebreak
-\subsection*{Problem 4 (2.6). Earthquake location: interpreting the results}
+%\pagebreak
+\subsection*{Problem 4 (2.5). Earthquake location: interpreting the results}
 % 627
 %\subsection*{[OPTIONAL] Problem 4 (2.7). Earthquake location: interpreting the results}
 
@@ -360,10 +398,11 @@ List $\mpost$ and $\cpost$ after \textcolor{red}{four iterations}. (The initial 
 %------------------
 
 % comment out for 627:
-\item (0.5) \ptag\ Set \verb+irandom_initial_model = 1+, \verb+irandom_target_model = 1+, and \verb+idata_errors = 2+. Then re-run.
+%\iffalse
+\item (0.4) Set \verb+irandom_initial_model = 1+, \verb+irandom_target_model = 1+, and \verb+idata_errors = 2+. Then re-run.
 %
 \begin{enumerate}
-\item (0.2) Include two figures: (1) convergence curves, (2) posterior distribution plotted on \refFig{fig:srcrec} but without ray paths. \\
+\item (0.1) Include two figures: (1) convergence curves, (2) posterior distribution plotted on \refFig{fig:srcrec} but without ray paths. \\
 {\bf Note: these figures are automatically generated by \verb+genlsq.ipynb+.}
 \item (0.1) How many iterations are needed for convergence?
 \item (0.1) Try a few runs. \\
@@ -371,25 +410,23 @@ Does the positive correlation that you previously identified continue to appear?
 Does the negative correlation that you previously identified continue to appear?
 \item (0.1) Is there any pattern to the position of $\mpost$ relative to $\mtarget$?
 \end{enumerate}
+%\fi
 
 \end{enumerate}
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 
 % comment out for 627
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------
-\bibliography{carl_abbrev,carl_main,carl_source,carl_him,carl_alaska}
+\bibliography{uaf_abbrev,uaf_main,uaf_source,uaf_carletal,uaf_alaska}
 
 %------------------
 
 \clearpage\pagebreak
-% 627
-%\input{/home/carltape/seis/hw_genlsq_table}
-% 626
 \input{hw_genlsq_table}
 
 %-------------------------------------------------------------
