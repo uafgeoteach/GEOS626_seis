@@ -1,23 +1,23 @@
-
+import math
 import numpy as np
 import numpy.matlib
-from math import radians, degrees, sin, cos, asin, acos, sqrt
-from geopy import distance
-from matlab2datetime import matlab2datetime
-import warnings
-from numpy import arctan,arctan2,random,sin,cos,degrees
-import math
-import statistics
-from scipy import signal
-from obspy.geodetics import kilometers2degrees
 import matplotlib.pyplot as plt
+import statistics
+import warnings
+
+from datetime import datetime
+from math import radians, degrees, sin, cos, asin, acos, sqrt
 from matplotlib import dates
+from numpy import arctan,arctan2,random,sin,cos,degrees
 from obspy import read, Stream
 from obspy.core import read, UTCDateTime
-from datetime import datetime
 from obspy.geodetics import gps2dist_azimuth
+from obspy.geodetics import kilometers2degrees
 from scipy.signal import butter, filtfilt, sosfiltfilt
+from scipy import signal
 
+from geopy import distance
+from lib_seis import matlab2datetime
 
 def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[], T2=[], pmax=50, iintp=0, inorm=[1], tlims=[], nfac=1, azstart=[], iunit=1, imap=1, wsyn=[], bplotrs=True, displayfigs='on'):
     '''

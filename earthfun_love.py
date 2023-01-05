@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def earthfun_love(r, rspan, crho, cmu, mrho, mmu, cthick):
     """Python adaptation of earthfun_love.m by Carl Tape.
 

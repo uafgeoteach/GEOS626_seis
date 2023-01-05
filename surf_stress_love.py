@@ -1,5 +1,7 @@
 import numpy as np
+
 from scipy.integrate import solve_ivp
+
 from stress_disp_love import stress_disp_love
 
 def surf_stress_love(k0, omega, rspan, crho, cmu, mrho, mmu, cthick, max_step=5e3, return_wt_rvec=False):

@@ -1,12 +1,14 @@
 import matplotlib.pylab as plt
 import numpy as np
-import statistics as stats
-from obspy.signal.invsim import cosine_taper
-from matplotlib.mlab import detrend
-from obspy import *
 import os
+import statistics as stats
+
+from matplotlib.mlab import detrend
+from obspy.signal.invsim import cosine_taper
+from obspy import *
 from os import path
-from wf_fft import wf_fft
+
+from lib_seis import wf_fft
 
 def sumatra_loop(w0,fdir,pplot):
     # sumatra_loop.py

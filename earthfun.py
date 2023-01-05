@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def earthfun(r, rspan, imod):
     """Python adaptation of earthfun.m by Carl Tape.
 
