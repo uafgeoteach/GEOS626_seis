@@ -3,29 +3,16 @@ channels:
   - conda-forge
   - default
 dependencies:
-  - python=3.8
-  - awscli
-  - bokeh
-  - boto3
+  - ipympl
+  - ipywidgets<8.0.0
+  - traitlets==5.1.1
+  - kernda
+  - jupyterlab
+  - pip
   - cartopy
   - geopy
-  - hide_code
-  - ipywidgets
-  - jupyter
-  - jupyter_contrib_nbextensions
-  - jupyter_nbextensions_configurator
-  - jupyter-resource-usage
-  - matplotlib
-  - numpy
   - obspy
   - pandas
-  - pandoc
-  - pip
-  - pypandoc
   - pyproj
-  - pyyaml
-  - rise
   - scipy
   - sympy
-  - pip:
-      - mpldatacursor
