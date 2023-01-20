@@ -260,6 +260,7 @@ def seis2GR(mag, dmag, idisplay=1, ifigure=0):
     Medges = np.arange(emin,emax,dmag).tolist()
     Medges = np.round(Medges, decimals=2)
     
+    # see numpy documentation for details: the bins are closed on the left and open on the right
     Ninc, bin_edges = np.histogram(mag,Medges)
     N = np.flipud(np.flipud(Ninc).cumsum())
     nbin = len(Ninc)
