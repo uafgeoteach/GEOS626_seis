@@ -269,6 +269,7 @@ def seis2GR(mag, dmag, idisplay=1, ifigure=0):
             print('bin ',ii,': Mw = [',Medges[ii],' ',Medges[ii+1],'] Ninc = ',Ninc[ii],'N = ',N[ii])
     
     if ifigure == 1:
+        plt.figure(figsize=(9,8))
         for kk in [1, 2, 3, 4]:
             if kk == 1:
                 D = Ninc
@@ -279,7 +280,7 @@ def seis2GR(mag, dmag, idisplay=1, ifigure=0):
                 ylab = 'Log10[Number] (N = '+str(n)+')'
             if kk == 3:
                 D = N
-                ylab = 'Cumulative[Number] (N = '+str(n)+')'
+                ylab = 'Cumulative Number (N = '+str(n)+')'
             if kk == 4:
                 D = np.log10(N)
                 D[np.isinf(D)] = 0
