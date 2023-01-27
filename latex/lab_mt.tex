@@ -62,21 +62,23 @@ This is a pencil-and-paper lab exercise that does not involve any computer. You 
 
 \begin{enumerate}
 
-\item Examine Figure~\ref{fig:template}. Derive the equations in the figure.
+\item Examine Figure~\ref{fig:template} and derive the equations in the figure.
 \label{prob:bigvec}
 
 \begin{enumerate}
-\item Figure~5 in the notes showed a vector field for a double couple moment tensor. Is this a double couple moment tensor? Why or why not?
+\item Figure~5 in the notes showed a vector field for a double couple moment tensor. Does the vector field in Figure~\ref{fig:template} double couple moment tensor? Why or why not?
 
 \item Label the following vectors: $\mb{M}(-\eone)$ and $\mb{M}(-\etwo)$.
 
 Visually check that $\mb{M}(-\eone) = -\mb{M}(\eone)$ and $\mb{M}(-\etwo) = -\mb{M}(\etwo)$.
 
-\item Draw and label the following vectors: $m_{11}\eone$, $m_{21}\etwo$, $m_{12}\eone$, $m_{22}\etwo$.
+\item Draw and label the following vectors: \textcolor{red}{$m_{11}\mbe_1$}, \textcolor{red}{$m_{21}\mbe_2$}, \textcolor{blue}{$m_{12}\mbe_1$}, \textcolor{blue}{$m_{22}\mbe_2$}.
 
 Draw the base of each vector at the tip of $\eone$, $-\eone$, $\etwo$, or $-\etwo$.
 
-Draw and label the following vectors: $-m_{11}\eone$, $-m_{21}\etwo$, $-m_{12}\eone$, $-m_{22}\etwo$.
+Draw and label the following vectors: \textcolor{red}{$-m_{11}\mbe_1$}, \textcolor{red}{$-m_{21}\mbe_2$}, \textcolor{blue}{$-m_{12}\mbe_1$}, \textcolor{blue}{$-m_{22}\mbe_2$}.
+
+\item Measure the radius of the circle in mm. You will use this to calibrate the other measurements.
 
 \item Assuming that $\|\eone\| = \|\etwo\| = 1$, use the sketch to estimate the entries of the moment matrix
 %
@@ -125,9 +127,9 @@ See Figure~\ref{fig:template_couples2}.
 %See Figure~\ref{fig:couples2} of \mtfile.
 %
 \begin{enumerate}
-\item Write the moment matrix for the right-hand figure.
+\item Write the moment matrix for the center figure.
 \item What is odd about this pair of couples?
-\item Write the moment matrix in the standard basis, with $\eone$ pointing to the right and $\etwo$ pointing up.
+\item Sketch the standard basis ($\eone$ pointing to the right; $\etwo$ pointing up) and associated colored vectors in the right-hand template. What is the moment matrix?
 \item Write the moment matrix for the left-hand figure.
 \end{enumerate}
 
@@ -143,7 +145,7 @@ See Figure~\ref{fig:templateDC}.
 \item The $\fvect$-axis (``tensional'' axis) is the eigenvector direction associated with positive eigenvalue. The $\fvecp$-axis (``compressional'' axis) is the eigenvector direction associated with negative eigenvalue. Label $\fvect$ and $\fvecp$ in the right-hand plot.
 
 \item The fault normal vector is $\fvecn$. The fault slip vector is $\fvecs$.
-The eigenvectors $\fvect$ and $pvec$ are not the fault vectors. For a double couple moment tensor only, the directions of the fault and slip vectors can be obtained from the eigenvectors as\footnote{This is not the only choice for defining $\fvecn$ and $\fvecs$.}
+The eigenvectors $\fvect$ and $\pvec$ are not the fault vectors. For a double couple moment tensor only, the directions of the fault and slip vectors can be obtained from the eigenvectors as\footnote{This is not the only choice for defining $\fvecn$ and $\fvecs$.}
 %
 \begin{eqnarray*}
 \fvecn = (\fvect + \fvecp)/\sqrt{2}
@@ -249,10 +251,11 @@ Make measurements on these figures to determine the entries of the moment tensor
 
 \begin{figure}
 \hspace{-1cm}
-\includegraphics[width=18cm]{couples2}
+%\includegraphics[width=18cm]{couples2}
+\includegraphics[width=18cm]{couples2_template}
 \caption{
 [Problem~\ref{prob:couples2}] 
-Repeat of Figure~\ref{fig:couples2} from \mtfile.
+Repeat of Figure~\ref{fig:couples2} from \mtfile, but with an extra vector field template for annotating.
 \label{fig:template_couples2}
 }
 \end{figure}
