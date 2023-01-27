@@ -224,15 +224,6 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     ax.yaxis.set_pane_color((0.0, .0, 0.0, 0.0))
     ax.zaxis.set_pane_color((0.0, .0, 0.0, 0.0))
     #plt.show()
-
-############################################################
-
-def matlab2datetime(matlab_datenum):
-        # equivalent of datestr when converting from serial number to date
-       
-        day = dt.datetime.fromordinal(int(matlab_datenum))
-        dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
-        return day + dayfrac
     
 ############################################################
 
@@ -291,6 +282,15 @@ def markp_min(event):
     axe.text(event.xdata, event.ydata, s = str(prd))
     #plt.plot(event.xdata, event.ydata, 'ro')
     plt.draw()    
+
+############################################################
+
+def matlab2datetime(matlab_datenum):
+        # equivalent of datestr when converting from serial number to date
+       
+        day = dt.datetime.fromordinal(int(matlab_datenum))
+        dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
+        return day + dayfrac    
     
 ############################################################
 
