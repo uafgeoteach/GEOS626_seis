@@ -14,7 +14,7 @@ import scipy.io
 
 from itertools import product, combinations
 
-###################################################################
+############################################################
 
 def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
     """ INPUT:
@@ -146,7 +146,7 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
                 
     return ff
 
-###################################################################
+############################################################
 
 def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     # Python adaptation of globefun3.m
@@ -225,6 +225,52 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     ax.zaxis.set_pane_color((0.0, .0, 0.0, 0.0))
     #plt.show()
 
+############################################################
+
+def matlab2datetime(matlab_datenum):
+        # equivalent of datestr when converting from serial number to date
+       
+        day = dt.datetime.fromordinal(int(matlab_datenum))
+        dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
+        return day + dayfrac
+    
+############################################################
+
+# To use function: cid=fig.canvas.mpl_connect('button_press_event', markp)
+# 
+# This marks the 1/x value on a plot where you click the mouse.
+# python version based on the markt.m writtin by Carl Tape
+#
+# INPUT ARGUMENTS:
+# 
+# left mouse button click: plot point
+#
+# EXAMPLE:
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# ax.set_xlim([0, 10])
+# ax.set_ylim([0, 10]) 
+# markt(fig)
+#
+# pt coordinates will print to screen
+  
+def markp(event):
+    print('x=%f, y=%f' % (event.xdata, event.ydata))
+    prd=round(1/event.xdata, 3)
+    axe=event.inaxes
+    axe.text(event.xdata, event.ydata, s = str(prd))
+    #plt.plot(event.xdata, event.ydata, 'ro')
+    plt.draw()    
+    
+def markp_min(event):
+    print('x=%f, y=%f' % (event.xdata, event.ydata))
+    prd=round(1/event.xdata/60, 1)
+    axe=event.inaxes
+    axe.text(event.xdata, event.ydata, s = str(prd))
+    #plt.plot(event.xdata, event.ydata, 'ro')
+    plt.draw()    
+    
 ############################################################
 
 def seis2GR(mag, dmag, idisplay=1, ifigure=0):
@@ -313,15 +359,6 @@ def smooth(a,WSZ):
     stop = (np.cumsum(a[:-WSZ:-1])[::2]/r)[::-1]
     
     return np.concatenate((  start , out0, stop  ))
-
-############################################################
-
-def matlab2datetime(matlab_datenum):
-        # equivalent of datestr when converting from serial number to date
-       
-        day = dt.datetime.fromordinal(int(matlab_datenum))
-        dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
-        return day + dayfrac
 
 ############################################################
 
