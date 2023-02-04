@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 # Library of functions for the GEOS 626 and GEOS 627 courses at UAF
 # Contributers: Carl Tape, Nealey Sims*, Amanda McPherson*, Aakash Gupta*
 
