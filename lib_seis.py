@@ -150,22 +150,30 @@ def get_dist_az(lon0,lat0,lonall,latall,stlabs):
     to a set of stations (lonall,latall) using obspy (geoid WGS84)
     '''
     
-    lon0 = np.atleast_1d(lon0)
-    lat0 = np.atleast_1d(lat0)
+    km_to_deg = ( 1 / ( np.pi * 6371 ) ) * 180
+    
+    lon0   = np.atleast_1d(lon0)
+    lat0   = np.atleast_1d(lat0)
     lonall = np.atleast_1d(lonall)
     latall = np.atleast_1d(latall)
     stlabs = np.atleast_1d(stlabs)
-    dist_km=[]
-    dist_deg=[]
-    azi_deg=[]
+    
+    dist_km  = []
+    dist_deg = []
+    azi_deg  = []
     
     for i in range(len(latall)):
+        
         # uses WGS84 geoid by default (type gps2dist_azimuth? for details)
-        distkm=gps2dist_azimuth(lat0, lon0, float(latall[i]), float(lonall[i]))[0]/1000
+        dist = gps2dist_azimuth(lat0, lon0, float(latall[i]), float(lonall[i]))
+        
+        distkm = dist[0]/1000
         dist_km.append(distkm)
-        az=gps2dist_azimuth(lat0, lon0, float(latall[i]), float(lonall[i]))[1]
+        
+        az = dist[1]
         azi_deg.append(az)
-        ddeg=distkm/6371*180/np.pi
+        
+        ddeg = distkm * km_to_deg
         dist_deg.append(ddeg)
         
         # display formatted text
