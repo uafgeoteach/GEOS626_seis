@@ -8,6 +8,7 @@ import numpy as np
 import scipy.io
 
 from itertools import product, combinations
+from obspy.geodetics import gps2dist_azimuth
 
 ############################################################
 
@@ -140,6 +141,38 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
                 ff[inds4,0] = 1
                 
     return ff
+
+############################################################
+
+def get_dist_az(lon0,lat0,lonall,latall,stlabs):
+    '''
+    get distances and azimuths from an epicenter (lon0,lat0)
+    to a set of stations (lonall,latall) using obspy (geoid WGS84)
+    '''
+    
+    lon0 = np.atleast_1d(lon0)
+    lat0 = np.atleast_1d(lat0)
+    lonall = np.atleast_1d(lonall)
+    latall = np.atleast_1d(latall)
+    stlabs = np.atleast_1d(stlabs)
+    dist_km=[]
+    dist_deg=[]
+    azi_deg=[]
+    
+    for i in range(len(latall)):
+        # uses WGS84 geoid by default (type gps2dist_azimuth? for details)
+        distkm=gps2dist_azimuth(lat0, lon0, float(latall[i]), float(lonall[i]))[0]/1000
+        dist_km.append(distkm)
+        az=gps2dist_azimuth(lat0, lon0, float(latall[i]), float(lonall[i]))[1]
+        azi_deg.append(az)
+        ddeg=distkm/6371*180/np.pi
+        dist_deg.append(ddeg)
+        
+        # display formatted text
+        print('%3i %7s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
+        (i+1,stlabs[i],float(latall[i]),float(lonall[i]),ddeg,az))
+    
+    return dist_deg, azi_deg, dist_km
 
 ############################################################
 
