@@ -26,7 +26,7 @@ Last compiled: \today \\
 
 \section*{Instructions}
 
-The data set \verb+solarshort.dat+ is a 1024-point synthetic time series of the motion of our sun due to planet rotations. The three columns are time in earth years, $x$ position of the sun in astronomical units (AU), and $y$ position of the sun. In this hypothetical problem, {\bf one or more of the planets is revolving in an opposite sense from the others.} Your task is to identify the planets in the frequency spectrum, while getting some appreciation for the meaning of the Discrete Fourier Transform with regard to negative frequencies. For some basic information on planets, see these websites:
+The data set \verb+solarshort.dat+ is a 1024-point synthetic time series of the motion of our Sun due to planet rotations. The three columns are time in Earth years, $x$ position of the Sun in astronomical units (AU), and $y$ position of the Sun. In this hypothetical problem, {\bf one or more of the planets is revolving in an opposite sense from the others.} Your task is to identify the planets in the frequency spectrum, while getting some appreciation for the meaning of the Discrete Fourier Transform with regard to negative frequencies. For some basic information on planets, see these websites:
 %
 \begin{verbatim}
 http://ssd.jpl.nasa.gov/?planet_phys_par
@@ -61,6 +61,7 @@ Examine the (synthetic) time series of solar motion and the text output in the c
 \item Write the solar motion $c(t)$ in terms of $x(t)$ and $y(t)$. (Examine the code.)
 \item What is the number of points $n$ in the discretized version of $c(t)$? 
 \item What does the function \verb+fftvec()+ do?
+\item What does the function \verb+np.fft.fft+ do?
 \end{enumerate}
 
 %---------
@@ -75,7 +76,11 @@ Check that $H(f)$ is complex and has the same number of points as $c(t)$.
 
 %---------
 
-\item  Compute the amplitude spectrum, $A(f)$ (see \verb+conj+).
+\item In two different ways, show that $z^{*}z = r^2$, where $z = r e^{i\theta} = a + bi$.
+
+%---------
+
+\item  Compute the amplitude spectrum $A(f)$ (see \verb+conj+).
 The power spectral density $P(f)$ and spectral amplitude $A(f)$ are real functions given by
 %
 \begin{eqnarray*}
@@ -88,7 +93,7 @@ where $H(f)$ is the Fourier transform of $c(t)$.
 
 %---------
 
-\item Plot the amplitude spectrum (use \verb+semilogy+) and describe in in qualitative terms. \\
+\item Plot the amplitude spectrum (use \verb+semilogy+) and describe it in qualitative terms. \\
 Use the function \verb+fftvec()+ to obtain the frequency vector. \\
 Plot the $y$-axis with the range \verb+ylim([1e-4 1e1])+.
 
@@ -97,16 +102,16 @@ Plot the $y$-axis with the range \verb+ylim([1e-4 1e1])+.
 \item  Use the function \verb+markp()+ to help identify periods associated with spectral peaks. (An example of how to use \verb+markp()+ will be done in lab.) Then answer the following questions:
 %
 \begin{enumerate}
-\item What is the number of points, $n$, in the discretized version of $c(t)$?
+\item What is the number of points $n$ in the discretized version of $c(t)$?
 \item What is the number of points in the discretized version of $H(f)$?
 \item What is the sampling interval $\Delta t$?
 \item What is the Nyquist frequency $\fnyq$? \\
 List an analytical expression and also the numerical value.
-\item What is the frequency interval $\Delta f$? \\
+\item What is the frequency interval $\Delta f$?\footnote{This $\Delta f$ is {\em not} the sample rate, which is $1/\Delta t$ and is the same for both time series.} \\
 List an analytical expression and also the numerical value.
-\item What planet is retrograde?
-\item What planets are identifiable as prograde?
-\item What planets are not resolved?
+\item What planet is retrograde\footnote{A retrograde planet will move in an opposite sense to the Sun's motion.}? (Fill out \refTab{tab:planets}.)
+\item What planets are identifiable as prograde? (Fill out \refTab{tab:planets}.)
+\item What planets are not resolved? (Fill out \refTab{tab:planets}.)
 \end{enumerate}
 
 \item Now try the {\bf longer-length time series} (\verb+longdata = 1+) and repeat the analysis.
@@ -116,8 +121,8 @@ List an analytical expression and also the numerical value.
 \item What is the sampling interval $\Delta t$?
 \item What is the Nyquist frequency $\fnyq$?
 \item What is the frequency interval $\Delta f$?
-\item What planets are identifiable as prograde?
-\item What planets are not resolved?
+\item What planets are identifiable as prograde? (Fill out \refTab{tab:planets}.)
+\item What planets are not resolved? (Fill out \refTab{tab:planets}.)
 \end{enumerate}
 
 \end{enumerate}
@@ -127,6 +132,29 @@ List an analytical expression and also the numerical value.
 %-------------------------------------------------------------
 %\bibliography{}
 %-------------------------------------------------------------
+
+\begin{table}[h]
+\centering
+\caption[]
+{{
+Summary table. P = prograde, R = retrograde, N = not resolved.
+\label{tab:planets}
+}}
+\tgap
+\begin{tabular}{|c|c|c|}
+\hline
+planet & short times series & long time series \\ \hline
+Mercury & & \\ \hline
+Venus & & \\ \hline
+Earth & & \\ \hline
+Mars & & \\ \hline
+Jupiter & & \\ \hline
+Saturn & & \\ \hline
+Uranus & & \\ \hline
+Neptune & & \\ \hline
+Pluto & & \\ \hline
+\end{tabular}
+\end{table}
 
 %-------------------------------------------------------------
 \end{document}

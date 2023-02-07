@@ -126,7 +126,14 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 
 %---------------------------
 
-\item Remove \fvecn\ and \fvecs\ for now. the Change the orientation of the beachball (moment tensor) in some way, and let $\omega$ be the angle, in matrix space, between the initial moment tensor and the final moment tensor. Then $\omega$ measures how different the reoriented ball is from the original ball; $\omega=0$ means the two balls are identical, $\omega=\pi$ means the balls are negatives of each other.
+\item Remove \fvecn\ and \fvecs\ for now. the Change the orientation of the beachball (moment tensor) in some way, and let $\omega$ be the angle, in matrix space, between the initial moment tensor $M$ and the final moment tensor $M'$:
+%
+\begin{eqnarray}
+\omega &=& \angle(M,M') = \cos^{-1}\left( \frac{M \cdot M'}{\|M\| \|M'\|} \right)
+\end{eqnarray}
+%
+Small $\omega$ means that $M$ and $M'$ are similar: $\omega=0$ means the two balls are identical.
+Large $\omega$ means that they are different: $\omega=\pi$ means the balls are negatives of each other.
 
 \begin{enumerate}
 \item Describe a rotation that will give $\omega=\pi$.
@@ -134,10 +141,6 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 \item Describe a non-trivial rotation that will give $\omega=0$.
 
 \item Convince yourself that if the reorientation is a rotation of \dg{90} about \fvecp, then $\omega$ is small to moderate.
-
-\item CHALLENGE: Derive $\omega=\pi/3$ for a rotation of \dg{90} about \fvecp.
-
-\item CHALLENGE: Derive $\omega=\pi/3$ for a rotation of \dg{90} about \fvect.
 
 \end{enumerate}
 
@@ -155,9 +158,40 @@ contains the eigenvalues that characterize the source type of the moment tensor.
 
 \end{enumerate}
 
-\subsection*{Challenge problem}
+%------------------------
 
-Here is some background from \citet{TapeTape2013}. The symbols \xrot{\xi}, \yrot{\xi}, and \zrot{\xi} denote the rotations through angle $\xi$ about the coordinate axes. Thus
+%-------------------------------------------------------------
+%\pagebreak
+\bibliography{uaf_abbrev,uaf_main,uaf_carletal}
+%-------------------------------------------------------------
+
+\begin{figure}[h]
+\center
+\includegraphics[width=.95\linewidth]{/home/carltape/latex/notes/cmt/figures_cdc/XXandYY_2013-07-14}
+\caption{
+\citep[Figure~8 of][]{TapeTape2013}. The tensor $D(\xx,\,\yy)$.
+%The square is the plane of the crack for the crack tensor.
+(a)~$\xx=\yy=0$. This beachball is the double couple $D=D(0,0)$ in a reference orientation.
+(b)~$\xx=\pi/4$ and $\yy=0$. This beachball is the result of rotating the first ball through angle \xx\ about its slip vector~\fvecs.
+(c)~$\xx=\yy=\pi/4$. This ball is the result of rotating the second ball through angle \yy\ about its neutral vector \fvecb.
+\label{fig:XXandYY}
+}
+\end{figure}
+
+%=====================================================================================
+
+\pagebreak
+\subsection*{Challenge problems}
+
+\renewcommand{\theenumi}{C\arabic{enumi}}
+
+\begin{enumerate}
+
+\item Derive $\omega=\pi/3$ for a rotation of \dg{90} about \fvecp.
+
+\item Derive $\omega=\pi/3$ for a rotation of \dg{90} about \fvect.
+
+\item Here is some background from \citet{TapeTape2013}. The symbols \xrot{\xi}, \yrot{\xi}, and \zrot{\xi} denote the rotations through angle $\xi$ about the coordinate axes. Thus
 %
 \begin{equation*}
 \xrot{\xi}=\begin{small}\begin{pmatrix}   1 &     0   & 0\\
@@ -208,27 +242,9 @@ D(\xx,\,\pi/2-\yy)&=&\left(D(\xx,\,\yy)\right)_U\hspace{20pt}(U=\xrot{\pi})
 %\label{eq:DconjugateI}
 \end{eqnarray}
 %
-Do this with a partner: one of you does the expression on the left-hand side, the other does the right-hand side. You will need to both start in some reference orientation and apply the same \xx\ and \yy\; I recommend using $\xx=\yy=\dg{0}$ for starters and then trying $\xx=\yy=\dg{45}$.
+Do this with a partner: one of you does the expression on the left-hand side, the other does the right-hand side. You will need to both start in some reference orientation and apply the same \xx\ and \yy; I recommend using $\xx=\yy=\dg{0}$ for starters and then trying $\xx=\yy=\dg{45}$.
 
-%------------------------
-
-\begin{figure}[h]
-\center
-\includegraphics[width=.95\linewidth]{/home/carltape/latex/notes/cmt/figures_cdc/XXandYY_2013-07-14}
-\caption{
-\citep[Figure~8 of][]{TapeTape2013}. The tensor $D(\xx,\,\yy)$.
-%The square is the plane of the crack for the crack tensor.
-(a)~$\xx=\yy=0$. This beachball is the double couple $D=D(0,0)$ in a reference orientation.
-(b)~$\xx=\pi/4$ and $\yy=0$. This beachball is the result of rotating the first ball through angle \xx\ about its slip vector~\fvecs.
-(c)~$\xx=\yy=\pi/4$. This ball is the result of rotating the second ball through angle \yy\ about its neutral vector \fvecb.
-\label{fig:XXandYY}
-}
-\end{figure}
-
-%-------------------------------------------------------------
-%\pagebreak
-\bibliography{uaf_abbrev,uaf_main,uaf_carletal}
-%-------------------------------------------------------------
+\end{enumerate}
 
 %-------------------------------------------------------------
 \end{document}
