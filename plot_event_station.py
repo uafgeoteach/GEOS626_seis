@@ -1,6 +1,6 @@
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 
 def plot_event_station(elat,elon,w=[],slat=[],slon=[],stas=[]):
     '''
