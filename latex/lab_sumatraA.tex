@@ -1,0 +1,67 @@
+% dvips -t letter lab_sumatra.dvi -o lab_sumatra.ps ; ps2pdf lab_sumatra.ps
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+\newcommand{\tfile}{{\tt ylmplots.ipynb}}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2} 
+\centering
+{\large \bf Lab Exercise: Spherical harmonic functions [sumatraA]} \\
+\cltag\ \\
+Last compiled: \today
+\end{spacing}
+%------------------------
+
+\section{Overview and Instructions}
+
+\begin{itemize}
+\item Normal modes of the Earth are mathematically described in terms of spherical harmonic functions.
+
+\item See Section~2.9 of \citet{SteinWysession} for background on normal modes.
+
+\item To get a better feel for normal mode eigenfunctions, check out this website by Ruedi Widmer--Schnidrig:
+
+\url{http://www.black-forest-observatory.de/Old_Stuttgart_Webpages/modes.html}
+
+To get a better feel for spherical harmonic functions, check out this website:
+
+\url{http://lucien.saviot.free.fr/terre/index.en.html}
+
+\end{itemize}
+
+%------------------------
+
+\section{Questions}
+
+Run \tfile\ for all the examples.
+
+\begin{enumerate}
+\item What is the relationship between $(l,m)$ and the pattern of the $Y_{lm}(\phi,\theta)$ function?
+
+\vspace{1cm}
+
+\item Which example represents a set of functions used to describe toroidal modes?
+
+\vspace{1cm}
+
+\end{enumerate}
+
+%-------------------------------------------------------------
+%\pagebreak
+\bibliography{uaf_abbrev,uaf_carletal,uaf_main,uaf_slab}
+%-------------------------------------------------------------
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------
