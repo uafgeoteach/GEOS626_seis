@@ -73,7 +73,7 @@ Overview of where seismic data comes from: \citet{RinglerBastien2020}
 
 %---------
 
-\item Aside: Two seminal advances in seismometry were the creation of the forced-feedback seismometer \citep{WielandtStreckheisen1982} and a modified feedback circuit to enable very broadband capabilities \citep{WielandtSteim1986}. The seismometer featured in our lab is an STS-1, which is named after Streckheisen, who started a company to build seismometers.
+\item Aside: Two seminal advances in seismometry were the creation of the forced-feedback seismometer \citep{WielandtStreckeisen1982} and a modified feedback circuit to enable very broadband capabilities \citep{WielandtSteim1986}. The seismometer featured in our lab is an STS-1, which is named after Streckeisen, who started a company to build seismometers.
 
 \end{itemize}
 
@@ -111,7 +111,7 @@ For most theoretical derivations, $\omega = 2\pi f$ tends to simplify the notati
 Run \tfile, which produces \refFigab{fig1}{fig3}\footnote{The versions of the figures in \refFigab{fig1}{fig3} were generated in Matlab and differ somewhat from those that appear in the Python notebook}. {\bf Examine the figures and read the code in order to understand what is being done and shown.}
 %
 \begin{itemize}
-\item Start with \refFig{fig1}, which shows the instrument response for G.CAN.BHZ., which means network G (Geoscope), station CAN (Canberra, Australia), channel BHZ (B = 20 samples per second, H = broadband sensor, Z = vertical component), and empty location code.
+\item Start with \refFig{fig1}, which shows the instrument response for G.CAN.BHZ., which means network G (Geoscope), station CAN (Canberra, Australia), channel BHZ (B = 20 samples per second, H = broadband sensor, Z = vertical component), and empty location code. (As is the case with broadband seismometers, this instrument response is for velocity.) This response is accurate for a user-specified time. The time (\verb+starttime+) is needed because the instrument response may change as a function of time, based on changes made at the station, either from in-person visits or from remote interaction. The instrument response file could change because, for example, maybe the sensor is replaced, or it is reoriented, or the response is updated from what the manufacturer provided.
 %
 %\refFig{fig1} is generated with two commands [update to python needed]
 %
@@ -119,11 +119,6 @@ Run \tfile, which produces \refFigab{fig1}{fig3}\footnote{The versions of the fi
 %res0 = response_get_from_db(station,channel,startTime,f,dbname);
 %response_plot(res0);
 %\end{verbatim}
-``%
-%This uses utilities within GISMO to read the instrument response within the Antelope database.
-Also needed to get the instrument response are a time, a vector of frequencies, and the name of the database. The time (\verb+starttime+) is needed because the instrument response may change as a function of time, based on changes made at the station, either from in-person visits or from remote interaction. The instrument response file could change because, for example, maybe the sensor is replaced, or it is reoriented, or the response is updated from what the manufacturer provided.
-
-The plot shows $\phi(\omega)$ and $A(\omega)$, as in \refEq{Iw}.
 
 The sample rate for this channel is 20~samples per second ($\Delta t = 0.05$~s), so the {\bf Nyquist frequency}
 %
@@ -132,6 +127,10 @@ The sample rate for this channel is 20~samples per second ($\Delta t = 0.05$~s),
 \end{equation}
 %
 is $\fnyq = 10$~Hz.
+
+In order to plot the response above the Nyquist frequency, we need to specify a vector of frequencies and also the observalble of interest (\verb+DISP+, \verb+VEL+, \verb+ACC+).
+
+The plot shows $\phi(\omega)$ and $A(\omega)$, as in \refEq{Iw}.
 
 %---------------------
 
@@ -161,7 +160,7 @@ I_a &=& I_v / (i\omega)
 %
 It turns out that the effect of differentiation in the time domain leads to an {\em increase by a factor of one} in the slope of the amplitude spectrum of ground motion ($H(\omega)$) in log-log space, for example, by changing from $X_d(\omega)$ to $X_v(\omega)$. But when we are looking at the {\em instrument response}, the slope will {\em decrease by a factor of one} when changing from, say, $I_d(\omega)$ to $I_v(\omega)$.
 
-We see this in \refFig{fig2}. Consider the flat segment in $I_v(\omega)$. Change to $I_a(\omega)$ and the slope decreases; change to $I_d(\omega)$ and the slope increases.
+We see this in \refFig{fig2}. Consider the flat segment in $I_v(\omega)$. Look at $I_a(\omega)$ and the slope decreases; look at $I_d(\omega)$ and the slope increases.
 
 %-------------
 
@@ -179,7 +178,7 @@ For $f > \fnyq = 0.5$~Hz we see that the phase response is quite complicated (th
 \subsection*{Questions}
 
 \begin{enumerate}
-\item Mark the Nyquist frequency in the plots in \refFig{fig1}.
+%\item Mark the Nyquist frequency in the plots in \refFig{fig1}.
 
 \item What are the variables \verb+Id+, \verb+Iv+, and \verb+Ia+?
 
@@ -187,12 +186,11 @@ What do the functions \verb+angle+ and \verb+abs+ do to these?
 
 \item What is meant by a ``broadband'' seismometer?
 
-\item Change the channel to LHZ and re-run the notebook. How do the plots change?
+\item Look at the final plot, which shows a comparison between the instrument responses for LHZ and BHZ. Describe the differences.
 
 \item Referring to the pole-zero file (\refApp{sec:pz}), what are the input and output units for this instrument response?
 
 \item Referring to the pole-zero file (\refApp{sec:pz}), what is the time interval over which this instrument response is valid?
-
 
 \end{enumerate}
 
