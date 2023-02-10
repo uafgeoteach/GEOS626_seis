@@ -35,7 +35,7 @@ Last compiled: \today
 
 %------------------------
 
-\section{Instructions}
+\section{Overview}
 
 \begin{itemize}
 
@@ -45,9 +45,11 @@ Last compiled: \today
 
 \item Background reading on instrument response and Fourier analysis: \\ \citet[][Ch.~6]{SteinWysession} and \verb+notes_fft.pdf+
 
+Overview of where seismic data comes from: \citet{RinglerBastien2020}
+
 %---------
 
-\item WARNING: This document is in a state of transition from Matlab to Python. The original lab used Matlab to generate the figures in this document. Your lab is in Python and will generate different figures using ObsPy \citep{obspy2010,obspy2011,obspy2015}. An excellent resource for learning ObsPy are the tutorials in seismolive (\url{www.seismo-live.org}) \citep{seismolive}.
+%\item WARNING: This document is in a state of transition from Matlab to Python. The original lab used Matlab to generate the figures in this document. Your lab is in Python and will generate different figures using ObsPy \citep{obspy2010,obspy2011,obspy2015}. An excellent resource for learning ObsPy are the tutorials in seismolive (\url{www.seismo-live.org}) \citep{seismolive}.
 
 %\item This lab and the associated problem set utilize the GISMO (``GI Seismology'') Waveform Suite for Matlab developed by Celso Reyes and Michael West \citep{ReyesWest2011} and now maintained by Glenn Thompson. It is available via github here:
 
@@ -63,9 +65,15 @@ Last compiled: \today
 
 %\item There are different tools in seismology for deconvolving instrument responses and for processing seismic waveforms. We are using Matlab and GISMO, but alternative tools include ObsPy \citep{obspy2010} and SAC \citep{SAC}. {\bf Do not get bogged down in the details of the functions we are using.} Our goal is to understand how to {\em use} these tools.
 
+\item There is no seismic data in this lab. Metadata only (in particular, the response of a sensor).
+
 %---------
 
-\item There are no formal exercises for this lab. Your goal is to understand how an instrument response is defined (\eg as a set of poles and zeros of a complex function), how it is plotted (\eg as phase and amplitude, each varying with frequency), and how it depends on displacement, velocity, and acceleration.
+\item Your goal is to understand how an instrument response is defined (\eg as a set of poles and zeros of a complex function), how it is plotted (\eg as phase and amplitude, each varying with frequency), and how it depends on displacement, velocity, and acceleration.
+
+%---------
+
+\item Aside: Two seminal advances in seismometry were the creation of the forced-feedback seismometer \citep{WielandtStreckheisen1982} and a modified feedback circuit to enable very broadband capabilities \citep{WielandtSteim1986}. The seismometer featured in our lab is an STS-1, which is named after Streckheisen, who started a company to build seismometers.
 
 \end{itemize}
 
@@ -100,36 +108,34 @@ For most theoretical derivations, $\omega = 2\pi f$ tends to simplify the notati
 \pagebreak
 \section{Computing and plotting instrument response, $I(\omega)$}
 
-Run \tfile, which produces \refFigab{fig1}{fig3}. {\bf Examine the figures and read the code in order to understand what is being done and shown.}
+Run \tfile, which produces \refFigab{fig1}{fig3}\footnote{The versions of the figures in \refFigab{fig1}{fig3} were generated in Matlab and differ somewhat from those that appear in the Python notebook}. {\bf Examine the figures and read the code in order to understand what is being done and shown.}
 %
 \begin{itemize}
-\item \refFig{fig1} is generated with two commands [update to python needed]
+\item Start with \refFig{fig1}, which shows the instrument response for G.CAN.BHZ., which means network G (Geoscope), station CAN (Canberra, Australia), channel BHZ (B = 20 samples per second, H = broadband sensor, Z = vertical component), and empty location code.
 %
-\begin{verbatim}
-res0 = response_get_from_db(station,channel,startTime,f,dbname);
-response_plot(res0);
-\end{verbatim}
+%\refFig{fig1} is generated with two commands [update to python needed]
 %
+%\begin{verbatim}
+%res0 = response_get_from_db(station,channel,startTime,f,dbname);
+%response_plot(res0);
+%\end{verbatim}
+``%
 %This uses utilities within GISMO to read the instrument response within the Antelope database.
-What is needed to get the instrument response is the station (CAN), then channel (LHZ), a time, a vector of frequencies, and the name of the database. The time (\verb+startTime+) is needed because the instrument response may change as a function of time, based on changes made at the station, either from in-person visits or from remote interaction. The instrument response file could change because, for example, maybe the sensor is replaced, or it is reoriented, or the response is updated from what the manufacturer provided.
+Also needed to get the instrument response are a time, a vector of frequencies, and the name of the database. The time (\verb+starttime+) is needed because the instrument response may change as a function of time, based on changes made at the station, either from in-person visits or from remote interaction. The instrument response file could change because, for example, maybe the sensor is replaced, or it is reoriented, or the response is updated from what the manufacturer provided.
 
 The plot shows $\phi(\omega)$ and $A(\omega)$, as in \refEq{Iw}.
 
-The instrument response here is not just the response of the instrument; it also includes the digitizer. The sample rate for this channel is 1~sample per second ($\Delta t = 1$~s), so the {\bf Nyquist frequency}
+The sample rate for this channel is 20~samples per second ($\Delta t = 0.05$~s), so the {\bf Nyquist frequency}
 %
 \begin{equation}
 \fnyq = 1/(2\Delta t)
 \end{equation}
 %
-is $\fnyq = 0.5$~Hz. For $f > \fnyq$ we see that the phase response is quite complicated (this is the finite-impulse response filter), and the amplitude response declines to $10^{-5}$.
-
-As a general rule, you need to be very careful if you are looking at signals with frequencies above $\fnyq$.
-
-\item \refFig{fig2} shows what the instrument response looks like when the digitizer+FIR (finite impulse response) filters are ignored. This is the classical ``simple'' plot of a pole-zero response. This pole-zero file is shown in \refApp{sec:pz}.
+is $\fnyq = 10$~Hz.
 
 %---------------------
 
-\item \refFig{fig3} shows the instrument response to displacement, velocity, and acceleration, denoted by $I_d(\omega)$, $I_v(\omega)$, and $I_a(\omega)$. We will see in the homework that 
+\item \refFig{fig2} shows the instrument response to displacement, velocity, and acceleration, denoted by $I_d(\omega)$, $I_v(\omega)$, and $I_a(\omega)$. We will see in the homework that 
 %
 \begin{eqnarray*}
 X_v(\omega) &=& (i\omega) X_d(\omega)
@@ -155,7 +161,15 @@ I_a &=& I_v / (i\omega)
 %
 It turns out that the effect of differentiation in the time domain leads to an {\em increase by a factor of one} in the slope of the amplitude spectrum of ground motion ($H(\omega)$) in log-log space, for example, by changing from $X_d(\omega)$ to $X_v(\omega)$. But when we are looking at the {\em instrument response}, the slope will {\em decrease by a factor of one} when changing from, say, $I_d(\omega)$ to $I_v(\omega)$.
 
-We see this in \refFig{fig3}. Consider the flat segment in $I_v(\omega)$. Change to $I_a(\omega)$ and the slope decreases; change to $I_d(\omega)$ and the slope increases.
+We see this in \refFig{fig2}. Consider the flat segment in $I_v(\omega)$. Change to $I_a(\omega)$ and the slope decreases; change to $I_d(\omega)$ and the slope increases.
+
+%-------------
+
+\item \refFig{fig3} shows the full instrument response, including the digitizer+FIR (finite impulse response).
+%This is the classical ``simple'' plot of a pole-zero response. This pole-zero file is shown in \refApp{sec:pz}.
+
+For $f > \fnyq = 0.5$~Hz we see that the phase response is quite complicated (this is the finite-impulse response filter), and the amplitude response declines to $10^{-5}$. As a general rule, you need to be very careful if you are looking at signals with frequencies above $\fnyq$.
+
 
 \end{itemize}
 
@@ -167,15 +181,19 @@ We see this in \refFig{fig3}. Consider the flat segment in $I_v(\omega)$. Change
 \begin{enumerate}
 \item Mark the Nyquist frequency in the plots in \refFig{fig1}.
 
-\item Referring to the pole-zero file above, what are the input and output units for this instrument response?
-
-\item Referring to the pole-zero file above, what is the time interval over which this instrument response is valid?
-
 \item What are the variables \verb+Id+, \verb+Iv+, and \verb+Ia+?
 
 What do the functions \verb+angle+ and \verb+abs+ do to these?
 
 \item What is meant by a ``broadband'' seismometer?
+
+\item Change the channel to LHZ and re-run the notebook. How do the plots change?
+
+\item Referring to the pole-zero file (\refApp{sec:pz}), what are the input and output units for this instrument response?
+
+\item Referring to the pole-zero file (\refApp{sec:pz}), what is the time interval over which this instrument response is valid?
+
+
 \end{enumerate}
 
 %------------------------
@@ -212,6 +230,8 @@ Rotate to R and T to isolate SH waves.
 
 \section{Example pole-zero file}
 \label{sec:pz}
+
+This is an example pole-zero file retrieved from IRIS. While some programs might use pole-zero files in data processing, we do not, since all of this information is saved in memory when we fetch it from IRIS.
 
 \small
 \begin{spacing}{1.0}
@@ -266,17 +286,6 @@ CONSTANT	+6.876917e+21
 
 %\input{wave_params_table}
 
-\begin{figure}
-\centering
-\includegraphics[width=16cm]{CAN_response_fig1.eps}
-\caption[]
-{{
-Output from \tfile.
-Note that the amplitudes are normalized by the maximum value.
-}}
-\label{fig1}
-\end{figure}
-
 %\setcounter{figure}{2}
 
 \begin{figure}
@@ -287,7 +296,7 @@ Note that the amplitudes are normalized by the maximum value.
 Output from \tfile.
 Note that the amplitudes are normalized by the maximum value.
 }}
-\label{fig2}
+\label{fig1}
 \end{figure}
 
 \begin{figure}
@@ -297,6 +306,17 @@ Note that the amplitudes are normalized by the maximum value.
 {{
 Output from \tfile.
 The dashed red lines are plotted on top of the blue lines as a check.
+}}
+\label{fig2}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=16cm]{CAN_response_fig1.eps}
+\caption[]
+{{
+Output from \tfile, for the case of LHZ, showing the FIR filter that is present above the Nyquist frequency.
+Here the amplitudes are normalized by the maximum value.
 }}
 \label{fig3}
 \end{figure}
