@@ -10,10 +10,10 @@
 \newcommand{\fft}{h}
 \newcommand{\ffw}{H}
 
-\newcommand{\tfileresponse}{{\tt CAN\_response.ipynb}}
-\newcommand{\tfilenoise}{{\tt CAN\_noise.ipynb}}
-\newcommand{\tfileP}{{\tt CAN\_P.ipynb}}
-\newcommand{\tfilebp}{{\tt CAN\_bp.ipynb}}
+\newcommand{\tfileresponse}{{\tt hw\_sumatraA\_CAN\_response.ipynb}}
+\newcommand{\tfilenoise}{{\tt hw\_sumatraA\_CAN\_noise.ipynb}}
+\newcommand{\tfileP}{{\tt hw\_sumatraA\_CAN\_P.ipynb}}
+\newcommand{\tfilebp}{{\tt hw\_sumatraA\_CAN\_bp.ipynb}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -45,7 +45,7 @@ The goals of this problem set are:
 
 \begin{itemize}
 
-\item Make sure you have done the labs (\verb+lab_response.pdf+ and \verb+lab_sumatraA.pdf+).
+\item Make sure you have done the labs (\verb+lab_fft.pdf+ and \verb+lab_response.pdf+).
 
 \item The main scripts you will use are
 %
@@ -61,7 +61,35 @@ The label \verb+CAN+ is for a station at Canberra, Australia, featured in \citet
 
 %\item The main function to extract waveforms from our local database is \verb+sumatra_read_seis.m+. Note that this is called within the template scripts.
 
-\item The Global CMT catalog is at \verb+www.globalcmt.org+
+\item The Global CMT catalog is at \verb+www.globalcmt.org+. You search it to obtain a CMTSOLUTION file for the Sumatra earthquake:
+%
+\begin{verbatim}
+ PDE 2004 12 26  0 58 50.00   3.3000   95.7800  10.0 8.9 8.9 OFF W COAST OF NORTHERN                 
+event name:     122604A        
+time shift:    138.9600
+half duration:  95.0000
+latitude:        3.0900
+longitude:      94.2600
+depth:          28.6100
+Mrr:       1.040000e+29
+Mtt:      -4.270000e+28
+Mpp:      -6.100000e+28
+Mrt:       2.980000e+29
+Mrp:      -2.400000e+29
+Mtp:       4.260000e+28
+\end{verbatim}
+%
+There are three relevant origin times. The first is the PDE (Preliminary Determination of Epicenter) time, listed in the top row. The second is the GCMT centroid time, which is shifted by \verb+time shift+ ($\tau$) from the PDE time. The third, which is the one we will use, is the USGS origin time, available from the USGS website.
+%
+\begin{enumerate}
+\item $t_{\rm PDE}$ = 2004-12-26 00:58:50
+\item $t_{\rm GCMT}$ = $t_{\rm PDE}$ + \verb+time shift+ = 2004-12-26 01:01:09
+\item $t_{\rm USGS}$ = 2004-12-26 00:58:53
+\end{enumerate}
+
+% USGS
+% 2004-12-26 00:58:53.450 UTC
+% https://earthquake.usgs.gov/earthquakes/eventpage/official20041226005853450_30/origin/detail
 
 \item Background reading:
 
@@ -276,13 +304,15 @@ What is the slope of the acceleration spectrum $A_2(\omega)$ in log-log space?
 
 \begin{enumerate}
 
-\item (0.0) Run \tfileresponse. The first time you run this, it will compute and save the Fourier transform of a seismogram.
+\item (0.0) Run \tfileresponse. This will compute the Fourier transform of a seismogram.
+
+%The first time you run this, it will compute and save the Fourier transform of a seismogram.
 
 %Note: Make sure that you run this from your \verb+seismo+ directory, since the file will be saved there.
 
 %-------------------
 
-\item (0.5) Analyze the raw 10-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
+\item (0.5) Analyze the raw 9.5-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
 
 \begin{enumerate}
 \item (0.0) What is the duration of the seismogram?
@@ -305,12 +335,14 @@ Hint: Aftershocks would be one feature.
 
 \item (1.0)
 \begin{enumerate}
-\item (0.3) Plot the full amplitude spectrum, $|C(\omega)|$; use \verb+plt.axis('tight')+ to see the full limits.
+\item (0.3) Plot the full amplitude spectrum, $|C(\omega)|$.
+%use \verb+plt.axis('tight')+ to see the full limits.
 \item (0.3) Plot $|C(\omega)|$ using log-log scaling (\verb+plt.loglog()+). \\
 Label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
 \item (0.2) Interpret the largest-amplitude spikes in the spectrum.
 
-Tip: Use \verb+markp+ to get the period associated with any peak. See {\tt lab\_fft.ipynb} for reference on how to get the period associated with any peak.
+Tip: Use \verb+markp_minutes+ to get the period associated with any peak.
+See {\tt lab\_fft.ipynb} for reference on how to get the period associated with any peak.
 
 \item (0.1) What is the maximum allowable frequency and why?
 \item (0.1) What is the minimum (non-zero) allowable frequency and why? \\
@@ -365,7 +397,7 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 \pagebreak
 \section*{Problem 3 (2.0). Spectral analysis of noise}
 
-Run \tfilenoise. This will generate a time series at CAN for 10 days prior to the Sumatra earthquake.
+Run \tfilenoise. This will generate a time series at CAN for 9~days prior to the Sumatra earthquake.
 
 \begin{enumerate}
 \item (0.2) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
@@ -415,8 +447,7 @@ where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
 \begin{enumerate}
 \item (1.5) {\bf Direct arrival}. 
 Return to \tfileresponse\ in Problem 2.
-Analyze the direct arrival by extracting (use \verb+st.slice(starttime,endtime)+) 1 hour before the centroid origin time to 3 hours after, where the centroid origin time is given by \verb+t+ in Cell 3.
-%the centroid origin time is \\ \verb+otime_cmt = 7.323070424652778e5+ (units are in days)
+Analyze the direct arrival by extracting (use \verb+st.trim(starttime,endtime)+) 1 hour before the origin time to 3 hours after, where the origin time is given by \verb+origintime+.
 
 \begin{enumerate}
 \item (0.0) Make sure you are looking at a 4-hour time series before proceeding.
@@ -424,7 +455,7 @@ Analyze the direct arrival by extracting (use \verb+st.slice(starttime,endtime)+
 \item (0.2) What is the approximate frequency and period associated with the maximal amplitude?
 \item (0.3) Discuss how your plot compares with the noise spectrum from Problem~3.
 \item (0.3) Discuss how your plot compares with the spectrum from Problem~2. \\
-In your 3-hour spectrum can you identify any of the normal modes in the range $[0.2,1.0]$~mHz?
+In your 4-hour spectrum can you identify any of the normal modes in the range $[0.2,1.0]$~mHz?
 \end{enumerate}
 
 %--------------------
@@ -446,7 +477,7 @@ In your 3-hour spectrum can you identify any of the normal modes in the range $[
 \begin{enumerate}
 \item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
 
-If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+scipy.signal.hilbert+, \verb+abs+, and \verb+smooth+ in this order.
+If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+hilbert+, \verb+abs+, and \verb+smooth+ in this order.
 
 \item (0.2) What else do you notice in the filtered seismogram?
 \end{enumerate}
