@@ -14,6 +14,7 @@
 \newcommand{\tfilenoise}{{\tt hw\_sumatraA\_CAN\_noise.ipynb}}
 \newcommand{\tfileP}{{\tt hw\_sumatraA\_CAN\_P.ipynb}}
 \newcommand{\tfilebp}{{\tt hw\_sumatraA\_CAN\_bp.ipynb}}
+\newcommand{\tfiledirect}{{\tt hw\_sumatraA\_CAN\_direct.ipynb}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -302,15 +303,14 @@ What is the slope of the acceleration spectrum $A_2(\omega)$ in log-log space?
 %\pagebreak
 \section*{Problem 2 (3.5). Deconvolving the instrument response}
 
-\begin{enumerate}
+Run \tfileresponse.
 
-\item (0.0) Run \tfileresponse. This will compute the Fourier transform of a seismogram.
+\begin{enumerate}
+%\item (0.0) Run \tfileresponse. This will compute the Fourier transform of a seismogram.
 
 %The first time you run this, it will compute and save the Fourier transform of a seismogram.
 
 %Note: Make sure that you run this from your \verb+seismo+ directory, since the file will be saved there.
-
-%-------------------
 
 \item (0.5) Analyze the raw 9.5-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
 
@@ -318,10 +318,14 @@ What is the slope of the acceleration spectrum $A_2(\omega)$ in log-log space?
 \item (0.0) What is the duration of the seismogram?
 \item (0.0) What is the time step?
 \item (0.0) What is the Nyquist frequency?
-\item (0.0) Zoom in on the $y$-limits with \verb+plt.ylim([-3E4, 3E4])+ \\
+\item (0.0) Zoom in on the $y$-limits by uncommenting the line \verb+plt.ylim([-3E4, 3E4])+ \\
 What is the approximate period (in seconds and in days) of the most conspicuous oscillation?
-%Hint: exclude the first 0.1 fraction of the time series.
-\item (0.1) Find the largest aftershock in the second half of the record. Use the example code to extract the absolute time, then list the location, magnitude, and origin time of the event from a catalog search in \verb+www.globalcmt.org+.
+
+\item (0.1) Find the largest aftershock in the second half of the record.
+
+Use the interactive zoom in the plot with absolute time on the x-axis.
+
+Find this event from a catalog search in \verb+www.globalcmt.org+, then list the location, magnitude, and origin time of the event.
 
 Hint: the magnitude is $\mw > 6$.
 
@@ -333,7 +337,7 @@ Hint: Aftershocks would be one feature.
 
 %-------------------
 
-\item (1.0)
+\item (1.0) The Fourier tranform is computed for you as \verb+C+.
 \begin{enumerate}
 \item (0.3) Plot the full amplitude spectrum, $|C(\omega)|$.
 %use \verb+plt.axis('tight')+ to see the full limits.
@@ -446,7 +450,7 @@ where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
 
 \begin{enumerate}
 \item (1.5) {\bf Direct arrival}. 
-Return to \tfileresponse\ in Problem 2.
+Start with the template \tfiledirect\ (this is very similar to \tfileresponse).
 Analyze the direct arrival by extracting (use \verb+st.trim(starttime,endtime)+) 1 hour before the origin time to 3 hours after, where the origin time is given by \verb+origintime+.
 
 \begin{enumerate}

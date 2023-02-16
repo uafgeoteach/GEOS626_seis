@@ -35,9 +35,9 @@ Last compiled: \today \\
 \item The necessary starting Python scripts and data are available in the class github directory. The relevant files are:
 %
 \begin{itemize}
-\item \tfileA\ (\refSec{sec:shell})
-\item \tfileB\ (\refSec{sec:surf})
-\item \tfileC\ (\refSec{sec:stress})
+\item \tfileA\
+\item \tfileB\
+\item \tfileC\
 \end{itemize}
 
 \item Background reading:
@@ -179,6 +179,7 @@ Solving the eigenvalue problem for the vibrating shell is accomplished using thr
 
 %-----------------------------
 
+\pagebreak
 \subsection{The Numerical Solution}
 
 Our solution will involve three different Python scripts (\refFig{fig:workflow}); two are needed to solve the equations of motion (\refeq{ODEs}), and the third is used to find the values of that are eigenfrequencies. The first two scripts handle the computation of the surface stress using the Runge-Kutta routines in Python (the surface-stress calculator). The third script repeatedly calls the surface-stress calculator as part of a simple root finding scheme that uses a fixed step size in frequency to identify regions containing the roots, and then relies on the Python root-finding routine \verb+fzero+ to refine the value of the eigenfrequency. I describe each script in more detail below.
@@ -186,13 +187,13 @@ Our solution will involve three different Python scripts (\refFig{fig:workflow})
 
 \subsubsection{Computing the Surface Stress}
 
-To integrate the equations and evaluate the surface traction I created two scripts. The first script (\tfileC; \refSec{sec:stress}) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). $\mu$, $\rho$, $\omega$, and $l$ are all parameters of \tfileB\ and \tfileC\ so that they can be set and changed from the main script (\tfileA). It's a good idea to keep this script as simple and short as you can, since it's executed often.
+To integrate the equations and evaluate the surface traction I created two scripts. The first script (\tfileC) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). $\mu$, $\rho$, $\omega$, and $l$ are all parameters of \tfileB\ and \tfileC\ so that they can be set and changed from the main script (\tfileA). It's a good idea to keep this script as simple and short as you can, since it's executed often.
 
-The second script (\tfileB; \refSec{sec:surf}) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
+The second script (\tfileB) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
 
 \subsubsection{Finding the Roots}
 
-The third script (\tfileA; \refSec{sec:shell}) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
+The third script (\tfileA) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
 
 Once I know two frequency values that bracket a root, I use the function \verb+fzero+ to find that root; \verb+fzero+ uses a bisection-interpolation procedure to find the root of the function. You must pass the name of the script used to calculate the surface stress and the bounding values of frequency to the \verb+fzero+ routine, and it returns the value of the root. Python allows you to control the options in the search for roots, but I found the default values suitable for this problem.
 
@@ -445,7 +446,7 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 
 %---------------
 
-\item (1.0) \ptag\ {\bf Linear earth.} Adapt \tfileD\ (\refSec{sec:earthfun}) to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
+\item (1.0) \ptag\ {\bf Linear earth.} Adapt \tfileD\ to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
 %
 \begin{eqnarray*}
 \rho(a) &=& 2690 \; {\rm kg/m^3}
@@ -510,7 +511,7 @@ This cubic function is a fit to the PREM profiles, so check that the numbers are
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \section*{Problem 3 (3.0). Phase speed and group speed}
 
 For this problem we use the {\bf cubic model} and we consider the fundamental mode ($n=0$) only. In other words, $\fnl$ for $n > 0$ will not be needed. We are not using any observations (such as \refTab{tab:modes_obs}).
@@ -575,7 +576,6 @@ Hint: For an adequate, crude numerical integration, use the command \verb+np.dif
 
 \label{prob:0T40_cubic_group}
 
-\pagebreak
 \item (1.0) Show numerically that each of the equations in \refeq{ODEs} is satisfied for \tnl{0}{40}: $_0W_{40}(r)$, $_0T_{40}(r)$, $_0\omega_{40}$.
 
 Notes:
