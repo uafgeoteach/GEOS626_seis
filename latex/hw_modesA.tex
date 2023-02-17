@@ -10,6 +10,12 @@
 \newcommand{\tfileC}{{\tt stress\_disp\_tor.py}}
 \newcommand{\tfileD}{{\tt earthfun.py}}
 
+%\newcommand{\rfind}{{\tt fzero}}
+\newcommand{\rfind}{{\tt brentq}}
+
+%\newcommand{\sfind}{{\tt ode45}}
+\newcommand{\sfind}{{\tt solve\_ivp}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -18,7 +24,7 @@
 \centering
 {\large \bf Problem Set 5: Toroidal modes of a spherically symmetric earth\footnote{This problem set was designed and written by Charles Ammon, Penn State University. I have made some modifications and also converted from Matlab to Python.}} \\
 \cltag\ \\
-Assigned: February 16, \cyear\ --- Due: February 25, \cyear\ \\
+Assigned: February 16, \cyear\ --- Due: February 28, \cyear\ \\
 Last compiled: \today \\
 \end{spacing}
 
@@ -27,7 +33,7 @@ Last compiled: \today \\
 \subsection*{Overview and instructions}
 
 \begin{itemize}
-\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python.
+%\item WARNING: This document is in a state of transition to reflect the shift from Matlab to Python.
 %(For example, the emphasis on global variables may no longer be needed.)
 
 \item This problem set provides a hands-on introduction to how normal modes of a particular earth model can be computed. The goal is to gain a better understanding for the concepts of normal modes, eigenfrequencies, eigenfunctions, and dispersion.
@@ -100,9 +106,9 @@ $\omnl^m$ & $0 < $ $\omnl^m$ $ \le \infty$ & eigenfrequency for $(n,l,m)$ & eige
 %One advantage of studying theoretical seismology today is the availability of computer tools that we can use to explore equations and their solutions. Tools such as Matlab create new opportunities for deeper understanding – 
 With the power of computing, we can investigate the nature of problems that have long been fundamental to the interpretation and understanding of seismograms. In these notes, I outline a Python solution for computing toroidal normal modes in radially symmetric earth models. To simplify the discussion, I work with simplest model: a uniform shell. This physical model is actually a surprisingly good approximation to earth at the longest periods of oscillation. Although earth has a very dense, mostly iron core, the fluid outer core results in a zero toroidal stress at the core-mantle boundary, much like the elastic shell model shown in \refFig{fig:shells}. To compute the eigenfrequencies and eigenfunctions of the model we must solve two problems. First, we must develop a tool to integrate two coupled first-order ordinary differential equations (ODE's), and second we must develop a tool to identify those values of frequency that produce a zero surface stress when the ODE's are integrated.
 
-\subsection{Equations of Motion}
+\subsection{Equations of motion}
 
-A separation of variables solution to the homogeneous elastodynamic equations of motion results in three equations for the three space variables $(r, \theta, \phi)$. The longitudinal ($\phi$) equation is a simple second-order harmonic ordinary differential equation. The equation containing colatitude ($\theta$) reduces to the a form of Legendre's equation with solutions that are the Associated Legendre functions. The equation in radius is a form of Bessel's equation, which has solutions in terms of spherical Bessel functions. Alternatively, Bessel's second order differential equation can be reduced to a set of first-order, coupled ODE's. Specifically, for the {\bf toroidal modes of a radially symmetric model}, the radial equations are equivalent to the
+A separation of variables solution to the homogeneous elastodynamic equations of motion results in three equations for the three space variables $(r, \theta, \phi)$. The longitudinal ($\phi$) equation is a simple second-order harmonic ordinary differential equation. The equation containing colatitude ($\theta$) reduces to a form of Legendre's equation with solutions that are the Associated Legendre functions. The equation in radius is a form of Bessel's equation, which has solutions in terms of spherical Bessel functions. Alternatively, Bessel's second order differential equation can be reduced to a set of first-order, coupled ODE's. Specifically, for the {\bf toroidal modes of a radially symmetric model}, the radial equations are equivalent to the
 %eigenvalue problem
 first-order coupled system of equations (see \refSec{sec:ODEs} for details)
 %
@@ -125,7 +131,7 @@ first-order coupled system of equations (see \refSec{sec:ODEs} for details)
 \item $\omega$ is the angular frequency
 \item $\rho(r)$ is the density
 \item $\mu(r)$ is the shear modulus
-\item $l$ is the angular order
+\item $l$ is the degree (or angular order)
 \end{itemize}
 %
 %$W(r)$ and $T(r)$ are the displacement and the stress, $\omega$ is the angular frequency, $\rho(r)$ is the density, $\mu(r)$ is the shear modulus, and $l$ is the
@@ -133,9 +139,10 @@ first-order coupled system of equations (see \refSec{sec:ODEs} for details)
 %%radial order
 %(a separation of variables constant).
 For low frequencies and low
-angular orders,
+degree
+%angular orders,
 %radial orders,
-$l$, these equations can be integrated numerically using a Runge-Kutta approach \citep[\eg][]{Press1988}.
+$l$ these equations can be integrated numerically using a Runge-Kutta approach \citep[\eg][]{Press1988}.
 
 Before you integrate \refEq{ODEs}, you must specify values of $l$, the density, the shear modulus, and the frequency $\omega$. Integration produces two functions of radius, $W(r)$ and $T(r)$. If the stress is zero at the top of the shell (earth surface) and the bottom of the shell (core--mantle boundary),
 %
@@ -180,22 +187,24 @@ Solving the eigenvalue problem for the vibrating shell is accomplished using thr
 %-----------------------------
 
 \pagebreak
-\subsection{The Numerical Solution}
+\subsection{The numerical solution}
 
-Our solution will involve three different Python scripts (\refFig{fig:workflow}); two are needed to solve the equations of motion (\refeq{ODEs}), and the third is used to find the values of that are eigenfrequencies. The first two scripts handle the computation of the surface stress using the Runge-Kutta routines in Python (the surface-stress calculator). The third script repeatedly calls the surface-stress calculator as part of a simple root finding scheme that uses a fixed step size in frequency to identify regions containing the roots, and then relies on the Python root-finding routine \verb+fzero+ to refine the value of the eigenfrequency. I describe each script in more detail below.
+Our solution will involve three different Python scripts (\refFig{fig:workflow}); two are needed to solve the equations of motion (\refeq{ODEs}), and the third is used to find the values that are eigenfrequencies. The first two scripts handle the computation of the surface stress using the Runge-Kutta routines in Python (the surface-stress calculator). The third script repeatedly calls the surface-stress calculator as part of a simple root finding scheme that uses a fixed step size in frequency to identify regions containing the roots, and then relies on the Python root-finding routine \rfind\ to refine the value of the eigenfrequency. I describe each script in more detail below.
 %, and conclude with some results for specific values of $l$.
 
-\subsubsection{Computing the Surface Stress}
+\subsubsection{Computing the surface stress}
 
 To integrate the equations and evaluate the surface traction I created two scripts. The first script (\tfileC) computes the stress and displacement derivatives using the differential equations (\refeq{ODEs}). The input arguments and return values of this script are of the special form required by the Runge-Kutta functions in Python, and the name of this script is an argument to the Python Runge-Kutta function. The first input argument is the independent variable of integration (radius for our problem), the second is a vector that contains the dependent variables in the coupled first-order differential equations (displacement and stress). $\mu$, $\rho$, $\omega$, and $l$ are all parameters of \tfileB\ and \tfileC\ so that they can be set and changed from the main script (\tfileA). It's a good idea to keep this script as simple and short as you can, since it's executed often.
 
-The second script (\tfileB) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \verb+ode45+ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+sd+.
+The second script (\tfileB) calculates the surface stress. For a given value of $\omega$, the function performs the computations needed to compute the stress and displacement eigenvectors. Note the brevity and simplicity of the two scripts used to solve \refEq{ODEs}. Since the Runge-Kutta routines are implemented in Python, we need only a two-line script to compute the derivatives and a one-line call to \sfind\ to integrate the equations. Once the integration is complete, we look up the surface stress (at $r = a = 6371$ km), which after execution is stored in the last element of array \verb+WT+.
 
-\subsubsection{Finding the Roots}
+\subsubsection{Finding the roots}
 
 The third script (\tfileA) implements a simple root-finding search and provides visual feedback on the process. You should have no trouble finding lucid descriptions of the ideas behind searching for roots, or zeros, of a function \citep[\eg][]{Press1988}. The basic idea in this script is to begin a search at a small value of frequency (I chose $f = 1/3600$, corresponding to a period of one hour) and march forward with a small step size ($\Delta f$), looking for steps that produce a change in sign of the surface stress estimate, $\hat{T}(a)$. If the sign of the surface stress changes then we know that we’ve bracketed at least one zero of the function. Of course we have to be careful, a step size too large may jump more than one root in one step. If we choose too small a value for $\Delta f$, then we spend much more time searching. More clever approaches are more appropriate when dealing with more complicated models. For this example I opted to use a small step size rather than getting too fancy with something adaptive.
 
-Once I know two frequency values that bracket a root, I use the function \verb+fzero+ to find that root; \verb+fzero+ uses a bisection-interpolation procedure to find the root of the function. You must pass the name of the script used to calculate the surface stress and the bounding values of frequency to the \verb+fzero+ routine, and it returns the value of the root. Python allows you to control the options in the search for roots, but I found the default values suitable for this problem.
+Once I know two frequency values that bracket a root, I use the function \rfind\ to find that root; \rfind\ uses a bisection-interpolation procedure to find the root of the function.
+% ZZZ the previous statement needs to be checked
+You must pass the name of the script used to calculate the surface stress and the bounding values of frequency to the \rfind\ routine, and it returns the value of the root. Python allows you to control the options in the search for roots, but I found the default values suitable for this problem.
 
 %\subsection*{The Uniform Shell Model}
 
@@ -583,13 +592,13 @@ Notes:
 \begin{itemize}
 \item Again you will need the discretized versions of $\rho(r)$ and $\mu(r)$.
 
-\item To check the solution, use the quantity \verb+np.linalg.norm(a - b)/np.linalg.norm(a)+ where \verb+a+ is the left-hand side and \verb+b+ is the right-hand side of \refEq{ODEs}. You want this value to be $< 10^{-3}$; you may need to lower the tolerance in the \verb+ode45+ solver in \tfileB, which can be done by changing the \verb+max_step+ variable in the second cell.
+\item To check the solution, use the quantity \verb+np.linalg.norm(a - b)/np.linalg.norm(a)+ where \verb+a+ is the left-hand side and \verb+b+ is the right-hand side of \refEq{ODEs}. You want this value to be $< 10^{-3}$; you may need to lower the tolerance in the \sfind\ solver in \tfileB, which can be done by changing the \verb+max_step+ variable.
 
 \item Use the command \verb+np.gradient(h,r)+ to obtain $dh/dr$ where \verb+h+ and \verb+r+ are equal-length vectors. This numerical approximation of $dh/dr$ will be good if \verb+r+ is densely sampled.
 \end{itemize}
 
-\item (0.2) \ptag\ How do the calculations of $_0f_{40}$ compare for with and without the lowered tolerance for the \verb+ode45+ solver? 
-Let $f_a$ denote the root obtained with the default numerical tolerance in \verb+ode45+. Let $f_b$ denote the root obtained with the lowered numerical tolerance. 
+\item (0.2) \ptag\ How do the calculations of $_0f_{40}$ compare for with and without the lowered tolerance for the \sfind\ solver? 
+Let $f_a$ denote the root obtained with the default numerical tolerance in \sfind. Let $f_b$ denote the root obtained with the lowered numerical tolerance. 
 %
 \begin{enumerate}
 \item
