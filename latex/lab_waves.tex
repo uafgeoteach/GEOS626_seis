@@ -1,0 +1,117 @@
+% pdflatex notes_sw
+\documentclass[11pt,titlepage,fleqn]{article}
+
+\input{hw626_header}
+
+% change the figures to ``Figure L3'', etc
+\renewcommand{\thefigure}{L\arabic{figure}}
+\renewcommand{\thetable}{L\arabic{table}}
+\renewcommand{\theequation}{L\arabic{equation}}
+\renewcommand{\thesection}{L\arabic{section}}
+
+%\newcommand{\tfile}{{\tt run\_getwaveform\_626.ipynb}}
+\newcommand{\tfile}{{\tt lab\_seismo\_rs.ipynb}}
+
+\graphicspath{
+  {/home/carltape/classes/appliedseis/homework/figures/}
+}
+
+%--------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------
+
+\begin{spacing}{1.2}
+\centering
+{\large \bf Lab Exercise: Waves on a string [waves]} \\
+\cltag\ \\
+Last compiled: \today
+\end{spacing}
+
+%------------------------
+
+\subsection*{Instructions}
+
+\begin{itemize}
+\item The purpose of this exercise is to explore some simple solutions to the one-dimensional wave equation. It is one-dimensional in that the physical properties of the medium vary in one dimension only. We also want to think about solutions to the wave equation as varying in space and time.
+\item This exercise requires a ruler. A calculator might be helpful.
+\item Background reading: Section 2.2 of \citet{SteinWysession}; \verb+notes_sw.pdf+
+\end{itemize}
+
+%------------------------
+
+\subsection*{Time domain (\refFig{fig:time})}
+
+\begin{enumerate}
+\item What is a useful form of equation to characterize the waveforms in \refFig{fig:space}?
+
+\item Draw a straight line to connect the same wave pulse at different times. 
+
+Draw as many straight lines as you can to represent the traveling waves.
+
+\item Determine the velocity of waves in each portion of the string: $v_g$ and $v_h$, where G represents the left segment and H represents the right segment.\footnote{In the textbook, the left portion is ``segment 1'' and the right portion is ``segment 2''. We want to use letters that will make more sense for when we assign phase labels to each pulse.}
+
+\item Label the left reflecting boundary x, the central interior boundary y, and the right reflecting boundary z.
+
+\item Label all the pulses you can by using the following convention: the rightmost letter is with G or H, depending on which medium the wave pulse is in. If the wave encounters a boundary (x, y, or z), add the letter to the label, then add another letter for whatever medium the new wave pulse is in (G or H).
+
+With this convention, the first two pulses at $t=1$~s should be labeled G.
+
+\item What are the labels for the two largest pulses at $t=15$~s? What direction is each traveling? Summarized their histories in words.
+
+\item What information from the plot could be used to determine the density of each segment: $\rho_g$ and $\rho_h$?
+
+\end{enumerate}
+
+%------------------------
+
+\subsection*{Spatial domain (\refFig{fig:space})}
+
+\begin{enumerate}
+\item Determine the velocity of waves in the string.
+
+\item Write down equations for $u(x,t)$ and $\omega_n$ that characterize the waveforms in \refFig{fig:space}?
+
+Include all the variables, such as $\tau$, $L$, and $x_s$.
+
+For $u(x,t)$ you should have 4 terms.
+
+\begin{enumerate}
+\item Which term controls the time dependence?
+\item Which term shows that the eigenfunctions are fixed at the endpoints?
+\item Which term shows that the lower-$n$ components will have larger amplitudes?
+\end{enumerate}
+
+\item Update your previous equation to include all the numbers provided in the example.
+
+\item Explain why some of the constituent time series are zero.
+\end{enumerate}
+
+%-------------------------------------------------------------
+\bibliography{uaf_abbrev,uaf_main,uaf_carletal}
+%-------------------------------------------------------------
+
+\input{wave_params_table}
+
+\begin{figure}
+\centering
+\includegraphics[width=14cm]{SWClass3_2figsA.pdf}
+\caption[]
+{{
+The source starts at time $t = 0$ at position $x=6.5$.
+}}
+\label{fig:time}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=14cm]{SWClass3_2figsB.pdf}
+\caption[]
+{{
+The source is at time $t=0$ at position $x=8$. The bottom shows the displacement at time 1.5: $u(x,1.5)$. The traces are normalized to unit amplitude.
+}}
+\label{fig:space}
+\end{figure}
+
+%-------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------
