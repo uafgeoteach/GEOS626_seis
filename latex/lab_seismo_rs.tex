@@ -21,7 +21,7 @@
 
 %--------------------------------------------------------------
 \begin{document}
-%-------------------------------------------------------------
+%--------------------------------------------------------------
 
 \begin{spacing}{1.2}
 \centering
@@ -30,8 +30,7 @@
 Last compiled: \today
 \end{spacing}
 
-%------------------------
-
+%--------------------------------------------------------------
 \subsection*{Instructions}
 
 \begin{itemize}
@@ -39,7 +38,7 @@ Last compiled: \today
 
 The bandpass filter that is applied to the seismograms can have a dramatic effect on what is visible. The frequency limits of the bandpass is one of several important choices that are needed when plotting record sections.
 
-\item This lab uses ObsPy to access seismic waveforms from the IRIS Data Management Center. See {\tt lab\_response.pdf}.
+\item This lab uses ObsPy \citep{obspy2010,obspy2011,obspy2015}, within the software package PySep (\url{https://adjtomo.github.io/pysep/}), to access seismic waveforms from the IRIS Data Management Center. See {\tt lab\_response.pdf}.
 
 %\item This lab uses the GISMO Waveform Suite for Matlab; see \verb+lab_response.pdf+ for details.
 
@@ -47,20 +46,16 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 
 %Most waveforms here are also available from the IRIS Data Management Center.
 
-%------------------------
-
 \end{itemize}
 
-%-------------------------------------------------------------
-
-%\pagebreak
+%--------------------------------------------------------------
 \subsection*{Exercises}
 
 %-----------
 \begin{enumerate}
 %-----------
 
-\item Open \tfile\.
+\item Open \tfile.
 %
 \begin{enumerate}
 \item Run \tfile\ to produce the map in \refFig{fig:map_ex01} and the record section in \refFig{fig:rs_ex01}. \\
@@ -110,9 +105,10 @@ What is the dominant frequency of this event?
 \item Example 6: Sumatra \magw{8.6} triggering earthquakes in Alaska. 
 %
 \begin{itemize}
+\item Change \verb+networks+ to \verb+'AK'+ and rerun the example.
 \item Examine the record section and try to determine what you see.
 \item For each event (which we define as a signal that appears on several stations), determine what the closest station is. Where did each event occur?
-\item Change the bandpass period range (\verb+T1+ and \verb+T2+) for the record section plot to be \trange{2}{1000}, so that you see the complete frequency range of this waveform. \\
+\item Change the bandpass period range (\verb+min_period+ and \verb+max_period+) for the record section plot to be \trange{2}{1000}, so that you see the complete frequency range of this waveform. \\
 Approximately how long did this earthquake last in Alaska?
 \end{itemize}
 
@@ -125,7 +121,7 @@ For each possibly triggered event, enter the following information in \refTab{ta
 \begin{itemize}
 \item the closest station (and the distance in km)
 \item the suspicious stations
-\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+T1+ and \verb+T2+ provided as an input for plotting the record sections. You do not need to re-extract the waveforms.
+\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+min_period+ and \verb+max_period+ provided as an input for plotting the record sections. You do not need to re-extract the waveforms.
 \end{itemize}
 %
 \begin{table}[h]
@@ -153,12 +149,14 @@ Iliamna & & & & \\ \hline
 
 \item Now play around by changing any of the parameters for plotting record sections and making spectrograms for the provided examples. 
 
-\item Example 7 - Try your own example. Take a look at any event of your interest by extracting waveforms, plotting a record section, and looking at spectrograms.
+\item Example 7: Try your own example. Take a look at any event of your interest by extracting waveforms, plotting a record section, and looking at spectrograms.
 
 \end{enumerate}
 
+%\fi
+
 %-------------------------------------------------------------
-%\bibliography{}
+\bibliography{uaf_abbrev,uaf_main,uaf_carletal}
 %-------------------------------------------------------------
 
 %-------------------------------------------------------------
