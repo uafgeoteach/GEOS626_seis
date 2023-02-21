@@ -31,14 +31,23 @@ Last compiled: \today
 \end{spacing}
 
 %--------------------------------------------------------------
+\vspace{-0.25cm}
 \subsection*{Instructions}
 
 \begin{itemize}
-\item The purpose of this lab is to create several different plots of seismic record sections. A seismic record section is a series of seismograms that is plotted in some particular order. Typically the $x$-axis is time, and then the seismograms are separated in the $y$-direction and ordered by source-station distance or source-station azimuth.
+\item There are two main procedures of this lab:
+\begin{enumerate}
+\item fetching waveforms from the IRIS Data Management Center.
+\item plotting record sections of seismograms
+\end{enumerate}
+%
+The main purpose is to create several different plots of seismic record sections. A seismic record section is a series of seismograms that is plotted in some particular order. Typically the $x$-axis is time, and then the seismograms are separated in the $y$-direction and ordered by source-station distance or source-station azimuth.
 
 The bandpass filter that is applied to the seismograms can have a dramatic effect on what is visible. The frequency limits of the bandpass is one of several important choices that are needed when plotting record sections.
 
-\item This lab uses ObsPy \citep{obspy2010,obspy2011,obspy2015}, within the software package PySep (\url{https://adjtomo.github.io/pysep/}), to access seismic waveforms from the IRIS Data Management Center. See {\tt lab\_response.pdf}.
+\item The two main procedures are executed using the software package PySep (\url{https://adjtomo.github.io/pysep/}), which uses ObsPy \citep{obspy2010,obspy2011,obspy2015}.
+
+\item We will {\em not} be emphasizing removing instrument responses, as we did in \verb+lab_response.pdf+. However, removing the instrument response can easily be achieved with the same tools. The two reasonse we do not remove the responses are: 1) it takes a bit longer, computationally and 2) it can significantly distort the shape of the unfiltered waveforms, especially ones that are ``odd,'' which, here, we are interested in.
 
 %\item This lab uses the GISMO Waveform Suite for Matlab; see \verb+lab_response.pdf+ for details.
 
@@ -63,15 +72,16 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 (1) waveform extraction, (2) plotting a record section.
 
 What input variables are needed to specify the bandpass? \\
-How is a bandpass filter applied within the \verb+pysep+ record section plotting tool? \\
-What input variables are needed to specify the bandpass?
+How is a bandpass filter applied within the \verb+pysep+ record section plotting tool?
 
-\item What does the spectrogram show? Try changing the station and other input parameters.
+\item What does the spectrogram show? \\
+Try changing the station and other input parameters.
 
 \end{enumerate}
 
 %---------------
 
+\pagebreak
 \item Try the rest of the examples in \tfile. Here are some questions for each example
 %
 \begin{itemize}
@@ -105,10 +115,9 @@ What is the dominant frequency of this event?
 \item Example 6: Sumatra \magw{8.6} triggering earthquakes in Alaska. 
 %
 \begin{itemize}
-\item Change \verb+networks+ to \verb+'AK'+ and rerun the example.
 \item Examine the record section and try to determine what you see.
 \item For each event (which we define as a signal that appears on several stations), determine what the closest station is. Where did each event occur?
-\item Change the bandpass period range (\verb+min_period+ and \verb+max_period+) for the record section plot to be \trange{2}{1000}, so that you see the complete frequency range of this waveform. \\
+\item Change the bandpass period range (\verb+min_period_s+ and \verb+max_period_s+) for the record section plot to be \trange{2}{1000}, so that you see the complete frequency range of this waveform. \\
 Approximately how long did this earthquake last in Alaska?
 \end{itemize}
 
@@ -121,7 +130,7 @@ For each possibly triggered event, enter the following information in \refTab{ta
 \begin{itemize}
 \item the closest station (and the distance in km)
 \item the suspicious stations
-\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+min_period+ and \verb+max_period+ provided as an input for plotting the record sections. You do not need to re-extract the waveforms.
+\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+min_period_s+ and \verb+max_period_s+ provided as an input for plotting the record sections. You do not need to re-extract the waveforms.
 \end{itemize}
 %
 \begin{table}[h]
