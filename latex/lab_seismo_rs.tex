@@ -41,8 +41,6 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 
 \item This lab uses ObsPy to access seismic waveforms from the IRIS Data Management Center. See {\tt lab\_response.pdf}.
 
-\item WARNING: This lab is in a state of transition from Matlab to Python.
-
 %\item This lab uses the GISMO Waveform Suite for Matlab; see \verb+lab_response.pdf+ for details.
 
 %\item The seismic waveforms are stored at the Alaska Earthquake Center. AEC receives waveforms from all stations in Alaska, as well as all global stations from the Global Seismic Network (GSN = networks II + IU). Because most of the waveforms are from Alaska, most of the examples are from events from Alaska.
@@ -62,7 +60,7 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 \begin{enumerate}
 %-----------
 
-\item Open \tfile\ and \verb+plotw_rs.py+.
+\item Open \tfile\.
 %
 \begin{enumerate}
 \item Run \tfile\ to produce the map in \refFig{fig:map_ex01} and the record section in \refFig{fig:rs_ex01}. \\
@@ -70,7 +68,7 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 (1) waveform extraction, (2) plotting a record section.
 
 What input variables are needed to specify the bandpass? \\
-How is a bandpass filter applied within \verb+plotw_rs.py+? \\
+How is a bandpass filter applied within the \verb+pysep+ record section plotting tool? \\
 What input variables are needed to specify the bandpass?
 
 \item What does the spectrogram show? Try changing the station and other input parameters.
@@ -92,7 +90,7 @@ Describe the characteristics of this signal, which was recorded only 1~km from t
 
 \item Example 2: near-source recordings of \magw{7.5} earthquake in SE Alaska. 
 
-What happened to these seismograms?
+Comment on the notable features of these seismograms?
 
 \item Example 3: explosion in Fairbanks. 
 
@@ -118,7 +116,7 @@ What is the dominant frequency of this event?
 Approximately how long did this earthquake last in Alaska?
 \end{itemize}
 
-\item Example 7: other earthquakes during the Sumatra \magw{8.6} earthquake in Alaska.
+\item Example 6.1, 6.2 and 6.3: other earthquakes during the Sumatra \magw{8.6} earthquake in Alaska.
 
 You are given the source parameters for three earthquakes that occurred in Alaska during the ground motion of the main wavetrain from the Sumatra \magw{8.6} earthquake.
 
@@ -127,23 +125,23 @@ For each possibly triggered event, enter the following information in \refTab{ta
 \begin{itemize}
 \item the closest station (and the distance in km)
 \item the suspicious stations
-\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+T1+ and \verb+T2+ when calling \verb+plotw_rs()+: you do not need to re-extract the waveforms.
+\item the widest period range over which the signal is clearly visible. This can be achieved by varying \verb+T1+ and \verb+T2+ provided as an input for plotting the record sections. You do not need to re-extract the waveforms.
 \end{itemize}
 %
 \begin{table}[h]
 \centering
 \caption[]
 {{
-Possibly triggered earthquakes during the 2012 Sumatra \magw{8.6} earthquake in Alaska. List the basnpass range that you used to make your assessments.
+Possibly triggered earthquakes during the 2012 Sumatra \magw{8.6} earthquake in Alaska. List the bandpass range that you used to make your assessments.
 \label{tab:triggered}
 }}
 \begin{spacing}{1.5}
 \begin{tabular}{||l|c|c|c|c||}
 \hline
 earthquake & suspicious stations & closest & distance & bandpass \\
-           &  &  station & km & period range \\ \hline\hline
-Nenana & & & & \\ \hline
+           &  &  station & (km) & period range \\ \hline\hline
 Andreanof & & & & \\ \hline
+Nenana & & & & \\ \hline
 Iliamna & & & & \\ \hline
 \end{tabular}
 \end{spacing}
@@ -153,7 +151,9 @@ Iliamna & & & & \\ \hline
 \end{itemize}
 %---------------
 
-\item Now play around with changing any of the parameters: waveform extraction, plotting record sections, making spectrograms. Or take a look at any event in the Alaska Earthquake Center catalog (see Recent Earthquakes website).
+\item Now play around by changing any of the parameters for plotting record sections and making spectrograms for the provided examples. 
+
+\item Example 7 - Try your own example. Take a look at any event of your interest by extracting waveforms, plotting a record section, and looking at spectrograms.
 
 \end{enumerate}
 
