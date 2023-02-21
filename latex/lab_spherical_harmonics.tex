@@ -11,6 +11,8 @@
 
 \newcommand{\tfile}{{\tt lab\_spherical\_harmonics.ipynb}}
 
+\renewcommand{\baselinestretch}{1.0}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -23,35 +25,73 @@ Last compiled: \today
 \end{spacing}
 %------------------------
 
-\section{Overview and Instructions}
+\subsection*{Overview and Instructions}
 
 \begin{itemize}
 \item Normal modes of the Earth are mathematically described in terms of spherical harmonic functions.
 
 \item See Section~2.9 of \citet{SteinWysession} for background on normal modes.
 
-\item To get a better feel for normal mode eigenfunctions, check out this website by Ruedi Widmer--Schnidrig:
+\item Check out the Earth's modes via this website by Lucian Saviot:
+
+\url{http://lucien.saviot.free.fr/terre/index.en.html}
+
+These show the motion of the modes at the surface.
+
+\item Check out the Earth's modes via this website by Ruedi Widmer--Schnidrig:
 
 \url{http://www.black-forest-observatory.de/Old_Stuttgart_Webpages/modes.html}
 
-To get a better feel for spherical harmonic functions, check out this website:
-
-\url{http://lucien.saviot.free.fr/terre/index.en.html}
+These show the depth eigenfunctions of the modes.
 
 \end{itemize}
 
 %------------------------
 
-\section{Questions}
+\begin{figure}[h]
+\centering
+\begin{tabular}{cc}
+\includegraphics[width=11cm]{surf_0S0.png} \\
+\includegraphics[width=11cm]{fig4v_0S0.jpg} 
+\end{tabular}
+\caption[]
+{{
+Surface motion and depth eigenfunction for the spheroidal mode \snl{0}{0} ($n=0$, $l=0$).
+}}
+\label{fig:ex}
+\end{figure}
 
-Run \tfile\ for all the examples.
+%------------------------
+
+\section*{Questions}
 
 \begin{enumerate}
-\item What is the relationship between $(l,m)$ and the pattern of the $Y_{lm}(\phi,\theta)$ function?
+
+\item From the modes-surface website, examine the motion for \tnl{0}{2} and \tnl{1}{2}. These modes are featured in \verb+hw_modesA.ipynb+. Use the 3D-cut view setting, as shown in \refFig{fig:ex}.
+
+How would you describe the motion of each of these modes? What do they all have in common?
 
 \vspace{1cm}
 
-\item Which example represents a set of functions used to describe toroidal modes?
+\item From the modes-depth website, examine the eigenfunctions for \tnl{0}{2} and \tnl{1}{2}, and \tnl{2}{2}. To plot the eigenfunctions, you need to choose an Earth model, since the eigenfunctions depend on the structure (like $\vp(r)$, $\vs(r)$, and $\rho(r)$, which vary as a function of the Earth's radial coordinate $r$). Choose PREM \cite{PREM}.
+
+How would you describe how each of these modes is sensitive to the Earth's structure?
+
+\vspace{1cm}
+
+\item Identify four prominent modes in the Canberra spectrum of \citet[][Figure~1]{Park2005}. From the modes-surface website, examine their motions.
+
+How would you characterize the motion of these modes? (Hint: Use the words ``breathing'' and ``football'' in your response.) What happens for $l$ increasing from 2 to 3 to 4?
+
+\vspace{1cm}
+
+\item Run \tfile\ for all the examples; the first output figure is shown in \refFig{fig:ylm}.
+
+What is the relationship between $(l,m)$ and the pattern of the $Y_{lm}(\phi,\theta)$ function?
+
+\vspace{1cm}
+
+\item Which examples represent functions that could be used to describe toroidal modes?
 
 \vspace{1cm}
 
@@ -61,6 +101,16 @@ Run \tfile\ for all the examples.
 %\pagebreak
 \bibliography{uaf_abbrev,uaf_carletal,uaf_main,uaf_slab}
 %-------------------------------------------------------------
+
+\begin{figure}[h]
+\hspace{-1cm}
+\includegraphics[width=18cm]{lab_ylm.jpg}
+\caption[]
+{{
+Default figure from \tfile.
+}}
+\label{fig:ylm}
+\end{figure}
 
 %-------------------------------------------------------------
 \end{document}
