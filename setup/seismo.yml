@@ -9,6 +9,7 @@ dependencies:
   - kernda
   - jupyterlab
   - pip
+  - matplotlib<3.7.0
   - cartopy
   - geopy
   - obspy
