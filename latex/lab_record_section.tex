@@ -47,7 +47,7 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 
 \item The two main procedures are executed using the software package PySep (\url{https://adjtomo.github.io/pysep/}), which uses ObsPy \citep{obspy2010,obspy2011,obspy2015}.
 
-\item We will {\em not} be emphasizing removing instrument responses, as we did in \verb+lab_response.pdf+. However, removing the instrument response can easily be achieved with the same tools. The two reasonse we do not remove the responses are: 1) it takes a bit longer, computationally and 2) it can significantly distort the shape of the unfiltered waveforms, especially ones that are ``odd,'' which, here, we are interested in.
+\item We will {\em not} be removing instrument responses, as we did in \verb+lab_response.pdf+. However, removing the instrument response can easily be achieved with the same tools. The two reasonse we do not remove the responses are: 1) it takes a bit longer, computationally, and 2) it can significantly distort the shape of the unfiltered waveforms, especially ones that are ``odd,'' which, here, we are interested in.
 
 %\item This lab uses the GISMO Waveform Suite for Matlab; see \verb+lab_response.pdf+ for details.
 
@@ -64,34 +64,46 @@ The bandpass filter that is applied to the seismograms can have a dramatic effec
 \begin{enumerate}
 %-----------
 
-\item Open \tfile.
-%
-\begin{enumerate}
-\item Run \tfile\ to produce the map in \refFig{fig:map_ex01} and the record section in \refFig{fig:rs_ex01}. \\
+\item Run \tfile\ to produce the map and record section (\refFigii{fig:map_ex01}{fig:rs_ex01}). \\
 {\bf Spend some time to understand the two key parts}: \\
 (1) waveform extraction, (2) plotting a record section.
+%
+\begin{enumerate}
+\item What does \verb+NET.STA.LOC.CHA|AZ|DIST+ represent?
 
-What input variables are needed to specify the bandpass? \\
-How is a bandpass filter applied within the \verb+pysep+ record section plotting tool?
+\item What do HHZ and BHZ channels represent? Check out here for details: \\
+\url{https://ds.iris.edu/ds/nodes/dmc/data/formats/seed-channel-naming/}
 
-\item What does the spectrogram show? \\
-Try changing the station and other input parameters.
+\item What input variables are needed to specify the bandpass? 
+
+\item How is a bandpass filter applied within \verb+plotw_rs()+? \\
+Hint: find the online documentation.
+
+\item Try out the 7 options for displaying seismograms in record sections, following the descriptions within the PySep documentation:
+
+\scriptsize
+\url{https://adjtomo.github.io/pysep/autoapi/pysep/recsec/index.html#pysep.recsec.RecordSection}
+\normalsize
+
+Also you can experiment with adding \verb+_r+ to reverse the sorting order; for example, for \verb+alphabetical_r+ the sorting will go from Z to A.
 
 \end{enumerate}
 
 %---------------
 
-\pagebreak
-\item Try the rest of the examples in \tfile. Here are some questions for each example
+%\pagebreak
+\item Run all of the examples in \tfile. Here are some questions for each example
 %
 \begin{itemize}
 \item Example 1: calving event at Yahtse glacier. 
 
-Zoom in on the station map to see the source--station geometry.
+From the station map, examine the source--station geometry, especially closest to the epicenter.
+
+Describe the characteristics of this signal. Do you see a distinct P wave on any seismogram? (This will be clearer later, after you have seen P waves from normal earthquakes.)
+
+What does the spectrogram show? Try changing the station (\eg to BOOM) and other input parameters. How close is BOOM to the event location?
 
 Describe some oddities within the record section.
-
-Describe the characteristics of this signal, which was recorded only 1~km from the event. Do you see a distinct P wave on any seismogram? (This will be clearer later, after you have seen P waves from normal earthquakes.)
 
 \item Example 2: near-source recordings of \magw{7.5} earthquake in SE Alaska. 
 

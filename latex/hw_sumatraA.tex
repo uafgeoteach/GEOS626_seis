@@ -37,7 +37,7 @@ The goals of this problem set are:
 %
 \begin{enumerate}
 \item to review complex numbers and functions
-\item to practice deconvolving the instrument response from a raw seismogram recorded in ``counts'' using two approaches: (a) ObsPy (black-box) and (b) manually
+\item to practice deconvolving the instrument response from a raw seismogram recorded in ``counts''\footnote{In {\tt lab\_response.pdf} you used ObsPy for this process, whereas here you will do this manually.}
 \item to introduce you to the frequency dependence of the seismic wavefield, especially with regard to seismological investigations of earthquake sources and Earth structure
 \item to examine different time windows of seismograms and understand seismic spectra
 \end{enumerate}
@@ -53,6 +53,7 @@ The goals of this problem set are:
 \begin{itemize}
 \item \tfileresponse\
 \item \tfilenoise\
+\item \tfiledirect\
 \item \tfileP\
 \item \tfilebp\
 \end{itemize}
@@ -139,7 +140,7 @@ z &=& a + bi
 \label{fft}
 \\
 \cF^{-1} \left[ \ffw(\omega) \right] &=& \fft(t) 
-\;=\; \frac{1}{2\pi} \int_{-\infty}^{\infty} \; \fft(\omega) \; e^{i\omega t} \,\rmd\omega 
+\;=\; \frac{1}{2\pi} \int_{-\infty}^{\infty} \; \ffw(\omega) \; e^{i\omega t} \,\rmd\omega 
 \label{ifft}
 \;.
 \end{eqnarray}
@@ -345,8 +346,11 @@ Hint: Aftershocks would be one feature.
 Label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
 \item (0.2) Interpret the largest-amplitude spikes in the spectrum.
 
-Tip: Use \verb+markp_minutes+ to get the period associated with any peak.
-See {\tt lab\_fft.ipynb} for reference on how to get the period associated with any peak.
+Tip: Use \verb+markp_minutes+, which is provided as a commented section in
+
+\tfileresponse, to get the period associated with any peak.
+
+%See {\tt lab\_fft.ipynb} for reference on how to get the period associated with any peak.
 
 \item (0.1) What is the maximum allowable frequency and why?
 \item (0.1) What is the minimum (non-zero) allowable frequency and why? \\
@@ -381,8 +385,8 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 \end{eqnarray}
 
 \begin{enumerate}
-\item (0.3) Deconvolve (or ``remove'') the instrument response from the raw spectral seismogram to obtain the spectral acceleration. Show your lines of code and plot of $|X_a(\omega)|$.
-\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz (again, no log scaling), and compare it with $|C(\omega)|$. What is the effect of the deconvolution on the relative amplitudes of the peaks?
+\item (0.3) Deconvolve (or ``remove'') the instrument response from the raw spectral seismogram to obtain the spectral acceleration. Show your lines of code and plot of $|X_a(\omega)|$ on the log-log scale.
+\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz without log scaling, and compare it with $|C(\omega)|$. What is the effect of the deconvolution on the relative amplitudes of the peaks?
 \end{enumerate}
 
 %-------------------
@@ -442,11 +446,9 @@ where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
 %\pagebreak
 \section*{Problem 4 (4.0). Spectral analysis of the Sumatra earthquake recorded at Canberra}
 
-\begin{itemize}
-\item For this problem we can analyze the raw records, since we are interested here in the basic characteristics of the amplitude spectra, but not the actual values. In other words, you do not need to deconvolve the instrument response.
+For this problem we can analyze the raw records, since we are interested here in the basic characteristics of the amplitude spectra, but not the actual values. In other words, you do not need to deconvolve the instrument response.
 
-\item Note: For this problem, make sure you are not loading any pre-stored spectra; here the spectra can be computed quickly on the fly.
-\end{itemize}
+%\item Note: For this problem, make sure you are not loading any pre-stored spectra; here the spectra can be computed quickly on the fly.
 
 \begin{enumerate}
 \item (1.5) {\bf Direct arrival}. 
@@ -471,6 +473,8 @@ In your 4-hour spectrum can you identify any of the normal modes in the range $[
 \item (0.7) Using Supplemental Figure S11 of \citet{Ammon2005} as a guide, extract ``the'' P-wave and include a plot of the time series. About how long is the P wave signal?
 \item (0.4) Plot the amplitude spectrum of the P wave on a log-log plot with frequency ranging from $10^{-3}$~Hz to $10^1$~Hz. (Make sure you are working with the BHZ data.)
 
+% INSTRUCTOR NOTE: the template grabs all three components, which is useful fort hinking about rupture time comapred with S-P time (for the onset wave)
+
 \item (0.4) \ptag\ If you had to estimate a corner frequency \citep[][p.~267]{SteinWysession}, what would it be? Justify your estimate in words or numbers.
 \end{enumerate}
 
@@ -481,7 +485,7 @@ In your 4-hour spectrum can you identify any of the normal modes in the range $[
 \begin{enumerate}
 \item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
 
-If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+hilbert+, \verb+abs+, and \verb+smooth+ in this order.
+If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+hilbert+, \verb+abs+, and \verb+smooth+ in this order, on your filtered seismogram.
 
 \item (0.2) What else do you notice in the filtered seismogram?
 \end{enumerate}
