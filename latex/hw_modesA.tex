@@ -307,7 +307,7 @@ $\Wnl(r)$ and $\Tnl(r)$ (see \refeq{Tr})
 
 \item How many crossings of $T(a) = 0$ are there within this set of 14 input frequencies?
 
-\item The script considers a set of $(l_i, f_i)$ values, where $i = 1, \ldots, 14$. In \refFig{fig:dots}a, plot (by hand) 14 dots that represent your values. Next to each dot, label the $i$ value.
+\item The script considers a set of $(l, f_i)$ values, where $i = 1, \ldots, 14$. In \refFig{fig:dots}a, plot (by hand) 14 dots that represent your values. Next to each dot, label the $i$ value.
 
 \end{enumerate}
 
@@ -429,7 +429,8 @@ Tip: Initialize an $a \times b$ matrix as \verb+Fobs = np.full((a,b),np.nan)+, t
 \begin{enumerate}
 \item (1.5) {\bf Homogeneous earth.} We want to explore how different homogeneous earth models fit the toroidal mode observations. We will assume a fixed value of density ($\rho = 4380$~kg/m$^3$), and only look for different values of shear modulus over the range $\mu = [1.2\times 10^{11},\; 1.9 \times 10^{11}]$ Pa (hint: use a {\tt for} loop). It is best to think of our model vector as $\bem = (\rho, \mu)$.
 
-Hint: For this misfit analysis, note that you only have observations up to $n = 3$ (\refTab{tab:modes_obs}). Consider adjusting your limits for root-finding in order to save some time.
+Hint: For this misfit analysis, note that you only have observations up to $n = 3$ (\refTab{tab:modes_obs}).
+%Consider adjusting your limits for root-finding in order to save some time.
 
 \begin{enumerate}
 \item (1.0)
@@ -437,14 +438,16 @@ Hint: For this misfit analysis, note that you only have observations up to $n = 
 \item Find a value of $\mu$ that best fits all $N=20$ observed eigenfrequencies.
 \item List the value of $F(\bem)$ (\refeq{Fm}) for the best-fitting $\mu$.
 \item Justify your choice of the new $\mu$, either in words, Python output, or a figure.
-\item Show a dispersion plot as before (use \verb+plt/axis([0, 11, 0, 4])+) that contains all predictions and observations.
+\item Show a dispersion plot as before (use \verb+plt.axis([0, 11, 0, 4])+) that contains all predictions and observations.
+
+Here your predictions should be different from before, since your Earth model is now different (\ie different $\mu$). (You do not need to show the predictions from the original Earth $\mu$ model.)
 \end{itemize}
 
-\item (0.2) Repeat, but now use only the $N = 9$ observations for the fundamental mode ($n=0$). (This means that some of the observations in your plot will not have been used in determining the new~$\mu$.)
-{\bf Show all predictions and all observations in your plot, not just the ones used in calculating the misfit.}
+\item (0.2) Repeat, but now use only the $N = 9$ observations for the fundamental mode ($n=0$) instead of $N=20$. (This means that some of the observations in your plot will not have been used in determining the new~$\mu$.)
+{\bf For this $\mu$ value, show all predictions and all observations in your plot, not just the ones used in calculating the misfit.}
 
-\item (0.3) Repeat, but now use only the observed eigenfrequency for \tnl{0}{2}. (This means that all but one of the observations in your plot will not have been used in determining the new~$\mu$.)
-{\bf Show all predictions and all observations in your plot, not just the ones used in calculating the misfit.}
+\item (0.3) Repeat, but now use only the observed eigenfrequency for \tnl{0}{2} ($N=1$) instead of $N=20$. (This means that all but one of the observations in your plot will not have been used in determining the new~$\mu$.)
+{\bf For this $\mu$ value, show all predictions and all observations in your plot, not just the ones used in calculating the misfit.}
 
 What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})$, for \tnl{0}{2}?
 
@@ -455,6 +458,7 @@ What is the percent difference from the observed value, $100\,\ln(f/f_{\rm obs})
 
 %---------------
 
+\pagebreak
 \item (1.0) \ptag\ {\bf Linear earth.} Adapt \tfileD\ to create a function that inputs a radial value $r$ (or a vector of $r$ values) and outputs $\rho(r)$ and $\mu(r)$ described by a linear model with the ``endpoint'' values
 %
 \begin{eqnarray*}
@@ -475,7 +479,7 @@ Test your \tfileD\ for a few values of $r$ to make sure that the output values o
 
 \begin{enumerate}
 \item (0.4) Show your code for \tfileD.
-\item (0.3) Generate a new dispersion plot with both predictions and observations, as in Problem 1-\ref{prob:disp}.
+\item (0.3) Generate a new dispersion plot with predictions and observations, as in Problem 1-\ref{prob:disp}.
 \item (0.1) List the misfit in \refTab{tab:homo}.
 \item (0.2) What parameters would you search over if you wanted to obtain an optimal linear earth model?
 \end{enumerate}
@@ -503,7 +507,7 @@ This cubic function is a fit to the PREM profiles, so check that the numbers are
 
 \begin{enumerate}
 \item (0.2) Show your code for the cubic function.
-\item (0.2) Generate a new dispersion plot with both predictions and observations, as in Problem~1-\ref{prob:disp}.
+\item (0.2) Generate a new dispersion plot with predictions and observations, as in Problem~1-\ref{prob:disp}.
 \item (0.1) List the misfit in \refTab{tab:homo}.
 \end{enumerate}
 
@@ -520,7 +524,7 @@ This cubic function is a fit to the PREM profiles, so check that the numbers are
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 3 (3.0). Phase speed and group speed}
 
 For this problem we use the {\bf cubic model} and we consider the fundamental mode ($n=0$) only. In other words, $\fnl$ for $n > 0$ will not be needed. We are not using any observations (such as \refTab{tab:modes_obs}).
