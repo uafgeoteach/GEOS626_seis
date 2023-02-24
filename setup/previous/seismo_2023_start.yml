@@ -1,0 +1,18 @@
+name: seismo
+channels:
+  - conda-forge
+  - default
+dependencies:
+  - ipympl
+  - ipywidgets<8.0.0
+  - traitlets==5.1.1
+  - kernda
+  - jupyterlab
+  - pip
+  - cartopy
+  - geopy
+  - obspy
+  - pandas
+  - pyproj
+  - scipy
+  - sympy
