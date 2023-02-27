@@ -10,7 +10,10 @@
 \renewcommand{\thesection}{L\arabic{section}}
 
 %\newcommand{\tfile}{{\tt sumatra\_modes.m}}
-\newcommand{\tfile}{{\tt lab\_sumatra.ipynb}}
+\newcommand{\tfile}{{\tt lab\_sumatraB.ipynb}}
+\newcommand{\tfilemodes}{{\tt hw\_sumatra\_modes.ipynb}}
+
+\renewcommand{\baselinestretch}{1.0}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -24,7 +27,7 @@ Last compiled: \today
 \end{spacing}
 %------------------------
 
-\section{Overview and Instructions}
+\subsection*{Overview and Instructions}
 
 \begin{itemize}
 \item The key file is \tfile.
@@ -35,17 +38,17 @@ Last compiled: \today
 
 %---------
 
-\item Tips on picking stations for analysis:
+\item {\bf Tips on picking stations for analysis}:
 \begin{itemize}
 \item Pick time series that have the highest signal-to-noise ratios.
 \item In several cases there are multiple seismograms for the same station (and component), \eg at the South Pole:
 %
 \begin{spacing}{1.0}
 \begin{verbatim}
-IU QSPA 00 BHZ
-IU QSPA 10 BHZ
-IU QSPA 20 BHZ
-IU QSPA 30 BHZ
+IU.QSPA.00.LHZ
+IU.QSPA.10.LHZ
+IU.QSPA.20.LHZ
+IU.QSPA.30.LHZ
 \end{verbatim}
 \end{spacing}
 %
@@ -71,15 +74,10 @@ IU  & GSN-IRIS/USGS & Albuquerque Seismological Laboratory \\
 II and IU form the Global Seismographic Network (GSN).
 The Geoscope network is managed by France and has been running high-quality stations since 1982.
 
-\item The time periods for the waveforms are specified with respect to the origin time of the Sumatra earthquake:
+\item The time periods for the waveforms are specified with respect to the origin time of the Sumatra earthquake: 2004--12--26 00:58:53
 
-\vspace{0.5cm}
-% otimePDE = datenum(2004,12,26,0,58,50); sprintf('%.6f',otimePDE)
-otimePDE = 2004--12--26 00:58:50
-\vspace{0.5cm}
-
-\noindent
-This is the PDE (Preliminary Determination of Epicenter from National Earthquake Information Center) origin time listed in the CMTSOLUTION file (\url{www.globalcmt.org}).
+%\noindent
+%This is the PDE (Preliminary Determination of Epicenter from National Earthquake Information Center) origin time listed in the CMTSOLUTION file (\url{www.globalcmt.org}).
 %The decimal version gives the time in days with respect to some Matlab reference time. In the lists below, all times and durations are in days.
 
 \end{itemize}
@@ -87,46 +85,43 @@ This is the PDE (Preliminary Determination of Epicenter from National Earthquake
 %------------------------
 
 %\pagebreak
-\section{Exercises}
+\subsection*{Exercises}
 
 \begin{enumerate}
-\item Examine \tfile. There are two sets of waveforms that are requested; each set is associated with a different time interval and sample rate. List the specified parameters for each set below. {\bf If there are more than three posssibilities, only list three.}
+\item Examine \tfile. For the LHZ raw data, list the parameters specified in the request:
 
 \begin{itemize}
-\item networks:
+\item networks: 
 \item stations: 
 \item locations: 
 \item channels: 
-\item duration: 
 \item start time: 
 \item end time: 
-\item channels:
-\end{itemize}
-
-\begin{itemize}
-\item networks:
-\item stations: 
-\item locations: 
-\item channels: 
 \item duration: 
-\item start time: 
-\item end time: 
-\item channels:
 \end{itemize}
 
-\item Notice that \verb+sumatra_loop.py+ is called from \tfile. Try to determine what \verb+sumtra_loop.py+ is doing. Notice that it will write the file \verb+sumatra_modes.txt+ to the directory \verb+./datawf/sumatra_fft/+.
+Note that \verb+remove_response+ is set to \verb+False+, so these waveforms are in units of counts.
+
+%\item Notice that \verb+sumatra_loop.py+ is called from \tfile. Try to determine what \verb+sumtra_loop.py+ is doing. Notice that it will write the file \verb+sumatra_modes.txt+ to the directory \verb+./datawf/sumatra_fft/+.
 
 %==================================================
 
-\item Run \tfile\ to fetch the database of waveforms and save them as local files. If successful, you should see a large set of seismograms displayed.
+\item Run \tfile\ to fetch the database of waveforms and save them as local files.
+%If successful, you should see a large set of seismograms displayed.
 
-\item Examine the stations that were cut from the analysis by \verb+sumtra_loop.py+. Describe three ``errors'' in these records.
+Lots of figures will be generated, but we will focus here only on the first part.
 
-\item Your seismograms and their spectra are saved locally in the folder \verb+datawf+ in subfolders \verb+sumatraLH+, \verb+sumatraBH+, and \verb+sumatra_fft+.
+Your seismograms are saved locally in the folder \verb+datawf+ in subfolders \verb+sumatra_LHZ_raw+.
 
-Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
+\item Examine the list of rejected waveform IDs. Explain the four parts that make up each waveform ID. (See also \verb+lab_record_section.pdf+.) Note that the order of the four parts is critical.
 
-\item Browse all remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes. You can identify the subset by the list of indices in \verb+ipick+.
+\item Examine the seismograms that were rejected from the analysis. Describe three ``errors'' in these seismograms.
+
+%Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
+
+\item Browse all remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes.
+%Pick only one location for a given station.
+%You can identify the subset by the list of indices in \verb+ipick+.
 
 %From a terminal window (not Matlab), use \verb+xpdf+ or \verb+evince+ to browse the 139-page pdf file
 %
@@ -136,8 +131,12 @@ Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
 The stations should be selected based on high signal-to-noise within the frequency range 0.2 to 1.0~mHz, and, notably, the \snl{0}{2} peak. Be sure to include Canberra and the station from Figure~2 of \citet{Park2005}.
 {\bf See ``Tips on picking stations'' in the instructions above.}
 
-\item Run \tfile\ and plot your subset of records. \\
-This will prepare you for \verb+sumatra_modes.ipynb+.
+\item Run \tfile\ and plot your subset of seismograms. \\
+This will prepare you for \verb+hw_sumatraB.pdf+.
+
+\item The next set of data will have the response to acceleration removed. Your seismograms will be saved locally in the subfolder \verb+sumatra_LHZ_acc+. Acceleration spectra are preferred output for analyzing normal modes.
+
+\item The next set of data will have the response to acceleration removed. Your seismograms will be saved locally in the subfolder \verb+sumatra_BHZ_vel+.
 
 \end{enumerate}
 

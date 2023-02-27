@@ -3,9 +3,11 @@
 
 \input{hw626_header}
 
+\newcommand{\tfileprem}{{\tt modes\_PREMobs.ipynb}}
 \newcommand{\tfilemodes}{{\tt hw\_sumatraB\_modes.ipynb}}
 \newcommand{\tfilelf}{{\tt hw\_sumatraB\_lf.ipynb}}
 \newcommand{\tfilehf}{{\tt hw\_sumatraB\_hf.ipynb}}
+\newcommand{\tfilelfnear}{{\tt hw\_sumatraB\_lf\_near.ipynb}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -53,23 +55,27 @@ The purpose of this problem set is to handle a large data set of seismograms and
 \item Make sure you have completed:
 %
 \begin{enumerate}
-\item \verb+lab_seismo_rs.pdf+, the lab for getting waveforms and plotting record sections.
-Be familiar with what \verb+plotw_rs.py+ is doing.
-Be sure you understand what a bandpass filter is.
+\item \verb+lab_record_section.pdf+, for getting waveforms and plotting record sections.
+%Be familiar with what \verb+plotw_rs.py+ is doing.
+%Be sure you understand what a bandpass filter is.
 
-\item \verb+lab_response.pdf+, the lab on instrument response
+\item \verb+lab_response.pdf+, on instrument response
 
-\item \verb+lab_sumatra.pdf+, the lab on sumatra waveforms
+\item \verb+lab_spherical_harmonics.pdf+, on normal modes and spherical harmonic functions.
+
+\item \verb+lab_sumatraB.pdf+, on sumatra waveforms
 \end{enumerate}
 
 %---------
 
-\item The main scripts you will use are:
+\item The scripts you will use are:
 %
 \begin{itemize}
+\item \tfileprem\
 \item \tfilemodes\
 \item \tfilehf\
 \item \tfilelf\
+\item \tfilelfnear\
 \end{itemize}
 
 %---------
@@ -92,22 +98,18 @@ Be sure you understand what a bandpass filter is.
 
 %---------
 
-\item See \verb+lab_sumatraA.pdf+ for background on normal modes and spherical harmonic functions.
-
-%---------
-
-\item To subset an obspy Stream by a certain station with an array of stations names \verb+station+, try something like this:
+\item To subset an obspy Stream by a certain station with an array of stations names \verb+station+, use the ObsPy select function:
 %
 \begin{verbatim}
 wsub=w.select(station='CAN')
 \end{verbatim}
 
-Or to remove traces from stream, try \verb+Stream.remove()+ and \verb+Stream.pop()+:
-
-\begin{verbatim}
-wcut=w.remove(station='CAN')
-wcut=w.pop(index=2)     
-\end{verbatim}
+%Or to remove traces from stream, try \verb+Stream.remove()+ and \verb+Stream.pop()+:
+%
+%\begin{verbatim}
+%wcut=w.remove(station='CAN')
+%wcut=w.pop(index=2)     
+%\end{verbatim}
 %
 
 \end{itemize}
@@ -116,7 +118,7 @@ wcut=w.pop(index=2)
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 1 (4.4). Splitting of normal mode frequencies}
 
 The template script is \tfilemodes.
@@ -143,14 +145,17 @@ Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mo
 
 %---------
 
-\item (0.4) Run \verb+lab_sumatra.ipynb+ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
+% ZZZ THIS IS ALREADY DONE IN THE LAB.
+\item (0.4) Run \verb+lab_sumatraB.ipynb+ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
 
 %---------
 
 \item (0.5)
 %
 \begin{enumerate}
-\item (0.4) Modify \verb+ipick+ and plot the spectrum for each station you selected in \verb+lab_sumatra+.
+% ZZZ THIS IS ALREADY DONE IN THE LAB.
+\item (0.4) Using your list of waveform IDs from \verb+lab_sumatraB.ipynb+, recompute the spectra and plot them.
+%Modify \verb+ipick+ and plot the spectrum for each station you selected in \verb+lab_sumatra+.
 %To save paper, use something like a $5 \times 4$ subplot.
 
 Show a list of station names, along with the distance and azimuth from the Sumatra epicenter to each station.
@@ -290,7 +295,7 @@ Notes:
 
 \item See the template code for how to align seismograms.
 
-\item You do not need to compute the smoothed envelopes---the bandpassed seismograms are enough. (Though computing the envelopes is straightforward; see \verb+hwsol_sumatraA+.)
+\item You do not need to compute the smoothed envelopes---the bandpassed seismograms are enough. (Though computing the envelopes is straightforward; see \verb+hwsol_sumatraA.pdf+.)
 \end{itemize}
 
 \item (0.2) What are the minimum and maximum time shifts applied to your seismograms in order to align them?
