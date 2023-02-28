@@ -34,7 +34,9 @@ Last compiled: \today
 
 %\item WARNING: This lab is in a state of transition from Matlab to Python. All the utilities are in Python, but this document refers to Matlab and linux instructions.
 
-\item This lab is a starter for the homework on the Sumatra earthquake (\verb+hw_sumatraB+). The goal is to understand the attributes of a seismic waveform (start time, end time, sample rate, station location, etc) and to gain some appreciation for variability in the quality of waveforms, especially when recording a \magw{9} earthquake, which puts some seismometers to a difficult test!
+\item This lab is a starter for the homework on the Sumatra earthquake (\verb+hw_sumatraB+). Here we download and screen data in preparation for the homework.
+
+The goal is to understand the attributes of a seismic waveform (start time, end time, sample rate, station location, etc) and to gain some appreciation for variability in the quality of waveforms, especially when recording a \magw{9} earthquake, which puts some seismometers to a difficult test!
 
 %---------
 
@@ -88,7 +90,7 @@ The Geoscope network is managed by France and has been running high-quality stat
 \subsection*{Exercises}
 
 \begin{enumerate}
-\item Examine \tfile. For the LHZ raw data, list the parameters specified in the request:
+\item Examine \tfile. For the LHZ raw data, list the parameters specified in the data download request:
 
 \begin{itemize}
 \item networks: 
@@ -106,20 +108,18 @@ Note that \verb+remove_response+ is set to \verb+False+, so these waveforms are 
 
 %==================================================
 
-\item Run \tfile\ to fetch the database of waveforms and save them as local files.
+\item Run the relevant cells in \tfile\ to fetch the database of raw LHZ waveforms.
 %If successful, you should see a large set of seismograms displayed.
 
-Lots of figures will be generated, but we will focus here only on the first part.
+Your seismograms will be saved in the folder \verb+datawf+ in the subfolder \verb+sumatra_LHZ_raw/SAC/+.
 
-Your seismograms are saved locally in the folder \verb+datawf+ in subfolders \verb+sumatra_LHZ_raw+.
+\item Examine the list of waveform IDs to be rejected. Explain the four parts that make up each waveform ID. (See also \verb+lab_record_section.pdf+.) Note that the order of the four parts is critical.
 
-\item Examine the list of rejected waveform IDs. Explain the four parts that make up each waveform ID. (See also \verb+lab_record_section.pdf+.) Note that the order of the four parts is critical.
-
-\item Examine the seismograms that were rejected from the analysis. Describe three ``errors'' in these seismograms.
+\item Examine the seismograms that will be rejected from the analysis by running the relevant cells. Describe three ``errors'' in these seismograms.
 
 %Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
 
-\item Browse all remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes.
+\item Browse the amplitude spectra of all the remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes. (The more the better!)
 %Pick only one location for a given station.
 %You can identify the subset by the list of indices in \verb+ipick+.
 
@@ -131,12 +131,13 @@ Your seismograms are saved locally in the folder \verb+datawf+ in subfolders \ve
 The stations should be selected based on high signal-to-noise within the frequency range 0.2 to 1.0~mHz, and, notably, the \snl{0}{2} peak. Be sure to include Canberra and the station from Figure~2 of \citet{Park2005}.
 {\bf See ``Tips on picking stations'' in the instructions above.}
 
-\item Run \tfile\ and plot your subset of seismograms. \\
-This will prepare you for \verb+hw_sumatraB.pdf+.
+\item Run relevant cells to make a source-station plot for the selected stations and a table for the station distances and azimuths.
 
-\item The next set of data will have the response to acceleration removed. Your seismograms will be saved locally in the subfolder \verb+sumatra_LHZ_acc+. Acceleration spectra are preferred output for analyzing normal modes.
+\item Run the data download for your selected subset of seismograms.
 
-\item The next set of data will have the response to acceleration removed. Your seismograms will be saved locally in the subfolder \verb+sumatra_BHZ_vel+.
+\item These will have the response removed to acceleration. Your seismograms will be saved locally in the subfolder \verb+sumatra_LHZ_acc/SAC+. Acceleration spectra are preferred output for analyzing normal modes.
+
+\item The next set of data will have the response removed to displacement. Your seismograms will be saved locally in the subfolder \verb+sumatra_BHZ_disp/SAC+.
 
 \end{enumerate}
 
