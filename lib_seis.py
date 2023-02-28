@@ -488,3 +488,17 @@ def wf_fft(wf,fNyq):
     return fft_amp, fft_phase, fft_freq
 
 ############################################################
+
+def w2fstack(freq,amp,f1,f2,n):
+    # Function used to stack waveforms given frequency and amplitude arrays
+    nw = len(freq)
+    f = np.linspace(f1,f2,n)
+    A = np.zeros((n,nw))
+    for ii in range (nw):
+        f0 = freq[ii]  # Hz
+        A0 = amp[ii]
+        A[:,ii] = np.interp(f,f0,A0)   
+    Astack = np.sum(A,1)
+    return Astack,f,A
+
+############################################################
