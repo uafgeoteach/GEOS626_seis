@@ -9,6 +9,8 @@
 \newcommand{\tfilehf}{{\tt hw\_sumatraB\_hf.ipynb}}
 \newcommand{\tfilelfnear}{{\tt hw\_sumatraB\_lf\_near.ipynb}}
 
+\newcommand{\tfilelab}{{\tt lab\_sumatraB.ipynb}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -18,7 +20,7 @@
 {\large \bf Problem Set 6: Analysis of the 2004 Sumatra-Andaman earthquake \\
 Part 2: Analyzing the effects of rupture complexity and Earth heterogeneity [sumatraB]} \\
 \cltag\ \\
-Assigned: February 25, \cyear\ --- Due: March 18, \cyear\ \\
+Assigned: March 2, \cyear\ --- Due: March 13, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -44,7 +46,7 @@ Plate boundaries are from \citet{Bird2003}: AU = Australia, IN = India, BU = Bur
 
 \begin{spacing}{1.0}
 
-The purpose of this problem set is to handle a large data set of seismograms and to extract some useful scientific information about the earthquake source (and Earth structure). As you will see, much of the challenge is in representing the seismic waveforms in a sensible manner; this includes judging which seismograms are ``bad,'' that is, not representative of the ground motion. A key part of this representation is determining what bandpass to use for the seismograms for each scientific question.
+The purpose of this problem set is to handle a large data set of seismograms and to extract some useful scientific information about the earthquake source (and Earth structure). As we saw in \verb+lab_sumatraB.pdf+, some of the challenge is in representing the seismic waveforms in a sensible manner; this includes judging which seismograms are ``bad,'' that is, not representative of the ground motion. A key part of this representation is to determine what bandpass to use for the seismograms for each scientific question.
 
 \begin{itemize}
 %\item This problem set uses some scripts in \verb+GEOTOOLS+ for analyzing sets of waveforms. \\
@@ -119,7 +121,7 @@ wsub=w.select(station='CAN')
 %------------------------
 
 \pagebreak
-\section*{Problem 1 (4.4). Splitting of normal mode frequencies}
+\section*{Problem 1 (4.0). Splitting of normal mode frequencies}
 
 The template script is \tfilemodes.
 %See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
@@ -146,21 +148,22 @@ Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mo
 %---------
 
 % ZZZ THIS IS ALREADY DONE IN THE LAB.
-\item (0.4) Run \verb+lab_sumatraB.ipynb+ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
+%\item (0.4) Run \tfilelab\ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
 
 %---------
 
-\item (0.5)
+\item (0.5) Copy your list of waveform IDs from \tfilelab\ into \tfilemodes, then recompute the spectra and plot them.
 %
 \begin{enumerate}
 % ZZZ THIS IS ALREADY DONE IN THE LAB.
-\item (0.4) Using your list of waveform IDs from \verb+lab_sumatraB.ipynb+, recompute the spectra and plot them.
+\item (0.3) %Using your list of waveform IDs from \tfilelab, recompute the spectra and plot them.
 %Modify \verb+ipick+ and plot the spectrum for each station you selected in \verb+lab_sumatra+.
 %To save paper, use something like a $5 \times 4$ subplot.
+Display a map of your stations, and display the text table of information (names, distances, azimuths, etc).
 
 Show a list of station names, along with the distance and azimuth from the Sumatra epicenter to each station.
 
-\item (0.1) Compute the amplitude of the \snl{0}{0} peak for all your stations. \\
+\item (0.2) Compute the amplitude of the \snl{0}{0} peak for all your stations. \\
 List the median value.
 \end{enumerate}
 
@@ -237,10 +240,11 @@ See \citet[][p. 106]{SteinWysession} for background.
 %------------------------
 
 \pagebreak
-\section*{Problem 2 (3.1). Directivity I}
+\section*{Problem 2 (3.5). Directivity II}
 
 \begin{enumerate}
-\item (0.0) Examine \tfilehf\ and make sure you understand how to do certain operations for plotting record sections. It would be helpful to check what each parameter in \verb+plotw_rs.py+ does (type \verb+open plotw_rs+).
+\item (0.0) Examine \tfilehf\ and make sure you understand how to do certain operations for plotting record sections (see also \verb+lab_record_section.pdf+).
+%It would be helpful to check what each parameter in \verb+plotw_rs.py+ does (type \verb+open plotw_rs+).
 
 \item (1.0) We will repeat the analysis of \citet{Ni2005} but using even more simplifications than they did. {\bf Read \citet{Ni2005} carefully before you begin.} We will assume the following:
 %
@@ -279,9 +283,9 @@ Hint: \refEq{Tr} is an equation with 6 unknowns: $T_r$, $L$, $v_r$, $v$, $\alpha
 
 %--------------------
 
-\item (1.2) 
+\item (1.6) 
 \begin{enumerate}
-\item (1.0) Modify \tfilehf\ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
+\item (1.4) Modify \tfilehf\ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
 
 Notes:
 %
