@@ -377,7 +377,7 @@ def plot_event_station(elat,elon,w=[],slat=[],slon=[],stas=[]):
     lon_epic = elon   # Longitude
     
     
-    fig = plt.figure(figsize=[15, 8])
+    fig = plt.figure(figsize=[12, 8])
     ax = fig.add_subplot(1, 1, 1,
                          projection=ccrs.AzimuthalEquidistant(central_longitude=lon_epic,
                                                               central_latitude=lat_epic))
@@ -538,16 +538,72 @@ def wf_fft(wf,fNyq):
 
 ############################################################
 
-def w2fstack(freq,amp,f1,f2,n):
-    # Function used to stack waveforms given frequency and amplitude arrays
-    nw = len(freq)
-    f = np.linspace(f1,f2,n)
-    A = np.zeros((n,nw))
-    for ii in range (nw):
-        f0 = freq[ii]  # Hz
-        A0 = amp[ii]
-        A[:,ii] = np.interp(f,f0,A0)   
+def w2fstack(freqs,amps,f1,f2,n):
+    
+    '''
+    Function used to stack waveforms given frequency and amplitude arrays
+    
+    input arguments -
+    freqs = list of frequencies of each amplitude spectrum
+    amps  = list of amplitudes of each amplitude spectrum
+    f1    = lower limit of the frequency range of interest
+    f2    = upper limit of the frequency range of interest
+    n     = number of points to discretize the frequency range of interest
+    
+    return arguments -
+    Astack = stacked amplitude spectrum
+    f      = discretized frequency range of interest
+    A      = 2D numpy array of amplitude spectra; individual spectra are oriented along a column
+    '''
+    
+    f  = np.linspace(f1,f2,n)
+    
+    nw = len(freqs)
+    A  = np.zeros((n,nw))
+    
+    for i in range (nw):
+        f0     = freqs[i]
+        A0     = amps[i]
+        A[:,i] = np.interp(f,f0,A0)   
+    
     Astack = np.sum(A,1)
+    
     return Astack,f,A
 
+############################################################
+
+def station_info_list(st,picked_waveforms):
+    
+    '''
+    function to tabulate station information - longitude, latitude and tags into lists
+    
+    input arguments -
+    st = obspy stream object containing all waveforms with header information
+    picked_waveforms = list containing information about waveforms to be considered for tabulation
+    
+    return arguments -
+    station_lats = list of station latitudes
+    station_lons = list of station longitudes
+    station_tags = list of station tags
+    '''
+    
+    station_lats = []
+    station_lons = []
+    station_tags = []
+
+    for i, waveform_id in enumerate(picked_waveforms):
+    
+        ID = f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}.{waveform_id[3]}'
+        
+        try:
+            tr = st.select(id=ID)
+            station_lats.append(tr[0].stats.sac['stla'])
+            station_lons.append(tr[0].stats.sac['stlo'])
+            station_tags.append(f'{waveform_id[0]}.{waveform_id[1]}')
+        except:    
+            print(f'{ID} does not exist, check the corresponding entry in list of selected waveforms')
+            raise
+            
+    return station_lats, station_lons, station_tags
+        
 ############################################################
