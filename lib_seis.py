@@ -11,6 +11,7 @@ import scipy.io
 
 from itertools import product, combinations
 from obspy.geodetics import gps2dist_azimuth
+from scipy.interpolate import interp2d
 
 ############################################################
 
@@ -265,18 +266,22 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     
 ############################################################
 
-def get_JB_Ptime(h,delta):
+def get_JB_Ptime(source_depth_km=0, dist_deg=0):
 
     '''
-    INPUT:    h       source depth, km
-               delta   arc distance, degrees
-     OUTPUT:   t       direct P-wave travel time from Jeffreys-Bullen table, seconds
-     WARNING: This simplistic function only considers for direct P, which
-              is not present for arc distances above 100 deg.
+    INPUT:   source_depth_km   list of source depths, km
+             dist_deg          list of arc distances, degrees
+    OUTPUT:  t                 direct P-wave travel time from Jeffreys-Bullen table, seconds
+    WARNING: This simplistic function only considers for direct P, which
+             is not present for arc distances above 100 deg.
     
-     load Jeffreys-Bullen table for P'''
+    load Jeffreys-Bullen table for P
+    '''
     
-    jbP = np.loadtxt(datadir+'/jbP.txt', skiprows=3, dtype=float)        # Skip lines, 0,1,2
+    h = source_depth_km
+    delta = dist_deg
+    
+    jbP = np.loadtxt('./data/jbP.txt', skiprows=3, dtype=float)        # Skip lines, 0,1,2
     # full table
     ndep= len(jbP[0,:])-1
     h0=[]
