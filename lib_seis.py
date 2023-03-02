@@ -146,7 +146,7 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
 
 ############################################################
 
-def get_dist_az(lon0,lat0,lonall,latall,stlabs):
+def get_dist_az(lat0,lon0,latall,lonall,stlabs):
     '''
     get distances and azimuths from an epicenter (lon0,lat0)
     to a set of stations (lonall,latall) using obspy (geoid WGS84)
@@ -154,10 +154,10 @@ def get_dist_az(lon0,lat0,lonall,latall,stlabs):
     
     km_to_deg = ( 1 / ( np.pi * 6371 ) ) * 180
     
-    lon0   = np.atleast_1d(lon0)
     lat0   = np.atleast_1d(lat0)
-    lonall = np.atleast_1d(lonall)
+    lon0   = np.atleast_1d(lon0)
     latall = np.atleast_1d(latall)
+    lonall = np.atleast_1d(lonall)
     stlabs = np.atleast_1d(stlabs)
     
     dist_km  = []
@@ -179,7 +179,7 @@ def get_dist_az(lon0,lat0,lonall,latall,stlabs):
         dist_deg.append(ddeg)
         
         # display formatted text
-        print('%3i %7s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
+        print('%3i %10s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
         (i+1,stlabs[i],float(latall[i]),float(lonall[i]),ddeg,az))
     
     return dist_deg, azi_deg, dist_km
@@ -263,6 +263,41 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     ax.zaxis.set_pane_color((0.0, .0, 0.0, 0.0))
     #plt.show()
     
+############################################################
+
+def get_JB_Ptime(h,delta):
+
+    '''
+    INPUT:    h       source depth, km
+               delta   arc distance, degrees
+     OUTPUT:   t       direct P-wave travel time from Jeffreys-Bullen table, seconds
+     WARNING: This simplistic function only considers for direct P, which
+              is not present for arc distances above 100 deg.
+    
+     load Jeffreys-Bullen table for P'''
+    
+    jbP = np.loadtxt(datadir+'/jbP.txt', skiprows=3, dtype=float)        # Skip lines, 0,1,2
+    # full table
+    ndep= len(jbP[0,:])-1
+    h0=[]
+    delta0=[]
+    # interpolate the table
+    for i in range(ndep+1):
+        if i>0:
+            h0.append(jbP[0, i])
+    for i in range(len(jbP[:,0])):
+        if i>0:
+            delta0.append(jbP[i,0])
+    jbP = np.delete(jbP, (0), axis=0)
+    jbP = np.delete(jbP, (0), axis=1)
+    xx, yy = np.meshgrid(h0, delta0)
+    z = np.sin(xx**2+yy**2)
+    f = interp2d(delta0, h0, jbP.T)
+    Ptt=[]
+    for i in range(len(delta)):
+        Ptt.append(f(delta[i],h))
+    return Ptt
+
 ############################################################
 
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp)
@@ -508,6 +543,48 @@ def sph2cart(azimuth,elevation,r):
 
 ############################################################
 
+def sumatra_waveform_screening(channel):
+
+    '''
+    # ID | starttime | endtime
+    '''
+    
+    if channel == 'LHZ':
+        
+        waveforms_to_reject = ['G.PEL..LHZ'    ,'II.DGAR.00.LHZ','II.HOPE.00.LHZ','II.PALK.00.LHZ','II.SHEL.00.LHZ',
+                               'IU.ADK.00.LHZ' ,'IU.DAV.00.LHZ' ,'IU.FUNA.00.LHZ','IU.FUNA.10.LHZ','IU.GRFO..LHZ'  ,
+                               'IU.LCO..LHZ'   ,'IU.OTAV.00.LHZ','IU.OTAV.10.LHZ','IU.PMG.00.LHZ' ,'IU.PMG.10.LHZ' ,
+                               'IU.POHA.00.LHZ','IU.PTCN.00.LHZ','IU.MBWA.00.LHZ','IU.RAO.00.LHZ' ,'IU.RSSD.00.LHZ',
+                               'IU.SAML.00.LHZ','IU.SAML.10.LHZ','IU.SDV.00.LHZ' ,'IU.SDV.10.LHZ' ,'IU.TRIS.00.LHZ',
+                               'IU.TRIS.10.LHZ','IU.WAKE.00.LHZ','IU.XMAS.00.LHZ']
+        
+        waveforms_to_trim   = [ ['IU.QSPA.20.LHZ', 0       , 4.4800e5],
+                                ['II.ABKT.00.LHZ', 0       , 6.7410e5],
+                                ['G.ATD..LHZ'    , 0       , 2.8400e5],
+                                ['IU.BILL.00.LHZ', 0       , 4.3050e5],
+                                ['II.BORG.00.LHZ', 0       , 3.1700e5],
+                                ['II.BORG.10.LHZ', 0       , 3.1700e5],
+                                ['IU.CHTO.00.LHZ', 0       , 3.6270e5],
+                                ['II.EFI.00.LHZ' , 0       , 2.7500e5],
+                                ['IU.GUMO.10.LHZ', 0       , 1.7980e5],
+                                ['IU.HRV..LHZ'   , 0       , 4.5800e5],
+                                ['IU.MIDW.00.LHZ', 0.7500e4, 9.0720e5],
+                                ['II.PFO.00.LHZ' , 0       , 3.3205e5],
+                                ['II.PFO.10.LHZ' , 0       , 3.3205e5],
+                                ['G.SCZ..LHZ'    , 0       , 1.9300e5],
+                                ['G.TAM..LHZ'    , 0       , 5.5800e5],
+                                ['IU.TIXI.00.LHZ', 0       , 6.6150e5],
+                                ['G.WUS.00.LHZ'  , 0       , 5.8200e5]  ]
+   
+    elif channel == 'BHZ':
+        
+        waveforms_to_reject = []
+        waveforms_to_trim   = [[]]
+    
+    return waveforms_to_reject, waveforms_to_trim
+
+############################################################
+
 def wf_fft(wf,fNyq):
     """ Python adaptation of wf_fft.m by Michael West
         Necessary for GEOS626 work
@@ -572,7 +649,7 @@ def w2fstack(freqs,amps,f1,f2,n):
 
 ############################################################
 
-def station_info_list(st,picked_waveforms):
+def station_info_list(st,list_all=True,waveforms_list=[]):
     
     '''
     function to tabulate station information - longitude, latitude and tags into lists
@@ -580,6 +657,7 @@ def station_info_list(st,picked_waveforms):
     input arguments -
     st = obspy stream object containing all waveforms with header information
     picked_waveforms = list containing information about waveforms to be considered for tabulation
+    list_all = Boolean; if True all waveforms in input stream will be considered
     
     return arguments -
     station_lats = list of station latitudes
@@ -590,20 +668,32 @@ def station_info_list(st,picked_waveforms):
     station_lats = []
     station_lons = []
     station_tags = []
+    station_tags_full = []
 
-    for i, waveform_id in enumerate(picked_waveforms):
+    if list_all:
+        for i, tr in enumerate(st):
+            station_lats.append(tr.stats.sac['stla'])
+            station_lons.append(tr.stats.sac['stlo'])
+            station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
+            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.channel}')
     
-        ID = f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}.{waveform_id[3]}'
-        
-        try:
-            tr = st.select(id=ID)
-            station_lats.append(tr[0].stats.sac['stla'])
-            station_lons.append(tr[0].stats.sac['stlo'])
-            station_tags.append(f'{waveform_id[0]}.{waveform_id[1]}')
-        except:    
-            print(f'{ID} does not exist, check the corresponding entry in list of selected waveforms')
-            raise
-            
-    return station_lats, station_lons, station_tags
+    elif not list_all:
+        for i, waveform_id in enumerate(waveforms_list):
+            ID = f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}.{waveform_id[3]}'
+
+            try:
+                tr = st.select(id=ID)
+                station_lats.append(tr[0].stats.sac['stla'])
+                station_lons.append(tr[0].stats.sac['stlo'])
+                station_tags.append(f'{waveform_id[0]}.{waveform_id[1]}')
+                station_tags_full.append(f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}')
+            except:    
+                print(f'{ID} does not exist, check the corresponding entry in list of selected waveforms')
+                raise
+    
+    else:
+        print(f"Error: incorrect input for input argument 'list_all'")
+    
+    return station_lats, station_lons, station_tags, station_tags_full
         
 ############################################################
