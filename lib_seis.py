@@ -561,7 +561,8 @@ def station_info_list(st,list_all=True,waveforms_list=[]):
     return arguments -
     station_lats = list of station latitudes
     station_lons = list of station longitudes
-    station_tags = list of station tags
+    station_tags = list of station tags (network.station)
+    station_tags_full = list of full station tags (network.station.location)
     '''
     
     station_lats = []
@@ -574,7 +575,7 @@ def station_info_list(st,list_all=True,waveforms_list=[]):
             station_lats.append(tr.stats.sac['stla'])
             station_lons.append(tr.stats.sac['stlo'])
             station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
-            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.channel}')
+            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.location}')
     
     elif not list_all:
         for i, waveform_id in enumerate(waveforms_list):
@@ -612,8 +613,6 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
     event_lat         = event latitude in degrees
     
     event_lon         = event longitude in degrees
-    
-    
     '''
     
     station_lats = []
@@ -639,7 +638,7 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
                 station_tags.append(f'{waveform_id[0]}.{waveform_id[1]}')
                 station_tags_full.append(f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}')
             except:    
-                print(f'{ID} does not exist, check the corresponding entry in list of selected waveforms')
+                print(f'ERROR: {ID} entry in your subset does not exist in the provided stream dataset')
                 raise
     
     print('\nSource receiver map') 
