@@ -725,7 +725,7 @@ def wf_fft(wf,fNyq):
 
 ############################################################
 
-def w2fstack(freqs,amps,f1,f2,n):
+def w2fstack(freqs,amps,f1,f2,n,stack='mean'):
     
     '''
     Function used to stack waveforms given frequency and amplitude arrays
@@ -736,6 +736,7 @@ def w2fstack(freqs,amps,f1,f2,n):
     f1    = lower limit of the frequency range of interest
     f2    = upper limit of the frequency range of interest
     n     = number of points to discretize the frequency range of interest
+    stack = type of statcking - sum, mean, median
     
     return arguments -
     Astack = stacked amplitude spectrum
@@ -753,7 +754,14 @@ def w2fstack(freqs,amps,f1,f2,n):
         A0     = amps[i]
         A[:,i] = np.interp(f,f0,A0)   
     
-    Astack = np.sum(A,1)
+    if stack == 'sum':
+        Astack = np.sum(A,1)
+    elif stack == 'mean':
+        Astack = np.mean(A,1)
+    elif stack == 'median':
+        Astack = np.median(A,1)
+    else:
+        print('Error: invalid option provided for stacking')
     
     return Astack,f,A
         
