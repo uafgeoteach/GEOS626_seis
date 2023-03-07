@@ -180,7 +180,7 @@ def get_dist_az(lat0,lon0,latall,lonall,stlabs):
         dist_deg.append(ddeg)
         
         # display formatted text
-        print('%3i %10s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
+        print('%3i %12s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
         (i+1,stlabs[i],float(latall[i]),float(lonall[i]),ddeg,az))
     
     return dist_deg, azi_deg, dist_km
