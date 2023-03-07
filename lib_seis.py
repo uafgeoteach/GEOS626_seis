@@ -655,18 +655,22 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
 
 def sumatra_waveform_screening(channel):
 
-    '''
-    # ID | starttime | endtime
-    '''
-    
     if channel == 'LHZ':
         
-        waveforms_to_reject = ['G.PEL..LHZ'    ,'II.DGAR.00.LHZ','II.HOPE.00.LHZ','II.PALK.00.LHZ','II.SHEL.00.LHZ',
-                               'IU.ADK.00.LHZ' ,'IU.DAV.00.LHZ' ,'IU.FUNA.00.LHZ','IU.FUNA.10.LHZ','IU.GRFO..LHZ'  ,
-                               'IU.LCO..LHZ'   ,'IU.OTAV.00.LHZ','IU.OTAV.10.LHZ','IU.PMG.00.LHZ' ,'IU.PMG.10.LHZ' ,
-                               'IU.POHA.00.LHZ','IU.PTCN.00.LHZ','IU.MBWA.00.LHZ','IU.RAO.00.LHZ' ,'IU.RSSD.00.LHZ',
-                               'IU.SAML.00.LHZ','IU.SAML.10.LHZ','IU.SDV.00.LHZ' ,'IU.SDV.10.LHZ' ,'IU.TRIS.00.LHZ',
-                               'IU.TRIS.10.LHZ','IU.WAKE.00.LHZ','IU.XMAS.00.LHZ']
+        waveforms_to_reject = ['G.ATD..LHZ'    ,'G.PEL..LHZ'    ,'G.SCZ..LHZ'    ,'G.TAM..LHZ'    ,'G.WUS.00.LHZ'  ,
+                               'II.ABKT.00.LHZ','II.BORG.00.LHZ','II.BORG.10.LHZ','II.DGAR.00.LHZ','II.EFI.00.LHZ' ,
+                               'II.HOPE.00.LHZ','II.PALK.00.LHZ','II.PFO.00.LHZ' ,'II.PFO.10.LHZ' ,'II.SHEL.00.LHZ',
+                               'IU.ADK.00.LHZ' ,'IU.BILL.00.LHZ','IU.CHTO.00.LHZ','IU.DAV.00.LHZ' ,'IU.FUNA.00.LHZ',
+                               'IU.FUNA.10.LHZ','IU.GRFO..LHZ'  ,'IU.GUMO.10.LHZ','IU.HRV..LHZ'   ,'IU.LCO..LHZ'   ,
+                               'IU.MBWA.00.LHZ','IU.MIDW.00.LHZ','IU.OTAV.00.LHZ','IU.OTAV.10.LHZ','IU.PMG.00.LHZ' ,
+                               'IU.PMG.10.LHZ' ,'IU.POHA.00.LHZ','IU.PTCN.00.LHZ','IU.QSPA.20.LHZ','IU.RAO.00.LHZ' ,
+                               'IU.RSSD.00.LHZ','IU.SAML.00.LHZ','IU.SAML.10.LHZ','IU.SDV.00.LHZ' ,'IU.SDV.10.LHZ' ,
+                               'IU.TIXI.00.LHZ','IU.TRIS.00.LHZ','IU.TRIS.10.LHZ','IU.WAKE.00.LHZ','IU.XMAS.00.LHZ']
+        
+        # waveforms to trim have also been added to the list of waveforms to reject
+        # and the trim details have been archived here for future reference
+        
+        #                                     ID | starttime | endtime
         
         waveforms_to_trim   = [ ['IU.QSPA.20.LHZ', 0       , 4.4800e5],
                                 ['II.ABKT.00.LHZ', 0       , 6.7410e5],
@@ -691,7 +695,7 @@ def sumatra_waveform_screening(channel):
         waveforms_to_reject = []
         waveforms_to_trim   = [[]]
     
-    return waveforms_to_reject, waveforms_to_trim
+    return waveforms_to_reject
 
 ############################################################
 
