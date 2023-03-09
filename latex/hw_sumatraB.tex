@@ -4,10 +4,13 @@
 \input{hw626_header}
 
 \newcommand{\tfileprem}{{\tt modes\_PREMobs.ipynb}}
+
 \newcommand{\tfilemodes}{{\tt hw\_sumatraB\_modes.ipynb}}
 \newcommand{\tfilelf}{{\tt hw\_sumatraB\_lf.ipynb}}
 \newcommand{\tfilehf}{{\tt hw\_sumatraB\_hf.ipynb}}
-\newcommand{\tfilelfnear}{{\tt hw\_sumatraB\_lf\_near.ipynb}}
+\newcommand{\tfilenearlf}{{\tt hw\_sumatraB\_near\_lf.ipynb}}
+\newcommand{\tfileplf}{{\tt hw\_sumatraB\_P\_lf.ipynb}}
+\newcommand{\tfilephfcounts}{{\tt hw\_sumatraB\_P\_hf\_counts.ipynb}}
 
 \newcommand{\tfilelab}{{\tt lab\_sumatraB.ipynb}}
 
@@ -70,15 +73,32 @@ The purpose of this problem set is to handle a large data set of seismograms and
 
 %---------
 
-\item The scripts you will use are:
-%
-\begin{itemize}
-\item \tfileprem\
-\item \tfilemodes\
-\item \tfilehf\
-\item \tfilelf\
-\item \tfilelfnear\
-\end{itemize}
+\item The scripts you will use are summarized in the following table:
+
+%\begin{table}
+%\caption[]
+%{{
+%Overview
+%\label{tab:all}
+%}}
+\hspace{-1.5cm}
+\begin{tabular}{||c|c|c|c|c|c|c|l||}
+\hline
+& & & & \multicolumn{3}{c|}{Number of} & \\
+Problem & Channel & Units & Duration & \multicolumn{3}{c|}{stations} & Notebook \\ \cline{5-7}
+& & & & all & max & min & \\ \hline
+1-2 & LHZ & & 10 days & 160 & & 20 & \tfilelab\ \\ \hline
+1-3 to 1-7 & LHZ & & 10 days & 160 & & 20 & \tfilelab\ \\
+& & & & & & & \tfilemodes\ \\ \hline
+2   & BHZ & & -1 hr to +4 hr & 180 & 50 & 10 & \tfilehf\ \\ \hline
+3   & LHZ & & -1 hr to +4 hr &     & 33 & 3 & \tfilelf\ \\ \hline
+4-1 & LHZ & & -1 hr to +4 hr & & & 5 & \tfilenearlf\ \\ \hline
+4-2 & BHZ & & -1 hr to +4 hr & & & 16 & \tfileplf\ \\ \hline
+4-3 & BHZ & counts & -1 hr to +4 hr & 160 & & & \tfilephfcounts\ \\ \hline
+\hline
+\end{tabular}
+%\end{table}
+
 
 %---------
 
@@ -100,11 +120,15 @@ The purpose of this problem set is to handle a large data set of seismograms and
 
 %---------
 
-\item To subset an obspy Stream by a certain station with an array of stations names \verb+station+, use the ObsPy select function:
+\item There are multiple options to select a subset of an ObsPy stream:
+
+\url{https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.select.html}
+
+%To subset an obspy Stream by a certain station with an array of stations names \verb+station+, use the ObsPy select function:
 %
-\begin{verbatim}
-wsub=w.select(station='CAN')
-\end{verbatim}
+%\begin{verbatim}
+%wsub=w.select(station='CAN')
+%\end{verbatim}
 
 %Or to remove traces from stream, try \verb+Stream.remove()+ and \verb+Stream.pop()+:
 %
@@ -117,6 +141,10 @@ wsub=w.select(station='CAN')
 \end{itemize}
 
 \end{spacing}
+
+%------------------------
+
+
 
 %------------------------
 
@@ -140,7 +168,7 @@ List them in increasing frequency.
 %\item What toroidal and spheroidal modes are observed (or at least labeled) in Figure~1 of \citet{Park2005} but not observed in 1980?
 %\item What toroidal and spheroidal modes observed in 1980 are not present in Figure~1 of \citet{Park2005}?
 %\item What two modes are on top of each other?
-\item (0.2) Using Ruedi Widmer--Schnidrig's interactive website (above), check out the eigenfunctions for \snl{0}{2}, \snl{1}{2}, and \snl{2}{2}. Describe the differences qualitatively. Explain two reasons why \snl{2}{2} will be difficult to observe.
+\item (0.2) Using Ruedi Widmer--Schnidrig's interactive website (\verb+lab_spherical_harmonics.pdf+), check out the eigenfunctions for \snl{0}{2}, \snl{1}{2}, and \snl{2}{2}. Describe the differences qualitatively. Explain two reasons why \snl{2}{2} will be difficult to observe.
 
 Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mode having degree $l=2$ and overtone number (or radial order) $n=0$.
 \end{enumerate}
@@ -163,7 +191,7 @@ Display a map of your stations, and display the text table of information (names
 
 Show a list of station names, along with the distance and azimuth from the Sumatra epicenter to each station.
 
-\item (0.2) Compute the amplitude of the \snl{0}{0} peak for all your stations. \\
+\item (0.2) Extract the amplitude of the \snl{0}{0} peak for all your stations. \\
 List the median value.
 \end{enumerate}
 
@@ -185,10 +213,10 @@ List the median value.
 \begin{enumerate}
 \item (0.2) Use \verb+w2fstack+ to generate a stack of \snl{0}{2}, and include this plot. \\
 Hint: Use a new frequency range.
-\item (0.1) Label the peaks \snlm{0}{2}{-2}, \ldots, \snlm{0}{2}{2} on the plot.
+\item (0.1) Label the peaks \snlm{0}{2}{-2}, \ldots, \snlm{0}{2}{2} (\snlm{n}{l}{m}) on the plot.
 \item (0.2) 
 \begin{itemize}
-\item Measure the frequency of the central peak, $_0f_2^0$ ($m=0$), and the spacing between peaks, $\Delta f$. List these values (with units).
+\item Measure the frequency $_0f_2^0$ ($m=0$) of the central peak. Measure the spacing $\Delta f$ between peaks. List these values (with units).
 \item Assuming a linear model, write an expression for the singlet frequency $_0f_2^m(m)$. List numerical values (and units).
 \end{itemize}
 \end{enumerate}
@@ -200,7 +228,7 @@ Hint: Use a new frequency range.
 \begin{enumerate}
 \item (0.2) What pattern might you expect to see (and why?)
 
-Recall \verb+hw_sumatraA+.
+Recall \verb+hwsol_sumatraA.pdf+.
 See \citet[][Figure 3]{SSteinOkal2007} for additional background.
 
 \item (0.3) Make a plot with  \snl{0}{2} spectra sorted by station latitude.
@@ -250,7 +278,7 @@ See \citet[][p. 106]{SteinWysession} for background.
 %
 \begin{itemize}
 \item The Earth is flat.
-\item The travel time between the fault and any station is encapsulated with the simple velocity $v = 11$~km/s. This is the mean apparent velocity for stations between $30^\circ < \Delta < 85^\circ$ of the source, assuming Jeffreys--Bullen P travel times and arc distances (not distances along the P wave ray path); see \refFig{fig:JB}.
+\item The travel time between the fault and any station is encapsulated with the simple velocity $v = 11$~km/s. This is the mean apparent velocity for stations between $30^\circ < \Delta < 85^\circ$ of the source, assuming Jeffreys--Bullen P travel times and arc distances (not distances along the P wave ray path).
 \item All stations are ``far'' from the fault, such that the distance from the station to the starting point is approximately equal to the distance from the station to the stopping point.
 \item The fault is positive in length: $L > 0$.
 \item The rupture speed is positive and less than the apparent P-wave speed: $0 < v_r < v$.
@@ -283,26 +311,29 @@ Hint: \refEq{Tr} is an equation with 6 unknowns: $T_r$, $L$, $v_r$, $v$, $\alpha
 
 %--------------------
 
+%\pagebreak
 \item (1.6) 
 \begin{enumerate}
-\item (1.4) Modify \tfilehf\ to reproduce \citet[][Figure~1d]{Ni2005}, and include a plot of your record section.
+\item (1.0) With \citet[][Figure~1d]{Ni2005} as a guide, modify \tfilehf\ to produce a record section of filtered seismograms. (In the later part of this problem, you will work with envelopes.)
 
 Notes:
 %
 \begin{itemize}
-\item See the earlier homework on these waveforms.
+\item In \verb+hw_sumatraA+ we examined this waveform for one station (CAN). Be sure to review that problem set before proceeding. Here we will look at many other stations besides CAN.
 
-\item Note that the epicentral distances must be $30^\circ < \Delta < 85^\circ$, so specify \\
-\verb+stasub = [30 85]+ when requesting waveforms.
+\item Use stations within the epicentral distances given by $30^\circ < \Delta < 85^\circ$. (You will only find this detail in the Supplement of \citet{Ni2005}).
 
 \item Use at least 10 stations with high-quality seismograms. (Think about what stations would be needed to reproduce the plot in \citet{Ni2005}. Be sure to include CAN from before.)
 
-\item See the template code for how to align seismograms.
-
-\item You do not need to compute the smoothed envelopes---the bandpassed seismograms are enough. (Though computing the envelopes is straightforward; see \verb+hwsol_sumatraA.pdf+.)
+%\item See the template code for how to align seismograms.
+\item See the example in \verb+lab_record_section.ipynb+ for how to align seismograms on the predicted P wave onset time.
 \end{itemize}
 
 \item (0.2) What are the minimum and maximum time shifts applied to your seismograms in order to align them?
+
+\item (0.4) Create a new record section that contains envelopes, similar to what is shown in \citet[][Figure~1d]{Ni2005}.
+
+See \verb+hwsol_sumatraA.pdf+ for lines of code. This will also require you to update the arguments \verb+pysep_path+ and \verb+st+ so that you can feed it your own stream of envelopes, modified from the original stream.
 
 \end{enumerate}
 
@@ -333,6 +364,8 @@ List the station name, distance $\Delta$ (degrees), and azimuth $\alpha$ (degree
 \pagebreak
 \section*{Problem 3 (1.0). \ptag\ Directivity II}
 
+Here you will download a new, small data set; see \tfilelab\ for examples. Choose your epicentral distance range appropriately.
+
 \begin{enumerate}
 \item (0.4) Modify \tfilelf\ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
 
@@ -350,17 +383,18 @@ Hint: Think about \refFig{fig:sumatra_chen}.
 %\pagebreak
 \section*{Problem 4 (1.5). Miscellaneous}
 
-In this problem, you will find it helpful to use an appropriate input for \verb+stasub+ so that \verb+client.get_waveforms+ will return only a subset of stations/waveforms.
+Here you will download a new, small data set; see \tfilelab\ for examples. Choose your epicentral distance range appropriately.
+%In this problem, you will find it helpful to use an appropriate input for \verb+stasub+ so that \verb+client.get_waveforms+ will return only a subset of stations/waveforms.
 
 \begin{enumerate}
-\item (1.0) Modify \tfilelf\ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure~S12 of \citet{Ammon2005} for reference and checking.
+\item (1.0) Modify \tfilenearlf\ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure~S12 of \citet{Ammon2005} for reference and checking.
 
 %Note: Use \verb+cutoff = [];+ and \verb+iint=0+ when calling \verb+getwaveform+; all filtering and integration can be applied within the plotting script (\verb+plotw_rs.m+).
 %
 \begin{enumerate}
-\item (0.4) Include plots of seismograms (or a record section) for raw data (\verb+iprocess=False+).
-\item (0.4) Include plots of seismograms (or a record section) for instrument deconvolved (\verb+iprocess=True+).
-\item (0.2) How different are the waveform shapes and amplitudes?
+\item (0.4) Include plots of seismograms (or a record section) for raw data.
+\item (0.4) Include plots of seismograms (or a record section) for instrument deconvolved.
+\item (0.2) How different are the waveform shapes and amplitudes between the raw and instrument-response-deconvolved versions?
 \item (0.0) On the basis of your results, can you infer whether the seismograms in \citet{Ammon2005} were instrument deconvolved or not?
 \end{enumerate}
 %
@@ -376,20 +410,21 @@ Notes:
 
 %------------
 
+\pagebreak
 \item (0.5) \ptag\
 %
 \begin{enumerate}
-\item (0.3) Modify \tfilehf\ to reproduce the azimuthal record section of P waves shown in Figure S11 of \citet{Ammon2005}.
+\item (0.3) Modify \tfileplf\ to reproduce the azimuthal record section of P waves shown in Figure S11 of \citet{Ammon2005}.
 %
 \begin{itemize}
 \item What bandpass do you think they used?
 \item Plot the record section with one column, not two as in \citet{Ammon2005}.
 \item Plot (or sort) the seismograms by azimuth.
 %\item Order the seismograms starting with the direction of the rupture direction (\verb+azstart+ parameter in \verb+plotw_rs.py+).
-\item Hint: The variable \verb+nfac+ will change the amplitudes of the plotted waveforms.
+\item Hint: The input argument \verb+scale_by+ will change the amplitudes of the waveforms plotted using pysep's record section plotter.
 \end{itemize}
 
-\item (0.2) Qualitatively describe the variations in the P waves as a function of azimuth from the rupture direction. (Use the waveforms in Figure S11 of \citet{Ammon2005} if your own record section does not match.)
+\item (0.2) Qualitatively describe the variations in the P waves as a function of azimuth from the rupture direction. (Use the waveforms in Figure~S11 of \citet{Ammon2005} if your own record section does not match.)
 \end{enumerate}
 
 %------------
@@ -427,6 +462,8 @@ These figures are generated from {\tt modes\_PREMobs.ipynb}.
 \label{fig:premmodes}
 \end{figure}
 
+\iffalse
+
 % see get_JB_Ptime.m
 \clearpage\pagebreak
 \begin{figure}
@@ -442,6 +479,8 @@ The mean velocity over the epicentral distance range $30^\circ < \Delta_{\rm deg
 }}
 \label{fig:JB}
 \end{figure}
+
+\fi
 
 %\begin{figure}
 %\begin{center}
