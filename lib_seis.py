@@ -180,7 +180,7 @@ def get_dist_az(lat0,lon0,latall,lonall,stlabs):
         dist_deg.append(ddeg)
         
         # display formatted text
-        print('%3i %12s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
+        print('%3i %15s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
         (i+1,stlabs[i],float(latall[i]),float(lonall[i]),ddeg,az))
     
     return dist_deg, azi_deg, dist_km
@@ -625,7 +625,7 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
             station_lats.append(tr.stats.sac['stla'])
             station_lons.append(tr.stats.sac['stlo'])
             station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
-            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.channel}')
+            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.location}.{tr.stats.channel}')
     
     else:
         for i, waveform_id in enumerate(st_subset_list):
