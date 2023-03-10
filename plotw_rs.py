@@ -95,6 +95,9 @@ def plotw_rs(win,elat=[], elon=[], rssort=2, iabs=0, tshift=[], tmark=[], T1=[],
     % Yun Wang 11/2011
     %==========================================================================
     '''
+    
+    print('DeprecationWarning: This function will be removed after Spring 2023')
+    
     start = datetime.now()
     print('--> entering plotw_rs.m')
     

@@ -11,6 +11,9 @@ from os import path
 from lib_seis import wf_fft
 
 def sumatra_loop(w0,fdir,pplot):
+    
+    print('DeprecationWarning: This function will be removed after Spring 2023')
+    
     # sumatra_loop.py
     #
     # Extract the time series for the 2004 Sumatra earthquake that are not

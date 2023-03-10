@@ -278,6 +278,8 @@ def get_JB_Ptime(source_depth_km=0, dist_deg=0):
     load Jeffreys-Bullen table for P
     '''
     
+    print('DeprecationWarning: This function will be removed after Spring 2023')
+    
     h = source_depth_km
     delta = dist_deg
     
@@ -354,6 +356,7 @@ def markp(event):
 # pt coordinates will print to screen
 
 def markp_min(event):
+    print('DeprecationWarning: This function will be removed after Spring 2023')
     print('x=%f, y=%f' % (event.xdata, event.ydata))
     prd=round(1/event.xdata/60, 1)
     axe=event.inaxes
@@ -564,6 +567,8 @@ def station_info_list(st,list_all=True,waveforms_list=[]):
     station_tags = list of station tags (network.station)
     station_tags_full = list of full station tags (network.station.location)
     '''
+    
+    print('DeprecationWarning: This function will be removed after Spring 2023')
     
     station_lats = []
     station_lons = []
