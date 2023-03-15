@@ -268,7 +268,7 @@ See \citet[][p. 106]{SteinWysession} for background.
 %------------------------
 
 \pagebreak
-\section*{Problem 2 (3.5). Directivity II}
+\section*{Problem 2 (3.5). Directivity I}
 
 \begin{enumerate}
 \item (0.0) Examine \tfilehf\ and make sure you understand how to do certain operations for plotting record sections (see also \verb+lab_record_section.pdf+).
@@ -369,13 +369,15 @@ Here you will download a new, small data set; see \tfilelab\ for examples. Choos
 \begin{enumerate}
 \item (0.4) Modify \tfilelf\ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
 
-% XXX PYTHON XXX
-Note: You may find the command \verb+extract+ and \verb+max+ useful for quantifying the amplitude ratio, though quantification is not required. If you do quantify the ratios, use the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave.
+% ZZZ PYTHON ZZZ
+Optional 1: Quantify the amplitude ratios by using the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave. This will require designating time windows for R1 and R2, then calculating the maximum (see \verb+np.extract+ and \verb+np.max+).
+
+Optional 2: Use a larger subset of stations to demonstrate the key point. (What distance range do you want to specify?)
 
 \item (0.3) Explain how the R1/R2 ratio can provide information on directivity.
 
 \item (0.3) Is your rupture direction ($\alpha_0$) different for the high-frequency P wave estimate than it is for the long-period Rayleigh wave estimate. Why might this be the case? \\
-Hint: Think about \refFig{fig:sumatra_chen}.
+Hint: Think about the finite source model shown in \refFig{fig:sumatra_chen}.
 \end{enumerate}
 
 %------------------------
@@ -389,13 +391,18 @@ Here you will download a new, small data set; see \tfilelab\ for examples. Choos
 \begin{enumerate}
 \item (1.0) Modify \tfilenearlf\ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure~S12 of \citet{Ammon2005} for reference and checking.
 
+Note that here we ask for network IC as well, which will provide station IC.LSA.
+
 %Note: Use \verb+cutoff = [];+ and \verb+iint=0+ when calling \verb+getwaveform+; all filtering and integration can be applied within the plotting script (\verb+plotw_rs.m+).
 %
 \begin{enumerate}
 \item (0.4) Include plots of seismograms (or a record section) for raw data.
+
 \item (0.4) Include plots of seismograms (or a record section) for instrument deconvolved.
+
 \item (0.2) How different are the waveform shapes and amplitudes between the raw and instrument-response-deconvolved versions?
-\item (0.0) On the basis of your results, can you infer whether the seismograms in \citet{Ammon2005} were instrument deconvolved or not?
+
+\item (0.0) On the basis of your results (notably the shapes of the filtered waveforms), can you infer whether the seismograms in \citet{Ammon2005} were instrument deconvolved or not?
 \end{enumerate}
 %
 Notes:

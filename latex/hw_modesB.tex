@@ -25,7 +25,7 @@
 \centering
 {\large \bf Problem Set 7: Love waves for a layered Earth\footnote{This problem set was adapted from one by Charles Ammon, Penn State University.} [modesB]} \\
 \cltag\ \\
-Assigned: April 15, \cyear\ --- Due: April 27, \cyear\ \\
+Assigned: March 21, \cyear\ --- Due: March 28, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -33,7 +33,7 @@ Last compiled: \today
 
 \section*{Overview}
 
-This problem set is a direct extension of the problem set ``Toroidal modes of a spherically symmetric earth.'' Here we examine mode solutions for Love waves of a simple model of a layer over a halfspace. The layer represents the crust, the halfspace the upper mantle.\footnote{You might find it easier to think of this as a two-layer model. Technically the crust is the only part has an upper and lower limit, so this is why it is considered the only layer.}
+This problem set is a direct extension of the problem set ``Toroidal modes of a spherically symmetric earth'' (\verb+hw_modesA+). Here we examine mode solutions for Love waves of a simple model of a layer over a halfspace. The layer represents the crust, the halfspace the upper mantle.\footnote{You might find it easier to think of this as a two-layer model. Technically the crust is the only part has an upper and lower limit, so this is why it is considered the only layer.}
 
 \begin{itemize}
 \item Goals:
@@ -280,7 +280,7 @@ Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspa
 
 If the eigenfunction appears jagged, please adjust \verb+max_step+ to improve their accuracy.
 
-Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis();+ to flip the direction of the $y$-axis.
+Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis()+ to flip the direction of the $y$-axis.
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 

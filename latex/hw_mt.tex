@@ -129,13 +129,17 @@ Angle $\phi$ is measured from $\bxh$, and angle $\theta$ is measured from $\bzh$
 
 \item (0.5) Write a function \verb+myrotmat()+ that inputs a rotation angle $\rotangA$ and an index for the axis ($k = 1,2,3$ for $x,y,z$), and then outputs the rotation matrix $\Rmat_k(\rotangA)$. 
 
-List the computer output for $\Rmat_x(60^\circ)$, $\Rmat_y(60^\circ)$, and $\Rmat_z(60^\circ)$.
-
 The top line of your function definition should look like this:
 %
 \begin{verbatim}
 def myrotmat(xdeg, ixyz):
 \end{verbatim}
+
+\begin{enumerate}
+\item (0.2) Show your code.
+
+\item (0.3) List the computer output for $\Rmat_x(60^\circ)$, $\Rmat_y(60^\circ)$, and $\Rmat_z(60^\circ)$.
+\end{enumerate}
 
 \item (1.5) \refFig{fig:rotsub} shows a rotation of $\rotangB = 30^\circ$ about rotation axis $\rotvec$, which points in the direction represented by polar angle $\theta$ and azimuthal angle $\phi$. The six-part ball is used to help you see the rotation. Mathematically the net rotation is $\Umat(\rotvec(\phi,\theta),\rotangB)$. Make sure that \refFig{fig:rotsub} makes sense before proceeding.
 %
@@ -285,7 +289,7 @@ Please note the following:
 \item (0.6) Using your \verb+myrotmat_gen()+ function, compute the vectors $\bKh$, $\bNh$, and $\bSh$ for this example, using the angles listed in \refFig{fig:cmt}.
 %
 \begin{enumerate}
-\item (0.3) Write the vectors in decimal form as a sum of weighted basis vectors: for example, $\bv = (1.45,1.75,-5.32)$ in basis $\{\bih,\bjh,\bkh\}$ is $\rotvec = 1.45\bih + 1.75\bjh - 5.32\bkh$.
+\item (0.3) Write the vectors in decimal form as a sum of weighted basis vectors: for example, $\bv = (1.45,1.75,-5.32)$ in basis $\{\bih,\bjh,\bkh\}$ is $\rotvec = 1.45\bih + 1.75\bjh - 5.32\bkh$. (For your problem, the basis is NOT $\{\bih,\bjh,\bkh\}$.)
 
 \item (0.3) Numerically check the following:
 %
@@ -335,7 +339,7 @@ The columns of $\Umat$ are $\bu_1$, $\bu_2$, and $\bu_3$.
 \begin{enumerate}
 \item (0.1) List $\Umat$.
 \item (0.1) Check that $\Umat$ is an orthogonal matrix.
-\item (0.1) Compute the determinant to check that the basis is also a rotation matrix.
+\item (0.1) Compute the determinant to check that $\Umat$ is also a rotation matrix.
 \item (0.1) Check that $\bu_2$ is in the fault plane and $90^\circ$ from the slip vector.
 % THIS OUGHT TO BE WORTH MORE POINTS
 \item (0.6) Draw three points on the beachball in \refFig{fig:block} that correspond to where the axes $\{\bu_1,\bu_2,\bu_3\}$ pierce the beachball. If needed, explain in words what directions the axes point.
