@@ -146,7 +146,7 @@ def myrotmat(xdeg, ixyz):
 \begin{enumerate}
 \item (0.5) With \refFig{fig:rot} as a guide, describe (in words) the five operations that comprise $\Umat(\rotvec(\phi,\theta),\rotangB)$.
 
-Do not use the words clockwise or counterclockwise.
+Do not use the words clockwise, counterclockwise, positive, or negative.
 
 \item (1.0) Derive an expression for the matrix $\Umat(\rotvec(\phi,\theta),\rotangB)$ that rotates a vector $\br$ about the (Cartesian) input vector $\rotvec$ by angle $\rotangB$; this expression will be in terms of the matrix functions $\Rmat_x(\rotangA)$, $\Rmat_y(\rotangA)$, $\Rmat_z(\rotangA)$, where $\rotangA$ is the rotation angle about the $x$-axis, $y$-axis, or $z$-axis. (No numbers or terms like $\cos\rotangA$ should appear in your answer.)
 
@@ -237,7 +237,7 @@ You should not use any notation such as $\bxh$, $\byh$, or $\bzh$ throughout thi
 
 \item (0.5)
 \begin{enumerate}
-\item (0.2) Sketch your basis vectors on \refFig{fig:block}. ``Your basis'' is $\brh$ (up), $\bthetah$ (south), $\bphih$ (east).
+\item (0.2) Sketch your basis vectors on \refFig{fig:block}; sketch them originating from the same point. ``Your basis'' is $\brh$ (up), $\bthetah$ (south), $\bphih$ (east).
 
 \item (0.3) The coordinates of the west vector are $(0,0,-1)$ in your basis.
 
@@ -348,14 +348,16 @@ The columns of $\Umat$ are $\bu_1$, $\bu_2$, and $\bu_3$.
 
 %-----------
 
-\item (0.0) What are the (unsorted) eigenvalues of any double-couple moment tensor?
+\item (0.0) What are the eigenvalues of any double-couple moment tensor?
 
 %-----------
 
-\item (0.3) Our convention for (eigen)basis $\Umat$ is tied to eigenvalues ordered as $\lambda_1 = 1$, $\lambda_2 = 0$, $\lambda_3 = -1$. Thus, our ``base'' diagonal moment tensor is $\Mmat'$ with diagonal $(1, 0, -1)$.
+\item (0.3) Let $M$ be the moment matrix in the standard basis.
+Let $M'$ be the moment matrix in the eigenbasis; it is a diagonal matrix with $(1, 0, -1)$.
+%Our convention for (eigen)basis $\Umat$ is tied to eigenvalues ordered as $\lambda_1 = 1$, $\lambda_2 = 0$, $\lambda_3 = -1$. Our moment matrix $M'$ is a diagonal matrix with $(1, 0, -1)$.
 %
 \begin{enumerate}
-\item (0.2) Write the equation for $\Mmat$, obtained from $\Mmat'$ via transformation by $\Umat$. \\
+\item (0.2) Write the equation for $\Mmat$, obtained from $\Mmat'$ via transformation by the $\Umat$ that you computed. \\
 Hint: Think eigen-decomposition.
 \item (0.1) List $\Mmat$ in numerical form.
 \end{enumerate}
@@ -364,7 +366,7 @@ Hint: Think eigen-decomposition.
 
 %-----------------------
 
-%\pagebreak
+\pagebreak
 \subsection*{Problem 3 (2.0). From fault parameters to moment tensors, Part II}
 
 \begin{enumerate}
@@ -386,7 +388,7 @@ Hint: Think eigen-decomposition.
 \Mmat \, \bNh &=& \bSh
 \end{eqnarray}
 
-\item (0.5) What is the physical meaning of each of these operations? (Be careful: The ``beachball'' pattern is representative of the P-wave motion only.)
+\item (0.5) What is the physical meaning of each of these operations? Think about P waves and S waves. (Be careful: The ``beachball'' pattern is representative of the P-wave motion only.)
 
 \end{enumerate}
 

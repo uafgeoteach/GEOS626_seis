@@ -346,11 +346,11 @@ What is the qualitative relationship between $l$ and $\fnl$ ($n$ fixed)?
 \item (0.5) Modify your code to compute eigenfrequencies for $n=0$, $l$=2--9. (Continue to use \verb+fmax = 0.08+)
 %
 \begin{enumerate}
-\item (0.3) In \refFig{fig:dots}b, plot (by hand) {\em all} the function evaluations $(l, f)$ that you performed. Put a star on the first $(l,f)$ evaluation and a square on the final $(l,f)$ evaluation.
+\item (0.3) In \refFig{fig:dots}b, plot (by hand) a dot for each function evaluation $(l, f)$ that you performed. (But ignore all the function evaluations that occur within the root-finding procedure.) Put a star on the first $(l,f)$ evaluation and a square on the final $(l,f)$ evaluation.
 
 Hint: What is $f_{\rm min}$?
 
-\item (0.1) List the predicted eigenperiods in \refTab{tab:mode_pred}.
+\item (0.1) List the predicted eigenperiods (not eigenfrequencies) in \refTab{tab:mode_pred} or in your notebook.
 
 \item (0.1) Among the toroidal modes in \refTab{tab:mode_pred}, the gravest mode is \tnl{0}{2} ($n=0$, $l=2$).
 %
@@ -370,7 +370,7 @@ Hint: What is $f_{\rm min}$?
 %
 \begin{enumerate}
 \item (0.1) Include your plot. Label $\Wnl(r)$, $\Tnl(r)$, and the $r$ axis.
-\item (0.3) Compute various wave parameters and list your values in the left half of \refTab{tab:eigfun}.
+\item (0.3) Compute various wave parameters and list your values (with 3 significant digits) in the left half of \refTab{tab:eigfun}.
 \item (0.1) Mark the wavelength $\lambda$ as a distance from the surface.
 \end{enumerate}
 
@@ -428,7 +428,7 @@ Tip: Initialize an $a \times b$ matrix as \verb+Fobs = np.full((a,b),np.nan)+, t
 \section*{Problem 2 (3.0). Changing the earth model}
 
 \begin{enumerate}
-\item (1.5) {\bf Homogeneous earth.} We want to explore how different homogeneous earth models fit the toroidal mode observations. We will assume a fixed value of density ($\rho = 4380$~kg/m$^3$), and only look for different values of shear modulus over the range $\mu = [1.2\times 10^{11},\; 1.9 \times 10^{11}]$ Pa (hint: use a {\tt for} loop). It is best to think of our model vector as $\bem = (\rho, \mu)$.
+\item (1.5) {\bf Homogeneous earth.} We want to explore how different homogeneous earth models fit the toroidal mode observations. We will assume a fixed value of density ($\rho = 4380$~kg/m$^3$), as before, and look for different values of shear modulus over the range $\mu = [1.2\times 10^{11},\; 1.9 \times 10^{11}]$ Pa (hint: use a {\tt for} loop). It is best to think of our model vector generically as $\bem = (\rho, \mu)$ or $\bem = \mu$.
 
 Hint: For this misfit analysis, note that you only have observations up to $n = 3$ (\refTab{tab:modes_obs}).
 %Consider adjusting your limits for root-finding in order to save some time.
@@ -436,7 +436,7 @@ Hint: For this misfit analysis, note that you only have observations up to $n = 
 \begin{enumerate}
 \item (1.0)
 \begin{itemize}
-\item Find a value of $\mu$ that best fits all $N=20$ observed eigenfrequencies.
+\item Find a value of $\mu$ that best fits all $N=20$ observed eigenfrequencies. Trying out 10 or so $\mu$ values should be sufficient.
 \item List the value of $F(\bem)$ (\refeq{Fm}) for the best-fitting $\mu$.
 \item Justify your choice of the new $\mu$, either in words, Python output, or a figure.
 \item Show a dispersion plot as before (use \verb+plt.axis([0, 11, 0, 4])+) that contains all predictions and observations.
@@ -545,7 +545,7 @@ Qualitatively, how do these compare with the predictions for PREM, shown in \ref
 %
 \begin{enumerate}
 \item Repeat Problem 1-\ref{prob:0T40_homo} for \tnl{0}{40} using the cubic model. List your values in \refTab{tab:eigfun}.
-\item How has the cubic model affected the depth sensitivity \tnl{0}{40}, as indicated by the depth of the bulge in $W(r)$?
+\item How has the cubic model affected the depth sensitivity of \tnl{0}{40}, as indicated by the depth of the bulge in $W(r)$?
 \item How has it affected the wavelength of \tnl{0}{40}?
 \end{enumerate}
 
@@ -590,7 +590,7 @@ Hint: For an adequate, crude numerical integration, use the command \verb+np.dif
 
 \label{prob:0T40_cubic_group}
 
-\item (1.0) Show numerically that each of the equations in \refeq{ODEs} is satisfied for \tnl{0}{40}: $_0W_{40}(r)$, $_0T_{40}(r)$, $_0\omega_{40}$.
+\item (1.0) Show numerically that each of the two equations in \refeq{ODEs} is satisfied for \tnl{0}{40}, by using $_0W_{40}(r)$, $_0T_{40}(r)$, and $_0\omega_{40}$. Show your lines of code and demonstrate the agreement, either with numbers or plots.
 
 Notes:
 %

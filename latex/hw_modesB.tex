@@ -17,6 +17,12 @@
 \newcommand{\tfileCC}{{\tt stress\_disp\_love.py}}
 \newcommand{\tfileDD}{{\tt earthfun\_love.py}}
 
+%\newcommand{\rfind}{{\tt fzero}}
+\newcommand{\rfind}{{\tt brentq}}
+%\newcommand{\sfind}{{\tt ode45}}
+\newcommand{\sfind}{{\tt solve\_ivp}}
+
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -94,7 +100,7 @@ k^2 \mu(r)-\omega^2\rho(r) & 0
 \label{rODEs}
 \end{equation}
 %
-To solve \refEq{ODEs} the strategy was to specify $l$, then search over frequencies ($\omega$) and find solutions, indexed by $n$, in the form $_n\omega_l$, $_nW_l(r)$, $_nT_l(r)$. {\bf To solve \refEq{rODEs} the strategy is to specify a frequency $\omega = 2\pi/T$, then search over wavenumber $k$ to find solutions of the form $k_n$, $W_n(r)$, $T_n(r)$.}
+To solve \refEq{ODEs} and the corresponding boundary condition, the strategy was to specify $l$, then search over frequencies ($\omega$) and find solutions, indexed by $n$, in the form $_n\omega_l$, $_nW_l(r)$, $_nT_l(r)$. {\bf To solve \refEq{rODEs} and its corresponding boundary condition, the strategy is to specify a frequency $\omega = 2\pi f$, then search over wavenumber $k$ to find solutions of the form $k_n$, $W_n(r)$, $T_n(r)$.} (For the solution, we have $\omega_n = 2\pi f_n$.)
 
 Here the layer represents the crust, and the halfspace represents the upper mantle.
 
@@ -174,7 +180,7 @@ What is the corresponding range of wavenumbers $k$?
 
 Make sure that the values in each range are ordered such that the mode branches are encountered in increasing order ($n = 0,1,\ldots$).
 
-\item (0.0) Given a period $T = 20$~s ($f = 1/T$), plot and label the following points in \refFig{fig:dots}: $(k_m, f)$, $(k_0, f)$, $(k_c, f)$
+\item (0.0) Given a period $T = 20$~s ($f = 1/T$), plot and label the following points in \refFig{fig:dots}: $(k_m, f)$, $(k_0, f)$, $(k_c, f)$. The notation $k_0$ is $k_n$ for $n=0$: the solution for the fundamental mode branch for a given frequency.
 
 Draw or plot the set of dots representing the $(k_i, f)$ ($i = 1,2,\ldots$) points that represent test eigenfunctions that do not satisfy the boundary conditions. No text labels needed---just dots.
 
@@ -226,7 +232,7 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 \item (4.0) Adapt the four scripts from the modes homework to solve \refEq{rODEs}:
 %
 \begin{itemize}
-\item You will need to copy \tfileA\ to \tfileAA\ and then make significant modifications. 
+\item You will need to make significant modifications to \tfileAA, which is provided as a starting point. (Alternatively, you can use your own notebooks or \tfileA\ as a starting point.)
 %In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
 %(You might even find that starting from scratch is easier.)
 
@@ -276,7 +282,7 @@ Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspa
 
 \end{enumerate}
 
-\item (1.0) Show a plot of the eigenfunctions; draw a line at the base of the layer.
+\item (1.0) Show a plot of the two eigenfunctions; draw a line at the base of the layer. The base code for plotting eigenfunctions can be found in \tfileA\ and needs to be copied and adapted into \tfileAA.
 
 If the eigenfunction appears jagged, please adjust \verb+max_step+ to improve their accuracy.
 
@@ -284,7 +290,7 @@ Suggestion: For plotting purposes only, you may find it simpler to transform you
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
-\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \verb+ode45+ by changing \verb+MAX_STEP+ (in \tfileAA).
+\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \sfind\ by changing \verb+MAX_STEP+ (in \tfileAA).
 
 Show your code and output to demonstrate your findings.
 (Do not show the already-provided code \tfileBB.)
@@ -319,6 +325,7 @@ After you do the check, you can go back to using the default tolerance.
 
 %----------------
 
+\pagebreak
 \item (1.0)
 \begin{enumerate}
 \item (0.8) Loop over a range of frequencies to construct the dispersion plot you sketched in Problem~1-\ref{prob:model1}. Use an equally spaced frequency vector ($\sim$50 values) ranging between periods of 3.0 seconds and 20.0 seconds.
@@ -337,7 +344,7 @@ After you do the check, you can go back to using the default tolerance.
 
 %----------------
 
-\subsection*{Problem 3 (2.0). \ptag\ Textbook results}
+\subsection*{Problem 3 (2.0). \ptag\ Reproducing plots in textbooks}
 
 \begin{enumerate}
 
@@ -352,7 +359,7 @@ After you do the check, you can go back to using the default tolerance.
 \item (0.2) angular frequency (rad/s) vs wavenumber~(1/km)
 \end{itemize}
 
-\item (0.2) Repeat the calculation but now use lower tolerance with the ODE solver (\verb+ode45+); see the previous modes problem set for details.
+\item (0.2) Repeat the calculation but now use lower tolerance with the ODE solver (\sfind); see the previous modes problem set for details.
 %
 \begin{itemize}
 \item Include the plots with your solution.
@@ -445,15 +452,15 @@ Model~3 is from p.~257 of \citet{AkiRichardsE2}.
 \label{tab:models}
 }}
 \begin{spacing}{1.5}
-\begin{tabular}{||l|c|c|c|r|r|r||}
+\begin{tabular}{||l|c|c|c|r|r|l||}
 \hline\hline
-& & name in code & units & Model 1 & Model 2 & Model 3 \\
+& & name in code & Model 1 & Model 2 & Model 3 & units \\
 \hline\hline
-thickness of crust        & $H$       & \verb+cthick+ & km       & 40 & & \\ \hline
-density of crust          & $\rho_c$  & \verb+crho+   & kg/m$^3$ & 2800 & & \\ \hline
-shear wavespeed in crust  & $\beta_c$ & \verb+cbeta+  & m/s      & 3450 & & \\ \hline
-density of mantle         & $\rho_m$  & \verb+mrho+   & kg/m$^3$ & 3300 & & \\ \hline
-shear wavespeed in mantle & $\beta_m$ & \verb+mbeta+  & m/s      & 4600 & & \\
+thickness of crust        & $H$       & \verb+cthick+  & 40   & & & km       \\ \hline
+density of crust          & $\rho_c$  & \verb+crho+    & 2800 & & & kg/m$^3$ \\ \hline
+shear wavespeed in crust  & $\beta_c$ & \verb+cbeta+   & 3450 & & & m/s      \\ \hline
+density of mantle         & $\rho_m$  & \verb+mrho+    & 3300 & & & kg/m$^3$ \\ \hline
+shear wavespeed in mantle & $\beta_m$ & \verb+mbeta+   & 4600 & & & m/s      \\
 \hline\hline
 \end{tabular}
 \end{spacing}

@@ -303,7 +303,7 @@ What is the slope of the acceleration spectrum $A_2(\omega)$ in log-log space?
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 2 (3.5). Deconvolving the instrument response}
 
 Run \tfileresponse.
@@ -318,7 +318,7 @@ Run \tfileresponse.
 \item (0.5) Analyze the raw 9.5-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
 
 \begin{enumerate}
-\item (0.0) What is the duration of the seismogram?
+\item (0.0) What is the duration of the seismogram (in sensible units of time)?
 \item (0.0) What is the time step?
 \item (0.0) What is the Nyquist frequency?
 \item (0.0) Zoom in on the $y$-limits by uncommenting the line \verb+plt.ylim([-3E4, 3E4])+ \\
@@ -335,22 +335,21 @@ Hint: the magnitude is $\mw > 6$.
 \item (0.0) Does this aftershock have the same mechanism as the mainshock?
 \item (0.4) In summary, identify and interpret the main features in the seismogram.
 
-Hint: Aftershocks would be one feature.
+Hint: Aftershocks would be one feature. List three other features.
 \end{enumerate}
 
 %-------------------
 
 \item (1.0) The Fourier tranform is computed for you as \verb+C+.
 \begin{enumerate}
-\item (0.3) Plot the full amplitude spectrum, $|C(\omega)|$.
+\item (0.3) Plot the full amplitude spectrum $|C(\omega)|$.
 %use \verb+plt.axis('tight')+ to see the full limits.
-\item (0.3) Plot $|C(\omega)|$ using log-log scaling (\verb+plt.loglog()+). \\
-Label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
-\item (0.2) Interpret the largest-amplitude spikes in the spectrum.
+\item (0.3) Plot $|C(\omega)|$ using log-log scaling (\verb+plt.loglog()+). Use the full frequency range, and label the frequency window $[0.2,1.0]$~mHz (note mHz, not Hz).
+\item (0.2) Interpret the {\bf two} largest-amplitude spikes in the spectrum.
 
-Tip: Use \verb+markp_minutes+, which is provided as a commented section in
+Tip: Use \verb+markp_minutes+, which is provided as a commented section in 
 
-\tfileresponse, to get the period associated with any peak.
+\tfileresponse\ to get the period associated with any peak.
 
 %See {\tt lab\_fft.ipynb} for reference on how to get the period associated with any peak.
 
@@ -361,24 +360,28 @@ What is the corresponding period?
 
 %-------------------
 
-\item (0.8) Tip: Read \citet{Park2005}.
+\item (1.0) Tip: Read \citet{Park2005}.
 
 \begin{enumerate}
 \item (0.3) Plot the amplitude spectrum (do {\em not} use any log scaling) $|C(\omega)|$ over the frequency window $[0.2,1.0]$~mHz.
 \item (0.2) Label each of the peaks that you see (\eg \snl{0}{2}).
+
+\item (0.2) Describe the origin of the distinct spikes. For now, ignore the fact that the spikes 
+
 \item (0.2) Why are some of the peaks ``split'' but one is not?
+
 \item (0.1) What is the relevance of some of the smallest peaks that you identified?
 \end{enumerate}
 
 %-------------------
 
-\item (0.4) Using the same frequencies that you used to define the full $C(\omega)$, evaluate the instrument response to acceleration, $I_a(\omega)$. Hint: See lab on instrument response.
+\item (0.2) Using the same frequencies that you used to define the full $C(\omega)$, evaluate the instrument response to acceleration, $I_a(\omega)$. Hint: See lab on instrument response.
 
 Plot $I_a(\omega)$ as an amplitude spectrum over the full range of frequencies (not just $[0.2,1.0]$~mHz). Use log-log scaling.
 
 %-------------------
 
-\item (0.4) The raw seismogram is a convolution of the ground acceleration, $x_a(t) = \ddot{x}(t)$, with the instrument response, $i_a(t)$. Written in the time domain and frequency domain, this is:
+\item (0.4) The raw seismogram is a convolution of the ground acceleration $x_a(t) = \ddot{x}(t)$ with the instrument response $i_a(t)$. Written in the time domain and frequency domain, this is:
 %
 \begin{eqnarray}
 x_a(t) * i_a(t) &=& c(t)
@@ -388,8 +391,10 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 
 \begin{enumerate}
 \item (0.3) Deconvolve (or ``remove'') the instrument response from the raw spectral seismogram to obtain the spectral acceleration. Show your lines of code and plot of $|X_a(\omega)|$ on the log-log scale.
-\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz without log scaling, and compare it with $|C(\omega)|$. What is the effect of the deconvolution on the relative amplitudes of the peaks?
+\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz without log scaling. Comparing the shapes of $|X_a(\omega)|$ and $|C(\omega)|$, what is the effect of the deconvolution on the relative amplitudes of the peaks?
 \end{enumerate}
+%
+For both plots, adjust the $y$-axis limits so that you can see the details of the majority of the spectrum.
 
 %-------------------
 
@@ -404,7 +409,7 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \section*{Problem 3 (2.0). Spectral analysis of noise}
 
 Run \tfilenoise. This will generate a time series at CAN for 9~days prior to the Sumatra earthquake.
@@ -425,13 +430,13 @@ Tip: divide the array \verb+times+ by 3600 to plot in hours.
 \begin{enumerate}
 \item (1.0) Now, following the procedure in Problem~2, deconvolve the instrument response from your earthquake-free time series. (Use the same scaling and x-limits as before.)
 
-Tip: If you want a smoother spectral curve, try something like
-
-\noindent
-\verb+Xabs_smooth = 10**smooth(np.log10(Xabs),999)+
-
-\noindent
-where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
+%Tip: If you want a smoother spectral curve, try something like
+%
+%\noindent
+%\verb+Xabs_smooth = 10**smooth(np.log10(Xabs),999)+
+%
+%\noindent
+%where \verb+Xabs+ is the amplitude spectrum $|X_a(\omega)|$.
 
 \item (0.2) On your plot, mark the ocean microseismic period ranges \trange{5}{8} and \trange{10}{16} that are mentioned in \citet[][Section 11.2]{ShearerE2}.
 
@@ -473,6 +478,9 @@ In your 4-hour spectrum can you identify any of the normal modes in the range $[
 %
 \begin{enumerate}
 \item (0.7) Using Supplemental Figure S11 of \citet{Ammon2005} as a guide, extract ``the'' P-wave and include a plot of the time series. About how long is the P wave signal?
+
+Be sure to include 50~s or so of noise prior to your signal, to demonstrate that you are capturing the start of the P wave.
+
 \item (0.4) Plot the amplitude spectrum of the P wave on a log-log plot with frequency ranging from $10^{-3}$~Hz to $10^1$~Hz. (Make sure you are working with the BHZ data.)
 
 % INSTRUCTOR NOTE: the template grabs all three components, which is useful fort hinking about rupture time comapred with S-P time (for the onset wave)
