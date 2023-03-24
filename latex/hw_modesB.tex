@@ -5,23 +5,15 @@
 
 %\renewcommand{\baselinestretch}{1.1}
 
-\newcommand{\cutoff}[1]{{#1}_{x\bar{n}}}
+\newcommand{\tfilemain}{{\tt hwsol\_modesA.ipynb}}
+\newcommand{\tfiless}{{\tt surf\_stress.py}}
+\newcommand{\tfilesdt}{{\tt stress\_disp\_tor.py}}
+\newcommand{\tfileef}{{\tt earthfun.py}}
 
-\newcommand{\tfileA}{{\tt hw\_modesA.ipynb}}
-\newcommand{\tfileB}{{\tt surf\_stress.py}}
-\newcommand{\tfileC}{{\tt stress\_disp\_tor.py}}
-\newcommand{\tfileD}{{\tt earthfun.py}}
-
-\newcommand{\tfileAA}{{\tt hw\_modesB.ipynb}}
-\newcommand{\tfileBB}{{\tt surf\_stress\_love.py}}
-\newcommand{\tfileCC}{{\tt stress\_disp\_love.py}}
-\newcommand{\tfileDD}{{\tt earthfun\_love.py}}
-
-%\newcommand{\rfind}{{\tt fzero}}
-\newcommand{\rfind}{{\tt brentq}}
-%\newcommand{\sfind}{{\tt ode45}}
-\newcommand{\sfind}{{\tt solve\_ivp}}
-
+\newcommand{\tfilemainB}{{\tt hw\_modesB.ipynb}}
+\newcommand{\tfilessB}{{\tt surf\_stress\_love.py}}
+\newcommand{\tfilesdtB}{{\tt stress\_disp\_love.py}}
+\newcommand{\tfileefB}{{\tt earthfun\_love.py}}
 
 %--------------------------------------------------------------
 \begin{document}
@@ -29,7 +21,7 @@
 
 \begin{spacing}{1.2}
 \centering
-{\large \bf Problem Set 7: Love waves for a layered Earth\footnote{This problem set was adapted from one by Charles Ammon, Penn State University.} [modesB]} \\
+{\large \bf Problem Set 7: Love waves for a layered Earth [modesB]} \\
 \cltag\ \\
 Assigned: March 21, \cyear\ --- Due: March 28, \cyear\ \\
 Last compiled: \today
@@ -112,7 +104,7 @@ Here the layer represents the crust, and the halfspace represents the upper mant
 
 \begin{enumerate}
 
-\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \tfileBB; just write down the analogous boundary conditions to those from the toroidal shell problem.
+\item (0.3) Write down the two equations represented by \refEq{rODEs} and the boundary conditions; show explicit $r$ dependence and $n$ dependence (\eg $\omega_n$). For the boundary conditions, do not look at \tfilessB; just write down the analogous boundary conditions to those from the toroidal shell problem.
 
 %----------------
 
@@ -143,7 +135,7 @@ where $\beta_c$ is the crustal velocity, $\beta_m$ is the mantle velocity, and $
 \end{itemize}
 %
 
-Consider a model with the following properties for the crust (subscript~$c$) and upper mantle (subscript~$m$):
+Consider a model with the following properties for the crust (subscript~$c$) and upper mantle (subscript~$m$)\footnote{Thie is Model~1 from \refTab{tab:models}.}:
 %
 \begin{eqnarray*}
 H &=& 40\;{\rm km}
@@ -180,7 +172,7 @@ What is the corresponding range of wavenumbers $k$?
 
 Make sure that the values in each range are ordered such that the mode branches are encountered in increasing order ($n = 0,1,\ldots$).
 
-\item (0.0) Given a period $T = 20$~s ($f = 1/T$), plot and label the following points in \refFig{fig:dots}: $(k_m, f)$, $(k_0, f)$, $(k_c, f)$. The notation $k_0$ is $k_n$ for $n=0$: the solution for the fundamental mode branch for a given frequency.
+\item (0.0) Given a period $T = 20$~s ($f = 1/T$), calculate $k_m$ and $k_c$, then plot and label the following points in \refFig{fig:dots}: $(k_m, f)$, $(k_0, f)$, $(k_c, f)$. The notation $k_0$ is $k_n$ for $n=0$: the solution for the fundamental mode branch for a given frequency.
 
 Draw or plot the set of dots representing the $(k_i, f)$ ($i = 1,2,\ldots$) points that represent test eigenfunctions that do not satisfy the boundary conditions. No text labels needed---just dots.
 
@@ -207,7 +199,7 @@ In order to avoid numerical overflow during integration, we will use a coordinat
 %\pagebreak
 \subsection*{Problem 2 (6.0). Implementation}
 
-The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \tfileBB\ with the initial conditions
+The boundary conditions for this problem are similar to those used in the toroidal modes problem. The shear stress is zero at the surface and zero at some depth in the mantle, far below the main sensitivity depths of the waves of interest. This is implemented in \tfilessB\ with the initial conditions
 %
 \begin{eqnarray}
 W(r_b) &=& 1.0
@@ -232,7 +224,7 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 \item (4.0) Adapt the four scripts from the modes homework to solve \refEq{rODEs}:
 %
 \begin{itemize}
-\item You will need to make significant modifications to \tfileAA, which is provided as a starting point. (Alternatively, you can use your own notebooks or \tfileA\ as a starting point.)
+\item You will need to make significant modifications to \tfilemainB, which is provided as a starting point. (Alternatively, you can use your own notebooks or \tfilemain\ as a starting point.)
 %In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
 %(You might even find that starting from scratch is easier.)
 
@@ -243,24 +235,22 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 %cthick mmu mrho crho cmu mbeta
 %\end{verbatim}
 %
-Note that \verb+rvec+ and \verb+WT+ are defined in \tfileBB, not \tfileAA.
+Note that \verb+rvec+ and \verb+WT+ are defined in \tfilessB, not \tfilemainB.
 
 One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$.
 %\item One of the key parts of the code involves selecting the range of $k$ when searching for the roots $k_n$. Furthermore, consider the order in which $k_n$ are computed in your search.
 Your answers in Problem~1-\ref{prob:model1} should be helpful here.
 Use the Python command \verb+np.linspace()+ to generate a vector \verb+kvec+ containing \verb+numk+ values (try \verb+numk=100+).
 
+\item You will need to adapt \tfileefB\ to return the values $\rho(r)$ and $\mu(r)$ for a given $r$.
+
 % the only changes needed will be for the ode45 solver
-\item I have provided \tfileBB\ as a replacement for \tfileB.
+\item I have provided \tfilessB\ as a replacement for \tfiless.
 
-\item You will need to adapt \tfileC\ (\refeq{ODEs}) to be \tfileCC\ (\refeq{rODEs}).
+\item You will need to adapt \tfilesdt\ (\refeq{ODEs}) to be \tfilesdtB\ (\refeq{rODEs}).
 
-Hint: What arguments related to \tfileD\ were needed in \tfileC? What arguments related to \tfileDD\ are needed in \tfileCC?
+Hint: What arguments related to \tfileef\ were needed in \tfiless? What arguments related to \tfileefB\ are needed in \tfilesdtB?
 %Hint: You will want to update (only) two global variables, \verb+omega+ and \verb+k+.
-
-\item You will need to adapt \tfileDD\ to return $\rho(r)$ and $\mu(r)$.
-
-%Note: \verb+imod+ is not needed, as before.
 
 \end{itemize}
 
@@ -274,30 +264,32 @@ Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspa
 \item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$~s.
 
 \begin{enumerate}
-\item (0.5) Check that your root is $k_0 = 8.52 \times 10^{-5}$~1/m and list the line in your Python script that solved for $k_0$.
+\item (0.5) Check that your root is $k_0 = 8.52 \times 10^{-5}$~1/m (Note \footnote{If your value does not round to the one listed, what might you consider changing?}) and list the line in your Python script that solved for $k_0$.
 
-\item (0.5) Show your code for \tfileCC\ and \tfileDD.
+\item (0.5) Show your code for \tfilesdtB\ and \tfileefB.
 
 \item (0.5) In $<5$ sentences, explain how your code finds $k_0$.
 
 \end{enumerate}
 
-\item (1.0) Show a plot of the two eigenfunctions; draw a line at the base of the layer. The base code for plotting eigenfunctions can be found in \tfileA\ and needs to be copied and adapted into \tfileAA.
+\item (1.0) Show a plot of the two eigenfunctions; draw a line at the base of the layer. The base code for plotting eigenfunctions can be found in \tfilemain\ and needs to be copied and adapted into \tfilemainB.
 
-If the eigenfunction appears jagged, please adjust \verb+max_step+ to improve their accuracy.
+If the eigenfunction appears jagged, please adjust \maxstep\ to improve their accuracy.
 
 Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis()+ to flip the direction of the $y$-axis.
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
-\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see modes homework solutions). You should get much better agreement if you lower the tolerance levels for \sfind\ by changing \verb+MAX_STEP+ (in \tfileAA).
+\item (1.0) Check the system of equations (\refeq{rODEs}) for this solution (see \tfilemainB). You should get much better agreement if you lower the tolerance levels for \sfind\ by changing \maxstep\ (in \tfilemainB).
 
 Show your code and output to demonstrate your findings.
-(Do not show the already-provided code \tfileBB.)
+(Do not show the already-provided code \tfilessB.)
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
 After you do the check, you can go back to using the default tolerance.
+% NOTE: By ``default,'' we mean the one listed in hw_modesB.ipynb
+% But there is an actual default listed in surf_stress_love.py: max_step=5e3
 \end{enumerate}
 
 %----------------
@@ -306,6 +298,7 @@ After you do the check, you can go back to using the default tolerance.
 
 \begin{enumerate}
 \item (0.2) Include plots for all eigenfunctions.
+
 \item (0.2) List values in \refTab{tab:k0}.
 \end{enumerate}
 
