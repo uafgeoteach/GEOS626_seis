@@ -11,6 +11,7 @@ import scipy.io
 
 from itertools import product, combinations
 from obspy.geodetics import gps2dist_azimuth
+from obspy.core import UTCDateTime
 from scipy.interpolate import interp2d
 
 ############################################################
@@ -620,6 +621,8 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
     event_lon         = event longitude in degrees
     '''
     
+    print('DeprecationWarning: This function will be removed after Spring 2023')
+    
     station_lats = []
     station_lons = []
     station_tags = []
@@ -655,6 +658,71 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
     distance_deg, azimuth_deg, distance_km = get_dist_az(event_lat,event_lon,station_lats,station_lons,station_tags_full)
     
     return
+
+############################################################
+
+def station_map_and_table_beta(st,st_subset_list=[],event_lat=0,event_lon=0):
+    
+    '''
+    function to plot a source station map and a table with station distances and azimuth for
+    a selected set of stations
+    
+    input arguments -
+    
+    st [obspy stream] = obspy stream object containing all waveforms with header information
+    
+    st_subset [list]  = list of a subset of waveform IDs in st to be used
+    
+    event_lat [float] = event latitude in degrees
+    
+    event_lon [float] = event longitude in degrees
+    '''
+    
+    station_lats = []
+    station_lons = []
+    station_tags = []
+    station_tags_full = []
+
+    if not bool(st_subset_list):
+        for tr in st:
+            station_lats.append(tr.stats.sac['stla'])
+            station_lons.append(tr.stats.sac['stlo'])
+            station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
+            station_tags_full.append(tr.id)
+    
+    else:
+        for waveform_id in st_subset_list:
+            try:
+                tr = st.select(id=waveform_id)
+                station_lats.append(tr[0].stats.sac['stla'])
+                station_lons.append(tr[0].stats.sac['stlo'])
+                station_tags.append(f'{tr[0].stats.network}.{tr[0].stats.station}')
+                station_tags_full.append(tr[0].id)
+            except:    
+                print(f'ERROR: {waveform_id} entry in your subset does not exist in the provided stream dataset')
+                raise
+    
+    print('\nSource receiver map') 
+    
+    plot_event_station(event_lat,event_lon,slat=station_lats,slon=station_lons,stas=station_tags)
+    
+    print('\nTable of station azimuths and distances\n')
+    
+    distance_deg, azimuth_deg, distance_km = get_dist_az(event_lat,event_lon,station_lats,station_lons,station_tags_full)
+    
+    return
+
+############################################################
+
+def sumatra_event():
+
+    event_sumatra = dict( origin_time      = UTCDateTime('2004,12,26,00,58,53'),
+                          event_latitude   = 3.09,
+                          event_longitude  = 94.26,
+                          event_depth_km   = 30,
+                          event_magnitude  = 9.1 )
+    
+    return event_sumatra
 
 ############################################################
 
