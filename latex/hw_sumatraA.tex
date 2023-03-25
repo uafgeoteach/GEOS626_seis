@@ -315,7 +315,7 @@ Run \tfileresponse.
 
 %Note: Make sure that you run this from your \verb+seismo+ directory, since the file will be saved there.
 
-\item (0.5) Analyze the raw 9.5-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
+\item (0.5) Analyze the raw 10-day time series of the Sumatra earthquake recorded at station CAN (Canberra, Australia), which is shown in \refFig{fig:seis}. We will use the notation $c(t)$ ($c$ is ``counts'') to represent the time series.
 
 \begin{enumerate}
 \item (0.0) What is the duration of the seismogram (in sensible units of time)?
@@ -412,7 +412,7 @@ For both plots, adjust the $y$-axis limits so that you can see the details of th
 %\pagebreak
 \section*{Problem 3 (2.0). Spectral analysis of noise}
 
-Run \tfilenoise. This will generate a time series at CAN for 9~days prior to the Sumatra earthquake.
+Run \tfilenoise. This will generate a time series at CAN for 10~days prior to the Sumatra earthquake.
 
 \begin{enumerate}
 \item (0.2) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
@@ -460,7 +460,7 @@ For this problem we can analyze the raw records, since we are interested here in
 \begin{enumerate}
 \item (1.5) {\bf Direct arrival}. 
 Start with the template \tfiledirect\ (this is very similar to \tfileresponse).
-Analyze the direct arrival by extracting (use \verb+st.trim(starttime,endtime)+) 1 hour before the origin time to 3 hours after, where the origin time is given by \verb+origintime+.
+Analyze the direct arrival by extracting (use \verb+st.trim(starttime,endtime)+) 1 hour before the origin time to 3 hours after, where the origin time is given by \verb+event['origin_time']+.
 
 \begin{enumerate}
 \item (0.0) Make sure you are looking at a 4-hour time series before proceeding.
