@@ -730,6 +730,8 @@ def sumatra_waveform_screening(channel):
 
     if channel == 'LHZ':
         
+        #
+        
         waveforms_to_reject = ['G.PEL..LHZ'    ,'II.DGAR.00.LHZ','II.HOPE.00.LHZ','II.PALK.00.LHZ','II.SHEL.00.LHZ',
                                'IU.ADK.00.LHZ' ,'IU.DAV.00.LHZ' ,'IU.FUNA.00.LHZ','IU.FUNA.10.LHZ','IU.GRFO..LHZ'  ,
                                'IU.LCO..LHZ'   ,'IU.MBWA.00.LHZ','IU.OTAV.00.LHZ','IU.OTAV.10.LHZ','IU.PMG.00.LHZ' ,
@@ -737,42 +739,36 @@ def sumatra_waveform_screening(channel):
                                'IU.SAML.00.LHZ','IU.SAML.10.LHZ','IU.SDV.00.LHZ' ,'IU.SDV.10.LHZ' ,'IU.TRIS.00.LHZ',
                                'IU.TRIS.10.LHZ','IU.WAKE.00.LHZ','IU.XMAS.00.LHZ']
         
-        # waveforms to trim have also been added to the list of waveforms to reject
-        # and the trim details have been archived here for future reference
         
-        #                                     ID | starttime | endtime
+        # waveforms with trim details have been archived here for future reference
+        # these waveforms can potentially be used after trimming
         
-        waveforms_to_trim   = [ ['IU.QSPA.20.LHZ', 0       , 4.4800e5],
-                                ['II.ABKT.00.LHZ', 0       , 6.7410e5],
-                                ['G.ATD..LHZ'    , 0       , 2.8400e5],
-                                ['IU.BILL.00.LHZ', 0       , 4.3050e5],
-                                ['II.BORG.00.LHZ', 0       , 3.1700e5],
-                                ['II.BORG.10.LHZ', 0       , 3.1700e5],
-                                ['IU.CHTO.00.LHZ', 0       , 3.6270e5],
-                                ['II.EFI.00.LHZ' , 0       , 2.7500e5],
-                                ['IU.GUMO.10.LHZ', 0       , 1.7980e5],
-                                ['IU.HRV..LHZ'   , 0       , 4.5800e5],
-                                ['IU.MIDW.00.LHZ', 0.7500e4, 9.0720e5],
-                                ['II.PFO.00.LHZ' , 0       , 3.3205e5],
-                                ['II.PFO.10.LHZ' , 0       , 3.3205e5],
-                                ['G.SCZ..LHZ'    , 0       , 1.9300e5],
-                                ['G.TAM..LHZ'    , 0       , 5.5800e5],
-                                ['IU.TIXI.00.LHZ', 0       , 6.6150e5],
-                                ['G.WUS.00.LHZ'  , 0       , 5.8200e5]  ]
+        #                         ID | trim_starttime | trim_endtime
         
-        waveforms = []
-        
-        for i, wtt in enumerate(waveforms_to_trim):
-            waveforms.append(wtt[0])
-        
-        waveforms_to_reject = waveforms_to_reject + waveforms
+        waveforms_to_trim   = [ ['IU.QSPA.20.LHZ', 0       , 4.4800E5],
+                                ['II.ABKT.00.LHZ', 0       , 6.7410E5],
+                                ['G.ATD..LHZ'    , 0       , 2.8400E5],
+                                ['IU.BILL.00.LHZ', 0       , 4.3050E5],
+                                ['II.BORG.00.LHZ', 0       , 3.1700E5],
+                                ['II.BORG.10.LHZ', 0       , 3.1700E5],
+                                ['IU.CHTO.00.LHZ', 0       , 3.6270E5],
+                                ['II.EFI.00.LHZ' , 0       , 2.7500E5],
+                                ['IU.GUMO.10.LHZ', 0       , 1.7980E5],
+                                ['IU.HRV..LHZ'   , 0       , 4.5800E5],
+                                ['IU.MIDW.00.LHZ', 0.7500E4, 9.0720E5],
+                                ['II.PFO.00.LHZ' , 0       , 3.3205E5],
+                                ['II.PFO.10.LHZ' , 0       , 3.3205E5],
+                                ['G.SCZ..LHZ'    , 0       , 1.9300E5],
+                                ['G.TAM..LHZ'    , 0       , 5.5800E5],
+                                ['IU.TIXI.00.LHZ', 0       , 6.6150E5],
+                                ['G.WUS.00.LHZ'  , 0       , 5.8200E5]  ]
    
     elif channel == 'BHZ':
         
         waveforms_to_reject = []
         waveforms_to_trim   = [[]]
     
-    return waveforms_to_reject
+    return waveforms_to_reject, waveforms_to_trim
 
 ############################################################
 
