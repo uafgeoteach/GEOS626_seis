@@ -14,7 +14,31 @@ git clone --depth=1 https://github.com/uafgeoteach/GEOS626_seis.git
 ---
 A `.yml` file (see setup/ folder) lists dependencies. This file, executed within conda or docker, enables a user to establish the software tools needed to execute the iPython notebooks. (A dockerfile is also provided in setup/)
 
-### How to Run Using Docker
+### How to run using Conda
+---
+
+- install conda (miniconda or anaconda, former recommended) if not done already
+- navigate to the setup folder
+  ```bash
+  cd GEOS626_seis/setup
+  ```
+- setup the conda environment
+  ```bash
+  conda env create -f seismo.yml
+  ```
+- activate the conda environment once the setup is complete
+  ```bash
+  conda activate seismo
+  ```
+- navigate back to the root of repository and launch jupyter
+  ```bash
+  cd ..
+  jupyter notebook
+  ```
+- browse and run notebooks as desired
+
+
+### How to run using Docker
 ---
 
 First, go into setup directory by using following command:
