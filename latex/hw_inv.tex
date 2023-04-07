@@ -5,6 +5,8 @@
 
 \renewcommand{\baselinestretch}{1.1}
 
+\newcommand{\tfile}{{\tt hw\_inv.ipynb}}
+
 %--------------------------------------------------------------
 \begin{document}
 %-------------------------------------------------------------
@@ -13,7 +15,7 @@
 \centering
 {\large \bf Problem Set 8: Forward problems and inverse problems [inv]} \\
 \cltag\ \\
-Assigned: March 23, \cyear\ --- Due: March 30, \cyear\ \\
+Assigned: March 28, \cyear\ --- Due: April 4, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -35,8 +37,6 @@ Last compiled: \today
 %\item A PDF of \citet{PREM} is available on the course website on Blackboard.
 
 \item Notation (see \verb+notes_taylor.pdf+): $\ndata$ is number of data, $\nparm$ is the number of (unknown) model parameters.
-
-\item Before you start, make sure you have done the lab exercise associated with \verb+lab_linefit.ipynb+
 
 \end{itemize}
 
@@ -165,6 +165,8 @@ where $N$ is the number of layers in PREM, $r_0 = 0$, $r_N = D$, $a_{ik}$ repres
 %\pagebreak
 \subsection*{Problem 2 (2.0). Forward problem: Generating an ellipse described by $\bem$}
 
+Before you start this problem, make sure you have done the lab exercise associated with \verb+lab_linefit.ipynb+
+
 In class we discussed the least-squares method and showed how to construct a solution for fitting a line to scattered data, which required a  two-parameter model ($y$-intercept and slope). Here the task is to compute a best-fitting ellipse for a set of data. We start by making a {\bf plotting tool} for ellipses.
 
 An equation for an ellipse centered at $(0,0)$ is given by
@@ -177,19 +179,19 @@ ax^2 + bxy + cy^2 = 1
 The variables $a$, $b$, and $c$ are the unknowns that we want to determine by using a least-squares method in Problem~3.
 
 \begin{enumerate}
-\item (1.0) {\bf (no coding)} Determine a ``forward function'' for a model $\bem = (a,\,b,\,c)$ that inputs a polar angle $\theta_i$ and outputs the point $(x_i,\,y_i)$ on the ellipse described by $\bem$ (\refeq{ellipse}). This function can be thought of as
+\item (1.0) {\bf (no coding)} Determine a ``forward function'' that inputs a model $\bem = (a,\,b,\,c)$ and outputs a set of points $(x_i,\,y_i)$ on the ellipse described by $\bem$ (\refeq{ellipse}). This function can be thought of as
 %
 \begin{equation}
-f(\bem,\,\theta_i) = (x_i,\,y_i).
+f(\bem) = (x_i,\,y_i).
 \end{equation}
 %
 List the expressions for $x_i$ and $y_i$ in terms of $a$, $b$, $c$, and $\theta_i$.
 
-\item (1.0) Now assume an input set of $\ndata$ polar angles, $\btheta = (\theta_1, \theta_2, \ldots, \theta_{\ndata})$, and you want to determine the corresponding output $(x,y)$-points describing the ellipse.
+\item (1.0) Now code up your function.
+%Now assume an input set of $\ndata$ polar angles, $\btheta = (\theta_1, \theta_2, \ldots, \theta_{\ndata})$, and you want to determine the corresponding output $(x,y)$-points describing the ellipse.
+Inside the template notebook \tfile, write a Python function \verb+[x,y] = get_ellipse_points(m)+ that returns the \verb+x+ and \verb+y+ values that define the ellipse. Plot the result for the model $\bem = (0.1,\,0.3,\,0.5)$. Use the command \verb+plt.axis([-5, 5, -5, 5])+ for your plot.
 
-Write a Python function \verb+getellipse(m,theta)+ that returns \verb+x+ and \verb+y+ values (include your code) that generates the proper output. Plot the result for the model $\bem = (0.1,\,0.3,\,0.5)$ using input \makebox{angles $\btheta = (0, \ldots, 2\pi)$}. Use the command \verb+plt.axis([-5, 5, -5, 5])+ for your plot.
-
-Hint: For $\ndata$ linearly spaced angles, use \verb+theta = np.linspace(0,2*np.pi,ndata)+.
+Hint: For a set of $\ndata$ linearly spaced angles, use \verb+theta = np.linspace(0,2*np.pi,ndata)+.
 
 \end{enumerate}
 
@@ -199,7 +201,6 @@ Hint: For $\ndata$ linearly spaced angles, use \verb+theta = np.linspace(0,2*np.
 \subsection*{Problem 3 (4.0). Inverse problem: fitting an ellipse to a set of data}
 
 From Problem 2, you should now have a plotting tool for an arbitrary ellipse model $\bem$.
-For this problem, you do not need the parameter $\theta$.
 
 \begin{enumerate}
 \item (0.5) 

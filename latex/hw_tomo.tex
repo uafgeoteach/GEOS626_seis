@@ -16,7 +16,7 @@
 \centering
 {\large \bf Problem Set 9: Seismic tomography using ray theory [tomo]} \\
 \cltag\ \\
-Assigned: March 30, \cyear\ --- Due: April 6, \cyear\ \\
+Assigned: April 4, \cyear\ --- Due: April 13, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -55,6 +55,7 @@ The data files you need are in the directory \verb+data/+. \\
 
 %------------------------
 
+%\pagebreak
 \subsection*{Problem 1 (4.0). Constructing the matrix of partial derivatives.}
 
 \begin{enumerate}
@@ -80,16 +81,18 @@ Do the lab exercise in \verb+lab_tomo.pdf+.
 The ray theory traveltime perturbation for the $i$th source--receiver combination is given by
 %
 \begin{equation}
-\delta T_i = -\int_{\mathrm{ray}_i} c^{-1}\,\delta\ln c\;\rmd s,
+\delta T_i = -\int_{\mathrm{ray}_i} c_0(\bx)^{-1}\,\delta\ln c(\bx)\;\rmd\bx,
 \label{ray_tomography}
 \end{equation}
 %
-where $\rmd s$ denotes a segment of the $i$th ray.
+where $c_0(\bx)$ is the reference model and $\rmd \bx$ denotes a segment of the $i$th ray.
 
 \begin{enumerate}
-\item (0.8) Assume a homogeneous reference model with $c_0$ everywhere.
+\item (0.5) Assume a homogeneous reference model: $c_0(\bx) = c_0$.
 
-Show how \refEq{ray_tomography} leads to 
+Using \refEqii{dlnv}{ray_tomography}, write an expression for $\delta T_i$ that has the index notation form of matrix-vector multiplication.
+
+\item (0.5) Show how \refEq{ray_tomography} can be expressed as
 %
 \begin{equation}
 \bdelta\bd = \bG\,\bdelta\bem,
@@ -111,23 +114,26 @@ and the model vector is given by
 %
 Write your final equation in matrix-vector schematic form, as done in \verb+lab_linefit+ (line) and \verb+hw_inv+ (ellipse).
 
-\item (0.2) Write the expression for the $G_{ik}$ entry of the partial derivatives matrix~$\bG$.
+Write the expression for the $G_{ik}$ entry of the partial derivatives matrix~$\bG$.
 \end{enumerate}
 
 %-----------------
 
+%\pagebreak
 \item (0.0) Run \tfileGik\ and identify the dimensions of the variables.
 
 %-----------------
 
-\item (3.0) {\em Compute an entry of the partial derivatives matrix}. \\
+\item (2.0) {\em Compute an entry $G_{ik}$ of the partial derivatives matrix}. 
+
 Modify \tfileGik\ to compute the $\ndata \times \nparm$ (ndata $\times$ nparm) partial derivatives matrix~$\bG$.
 Take into account the following details:
 %
 \begin{itemize}
 \item Assume a homogeneous reference phase speed model with $c_0 = 3500$~m/s.
 
-\item Because the reference model is homogeneous, the ray paths are simply great circles.  Use the pre-defined function \verb+geoid_linspace+ to compute the ray paths, and use 1000 segments or so to effectively describe the ray path (\verb+numpts+). The function \verb+arcdist+ will compute the great-circle distance (in degrees) between two points on a sphere.
+\item Because the reference model is homogeneous, the ray paths are simply great circles.  Use the pre-defined function \verb+geoid_linspace()+ to compute the ray paths, and use 1000 segments or so to effectively describe the ray path (\verb+numpts+).
+%The function \verb+arcdist+ will compute the great-circle distance (in degrees) between two points on a sphere.
 
 \item Each measurement involves a single source--receiver pair. Use the source--receiver ordering provided in \tfileGik\ (see also \refFig{fig:geometry}b), which is
 %
@@ -137,20 +143,33 @@ i = (isrc-1)*nrec + irec
 %
 Here index $i$ is the row index (or measurement index; $i = 1,\ldots,\ndata$) for $\bG$, \verb+isrc+ is the source index ($1, \ldots, N_{\rm src}$), and \verb+irec+ is the receiver index ($1, \ldots, N_{\rm rec}$). For example, row $i=3293$ of $\bG$ (and $\bdelta\bd$) corresponds to the pairing of source 25 with receiver 125: $i=(25-1)132 + 125$.
 
-\item Use $\nparm=286$ spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
-
-\item When properly coded, it should take $<$0.1~s to compute a row of $\bG$ and therefore about 3~minutes to compute the entire matrix. Make sure that your code is reasonably fast (though getting the right answer is most important).
+\item Use spherical spline basis functions of order $q=8$; the center-points are in the data file \verb+con_lonlat_q08.dat+.
 
 \end{itemize}
 
 \begin{enumerate}
 \item (0.2) What are the units for $\delta d_i$, $\delta m_k$, and $G_{ik}$?
 
-\item (2.4) Check that the value of $G_{ik}$ with $i=126$ and $k=204$ is $-10.3747$. \\ Show your code for calculating $G_{ik}$ and also your numerical output value.
+\item (1.8) Calculate $G_{ik}$ with $i=126$ and $k=204$, and check that it is $-10.3747$. \\ Show your code for calculating $G_{ik}$ and also your numerical output value.
 
 Note: Based on the indexing above, the $i=126$ measurement corresponds to the ray path between the \verb+isrc=1+ source and the \verb+irec=126+ receiver.
 
 Note: Python is 0-indexed, so the $i$th row in the $\bG$ array will be accessed using $i-1$, and the $k$th column in the $\bG$ array will be accessed using $k-1$.
+
+\end{enumerate}
+
+%-----------------
+
+\item (1.0) {\em Compute the $\ndata \times \nparm$ partial derivatives matrix $\bG$}.
+
+\begin{itemize}
+\item Use all $\ndata=3300$ measurements and $\nparm=286$ spherical spline basis functions.
+
+\item When properly coded, it should take $<$0.1~s to compute a row of $\bG$ and therefore about 3~minutes to compute the entire matrix. Make sure that your code is reasonably fast (though getting the right answer is most important).
+\end{itemize}
+
+\begin{enumerate}
+\item (0.6) Show your code. Show that the $(i,k)$ entry of $\bG$ matches the value you obtained previously.
 
 \item (0.2) What does each row of $\bG$ correspond to?
 
@@ -175,7 +194,7 @@ Gik = np.load('./Gik.npy')   % will load the file Gik.mat with the one variable 
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \subsection*{Problem 2 (4.2). Solving for the unknown wavespeed structure.}
 
 Instructions:
@@ -191,7 +210,7 @@ Instructions:
 \begin{enumerate}
 \item (0.5)
 \begin{enumerate}
-\item (0.1) Write the symbolic expression for the solution $\bem$ to the least squares problem $\bG\bdelta\bem=\bdelta\bd$ in the case where $\bG^T\bG$ is full rank.
+\item (0.1) Write the symbolic expression for the solution $\bdelta\bem$ to the least squares problem $\bG\bdelta\bem=\bdelta\bd$ in the case where $\bG^T\bG$ is full rank.
 
 \item (0.4) List the dimensions and units of $\bdelta\bem$, $\bdelta\bd$, $\bG$, $\bG^T\bG$, and $\bG^T\bdelta\bd$.
 \end{enumerate}
@@ -235,6 +254,7 @@ I recommend transforming the quantities by $\log_{10}$, then using the \verb+plo
 
 %------------
 
+\pagebreak
 \item (1.0) 
 
 \begin{enumerate}
@@ -275,7 +295,7 @@ Note: Plot only the five sources that were used in the inversion.
 
 \end{enumerate}
 
-% %------------------------
+%------------------------
 
 \pagebreak
 \subsection*{Problem 3 (1.8). Connections with real tomography problems.}
@@ -309,7 +329,7 @@ Hint: Think about the modes homework.
 %\vspace{1cm}
 \begin{figure}
 \hspace{-0.5cm}
-\includegraphics[width=17cm]{socal_03b.eps}
+\includegraphics[width=17cm]{socal_03b}
 \caption[Source--receiver geometry for southern California]
 {{
 {\em Left}: Example phase speed map and faults for Southern California. The phase speed map is for Rayleigh waves with periods of 20~seconds.
@@ -320,13 +340,14 @@ Hint: Think about the modes homework.
 
 \begin{figure}[p]
 \hspace{-1.5cm}
-\includegraphics[width=19cm]{talk_Gik03_5_ray_hw.eps}
+\includegraphics[width=19cm]{talk_Gik03_5_ray_hw.jpg}
 \caption[Basis function]
 {{
 Example computation for an entry, $G_{ik}$, of the partial derivatives matrix $\bG$, using rays. The row index $i$ is the source-receiver combination, the column index $k$ is the basis function index. The source is denoted by the \ding{73}, the receiver is denoted by the $\triangle$, and the $\circ$ shows the center-point of the spherical spline in (b).
 (a)~Ray path for source number~1 and receiver number~126, corresponding to the $i=126$ index of the $\ndata=3300$ ray paths.
 (b)~$B_{203}(\bx)$, the spherical spline basis function for index $k=203$. Also shown are the center-points of the $\nparm=286$ spherical splines.
-(c)~Spline $B_{203}$ evaluated along the ray path. The value of the phase speed for the reference model is constant, so $G_{ik} = (-1/c) \int_{{\rm ray}_i} B_k\,\rmd s$. In this example, $G_{ik} = -1/(3500\,{\rm m\,s^{-1}})\;(2.45 \times 10^4\,{\rm m})  = -6.98$~s. 
+(c)~Spline $B_{203}$ evaluated along the ray path.
+%The value of the phase speed for the reference model is constant, so $G_{ik} = (-1/c) \int_{{\rm ray}_i} B_k\,\rmd s$. In this example, $G_{ik} = -1/(3500\,{\rm m\,s^{-1}})\;(2.45 \times 10^4\,{\rm m})  = -6.98$~s. 
 \label{fig:basis}
 }}
 \end{figure}

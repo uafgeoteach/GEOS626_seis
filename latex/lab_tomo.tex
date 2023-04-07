@@ -3,6 +3,8 @@
 
 \input{hw626_header}
 
+\newcommand{\tfile}{{\tt lab\_tomo.ipynb}}
+
 % change the figures to ``Figure L3'', etc
 \renewcommand{\thefigure}{L\arabic{figure}}
 \renewcommand{\thetable}{L\arabic{table}}
@@ -23,7 +25,11 @@ Last compiled: \today
 
 %------------------------
 
-\subsection*{Model parameterization}
+\subsection*{Overview}
+
+This lab is preparation for {\tt hw\_tomo.pdf}. The template notebook is \tfile. Here we focus on three concepts: 1) using basis functions to build other functions, 2) discretizing ray paths on the surface of a sphere, and 3) numerical integration.
+
+\subsection*{Questions}
 
 A tomographic model is typically described in terms of a perturbation in wave speed structure from some reference model, \ie $\delta\ln c = \delta c/c$.
 (Note \footnote{See the section entitled ``ASIDE: the natural log function used to express tomographic models'' in the {\tt hw\_math} solutions.})
@@ -36,27 +42,22 @@ This function may be expanded in terms of a set of $M$ basis functions:
 %
 where $\delta m_k$, $k=1,\ldots,\nparm$, represent the model coefficients describing the model perturbation $\delta\ln c(\bx)$, and $B_k(\bx)$ is a basis function. Here we choose to use spherical spline basis functions \citep{WangDahlen1995spline,Wang1998}.
 
-Run the Python script \verb+run_Bkspline.ipynb+ in order to familiarize yourself with spherical spline basis functions. This script will generate a spherical spline basis function of grid order $q$, centered at a randomly selected gridpoint. Change the value for $q$ and see what happens. 
+\begin{enumerate}
+
+\item Run the Python script \verb+lab_tomo.ipynb+ in order to familiarize yourself with spherical spline basis functions. This script will generate a spherical spline basis function of grid order $q$, centered at a randomly selected gridpoint. Change the value for $q$ and see what happens. 
 %An example of a $q = 8$ basis function is shown in \refFig{fig:basis}b.
 
-\begin{itemize}
-\item What is the value of the $q=8$ spline function that is centered at (longitude, latitude) = $(-117^\circ,\;34^\circ)$, evaluated at the points $(-117.05^\circ,\;34.25^\circ)$ and $(-117.10^\circ,\;34.35^\circ)$?
-\end{itemize}
+\item What are the values of the $q=8$ spline function that is centered at (longitude, latitude) = $(-117^\circ,\;34^\circ)$, evaluated at the points $(\phi,\;34^\circ)$, where $\phi = -117, -117.05, \ldots, -118$?
 
-%------------------------
+\item In order to construct a matrix of partial derivatives for the tomographic inversion, you will need to know how to integrate functions along ray paths that are on the sphere. 
 
-\subsection*{Numerical integration along ray paths}
+Discretize a ray path between two points on the sphere.
 
-In order to construct a matrix of partial derivatives for the tomographic inversion, you will need to know how to integrate functions along ray paths that are on the sphere. Determine how to do the following in Python:
+Use \verb+Geod()+ from the pyproj module.
 
-\begin{itemize}
-\item Discretize a ray path between two points on the sphere.
+\item How will you perform numerically integrate a function evaluated along a ray path?
 
-I used the \verb+Geod()+ (``great circle waypoints'') function from the pyproj module.
-
-\item Numerically integrate a function evaluated along a ray path.
-
-\end{itemize}
+\end{enumerate}
 
 %-------------------------------------------------------------
 %\pagebreak
