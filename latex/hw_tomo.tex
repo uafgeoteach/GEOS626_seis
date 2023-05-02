@@ -195,7 +195,7 @@ Gik = np.load('./Gik.npy')   % will load the file Gik.mat with the one variable 
 %------------------------
 
 \pagebreak
-\subsection*{Problem 2 (4.2). Solving for the unknown wavespeed structure.}
+\subsection*{Problem 2 (4.5). Solving for the unknown wavespeed structure.}
 
 Instructions:
 %
@@ -221,7 +221,7 @@ Instructions:
 
 %------------
 
-\item (1.0) If $\bG^T\bG$ is not full rank, then a damping parameter $\lambda$ may be introduced to stabilize (or ``regularize'') the inversion.  One possible solution to the problem is:
+\item (1.3) If $\bG^T\bG$ is not full rank, then a damping parameter $\lambda$ may be introduced to stabilize (or ``regularize'') the inversion.  One possible solution to the problem is:
 %
 \begin{equation}
 \bdelta\bem_{\lambda} = \left(\bG^T\bG+\lambda^2\bI\right)^{-1}\bG^T\bdelta\bd.
@@ -229,9 +229,14 @@ Instructions:
 %
 \begin{enumerate}
 
-\item (0.6) Compute $\bdelta\bem_{\lambda}$ for $\lambda = 10$. \\
-List the sum of the squares of the entries of the residual vector $\br_\lambda = \bG\bdelta\,\bem_\lambda-\bdelta\bd$; this is the {\em misfit norm} (squared).
-List the sum of the squares of the entries of the model vector $\bdelta\bem_{\lambda}$; this is the {\em model norm} (squared).
+\item (0.8) Compute $\bdelta\bem_{\lambda}$ for $\lambda = 10$.
+%
+\begin{enumerate}
+\item (0.2) List the first entry of $\bdelta\bem_{\lambda}$.
+\item (0.2) What does this represent?
+\item (0.2) List the sum of the squares of the entries of the residual vector $\br_\lambda = \bG\bdelta\,\bem_\lambda-\bdelta\bd$; this is the square of the {\em misfit norm}.
+\item (0.2) List the sum of the squares of the entries of the model vector $\bdelta\bem_{\lambda}$; this is the square of the {\em model norm}.
+\end{enumerate}
 
 %------------
 
@@ -244,7 +249,7 @@ with $\lambda_{\rm min} = 0.01$ and $\lambda_{\rm max} = 1000$ (specify a value 
 
 %------------
 
-\item (0.4) Plot the misfit norm ($y$-axis) versus model norm ($x$-axis) using log-scaled values.
+\item (0.5) Plot the misfit norm ($y$-axis) versus model norm ($x$-axis) using log-scaled values.
 
 %The misfit norm is the sum of the squares of the residuals, where the $i$the residual is $(\bG\bem-\dvec)_i$. The model norm is the sum of the squares of the model parameters $m_k$.
 
@@ -298,18 +303,18 @@ Note: Plot only the five sources that were used in the inversion.
 %------------------------
 
 \pagebreak
-\subsection*{Problem 3 (1.8). Connections with real tomography problems.}
+\subsection*{Problem 3 (1.5). Connections with real tomography problems.}
 
 For your answers to this problem, try to imagine explaining the concepts to a fellow graduate student who is not a seismologist. (This should make your answers more explicit.)
 
 \begin{enumerate}
-\item (0.6) Our data vector contains a set of traveltime differences between a wave in our model and a wave in the target model (\ie the unknown Earth model). For problems using recorded seismic data, how is this measurement made?
+\item (0.5) Our data vector contains a set of traveltime differences between a wave in our model and a wave in the target model (\ie the unknown Earth model). For problems using recorded seismic data, how is this measurement made?
 
-\item (0.6) After the first iteration, we no longer have a uniform ``reference'' model for phase speed. How will we need to adapt our algorithm to accommodate iterations of the phase speed model?
+\item (0.5) After the first iteration, we no longer have a uniform ``reference'' model for phase speed. How will we need to adapt our algorithm to accommodate iterations of the phase speed model?
 
 Hint: How will $\bG$, $\dvec$, and $\bem$ change?
 
-\item (0.6) In a real problem we might make measurements at several different periods. How can the phase speed for different periods be used to obtain a 3D model of shear wave structure?
+\item (0.5) In a real problem we might make measurements at several different periods. How can the phase speed for different periods be used to obtain a 3D model of shear wave structure?
 
 Hint: Think about the modes homework.
 

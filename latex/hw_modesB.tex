@@ -3,7 +3,7 @@
 
 \input{hw626_header}
 
-%\renewcommand{\baselinestretch}{1.1}
+\renewcommand{\baselinestretch}{1.1}
 
 \newcommand{\tfilemain}{{\tt hwsol\_modesA.ipynb}}
 \newcommand{\tfiless}{{\tt surf\_stress.py}}
@@ -135,7 +135,7 @@ where $\beta_c$ is the crustal velocity, $\beta_m$ is the mantle velocity, and $
 \end{itemize}
 %
 
-Consider a model with the following properties for the crust (subscript~$c$) and upper mantle (subscript~$m$)\footnote{Thie is Model~1 from \refTab{tab:models}.}:
+Consider a model with the following properties for the crust (subscript~$c$) and upper mantle (subscript~$m$)\footnote{This is Model~1 from \refTab{tab:models}.}:
 %
 \begin{eqnarray*}
 H &=& 40\;{\rm km}
@@ -254,12 +254,19 @@ Hint: What arguments related to \tfileef\ were needed in \tfiless? What argument
 
 \end{itemize}
 
+%\pagebreak
 \begin{enumerate}
-\item (0.0) Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What will the values be for \verb+rspan[0]+ and \verb+rspan[1]+? Label \verb+rspan[0]+ and \verb+rspan[1]+ in your sketch from Problem~1-\ref{prob:setup}.
+\item (0.5) Checks.
+%
+\begin{enumerate}
+\item Given our coordinate system, our \verb+rspan+ will now change depending on the input period $T$ (or $f$ or $\omega$). What will the values be for \verb+rspan[0]+ and \verb+rspan[1]+?
 
-\item (0.0) Given a period of $T = 20$~s, list the starting and finishing $k$ values in your \verb+kvec+.
+\item Label \verb+rspan[0]+ and \verb+rspan[1]+ in your sketch from Problem~1-\ref{prob:setup}.
 
-Also list values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspan[1])+ and check that they are consistent with what you expect.
+\item Given a period of $T = 20$~s, list the starting and finishing $k$ values in your \verb+kvec+.
+
+\item List values for \verb+earthfun_love(rspan[0])+ and \verb+earthfun_love(rspan[1])+ and check that they are consistent with what you expect.
+\end{enumerate}
 
 \item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$~s.
 
@@ -318,7 +325,6 @@ After you do the check, you can go back to using the default tolerance.
 
 %----------------
 
-\pagebreak
 \item (1.0)
 \begin{enumerate}
 \item (0.8) Loop over a range of frequencies to construct the dispersion plot you sketched in Problem~1-\ref{prob:model1}. Use an equally spaced frequency vector ($\sim$50 values) ranging between periods of 3.0 seconds and 20.0 seconds.
@@ -337,11 +343,11 @@ After you do the check, you can go back to using the default tolerance.
 
 %----------------
 
-\subsection*{Problem 3 (2.0). \ptag\ Reproducing plots in textbooks}
+\subsection*{Problem 3 (2.0). \ptag\ Dispersion plots and textbook results}
 
 \begin{enumerate}
 
-\item (1.0) We now consider the fundamental mode only.
+\item (1.0) We now consider the fundamental mode only (still using Model~1 of \refTab{tab:models}).
 
 \begin{enumerate}
 \item (0.8) Using an equally spaced frequency vector ($\sim$50 values) ranging between periods of 20.0 seconds and 200.0 seconds, compute three dispersion plots for fundamental-mode Love waves:
@@ -366,7 +372,7 @@ After you do the check, you can go back to using the default tolerance.
 \item (1.0)
 %
 \begin{enumerate}
-\item (0.6) Using your code, reproduce Figure 2.8-2 (p.~96) of \citet{SteinWysession}, including both phase speed and group speed, $U = d\omega/dk$.
+\item (0.6) Using your code, reproduce the dispersion plot in Figure 2.8-2 (p.~96) of \citet{SteinWysession}, including both phase speed and group speed, $U = d\omega/dk$. This is Model~2 of \refTab{tab:models}.
 
 Notes:
 %
@@ -380,7 +386,7 @@ Notes:
 
 %----------------
 
-\item (0.0) Using your code, reproduce the dispersion plot on p.~257 of \citet{AkiRichardsE2}, including both phase speed and group speed, $U = d\omega/dk$.
+\item (0.0) Using your code, reproduce the dispersion plot on p.~257 of \citet{AkiRichardsE2}, including both phase speed and group speed, $U = d\omega/dk$. This is Model~3 of \refTab{tab:models}.
 
 %----------------
 
@@ -430,8 +436,7 @@ The model is described in Problem~1-\ref{prob:model1}.
 \end{figure}
 
 \clearpage\pagebreak
-
-\pagestyle{empty}
+%\pagestyle{empty}
 
 \begin{table}
 \vspace{-3cm}

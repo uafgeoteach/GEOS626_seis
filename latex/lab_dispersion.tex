@@ -47,14 +47,15 @@ Last compiled: \today \\
 
 \item A key point is that in this lab the emphasis is on {\bf phase}, which we use to calculate traveltime differences. In the solar motion lab the emphasis was on {\bf amplitude}, which we used to identify the planets that influenced the sun's motion. (We did use phase to identify which planet was revolving about the sun in a negative sense.)
 
-\item The key Python functions for the lab are \verb+scipy.signal.hilbert()+, \verb+numpy.fft.fft()+, and \verb+numpy.fft.ifft()+. Also required are \verb+scipy.signal.butter()+ and \verb+scipy.signal.filtfilt()+ for bandpass filtering.
+\item The key Python functions for the lab are \verb+scipy.signal.hilbert()+, \verb+numpy.fft.fft()+, and \verb+numpy.fft.ifft()+.
+%Also required are \verb+scipy.signal.butter()+ and \verb+scipy.signal.filtfilt()+ for bandpass filtering.
 %The function \verb+bandpass.m+ is only in the class repository.
 
 \end{itemize}
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section{Seismograms}
 
 Using the seismograms in \refFig{fig:seis}, your task is to calculate the group speed $U$ and phase speed $c$ between Pasadena and Needles. These calculations of $U$ and $c$ will depend on period $T$.
@@ -97,6 +98,7 @@ What does the first entry of $\ffw(\omega)$ correspond to? \\
 
 %-----------------------
 
+\pagebreak
 \section{Group speed}
 
 \begin{enumerate}
@@ -106,7 +108,7 @@ What does the first entry of $\ffw(\omega)$ correspond to? \\
 
 %\item What does the function \verb+bandpass.m+ do?
 
-\item Using \verb+scipy.signal.butter()+ and \verb+scipy.signal.filtfilt()+, compute a bandpass-filtered version of the PAS time series. Given a target period of $f_0 = 1/20$~Hz, use the bandpass frequency limits of $f_a = f_0(1-p)$ and $f_b = f_0(1+p)$ where $p = 0.2$.
+\item Using \verb+bandpass()+, compute a bandpass-filtered version of the PAS time series. Given a target period of $f_0 = 1/20$~Hz, use the bandpass frequency limits of $f_a = f_0(1-p)$ and $f_b = f_0(1+p)$ where $p = 0.2$.
 
 \item In a $4 \times 1$ subplot figure, plot the bandpass-filtered versions of PAS for the target periods of 20, 30, 40, and 50~s; plot one time series per subplot. Superimpose the envelope function on each time series.
 
@@ -128,7 +130,7 @@ Hint: Use \verb+imax = numpy.argmax(numpy.around(h,4))+ to get the index of the 
 
 %-----------------------
 
-%\pagebreak
+\pagebreak
 \section{Phase speed}
 
 \begin{enumerate}
