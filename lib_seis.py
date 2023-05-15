@@ -491,63 +491,6 @@ def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
     
     st [obspy stream] = obspy stream object containing all waveforms with header information
     
-    st_subset [list]  = list containing information about waveforms to be used
-    
-    event_lat         = event latitude in degrees
-    
-    event_lon         = event longitude in degrees
-    '''
-    
-    print('DeprecationWarning: This function will be removed after Spring 2023')
-    
-    station_lats = []
-    station_lons = []
-    station_tags = []
-    station_tags_full = []
-
-    if not bool(st_subset_list):
-        for i, tr in enumerate(st):
-            station_lats.append(tr.stats.sac['stla'])
-            station_lons.append(tr.stats.sac['stlo'])
-            station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
-            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.location}.{tr.stats.channel}')
-    
-    else:
-        for i, waveform_id in enumerate(st_subset_list):
-            ID = f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}.{waveform_id[3]}'
-
-            try:
-                tr = st.select(id=ID)
-                station_lats.append(tr[0].stats.sac['stla'])
-                station_lons.append(tr[0].stats.sac['stlo'])
-                station_tags.append(f'{waveform_id[0]}.{waveform_id[1]}')
-                station_tags_full.append(f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}')
-            except:    
-                print(f'ERROR: {ID} entry in your subset does not exist in the provided stream dataset')
-                raise
-    
-    print('\nSource receiver map') 
-    
-    plot_event_station(event_lat,event_lon,slat=station_lats,slon=station_lons,stas=station_tags)
-    
-    print('\nTable of station azimuths and distances\n')
-    
-    distance_deg, azimuth_deg, distance_km = get_dist_az(event_lat,event_lon,station_lats,station_lons,station_tags_full)
-    
-    return
-
-############################################################
-
-def station_map_and_table_beta(st,st_subset_list=[],event_lat=0,event_lon=0):
-    
-    '''
-    function to plot a source station map and a table with station distances and azimuth for
-    a selected set of stations
-    
-    input arguments -
-    
-    st [obspy stream] = obspy stream object containing all waveforms with header information
-    
     st_subset [list]  = list of a subset of waveform IDs in st to be used
     
     event_lat [float] = event latitude in degrees
