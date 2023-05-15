@@ -267,47 +267,6 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     
 ############################################################
 
-def get_JB_Ptime(source_depth_km=0, dist_deg=0):
-
-    '''
-    INPUT:   source_depth_km   list of source depths, km
-             dist_deg          list of arc distances, degrees
-    OUTPUT:  t                 direct P-wave travel time from Jeffreys-Bullen table, seconds
-    WARNING: This simplistic function only considers for direct P, which
-             is not present for arc distances above 100 deg.
-    
-    load Jeffreys-Bullen table for P
-    '''
-    
-    print('DeprecationWarning: This function will be removed after Spring 2023')
-    
-    h = source_depth_km
-    delta = dist_deg
-    
-    jbP = np.loadtxt('./data/jbP.txt', skiprows=3, dtype=float)        # Skip lines, 0,1,2
-    # full table
-    ndep= len(jbP[0,:])-1
-    h0=[]
-    delta0=[]
-    # interpolate the table
-    for i in range(ndep+1):
-        if i>0:
-            h0.append(jbP[0, i])
-    for i in range(len(jbP[:,0])):
-        if i>0:
-            delta0.append(jbP[i,0])
-    jbP = np.delete(jbP, (0), axis=0)
-    jbP = np.delete(jbP, (0), axis=1)
-    xx, yy = np.meshgrid(h0, delta0)
-    z = np.sin(xx**2+yy**2)
-    f = interp2d(delta0, h0, jbP.T)
-    Ptt=[]
-    for i in range(len(delta)):
-        Ptt.append(f(delta[i],h))
-    return Ptt
-
-############################################################
-
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp)
 # 
 # This marks the 1/x value on a plot where you click the mouse.
@@ -337,36 +296,6 @@ def markp(event):
 
 ############################################################    
     
-# To use function: cid=fig.canvas.mpl_connect('button_press_event', markp_min)
-# 
-# This marks the 1/x/60 value on a plot where you click the mouse.
-# python version based on the markt.m writtin by Carl Tape
-#
-# INPUT ARGUMENTS:
-# 
-# left mouse button click: plot point
-#
-# EXAMPLE:
-#
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-# ax.set_xlim([0, 10])
-# ax.set_ylim([0, 10]) 
-# markt(fig)
-#
-# pt coordinates will print to screen
-
-def markp_min(event):
-    print('DeprecationWarning: This function will be removed after Spring 2023')
-    print('x=%f, y=%f' % (event.xdata, event.ydata))
-    prd=round(1/event.xdata/60, 1)
-    axe=event.inaxes
-    axe.text(event.xdata, event.ydata, s = str(prd))
-    #plt.plot(event.xdata, event.ydata, 'ro')
-    plt.draw()    
-
-############################################################
-
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp_minutes)
 # 
 # This marks the 1/x/60 value on a plot where you click the mouse.
@@ -549,58 +478,6 @@ def sph2cart(azimuth,elevation,r):
     y = r * np.cos(elevation) * np.sin(azimuth)
     z = r * np.sin(elevation)
     return x, y, z
-
-############################################################
-
-def station_info_list(st,list_all=True,waveforms_list=[]):
-    
-    '''
-    function to tabulate station information - longitude, latitude and tags into lists
-    
-    input arguments -
-    st = obspy stream object containing all waveforms with header information
-    picked_waveforms = list containing information about waveforms to be considered for tabulation
-    list_all = Boolean; if True all waveforms in input stream will be considered
-    
-    return arguments -
-    station_lats = list of station latitudes
-    station_lons = list of station longitudes
-    station_tags = list of station tags (network.station)
-    station_tags_full = list of full station tags (network.station.location)
-    '''
-    
-    print('DeprecationWarning: This function will be removed after Spring 2023')
-    
-    station_lats = []
-    station_lons = []
-    station_tags = []
-    station_tags_full = []
-
-    if list_all:
-        for i, tr in enumerate(st):
-            station_lats.append(tr.stats.sac['stla'])
-            station_lons.append(tr.stats.sac['stlo'])
-            station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
-            station_tags_full.append(f'{tr.stats.network}.{tr.stats.station}.{tr.stats.location}')
-    
-    elif not list_all:
-        for i, waveform_id in enumerate(waveforms_list):
-            ID = f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}.{waveform_id[3]}'
-
-            try:
-                tr = st.select(id=ID)
-                station_lats.append(tr[0].stats.sac['stla'])
-                station_lons.append(tr[0].stats.sac['stlo'])
-                station_tags.append(f'{waveform_id[0]}.{waveform_id[1]}')
-                station_tags_full.append(f'{waveform_id[0]}.{waveform_id[1]}.{waveform_id[2]}')
-            except:    
-                print(f'{ID} does not exist, check the corresponding entry in list of selected waveforms')
-                raise
-    
-    else:
-        print(f"Error: incorrect input for input argument 'list_all'")
-    
-    return station_lats, station_lons, station_tags, station_tags_full
 
 ############################################################
 
