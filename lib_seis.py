@@ -349,8 +349,9 @@ def plot_event_station(elat,elon,w=[],slat=[],slon=[],stas=[]):
     lat_epic = elat    # Latitude
     lon_epic = elon   # Longitude
     
-    
     fig = plt.figure(figsize=[12, 8])
+    # note: this does not seem to have any option to  plot anything except the full globe
+    #       (i.e., one cannot set a max epicentral distance)
     ax = fig.add_subplot(1, 1, 1,
                          projection=ccrs.AzimuthalEquidistant(central_longitude=lon_epic,
                                                               central_latitude=lat_epic))
