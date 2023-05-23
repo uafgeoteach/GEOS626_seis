@@ -8,10 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from itertools import product, combinations
-from obspy.geodetics import gps2dist_azimuth
-from obspy.core.event import read_events
 from obspy.core import UTCDateTime
+from obspy.core.event import read_events
+from obspy.core.inventory import Inventory
 from obspy.core.inventory import read_inventory
+from obspy.geodetics import gps2dist_azimuth
 
 ###############################################################################################################
 
@@ -147,7 +148,8 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
 
 ###############################################################################################################
 
-def get_dist_az(lon0, lat0, lons, lats, tags):
+def get_dist_az(lon0, lat0, lons, lats):
+
     '''
     function to get distances and azimuths from a reference location (lon0,lat0) to a set of
     locations (lons,lats) using obspy (geoid WGS84)
@@ -162,8 +164,6 @@ def get_dist_az(lon0, lat0, lons, lats, tags):
     :param lons: list of longitudes for locations to calculate distances and azimuths to
     :type lats: list of floats
     :param lats: list of latitudes for locations to calculate distances and azimuths to
-    :type stags: list of strings
-    :param stags: list of tags to identify the locations
 
     :return:
     :type distance_km: float
@@ -184,10 +184,6 @@ def get_dist_az(lon0, lat0, lons, lats, tags):
         distance_km.append(distance_m / 1000)
         distance_deg.append(distance_m * 180 / (np.pi * 6371000))
         azimuth_deg.append(azimuth_degrees)
-
-        # display formatted text
-        print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
-              (i + 1, tags[i], float(lons[i]), float(lats[i]), distance_deg[i], azimuth_deg[i]))
 
     return distance_km, distance_deg, azimuth_deg
 
@@ -276,8 +272,8 @@ def locations_and_tags(event_path,inv_path,subset_ids=[]):
 
     '''
     function to extract source location (longitudes, latitudes), station locations (longitudes, latitudes),
-    and station tags for a provided subset of a list of stations. If a subset list is not provided, all stations
-    will be used.
+    and station tags for a provided subset of a list of stations. If a subset list is not provided, all
+    stations will be used.
     '''
 
     '''
@@ -317,16 +313,14 @@ def locations_and_tags(event_path,inv_path,subset_ids=[]):
     if subset_ids:
         stations = []
         inv_subset = Inventory()
-        for seed_id in subset:
+        for seed_id in subset_ids:
             net, sta, _, _ = seed_id.split(".")
-            if sta not in stas:
+            if sta not in stations:
                 inv_select = inv.select(network = net, station = sta)
                 if not inv_select:
                     raise SEED_ID_Error(f'{seed_id} not in inventory')
-                inv += inv_select
+                inv_subset += inv_select
                 stations.append(sta)
-            else:
-                raise SEED_ID_Error(f'station in {seed_id} selected more than once')
         inv = inv_subset
 
     for net in inv:
@@ -553,9 +547,37 @@ def sph2cart(azimuth,elevation,r):
 
 ###############################################################################################################
 
+def station_table(elon, elat, slons, slats, stags):
+
+    '''
+    function to fetch station distances and azimuths from the source and print them as a table
+    '''
+
+    '''
+    :type elon: float 
+    :param elon: event longitude
+    :type elat: float
+    :param elat: event latitude
+    :type slons: list of floats
+    :param slons: list of station longitudes to plot
+    :type slats: list of floats
+    :param slats: list of station latitudes to plot
+    :type stags: list of strings
+    :param stags: list of station names to plot  
+    '''
+
+    _, distance_deg, azimuth_deg = get_dist_az(elon, elat, slons, slats)
+
+        for i in range(len(lons)):
+            # print station distance and azimuth table
+            print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
+                  (i + 1, stags[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
+
+###############################################################################################################
+
 def station_map_and_table(event_path, inv_path, subset_ids=[]):
     '''
-    function to plot a source station map and a table with station distances and azimuths for a selected
+    function to plot a source station map and print a table with station distances and azimuths for a selected
     subset of a list of stations. If a subset list is not provided, all stations will be used.
     '''
 
@@ -567,14 +589,6 @@ def station_map_and_table(event_path, inv_path, subset_ids=[]):
     :type subset_ids: list of strings
     :param subset_ids: list of a subset of all seed ids to be used further,
     if no input is provided as subset_ids, all seed ids will be used
-
-    :return:
-    :type distance_km: float
-    :param distance_km: distance of the locations from the reference point, in kilometres
-    :type distance_deg: float
-    :param distance_deg: distance of the locations from the reference point, in degrees
-    :type azimuth_deg: float
-    :param azimuth_deg: azimuth of the locations from the reference point, in degrees
     '''
 
     print('\nFetching source and station information ....\n')
@@ -583,10 +597,8 @@ def station_map_and_table(event_path, inv_path, subset_ids=[]):
     print('\nPlotting source receiver map ....\n')
     plot_event_station(elon, elat, slons, slats, stags)
 
-    print('\nWriting table of station distances and azimuths ....\n')
-    distance_km, distance_deg, azimuth_deg = get_dist_az(elon, elat, slons, slats, seeds)
-
-    return distance_km, distance_deg, azimuth_deg
+    print('\nPrinting table of station distances and azimuths ....\n')
+    station_table(elon, elat, slons, slats, seeds)
 
 ###############################################################################################################
 
