@@ -5,16 +5,15 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import datetime as dt
 import matplotlib.pyplot as plt
-import math as m
 import numpy as np
-import scipy.io
 
 from itertools import product, combinations
 from obspy.geodetics import gps2dist_azimuth
+from obspy.core.event import read_events
 from obspy.core import UTCDateTime
-from scipy.interpolate import interp2d
+from obspy.core.inventory import read_inventory
 
-############################################################
+###############################################################################################################
 
 def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
     """ INPUT:
@@ -146,47 +145,53 @@ def Bkspline(clon, clat, q, lon_vec, lat_vec, ncol=1):
                 
     return ff
 
-############################################################
+###############################################################################################################
 
-def get_dist_az(lat0,lon0,latall,lonall,stlabs):
+def get_dist_az(lon0, lat0, lons, lats, tags):
     '''
-    get distances and azimuths from an epicenter (lon0,lat0)
-    to a set of stations (lonall,latall) using obspy (geoid WGS84)
+    function to get distances and azimuths from a reference location (lon0,lat0) to a set of
+    locations (lons,lats) using obspy (geoid WGS84)
     '''
-    
-    km_to_deg = ( 1 / ( np.pi * 6371 ) ) * 180
-    
-    lat0   = np.atleast_1d(lat0)
-    lon0   = np.atleast_1d(lon0)
-    latall = np.atleast_1d(latall)
-    lonall = np.atleast_1d(lonall)
-    stlabs = np.atleast_1d(stlabs)
-    
-    dist_km  = []
-    dist_deg = []
-    azi_deg  = []
-    
-    for i in range(len(latall)):
-        
-        # uses WGS84 geoid by default (type gps2dist_azimuth? for details)
-        dist = gps2dist_azimuth(lat0, lon0, float(latall[i]), float(lonall[i]))
-        
-        distkm = dist[0]/1000
-        dist_km.append(distkm)
-        
-        az = dist[1]
-        azi_deg.append(az)
-        
-        ddeg = distkm * km_to_deg
-        dist_deg.append(ddeg)
-        
+
+    '''
+    :type lon0: float
+    :param lon0: reference longitude
+    :type lat0: float 
+    :param lat0: reference latitude
+    :type lons: list of floats
+    :param lons: list of longitudes for locations to calculate distances and azimuths to
+    :type lats: list of floats
+    :param lats: list of latitudes for locations to calculate distances and azimuths to
+    :type stags: list of strings
+    :param stags: list of tags to identify the locations
+
+    :return:
+    :type distance_km: float
+    :param distance_km: distance of the locations from the reference point, in kilometres
+    :type distance_deg: float
+    :param distance_deg: distance of the locations from the reference point, in degrees
+    :type azimuth_deg: float
+    :param azimuth_deg: azimuth of the locations from the reference point, in degrees 
+    '''
+
+    distance_km = []
+    distance_deg = []
+    azimuth_deg = []
+
+    for i in range(len(lons)):
+        distance_m, azimuth_degrees, _ = gps2dist_azimuth(lat0, lon0, lats[i], lons[i], a=6371000)
+
+        distance_km.append(distance_m / 1000)
+        distance_deg.append(distance_m * 180 / (np.pi * 6371000))
+        azimuth_deg.append(azimuth_degrees)
+
         # display formatted text
-        print('%3i %15s lat %6.2f lon %7.2f delta %6.2f az %6.2f'%
-        (i+1,stlabs[i],float(latall[i]),float(lonall[i]),ddeg,az))
-    
-    return dist_deg, azi_deg, dist_km
+        print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
+              (i + 1, tags[i], float(lons[i]), float(lats[i]), distance_deg[i], azimuth_deg[i]))
 
-############################################################
+    return distance_km, distance_deg, azimuth_deg
+
+###############################################################################################################
 
 def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     # Python adaptation of globefun3.m
@@ -265,7 +270,80 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     ax.zaxis.set_pane_color((0.0, .0, 0.0, 0.0))
     #plt.show()
     
-############################################################
+###############################################################################################################
+
+def locations_and_tags(event_path,inv_path,subset_ids=[]):
+
+    '''
+    function to extract source location (longitudes, latitudes), station locations (longitudes, latitudes),
+    and station tags for a provided subset of a list of stations. If a subset list is not provided, all stations
+    will be used.
+    '''
+
+    '''
+    :type event_path: string
+    :param event_path: path to event.xml file
+    :type inv_path: string
+    :param inv_path: path to inv.xml file
+    :type subset_ids: list of strings
+    :param subset_ids: list of a subset of all seed ids to be used further,
+    if no input is provided as subset_ids, all seed ids will be used
+
+    :return:
+    :type elon: float
+    :param elon: event longitude
+    :type elat: float
+    :param elat: event latitude
+    :type slons: list of floats
+    :param slons: list of station longitudes
+    :type slats: list of floats
+    :param slats: list of station latitudes
+    :type stags: list of strings
+    :param stags: list of station tags (network.station)
+    :type seeds: list of strings
+    :param seeds: list of seed ids (network.station.location.channel)
+    '''
+
+    class SEED_ID_Error(Exception):
+        pass
+
+    slons = []
+    slats = []
+    stags = []
+    seeds = []
+
+    inv = read_inventory(inv_path)
+
+    if subset_ids:
+        stations = []
+        inv_subset = Inventory()
+        for seed_id in subset:
+            net, sta, _, _ = seed_id.split(".")
+            if sta not in stas:
+                inv_select = inv.select(network = net, station = sta)
+                if not inv_select:
+                    raise SEED_ID_Error(f'{seed_id} not in inventory')
+                inv += inv_select
+                stations.append(sta)
+            else:
+                raise SEED_ID_Error(f'station in {seed_id} selected more than once')
+        inv = inv_subset
+
+    for net in inv:
+        for sta in net:
+            for cha in sta:
+                slons.append(sta.longitude)
+                slats.append(sta.latitude)
+                stags.append(f'{net.code}.{sta.code}')
+                seeds.append(f'{net.code}.{sta.code}.{cha.location_code}.{cha.code}')
+
+    clog = read_events(event_path)
+    elon = clog[0].origins[0].longitude
+    elat = clog[0].origins[0].latitude
+
+    return elon, elat, slons, slats, stags, seeds
+
+###############################################################################################################
 
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp)
 # 
@@ -294,7 +372,7 @@ def markp(event):
     #plt.plot(event.xdata, event.ydata, 'ro')
     plt.draw()    
 
-############################################################    
+###############################################################################################################
     
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp_minutes)
 # 
@@ -323,7 +401,7 @@ def markp_minutes(event):
     #plt.plot(event.xdata, event.ydata, 'ro')
     plt.draw()    
 
-############################################################
+###############################################################################################################
 
 def matlab2datetime(matlab_datenum):
         # equivalent of datestr when converting from serial number to date
@@ -332,56 +410,49 @@ def matlab2datetime(matlab_datenum):
         dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
         return day + dayfrac    
     
-############################################################
+###############################################################################################################
 
-def plot_event_station(elat,elon,w=[],slat=[],slon=[],stas=[]):
+def plot_event_station(elon, elat, slons, slats, stags):
+
     '''
-    Input:
-        elat:   event latitude
-        elon:   event longitude
-        w:      stream containing station information
-        slat:   if not given w, array of station latitudes to plot
-        slon:   if not given w, array of station longitudes to plot
-        stas:   if not given w, array of station names to plot
+    plot global map of given event locations and selected stations
+    this does not seem to have any option to  plot anything except the full globe,
+    i.e., one cannot set a max epicentral distance for the plotted domain
     '''
-    
-    # Plot global map of selected stations
-    lat_epic = elat    # Latitude
-    lon_epic = elon   # Longitude
-    
+
+    '''
+    :type elon: float 
+    :param elon: event longitude
+    :type elat: float
+    :param elat: event latitude
+    :type slons: list of floats
+    :param slons: list of station longitudes to plot
+    :type slats: list of floats
+    :param slats: list of station latitudes to plot
+    :type stags: list of strings
+    :param stags: list of station names to plot
+    '''
+
     fig = plt.figure(figsize=[12, 8])
-    # note: this does not seem to have any option to  plot anything except the full globe
-    #       (i.e., one cannot set a max epicentral distance)
     ax = fig.add_subplot(1, 1, 1,
-                         projection=ccrs.AzimuthalEquidistant(central_longitude=lon_epic,
-                                                              central_latitude=lat_epic))
-    
+                         projection=ccrs.AzimuthalEquidistant(central_longitude=elon, central_latitude=elat))
+
     ax.set_global()
     ax.coastlines()
     ax.gridlines()
-    ax.add_feature(cfeature.LAND,facecolor=(0,1,0))
-    ax.scatter(elon, elat, c='b',marker='*', s=275, transform=ccrs.PlateCarree())
-    if len(w)>0:
-        for i in range (len(w)):
-            slon=w[i].stats.sac.stlo
-            slat=w[i].stats.sac.stla
-            ax.scatter(slon, slat, marker='o',c='r', s=75, transform=ccrs.PlateCarree())
-            plt.text(slon - 2, slat - 2, w[i].stats.station,
-                 horizontalalignment='right',
-                 transform=ccrs.PlateCarree())
-    else:
-        for i in range(len(slat)):
-            sln=float(slon[i])
-            slt=float(slat[i])
-            sta=stas[i]
-            ax.scatter(sln, slt, marker='o',c='r', s=75, transform=ccrs.PlateCarree())
-            plt.text(sln - 2, slt - 2, sta,
-                 horizontalalignment='right',
-                 transform=ccrs.PlateCarree())
+    ax.add_feature(cfeature.LAND, facecolor=(0, 1, 0))
+    ax.scatter(elon, elat, c='b', marker='*', s=275, transform=ccrs.PlateCarree())
+
+    for i in range(len(slons)):
+        s_lon = slons[i]
+        s_lat = slats[i]
+        s_tag = stags[i]
+        ax.scatter(s_lon, s_lat, marker='o', c='r', s=75, transform=ccrs.PlateCarree())
+        plt.text(s_lon - 2, s_lat - 2, s_tag, horizontalalignment='right', transform=ccrs.PlateCarree())
     plt.show()
 
-############################################################    
-    
+###############################################################################################################
+
 def seis2GR(mag, dmag, idisplay=1, ifigure=0):
     """ Python version of seis2GR.m by Carl Tape.
         Converts seismicity catalog to Gutenberg-Richter frequency-magnitude distribution, in both a cumulative
@@ -449,7 +520,7 @@ def seis2GR(mag, dmag, idisplay=1, ifigure=0):
         
     return N, Ninc, Medges
 
-############################################################
+###############################################################################################################
 
 def smooth(a,WSZ):
     """ Python adaptation of MATLAB smooth.m function
@@ -469,7 +540,7 @@ def smooth(a,WSZ):
     
     return np.concatenate((  start , out0, stop  ))
 
-############################################################
+###############################################################################################################
 
 # python version of Matlab's sph2cart and cart2sph function
 # transforms elements of the spherical coordinate arrays azimuth, elevation, and r to Cartesian, or xyz, coordinates.
@@ -480,60 +551,44 @@ def sph2cart(azimuth,elevation,r):
     z = r * np.sin(elevation)
     return x, y, z
 
-############################################################
+###############################################################################################################
 
-def station_map_and_table(st,st_subset_list=[],event_lat=0,event_lon=0):
-    
+def station_map_and_table(event_path, inv_path, subset_ids=[]):
     '''
-    function to plot a source station map and a table with station distances and azimuth for
-    a selected set of stations
-    
-    input arguments -
-    
-    st [obspy stream] = obspy stream object containing all waveforms with header information
-    
-    st_subset [list]  = list of a subset of waveform IDs in st to be used
-    
-    event_lat [float] = event latitude in degrees
-    
-    event_lon [float] = event longitude in degrees
+    function to plot a source station map and a table with station distances and azimuths for a selected
+    subset of a list of stations. If a subset list is not provided, all stations will be used.
     '''
-    
-    station_lats = []
-    station_lons = []
-    station_tags = []
-    station_tags_full = []
 
-    if not bool(st_subset_list):
-        for tr in st:
-            station_lats.append(tr.stats.sac['stla'])
-            station_lons.append(tr.stats.sac['stlo'])
-            station_tags.append(f'{tr.stats.network}.{tr.stats.station}')
-            station_tags_full.append(tr.id)
-    
-    else:
-        for waveform_id in st_subset_list:
-            try:
-                tr = st.select(id=waveform_id)
-                station_lats.append(tr[0].stats.sac['stla'])
-                station_lons.append(tr[0].stats.sac['stlo'])
-                station_tags.append(f'{tr[0].stats.network}.{tr[0].stats.station}')
-                station_tags_full.append(tr[0].id)
-            except:    
-                print(f'ERROR: {waveform_id} entry in your subset does not exist in the provided stream dataset')
-                raise
-    
-    print('\nSource receiver map') 
-    
-    plot_event_station(event_lat,event_lon,slat=station_lats,slon=station_lons,stas=station_tags)
-    
-    print('\nTable of station azimuths and distances\n')
-    
-    distance_deg, azimuth_deg, distance_km = get_dist_az(event_lat,event_lon,station_lats,station_lons,station_tags_full)
-    
-    return
+    '''
+    :type event_path: string
+    :param event_path: path to event.xml file
+    :type inv_path: string
+    :param inv_path: path to inv.xml file
+    :type subset_ids: list of strings
+    :param subset_ids: list of a subset of all seed ids to be used further,
+    if no input is provided as subset_ids, all seed ids will be used
 
-############################################################
+    :return:
+    :type distance_km: float
+    :param distance_km: distance of the locations from the reference point, in kilometres
+    :type distance_deg: float
+    :param distance_deg: distance of the locations from the reference point, in degrees
+    :type azimuth_deg: float
+    :param azimuth_deg: azimuth of the locations from the reference point, in degrees
+    '''
+
+    print('\nFetching source and station information ....\n')
+    elon, elat, slons, slats, stags, seeds = locations_and_tags(event_path, inv_path, subset_ids=subset_ids)
+
+    print('\nPlotting source receiver map ....\n')
+    plot_event_station(elon, elat, slons, slats, stags)
+
+    print('\nWriting table of station distances and azimuths ....\n')
+    distance_km, distance_deg, azimuth_deg = get_dist_az(elon, elat, slons, slats, seeds)
+
+    return distance_km, distance_deg, azimuth_deg
+
+###############################################################################################################
 
 def sumatra_event():
 
@@ -545,7 +600,7 @@ def sumatra_event():
     
     return event_sumatra
 
-############################################################
+###############################################################################################################
 
 def sumatra_waveform_screening(channel):
 
@@ -591,7 +646,7 @@ def sumatra_waveform_screening(channel):
     
     return waveforms_to_reject, waveforms_to_trim
 
-############################################################
+###############################################################################################################
 
 def wf_fft(wf,fNyq):
     """ Python adaptation of wf_fft.m by Michael West
@@ -621,7 +676,7 @@ def wf_fft(wf,fNyq):
     
     return fft_amp, fft_phase, fft_freq
 
-############################################################
+###############################################################################################################
 
 def w2fstack(freqs,amps,f1,f2,n,stack='mean'):
     
