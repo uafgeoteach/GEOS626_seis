@@ -427,6 +427,8 @@ def plot_event_station(elon, elat, slons, slats, stags):
     :param stags: list of station names to plot
     '''
 
+    print('\nPlotting source receiver map ....\n')
+
     fig = plt.figure(figsize=[12, 8])
     ax = fig.add_subplot(1, 1, 1,
                          projection=ccrs.AzimuthalEquidistant(central_longitude=elon, central_latitude=elat))
@@ -547,35 +549,37 @@ def sph2cart(azimuth,elevation,r):
 
 ###############################################################################################################
 
-def station_table(elon, elat, slons, slats, stags):
+def station_table(event_path, inv_path, subset_ids=[]):
 
     '''
     function to fetch station distances and azimuths from the source and print them as a table
     '''
 
     '''
-    :type elon: float 
-    :param elon: event longitude
-    :type elat: float
-    :param elat: event latitude
-    :type slons: list of floats
-    :param slons: list of station longitudes to plot
-    :type slats: list of floats
-    :param slats: list of station latitudes to plot
-    :type stags: list of strings
-    :param stags: list of station names to plot  
+    :type event_path: string
+    :param event_path: path to event.xml file
+    :type inv_path: string
+    :param inv_path: path to inv.xml file
+    :type subset_ids: list of strings
+    :param subset_ids: list of a subset of all seed ids to be used further,
+    if no input is provided as subset_ids, all seed ids will be used
     '''
+
+    elon, elat, slons, slats, _, seeds = locations_and_tags(event_path, inv_path, subset_ids=subset_ids)
 
     _, distance_deg, azimuth_deg = get_dist_az(elon, elat, slons, slats)
 
-        for i in range(len(lons)):
-            # print station distance and azimuth table
-            print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
-                  (i + 1, stags[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
+    print('\nPrinting table of station distances and azimuths ....\n')
+
+    for i in range(len(seeds)):
+        # print station distance and azimuth table
+        print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
+              (i + 1, seeds[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
 
 ###############################################################################################################
 
 def station_map_and_table(event_path, inv_path, subset_ids=[]):
+
     '''
     function to plot a source station map and print a table with station distances and azimuths for a selected
     subset of a list of stations. If a subset list is not provided, all stations will be used.
@@ -591,13 +595,10 @@ def station_map_and_table(event_path, inv_path, subset_ids=[]):
     if no input is provided as subset_ids, all seed ids will be used
     '''
 
-    print('\nFetching source and station information ....\n')
     elon, elat, slons, slats, stags, seeds = locations_and_tags(event_path, inv_path, subset_ids=subset_ids)
 
-    print('\nPlotting source receiver map ....\n')
     plot_event_station(elon, elat, slons, slats, stags)
 
-    print('\nPrinting table of station distances and azimuths ....\n')
     station_table(elon, elat, slons, slats, seeds)
 
 ###############################################################################################################
