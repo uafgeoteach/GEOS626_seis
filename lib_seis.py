@@ -406,49 +406,6 @@ def matlab2datetime(matlab_datenum):
     
 ###############################################################################################################
 
-def plot_event_station(elon, elat, slons, slats, stags):
-
-    '''
-    plot global map of given event locations and selected stations
-    this does not seem to have any option to  plot anything except the full globe,
-    i.e., one cannot set a max epicentral distance for the plotted domain
-    '''
-
-    '''
-    :type elon: float 
-    :param elon: event longitude
-    :type elat: float
-    :param elat: event latitude
-    :type slons: list of floats
-    :param slons: list of station longitudes to plot
-    :type slats: list of floats
-    :param slats: list of station latitudes to plot
-    :type stags: list of strings
-    :param stags: list of station names to plot
-    '''
-
-    print('\nPlotting source receiver map ....\n')
-
-    fig = plt.figure(figsize=[12, 8])
-    ax = fig.add_subplot(1, 1, 1,
-                         projection=ccrs.AzimuthalEquidistant(central_longitude=elon, central_latitude=elat))
-
-    ax.set_global()
-    ax.coastlines()
-    ax.gridlines()
-    ax.add_feature(cfeature.LAND, facecolor=(0, 1, 0))
-    ax.scatter(elon, elat, c='b', marker='*', s=275, transform=ccrs.PlateCarree())
-
-    for i in range(len(slons)):
-        s_lon = slons[i]
-        s_lat = slats[i]
-        s_tag = stags[i]
-        ax.scatter(s_lon, s_lat, marker='o', c='r', s=75, transform=ccrs.PlateCarree())
-        plt.text(s_lon - 2, s_lat - 2, s_tag, horizontalalignment='right', transform=ccrs.PlateCarree())
-    plt.show()
-
-###############################################################################################################
-
 def seis2GR(mag, dmag, idisplay=1, ifigure=0):
     """ Python version of seis2GR.m by Carl Tape.
         Converts seismicity catalog to Gutenberg-Richter frequency-magnitude distribution, in both a cumulative
@@ -549,40 +506,13 @@ def sph2cart(azimuth,elevation,r):
 
 ###############################################################################################################
 
-def station_table(event_path, inv_path, subset_ids=[]):
+def station_map_and_table(event_path, inv_path, subset_ids=[], print_map=True, print_table=True):
 
     '''
-    function to fetch station distances and azimuths from the source and print them as a table
-    '''
-
-    '''
-    :type event_path: string
-    :param event_path: path to event.xml file
-    :type inv_path: string
-    :param inv_path: path to inv.xml file
-    :type subset_ids: list of strings
-    :param subset_ids: list of a subset of all seed ids to be used further,
-    if no input is provided as subset_ids, all seed ids will be used
-    '''
-
-    elon, elat, slons, slats, _, seeds = locations_and_tags(event_path, inv_path, subset_ids=subset_ids)
-
-    _, distance_deg, azimuth_deg = get_dist_az(elon, elat, slons, slats)
-
-    print('\nPrinting table of station distances and azimuths ....\n')
-
-    for i in range(len(seeds)):
-        # print station distance and azimuth table
-        print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
-              (i + 1, seeds[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
-
-###############################################################################################################
-
-def station_map_and_table(event_path, inv_path, subset_ids=[]):
-
-    '''
-    function to plot a source station map and print a table with station distances and azimuths for a selected
-    subset of a list of stations. If a subset list is not provided, all stations will be used.
+    function to do the following -
+    - plot global map of given event location and stations
+    - print table of station distances and azimuths from the event location
+    - if a subset of a list of stations is provided, only the subset is used
     '''
 
     '''
@@ -593,13 +523,44 @@ def station_map_and_table(event_path, inv_path, subset_ids=[]):
     :type subset_ids: list of strings
     :param subset_ids: list of a subset of all seed ids to be used further,
     if no input is provided as subset_ids, all seed ids will be used
+    :type print_map: boolean 
+    :param print_map: a map is printed if true
+    :type print_table: boolean
+    :param print_table: a table is printed if true
     '''
 
     elon, elat, slons, slats, stags, seeds = locations_and_tags(event_path, inv_path, subset_ids=subset_ids)
 
-    plot_event_station(elon, elat, slons, slats, stags)
+    if print_map:
+        print('\nPlotting source receiver map ....\n')
 
-    station_table(elon, elat, slons, slats, seeds)
+        fig = plt.figure(figsize=[12, 8])
+        ax = fig.add_subplot(1, 1, 1,
+                             projection=ccrs.AzimuthalEquidistant(central_longitude=elon, central_latitude=elat))
+
+        ax.set_global()
+        ax.coastlines()
+        ax.gridlines()
+        ax.add_feature(cfeature.LAND, facecolor=(0, 1, 0))
+        ax.scatter(elon, elat, c='b', marker='*', s=275, transform=ccrs.PlateCarree())
+
+        for i in range(len(slons)):
+            s_lon = slons[i]
+            s_lat = slats[i]
+            s_tag = stags[i]
+            ax.scatter(s_lon, s_lat, marker='o', c='r', s=75, transform=ccrs.PlateCarree())
+            plt.text(s_lon - 2, s_lat - 2, s_tag, horizontalalignment='right', transform=ccrs.PlateCarree())
+        plt.show()
+
+    if print_table:
+        _, distance_deg, azimuth_deg = get_dist_az(elon, elat, slons, slats)
+
+        print('\nPrinting table of station distances and azimuths ....\n')
+
+        for i in range(len(seeds)):
+            # print station distance and azimuth table
+            print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
+                  (i + 1, seeds[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
 
 ###############################################################################################################
 
