@@ -559,7 +559,7 @@ def station_map_and_table(event_path, inv_path, subset_ids=[], print_map=True, p
 
         for i in range(len(seeds)):
             # print station distance and azimuth table
-            print('%3i %15s lon %6.2f lat %7.2f delta %6.2f az %6.2f' %
+            print('%3i \t %15s \t lon %7.2f \t\t lat %7.2f \t\t delta %6.2f \t\t az %6.2f' %
                   (i + 1, seeds[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
 
 ###############################################################################################################
@@ -577,119 +577,129 @@ def sumatra_event():
 ###############################################################################################################
 
 def sumatra_waveform_screening(channel):
-
     if channel == 'LHZ':
-        
+
         #
-        
-        waveforms_to_reject = ['G.PEL..LHZ'    ,'II.DGAR.00.LHZ','II.HOPE.00.LHZ','II.PALK.00.LHZ','II.SHEL.00.LHZ',
-                               'IU.ADK.00.LHZ' ,'IU.DAV.00.LHZ' ,'IU.FUNA.00.LHZ','IU.FUNA.10.LHZ','IU.GRFO..LHZ'  ,
-                               'IU.LCO..LHZ'   ,'IU.MBWA.00.LHZ','IU.OTAV.00.LHZ','IU.OTAV.10.LHZ','IU.PMG.00.LHZ' ,
-                               'IU.PMG.10.LHZ' ,'IU.POHA.00.LHZ','IU.PTCN.00.LHZ','IU.RAO.00.LHZ' ,'IU.RSSD.00.LHZ',
-                               'IU.SAML.00.LHZ','IU.SAML.10.LHZ','IU.SDV.00.LHZ' ,'IU.SDV.10.LHZ' ,'IU.TRIS.00.LHZ',
-                               'IU.TRIS.10.LHZ','IU.WAKE.00.LHZ','IU.XMAS.00.LHZ']
-        
-        
+
+        waveforms_to_reject = ['G.PEL..LHZ'    , 'II.DGAR.00.LHZ', 'II.HOPE.00.LHZ', 'II.PALK.00.LHZ',
+                               'II.SHEL.00.LHZ', 'IU.ADK.00.LHZ' , 'IU.DAV.00.LHZ' , 'IU.FUNA.00.LHZ',
+                               'IU.FUNA.10.LHZ', 'IU.GRFO..LHZ'  , 'IU.LCO..LHZ'   , 'IU.MBWA.00.LHZ',
+                               'IU.OTAV.00.LHZ', 'IU.OTAV.10.LHZ', 'IU.PMG.00.LHZ' , 'IU.PMG.10.LHZ' ,
+                               'IU.POHA.00.LHZ', 'IU.PTCN.00.LHZ', 'IU.RAO.00.LHZ' , 'IU.RSSD.00.LHZ',
+                               'IU.SAML.00.LHZ', 'IU.SAML.10.LHZ', 'IU.SDV.00.LHZ' , 'IU.SDV.10.LHZ' ,
+                               'IU.TRIS.00.LHZ', 'IU.TRIS.10.LHZ', 'IU.WAKE.00.LHZ', 'IU.XMAS.00.LHZ']
+
         # waveforms with trim details have been archived here for future reference
         # these waveforms can potentially be used after trimming
-        
+
         #                         ID | trim_starttime | trim_endtime
-        
-        waveforms_to_trim   = [ ['IU.QSPA.20.LHZ', 0       , 4.4800E5],
-                                ['II.ABKT.00.LHZ', 0       , 6.7410E5],
-                                ['G.ATD..LHZ'    , 0       , 2.8400E5],
-                                ['IU.BILL.00.LHZ', 0       , 4.3050E5],
-                                ['II.BORG.00.LHZ', 0       , 3.1700E5],
-                                ['II.BORG.10.LHZ', 0       , 3.1700E5],
-                                ['IU.CHTO.00.LHZ', 0       , 3.6270E5],
-                                ['II.EFI.00.LHZ' , 0       , 2.7500E5],
-                                ['IU.GUMO.10.LHZ', 0       , 1.7980E5],
-                                ['IU.HRV..LHZ'   , 0       , 4.5800E5],
-                                ['IU.MIDW.00.LHZ', 0.7500E4, 9.0720E5],
-                                ['II.PFO.00.LHZ' , 0       , 3.3205E5],
-                                ['II.PFO.10.LHZ' , 0       , 3.3205E5],
-                                ['G.SCZ..LHZ'    , 0       , 1.9300E5],
-                                ['G.TAM..LHZ'    , 0       , 5.5800E5],
-                                ['IU.TIXI.00.LHZ', 0       , 6.6150E5],
-                                ['G.WUS.00.LHZ'  , 0       , 5.8200E5]  ]
-   
+
+        waveforms_to_trim = [['G.ATD..LHZ'    , 0,        2.8400E5],
+                             ['G.SCZ..LHZ'    , 0,        1.9300E5],
+                             ['G.TAM..LHZ'    , 0,        5.5800E5],
+                             ['G.WUS.00.LHZ'  , 0,        5.8200E5],
+                             ['II.ABKT.00.LHZ', 0,        6.7410E5],
+                             ['II.BORG.00.LHZ', 0,        3.1700E5],
+                             ['II.BORG.10.LHZ', 0,        3.1700E5],
+                             ['II.EFI.00.LHZ' , 0,        2.7500E5],
+                             ['II.PFO.00.LHZ' , 0,        3.3205E5],
+                             ['II.PFO.10.LHZ' , 0,        3.3205E5],
+                             ['IU.BILL.00.LHZ', 0,        4.3050E5],
+                             ['IU.CHTO.00.LHZ', 0,        3.6270E5],
+                             ['IU.GUMO.10.LHZ', 0,        1.7980E5],
+                             ['IU.HRV..LHZ'   , 0,        4.5800E5],
+                             ['IU.MIDW.00.LHZ', 0.7500E4, 9.0720E5],
+                             ['IU.QSPA.20.LHZ', 0,        4.4800E5],
+                             ['IU.TIXI.00.LHZ', 0,        6.6150E5]]
+
     elif channel == 'BHZ':
-        
+
         waveforms_to_reject = []
-        waveforms_to_trim   = [[]]
-    
+        waveforms_to_trim = [[]]
+
     return waveforms_to_reject, waveforms_to_trim
+
 
 ###############################################################################################################
 
-def wf_fft(wf,fNyq):
+def wf_fft(wf, fNyq):
     """ Python adaptation of wf_fft.m by Michael West
         Necessary for GEOS626 work
-        
+
         INPUT:
             wf - Numpy array of the data points in your trace
             fNyq - the Nyquist frequency
-        
+
         OUTPUT:
             fft_amp - Numpy array of spectral amplitudes
             fft_phase - Numpy array of phases
             fft_freq - Numpy array of frequencies"""
-    
-    NFFT = int(2**(np.ceil(np.log(len(wf))/np.log(2))))  # Next highest power of 2
-    FFTX = np.fft.fft(wf,n=NFFT)                       # Take fft, padding with zeros.
-    NumUniquePts = int(np.ceil((NFFT+1)/2))
-    FFTX = FFTX[0:NumUniquePts]              # throw out neg frequencies
-    MX = abs(FFTX)                           # Take magnitude of X
-    MX = MX*2                                # Multiply by 2 
-    fft_amp = MX/len(wf) 
-    
-    fft_phase = np.angle(FFTX)               # Take magnitude of X
-    
-    f = (np.arange(NumUniquePts))*2/NFFT            
-    fft_freq = f*fNyq
-    
+
+    NFFT = int(2 ** (np.ceil(np.log(len(wf)) / np.log(2))))  # Next highest power of 2
+    FFTX = np.fft.fft(wf, n=NFFT)  # Take fft, padding with zeros.
+    NumUniquePts = int(np.ceil((NFFT + 1) / 2))
+    FFTX = FFTX[0:NumUniquePts]  # throw out neg frequencies
+    MX = abs(FFTX)  # Take magnitude of X
+    MX = MX * 2  # Multiply by 2
+    fft_amp = MX / len(wf)
+
+    fft_phase = np.angle(FFTX)  # Take magnitude of X
+
+    f = (np.arange(NumUniquePts)) * 2 / NFFT
+    fft_freq = f * fNyq
+
     return fft_amp, fft_phase, fft_freq
+
 
 ###############################################################################################################
 
-def w2fstack(freqs,amps,f1,f2,n,stack='mean'):
-    
-    '''
-    Function used to stack waveforms given frequency and amplitude arrays
-    
-    input arguments -
-    freqs = list of frequencies of each amplitude spectrum
-    amps  = list of amplitudes of each amplitude spectrum
-    f1    = lower limit of the frequency range of interest
-    f2    = upper limit of the frequency range of interest
-    n     = number of points to discretize the frequency range of interest
-    stack = type of statcking - sum, mean, median
-    
-    return arguments -
-    Astack = stacked amplitude spectrum
-    f      = discretized frequency range of interest
-    A      = 2D numpy array of amplitude spectra; individual spectra are oriented along a column
-    '''
-    
-    f  = np.linspace(f1,f2,n)
-    
+def w2fstack(freqs, amps, f1, f2, n, stack='mean'):
+    """
+    Function used to stack amplitude spectra given frequency and amplitude arrays
+    """
+
+    """
+    :type freqs: list of np.array
+    :param freqs: list of frequencies of each amplitude spectrum
+    :type amps: list of np.array
+    :param amps: list of amplitudes of each amplitude spectrum
+    :type f1: float
+    :param f1: lower limit of the frequency range of interest
+    :type f2: float
+    :param f2: upper limit of the frequency range of interest
+    :type n: integer
+    :param n: number of points to discretize the frequency range of interest
+    :type stack: string
+    :param stack: flag to select type of statcking - sum, mean, median
+
+    :return:
+    :type Astack: np.array
+    :param Astack: stacked amplitude spectrum
+    :type f: np.array
+    :param f: discretized frequency range of interest
+    :type A: 2D np.array
+    :param A: 2D array of amplitude spectra; individual spectra are oriented along a column 
+    """
+
+    f = np.linspace(f1, f2, n)
+
     nw = len(freqs)
-    A  = np.zeros((n,nw))
-    
-    for i in range (nw):
-        f0     = freqs[i]
-        A0     = amps[i]
-        A[:,i] = np.interp(f,f0,A0)   
-    
+    A = np.zeros((n, nw))
+
+    for i in range(nw):
+        f0 = freqs[i]
+        A0 = amps[i]
+        A[:, i] = np.interp(f, f0, A0)
+
     if stack == 'sum':
-        Astack = np.sum(A,1)
+        Astack = np.sum(A, 1)
     elif stack == 'mean':
-        Astack = np.mean(A,1)
+        Astack = np.mean(A, 1)
     elif stack == 'median':
-        Astack = np.median(A,1)
+        Astack = np.median(A, 1)
     else:
         print('Error: invalid option provided for stacking')
-    
-    return Astack,f,A
-        
+
+    return Astack, f, A
+
 ############################################################
