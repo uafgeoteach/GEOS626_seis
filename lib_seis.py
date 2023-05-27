@@ -559,7 +559,7 @@ def station_map_and_table(event_path, inv_path, subset_ids=[], print_map=True, p
 
         for i in range(len(seeds)):
             # print station distance and azimuth table
-            print('%3i \t %15s \t lon %7.2f \t\t lat %7.2f \t\t delta %6.2f \t\t az %6.2f' %
+            print('%3i \t %15s \t lon %7.2f \t lat %7.2f \t delta %6.2f \t az %6.2f' %
                   (i + 1, seeds[i], float(slons[i]), float(slats[i]), distance_deg[i], azimuth_deg[i]))
 
 ###############################################################################################################
