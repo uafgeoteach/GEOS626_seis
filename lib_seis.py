@@ -612,13 +612,7 @@ def sumatra_waveform_screening(channel):
                              ['IU.QSPA.20.LHZ', 0,        4.4800E5],
                              ['IU.TIXI.00.LHZ', 0,        6.6150E5]]
 
-    elif channel == 'BHZ':
-
-        waveforms_to_reject = []
-        waveforms_to_trim = [[]]
-
     return waveforms_to_reject, waveforms_to_trim
-
 
 ###############################################################################################################
 
