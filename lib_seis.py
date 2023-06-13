@@ -10,8 +10,6 @@ import numpy as np
 from itertools import product, combinations
 from obspy.core import UTCDateTime
 from obspy.core.event import read_events
-from obspy.core.inventory import Inventory
-from obspy.core.inventory import read_inventory
 from obspy.geodetics import gps2dist_azimuth
 
 ###############################################################################################################
@@ -268,28 +266,17 @@ def globefun3(R,lat,lon,bool_point,lc, fig,ax):
     
 ###############################################################################################################
 
-def locations_and_tags(event_path,inv_path,subset_ids=[]):
+def locations_and_tags(st):
 
     '''
-    function to extract source location (longitudes, latitudes), station locations (longitudes, latitudes),
-    and station tags for a provided subset of a list of stations. If a subset list is not provided, all
-    stations will be used.
+    function to extract station locations (longitudes, latitudes), and station tags from obspy stream objects.
     '''
 
     '''
-    :type event_path: string
-    :param event_path: path to event.xml file
-    :type inv_path: string
-    :param inv_path: path to inv.xml file
-    :type subset_ids: list of strings
-    :param subset_ids: list of a subset of all seed ids to be used further,
-    if no input is provided as subset_ids, all seed ids will be used
+    :type st: obspy.core.stream.Stream
+    :param st: Stream objects containing waveforms and associated metadata
 
     :return:
-    :type elon: float
-    :param elon: event longitude
-    :type elat: float
-    :param elat: event latitude
     :type slons: list of floats
     :param slons: list of station longitudes
     :type slats: list of floats
@@ -300,42 +287,18 @@ def locations_and_tags(event_path,inv_path,subset_ids=[]):
     :param seeds: list of seed ids (network.station.location.channel)
     '''
 
-    class SEED_ID_Error(Exception):
-        pass
-
     slons = []
     slats = []
     stags = []
     seeds = []
 
-    inv = read_inventory(inv_path)
+    for tr in st:
+        slons.append(tr.stats.sac['stlo'])
+        slats.append(tr.stats.sac['stla'])
+        stags.append(tr.stats.network+'.'+tr.stats.station)
+        seeds.append(tr.id)
 
-    if subset_ids:
-        stations = []
-        inv_subset = Inventory()
-        for seed_id in subset_ids:
-            net, sta, _, _ = seed_id.split(".")
-            if sta not in stations:
-                inv_select = inv.select(network = net, station = sta)
-                if not inv_select:
-                    raise SEED_ID_Error(f'{seed_id} not in inventory')
-                inv_subset += inv_select
-                stations.append(sta)
-        inv = inv_subset
-
-    for net in inv:
-        for sta in net:
-            for cha in sta:
-                slons.append(sta.longitude)
-                slats.append(sta.latitude)
-                stags.append(f'{net.code}.{sta.code}')
-                seeds.append(f'{net.code}.{sta.code}.{cha.location_code}.{cha.code}')
-
-    clog = read_events(event_path)
-    elon = clog[0].origins[0].longitude
-    elat = clog[0].origins[0].latitude
-
-    return elon, elat, slons, slats, stags, seeds
+    return slons, slats, stags, seeds
 
 ###############################################################################################################
 
@@ -506,30 +469,37 @@ def sph2cart(azimuth,elevation,r):
 
 ###############################################################################################################
 
-def station_map_and_table(event_path, inv_path, subset_ids=[], print_map=True, print_table=True):
+def station_map_and_table(st, event_path=[], elon=0, elat=0, print_map=True, print_table=True):
 
     '''
     function to do the following -
     - plot global map of given event location and stations
     - print table of station distances and azimuths from the event location
-    - if a subset of a list of stations is provided, only the subset is used
+    - if event location is not provided either through an event path or as elon and elat, (0,0) will be used as
+      the event location
     '''
 
     '''
+    :type st: obspy.core.stream.Stream
+    :param st: Stream objects containing waveforms and associated metadata
     :type event_path: string
     :param event_path: path to event.xml file
-    :type inv_path: string
-    :param inv_path: path to inv.xml file
-    :type subset_ids: list of strings
-    :param subset_ids: list of a subset of all seed ids to be used further,
-    if no input is provided as subset_ids, all seed ids will be used
+    :type elon: float
+    :param elon: event longitude
+    :type elat: float
+    :param elat: event latitude
     :type print_map: boolean 
     :param print_map: a map is printed if true
     :type print_table: boolean
     :param print_table: a table is printed if true
     '''
 
-    elon, elat, slons, slats, stags, seeds = locations_and_tags(event_path, inv_path, subset_ids=subset_ids)
+    slons, slats, stags, seeds = locations_and_tags(st)
+
+    if event_path:
+        clog = read_events(event_path)
+        elon = clog[0].origins[0].longitude
+        elat = clog[0].origins[0].latitude
 
     if print_map:
         print('\nPlotting source receiver map ....\n')
