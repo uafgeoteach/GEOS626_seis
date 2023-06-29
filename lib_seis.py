@@ -546,46 +546,6 @@ def sumatra_event():
 
 ###############################################################################################################
 
-def sumatra_waveform_screening(channel):
-    if channel == 'LHZ':
-
-        #
-
-        waveforms_to_reject = ['G.PEL..LHZ'    , 'II.DGAR.00.LHZ', 'II.HOPE.00.LHZ', 'II.PALK.00.LHZ',
-                               'II.SHEL.00.LHZ', 'IU.ADK.00.LHZ' , 'IU.DAV.00.LHZ' , 'IU.FUNA.00.LHZ',
-                               'IU.FUNA.10.LHZ', 'IU.GRFO..LHZ'  , 'IU.LCO..LHZ'   , 'IU.MBWA.00.LHZ',
-                               'IU.OTAV.00.LHZ', 'IU.OTAV.10.LHZ', 'IU.PMG.00.LHZ' , 'IU.PMG.10.LHZ' ,
-                               'IU.POHA.00.LHZ', 'IU.PTCN.00.LHZ', 'IU.RAO.00.LHZ' , 'IU.RSSD.00.LHZ',
-                               'IU.SAML.00.LHZ', 'IU.SAML.10.LHZ', 'IU.SDV.00.LHZ' , 'IU.SDV.10.LHZ' ,
-                               'IU.TRIS.00.LHZ', 'IU.TRIS.10.LHZ', 'IU.WAKE.00.LHZ', 'IU.XMAS.00.LHZ']
-
-        # waveforms with trim details have been archived here for future reference
-        # these waveforms can potentially be used after trimming
-
-        #                         ID | trim_starttime | trim_endtime
-
-        waveforms_to_trim = [['G.ATD..LHZ'    , 0,        2.8400E5],
-                             ['G.SCZ..LHZ'    , 0,        1.9300E5],
-                             ['G.TAM..LHZ'    , 0,        5.5800E5],
-                             ['G.WUS.00.LHZ'  , 0,        5.8200E5],
-                             ['II.ABKT.00.LHZ', 0,        6.7410E5],
-                             ['II.BORG.00.LHZ', 0,        3.1700E5],
-                             ['II.BORG.10.LHZ', 0,        3.1700E5],
-                             ['II.EFI.00.LHZ' , 0,        2.7500E5],
-                             ['II.PFO.00.LHZ' , 0,        3.3205E5],
-                             ['II.PFO.10.LHZ' , 0,        3.3205E5],
-                             ['IU.BILL.00.LHZ', 0,        4.3050E5],
-                             ['IU.CHTO.00.LHZ', 0,        3.6270E5],
-                             ['IU.GUMO.10.LHZ', 0,        1.7980E5],
-                             ['IU.HRV..LHZ'   , 0,        4.5800E5],
-                             ['IU.MIDW.00.LHZ', 0.7500E4, 9.0720E5],
-                             ['IU.QSPA.20.LHZ', 0,        4.4800E5],
-                             ['IU.TIXI.00.LHZ', 0,        6.6150E5]]
-
-    return waveforms_to_reject, waveforms_to_trim
-
-###############################################################################################################
-
 def wf_fft(wf, fNyq):
     """ Python adaptation of wf_fft.m by Michael West
         Necessary for GEOS626 work
