@@ -60,7 +60,6 @@ def xlm(th, LL):
     Python adaptation by Amanda McPherson, 2021
     """
 
-    num = len(th)
     X = np.cos(th)
 
     m = np.arange(LL + 1)
@@ -103,8 +102,6 @@ def ylm(th, phi, L, M):
     Python adaptation by Amanda McPherson, 2021
     """
 
-    num = len(th)
-
     if M == 0 and L == 0:
         raise Exception('L=0, M=0 is the breathing mode, which is spherically symmetric')
 
@@ -125,7 +122,7 @@ def ylm(th, phi, L, M):
 
 ###############################################################################################################
 
-def ylmplots_fun():
+def ylmplots_fun(L, M, th, ph, npts, thtick, numc):
     """
     Plots Ylm real spherical harmonic functions, either as a 3D figure or a 2D contour.
     ylmplots.m by Carl Tape, 2004-04-13
@@ -135,6 +132,8 @@ def ylmplots_fun():
 
     stit = 'L=%i, M=%i : (%i, %i)' % (L, M, 2 * M, L - M + 1)
     lat = np.pi / 2 - th
+
+    alphcent = ylm(th, ph, L, M)
 
     X, Y, Z = griddataX(ph, lat, alphcent, npts)
     zmax = np.amax(abs(Z))
