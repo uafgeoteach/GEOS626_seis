@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from itertools import product, combinations
+from obspy.clients.fdsn import Client
 from obspy.core import UTCDateTime
 from obspy.core.event import read_events
 from obspy.geodetics import gps2dist_azimuth
@@ -365,8 +366,49 @@ def matlab2datetime(matlab_datenum):
        
         day = dt.datetime.fromordinal(int(matlab_datenum))
         dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
-        return day + dayfrac    
+        return day + dayfrac
+
+###############################################################################################################
+
+def response(tr, starttime, endtime, fft_freq, output, start_stage, end_stage):
+
+    '''
+    recursive function to retrieve instrument response for a given ObsPy trace
+    '''
+
+    '''
+    :type tr: obspy.core.trace.Trace
+    :param tr: object containing a seismic trace (seismogram) with corresponding metadata 
+    :type starttime: UTCDateTime 
+    :param starttime: start time to trim the trace from
+    :type endtime: UTCDateTime
+    :param endtime: end time to trim the trace to
+    :type fft_freq: numpy.ndarray
+    :param fft_freq: discrete frequencies to calculate response for
+    :type output: string
+    :param output: output units - 'DISP', 'VEL', 'ACC', 'DEF'
+    :type start_stage: integer
+    :param start_stage: stage sequence number of first stage that will be used disregarding all earlier stages
+    :type end_stage: integer
+    :param end_stage: stage sequence number of last stage that will be used disregarding all later stages
     
+    :return: 
+    :type I: numpy.ndarray
+    :param I: instrument response
+    '''
+
+    try:
+        client = Client("IRIS")
+        network, station, location, channel = tr.id.split('.')
+        inv = client.get_stations(network=network, station=station, location=location, channel=channel,
+                                                        level="response", starttime=starttime, endtime=endtime)
+        I = inv[0][0][0].response.get_evalresp_response_for_frequencies(fft_freq, output=output,
+                                                                  start_stage=start_stage, end_stage=end_stage)
+    except:
+        I = response(tr, starttime, endtime, fft_freq, output, start_stage, end_stage)
+
+    return I
+
 ###############################################################################################################
 
 def seis2GR(mag, dmag, idisplay=1, ifigure=0):
@@ -602,25 +644,25 @@ def w2fstack(freqs, amps, f1, f2, n, stack='mean'):
     :type f: np.array
     :param f: discretized frequency range of interest
     :type A: 2D np.array
-    :param A: 2D array of amplitude spectra; individual spectra are oriented along a column 
+    :param A: 2D array of amplitude spectra; individual spectra are oriented along rows 
     """
 
     f = np.linspace(f1, f2, n)
 
-    nw = len(freqs)
-    A = np.zeros((n, nw))
+    n_waveforms = len(freqs)
+    A = np.zeros((n_waveforms, n))
 
-    for i in range(nw):
+    for i in range(n_waveforms):
         f0 = freqs[i]
         A0 = amps[i]
-        A[:, i] = np.interp(f, f0, A0)
+        A[i,:] = np.interp(f, f0, A0)
 
     if stack == 'sum':
-        Astack = np.sum(A, 1)
+        Astack = np.sum(A, 0)
     elif stack == 'mean':
-        Astack = np.mean(A, 1)
+        Astack = np.mean(A, 0)
     elif stack == 'median':
-        Astack = np.median(A, 1)
+        Astack = np.median(A, 0)
     else:
         print('Error: invalid option provided for stacking')
 
