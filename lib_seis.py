@@ -370,7 +370,7 @@ def matlab2datetime(matlab_datenum):
 
 ###############################################################################################################
 
-def response(tr, starttime, endtime, fft_freq, output, start_stage, end_stage):
+def response(tr, fft_freq, output, start_stage, end_stage):
 
     '''
     recursive function to retrieve instrument response for a given ObsPy trace
@@ -379,10 +379,6 @@ def response(tr, starttime, endtime, fft_freq, output, start_stage, end_stage):
     '''
     :type tr: obspy.core.trace.Trace
     :param tr: object containing a seismic trace (seismogram) with corresponding metadata 
-    :type starttime: UTCDateTime 
-    :param starttime: start time to trim the trace from
-    :type endtime: UTCDateTime
-    :param endtime: end time to trim the trace to
     :type fft_freq: numpy.ndarray
     :param fft_freq: discrete frequencies to calculate response for
     :type output: string
@@ -399,13 +395,19 @@ def response(tr, starttime, endtime, fft_freq, output, start_stage, end_stage):
 
     try:
         client = Client("IRIS")
+
         network, station, location, channel = tr.id.split('.')
+        starttime = tr.stats.starttime
+        endtime = tr.stats.endtime
+
         inv = client.get_stations(network=network, station=station, location=location, channel=channel,
                                                         level="response", starttime=starttime, endtime=endtime)
+
         I = inv[0][0][0].response.get_evalresp_response_for_frequencies(fft_freq, output=output,
                                                                   start_stage=start_stage, end_stage=end_stage)
+
     except:
-        I = response(tr, starttime, endtime, fft_freq, output, start_stage, end_stage)
+        I = response(tr, fft_freq, output, start_stage, end_stage)
 
     return I
 
