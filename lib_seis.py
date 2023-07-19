@@ -580,13 +580,17 @@ def station_map_and_table(st, event_path=[], elon=0, elat=0, print_map=True, pri
 
 def sumatra_event():
 
-    event_sumatra = dict( origin_time      = UTCDateTime('2004,12,26,00,58,53'),
-                          event_latitude   = 3.09,
-                          event_longitude  = 94.26,
-                          event_depth_km   = 30,
-                          event_magnitude  = 9.1 )
+    # M 9.1 - 2004 Sumatra - Andaman Islands Earthquake
+    # 2004-12-26 00:58:53 (UTC)3.295°N 95.982°E30.0 km depth
+    # https://earthquake.usgs.gov/earthquakes/eventpage/official20041226005853450_30
+
+    event = dict( origin_time      = UTCDateTime('2004,12,26,00,58,53'),
+                  event_latitude   = 3.295,
+                  event_longitude  = 95.982,
+                  event_depth_km   = 30,
+                  event_magnitude  = 9.1 )
     
-    return event_sumatra
+    return event
 
 ###############################################################################################################
 
