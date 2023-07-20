@@ -53,7 +53,7 @@ IU.QSPA.30.LHZ
 \end{spacing}
 %
 %(You can see these lines when running \verb+sumatra_hf.ipynb+.)
-You do not need more than one seismogram for each site. In general the multiple listings represent different seismometers being used at different vertical locations, like at the surface and down a deep borehole.
+You do not need more than one seismogram for each site. In general the multiple listings represent different seismometers being used at different vertical locations, like at the surface and down a deep borehole. In fact, different networks might have a station at the same location.
 
 \item For such a big event as Sumatra, there are many seismograms that are ``clipped'' or distorted due to an erroneous response of the seismometer.
 
@@ -65,8 +65,8 @@ You do not need more than one seismogram for each site. In general the multiple 
 \begin{tabular}{cll}
 \hline
 G   & Geoscope      & Institut de Physique du Globe de Paris \\
-II  & IRIS/IDA      & Scripps Institute of Oceanography \\
-IU  & GSN-IRIS/USGS & Albuquerque Seismological Laboratory \\
+II  & GSN-IRIS/IDA  & IRIS and Scripps Institute of Oceanography \\
+IU  & GSN-IRIS/USGS & IRIS and USGS Albuquerque Seismological Laboratory \\
 \hline
 \end{tabular} \\
 
@@ -109,15 +109,15 @@ Note that \verb+remove_response+ is set to \verb+False+, so these waveforms are 
 \item Run the relevant cells in \tfile\ to fetch the database of raw LHZ waveforms.
 %If successful, you should see a large set of seismograms displayed.
 
-Your seismograms will be saved in the folder \verb+datawf/sumatra_LHZ_raw/SAC/+.
+Your seismograms will be saved in the folder \verb+datawf/sumatra_LHZ_raw/+.
 
-\item Examine the list of waveform IDs to be rejected. Explain the four parts that make up each waveform ID. (See also \verb+lab_record_section.pdf+.) Note that the order of the four parts is critical.
+\item Explain the four parts that make up each waveform ID. (See also \verb+lab_record_section.pdf+.) Note that the order of the four parts is critical.
 
-\item Examine the seismograms that will be rejected from the analysis by running the relevant cells. Describe three ``errors'' in these seismograms.
+\item In the relevant code cell, set the flag \verb+plot_seismogram+ to \verb+True+ and examine the seismograms. Describe three ``errors'' in the seismograms that should probably be rejected from the analysis.
 
 %Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
 
-\item Browse the amplitude spectra of all the remaining waveforms and pick a subset of {\bf at least 20 stations} for the analysis of normal modes. (The more the better!)
+\item In the relevant code cell, set the flag \verb+plot_spectra+ to \verb+True+ and browse through all seismograms and their corresponding amplitude spectra together. Pick a subset of {\bf at least 20 stations} for the analysis of normal modes. (The more the better!)
 %Pick only one location for a given station.
 %You can identify the subset by the list of indices in \verb+ipick+.
 
@@ -131,9 +131,9 @@ The stations should be selected based on high signal-to-noise within the frequen
 
 \item Run relevant cells to make a source-station plot for the selected stations and a table for the station distances and azimuths.
 
-\item Run the data download for your selected subset of seismograms.
-
-These will have the response removed to acceleration. Your seismograms will be saved locally in the folder \verb+datawf/sumatra_LHZ_acc/SAC+.
+\item Run the manual response removal on your selected subset of seismograms and analyze their spectra.
+These seismograms will have the response removed to acceleration.
+%Your seismograms will be saved locally in the folder \verb+datawf/sumatra_LHZ_acc/+.
 % ZZZ Acceleration spectra are preferred output for analyzing normal modes.
 
 \end{enumerate}

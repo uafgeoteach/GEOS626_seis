@@ -39,7 +39,14 @@ Last compiled: \today
 
 \begin{itemize}
 
-\item You will use \tfile. The example station is CAN, which is in Canberra, Australia, and featured in \citet[][Figure~1]{Park2005}.
+\item You will use \tfile. The example stations are from three different networks:
+%
+\begin{itemize}
+\item G.CAN, which is in Canberra, Australia, and featured in \citet[][Figure~1]{Park2005}. G = Geoscope network.
+\item II.ALE, which is in Alert, Nunavut, Canada. II = GSN-IRIS/IDA network.
+\item IU.ANMO, which is in Albuquerque, New Mexico. IU = GSN-IRIS/USGS network.
+\end{itemize}
+
 
 %---------
 
@@ -73,7 +80,7 @@ Overview of where seismic data comes from: \citet{RinglerBastien2020}
 
 %---------
 
-\item Aside: Two seminal advances in seismometry were the creation of the forced-feedback seismometer \citep{WielandtStreckeisen1982} and a modified feedback circuit to enable very broadband capabilities \citep{WielandtSteim1986}. The seismometer featured in our lab is an STS-1, which is named after Streckeisen, who started a company to build seismometers.
+\item Aside: Two seminal advances in seismometry were the creation of the forced-feedback seismometer \citep{WielandtStreckeisen1982} and a modified feedback circuit to enable very broadband capabilities \citep{WielandtSteim1986}. The CAN seismometer featured in our lab is an STS-1, which is named after Streckeisen, who started a company to build seismometers.
 
 \end{itemize}
 
@@ -105,7 +112,7 @@ For most theoretical derivations, $\omega = 2\pi f$ tends to simplify the notati
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \section{Computing and plotting instrument response, $I(\omega)$}
 
 Run \tfile, which produces \refFigab{fig1}{fig3}\footnote{The versions of the figures in \refFigab{fig1}{fig3} were generated in Matlab and differ somewhat from those that appear in the Python notebook}. {\bf Examine the figures and read the code in order to understand what is being done and shown.}
@@ -169,6 +176,9 @@ We see this in \refFig{fig2}. Consider the flat segment in $I_v(\omega)$. Look a
 
 For $f > \fnyq = 0.5$~Hz we see that the phase response is quite complicated (this is the finite-impulse response filter), and the amplitude response declines to $10^{-5}$. As a general rule, you need to be very careful if you are looking at signals with frequencies above $\fnyq$.
 
+\item Now set \verb+picked_waveform+ to select II.ALE and examine all the plots again.
+
+\item Now set \verb+picked_waveform+ to select IU.ANMO and examine all the plots again.
 
 \end{itemize}
 
@@ -191,6 +201,8 @@ What do the functions \verb+angle+ and \verb+abs+ do to these?
 \item Referring to the pole-zero file (\refApp{sec:pz}), what are the input and output units for this instrument response?
 
 \item Referring to the pole-zero file (\refApp{sec:pz}), what is the time interval over which this instrument response is valid?
+
+\item How are the responses for II.ALE and IU.ANMO different from G.CAN?
 
 \end{enumerate}
 
