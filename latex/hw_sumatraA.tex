@@ -93,6 +93,22 @@ There are three relevant origin times. The first is the PDE (Preliminary Determi
 % 2004-12-26 00:58:53.450 UTC
 % https://earthquake.usgs.gov/earthquakes/eventpage/official20041226005853450_30/origin/detail
 
+\item Determining the magnitude of a large earthquake turns out to be very difficult! In the case of the 2004 earthquake, here are some examples:
+%
+\begin{enumerate}
+\item 8.9 listed in the CMTSOLUTION of the GCMT catalog. (If we calculate $M_0$ from $M_{ij}$ via \citet{SilverJordan1982}, then $\mw$ from $M_0$ via \citet{Kanamori1977}, we get $\mw = 8.9974$, which rounds to 9.0.)
+
+\item 9.1 is the official listing from USGS. This is rounded from 9.15 from \citet{Duputel2012}, which is based on the W phase.
+
+\item 9.14 is via $M_0 = 6.5 \times 10^{22}$~N-m of the finite source model by Chen Ji (Model III) from \citet{Ammon2005}.
+
+\item 9.2 is from \citet{Banerjee2005}, which is based on static displacements.
+
+\item 9.3 is via $M_0 = 1 \times 10^{23}$~N-m (9.2660) from \citet{SSteinOkal2005}, which is based on amplitudes of the longest-period modes excited by the earthquake.
+\end{enumerate}
+%
+We will refer to the magnitude as 9.2, but most listings online follow the USGS value of 9.1 (as do our notebooks). Also, the listed numbers depend on how moment $M_0$ is calculated from $M_{ij}$ entries, how $\mw$ is calculated from moment, and how people round their numbers.
+
 \item Background reading:
 
 \begin{itemize}
@@ -117,7 +133,7 @@ There are three relevant origin times. The first is the PDE (Preliminary Determi
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 1 (0.5). Complex numbers and functions}
 
 \begin{itemize}
@@ -303,7 +319,7 @@ What is the slope of the acceleration spectrum $A_2(\omega)$ in log-log space?
 
 %------------------------
 
-\pagebreak
+%\pagebreak
 \section*{Problem 2 (3.5). Deconvolving the instrument response}
 
 Run \tfileresponse.
@@ -340,7 +356,7 @@ Hint: Aftershocks would be one feature. List three other features.
 
 %-------------------
 
-\item (1.0) The Fourier tranform is computed for you as \verb+C+.
+\item (1.0) The Fourier transform is computed for you as \verb+C+.
 \begin{enumerate}
 \item (0.3) Plot the full amplitude spectrum $|C(\omega)|$.
 %use \verb+plt.axis('tight')+ to see the full limits.
@@ -409,7 +425,7 @@ For both plots, adjust the $y$-axis limits so that you can see the details of th
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 3 (2.0). Spectral analysis of noise}
 
 Run \tfilenoise. This will generate a time series at CAN for 10~days prior to the Sumatra earthquake.
@@ -450,7 +466,7 @@ Tip: divide the array \verb+times+ by 3600 to plot in hours.
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \section*{Problem 4 (4.0). Spectral analysis of the Sumatra earthquake recorded at Canberra}
 
 For this problem we can analyze the raw records, since we are interested here in the basic characteristics of the amplitude spectra, but not the actual values. In other words, you do not need to deconvolve the instrument response.
@@ -504,12 +520,12 @@ If you want to prepare for a future homework problem, then follow the filtering 
 
 %------------------------
 
-%\pagebreak
+\pagebreak
 \subsection*{Problem} \howmuchtime\
 
 %-------------------------------------------------------------
 %\pagebreak
-\bibliography{uaf_abbrev,uaf_main,uaf_carletal}
+\bibliography{uaf_abbrev,uaf_main,uaf_source,uaf_carletal}
 %-------------------------------------------------------------
 
 %\clearpage

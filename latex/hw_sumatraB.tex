@@ -6,8 +6,8 @@
 \newcommand{\tfileprem}{{\tt modes\_PREMobs.ipynb}}
 
 \newcommand{\tfilemodes}{{\tt hw\_sumatraB\_modes.ipynb}}
-\newcommand{\tfilelf}{{\tt hw\_sumatraB\_lf.ipynb}}
-\newcommand{\tfilehf}{{\tt hw\_sumatraB\_hf.ipynb}}
+\newcommand{\tfilelf}{{\tt hw\_sumatraB\_surf\_lf.ipynb}}
+\newcommand{\tfilehf}{{\tt hw\_sumatraB\_P\_hf.ipynb}}
 \newcommand{\tfilenearlf}{{\tt hw\_sumatraB\_near\_lf.ipynb}}
 \newcommand{\tfileplf}{{\tt hw\_sumatraB\_P\_lf.ipynb}}
 \newcommand{\tfilephfcounts}{{\tt hw\_sumatraB\_P\_hf\_counts.ipynb}}
@@ -60,13 +60,13 @@ The purpose of this problem set is to handle a large data set of seismograms and
 \item Make sure you have completed:
 %
 \begin{enumerate}
-\item \verb+lab_record_section.pdf+, for getting waveforms and plotting record sections.
-%Be familiar with what \verb+plotw_rs.py+ is doing.
-%Be sure you understand what a bandpass filter is.
-
 \item \verb+lab_response.pdf+, on instrument response
 
 \item \verb+lab_spherical_harmonics.pdf+, on normal modes and spherical harmonic functions.
+
+\item \verb+lab_record_section.pdf+, for getting waveforms and plotting record sections.
+%Be familiar with what \verb+plotw_rs.py+ is doing.
+%Be sure you understand what a bandpass filter is.
 
 \item \verb+lab_sumatraB.pdf+, on sumatra waveforms
 \end{enumerate}
@@ -81,20 +81,19 @@ The purpose of this problem set is to handle a large data set of seismograms and
 %Overview
 %\label{tab:all}
 %}}
-\hspace{-1.5cm}
-\begin{tabular}{||c|c|c|c|c|c|c|l||}
+\hspace{-2.5cm}
+\begin{tabular}{||c|l|c|c|c|c|c|c||}
 \hline
-& & & & \multicolumn{3}{c|}{Number of} & \\
-Problem & Channel & Units & Duration & \multicolumn{3}{c|}{stations} & Notebook \\ \cline{5-7}
-& & & & all & max & min & \\ \hline
-1-2 & LHZ & & 10 days & 160 & & 20 & \tfilelab\ \\ \hline
-1-3 to 1-7 & LHZ & & 10 days & 160 & & 20 & \tfilelab\ \\
-& & & & & & & \tfilemodes\ \\ \hline
-2   & BHZ & & -1 hr to +4 hr & 180 & 50 & 10 & \tfilehf\ \\ \hline
-3   & LHZ & & -1 hr to +4 hr &     & 33 & 3 & \tfilelf\ \\ \hline
-4-1 & LHZ & & -1 hr to +4 hr & & & 5 & \tfilenearlf\ \\ \hline
-4-2 & BHZ & & -1 hr to +4 hr & & & 16 & \tfileplf\ \\ \hline
-4-3 & BHZ & counts & -1 hr to +4 hr & 160 & & & \tfilephfcounts\ \\ \hline
+& &  & & & Number of & \multicolumn{2}{c||}{Number of} \\
+Problem & Notebook & Channel & Units & Duration & waveforms & \multicolumn{2}{c||}{stations} \\ \cline{7-8}
+&    & & & & downloaded & max & min \\ \hline
+%1-2 & \tfilelab\       & LHZ & counts & 10.5 days & 169 & 60 & 20 \\ \hline
+1    & \tfilemodes\     & LHZ & acc & 10.5 days & 169 & 60 & 20 \\ \hline
+2    & \tfilehf\        & BHZ & disp & -1 hr to +4 hr & 73 & 51 & 10 \\ \hline
+3    & \tfilelf\        & LHZ & vel & -1 hr to +4 hr & 40 & 31 & 3 \\ \hline
+4-1  & \tfilenearlf\    & LH* & disp, counts  & -1 hr to +4 hr & 33 & 5 & 4  \\ \hline
+4-2  & \tfileplf\       & LHZ & disp & -1 hr to +4 hr & 70 & 16 & 16 \\ \hline
+4-3  & \tfilephfcounts\ & BHZ & counts & -1 hr to +4 hr & 178 & 6 & 2 \\ \hline
 \hline
 \end{tabular}
 %\end{table}
@@ -155,7 +154,7 @@ The template script is \tfilemodes.
 %See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
 
 \begin{enumerate}
-\item (0.5) Recall the modes spectrum that we computed for station CAN that emulated Figure~1 of \citet{Park2005}. Having done the homework on toroidal modes, you should now have a better understanding of what the modes peaks are.
+\item (0.5) Recall the modes spectrum that we computed for station CAN that emulated Figure~1 of \citet{Park2005} ({\em Science} paper). Having done the homework on toroidal modes, you should now have a better understanding of what the modes peaks are.
 
 Run \verb+modes_PREMobs.ipynb+ to see the observed modes that were used in constructing PREM back in 1980 \citep{PREM}. Keep in mind that these observations were identified from dozens of different earthquakes and hundreds of different stations.
 The dispersion plot (\refFig{fig:premmodes}) identifies the frequency range 0.2--1.0~mHz that is used in Figure~1 of \citet{Park2005}, which is a spectrum of the {\bf vertical component} of ground motion for one station for one earthquake.
@@ -180,16 +179,14 @@ Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mo
 
 %---------
 
-\item (0.5) Copy your list of waveform IDs from \tfilelab\ into \tfilemodes, then recompute the spectra and plot them.
+\item (0.5) Copy your list of seed IDs (\verb+picked_waveforms+) from \tfilelab\ into the appropriate cell in \tfilemodes, and run the script to compute the manually-response-removed acceleration spectra and plot them.
 %
 \begin{enumerate}
 % ZZZ THIS IS ALREADY DONE IN THE LAB.
 \item (0.3) %Using your list of waveform IDs from \tfilelab, recompute the spectra and plot them.
 %Modify \verb+ipick+ and plot the spectrum for each station you selected in \verb+lab_sumatra+.
 %To save paper, use something like a $5 \times 4$ subplot.
-Display a map of your stations, and display the text table of information (names, distances, azimuths, etc).
-
-Show a list of station names, along with the distance and azimuth from the Sumatra epicenter to each station.
+Display a map of your stations, and display the text table of information (station names, distances, azimuths, etc).
 
 \item (0.2) Extract the amplitude of the \snl{0}{0} peak for all your stations. \\
 List the median value.
@@ -333,7 +330,7 @@ Notes:
 
 \item (0.4) Create a new record section that contains envelopes, similar to what is shown in \citet[][Figure~1d]{Ni2005}.
 
-See \verb+hwsol_sumatraA.pdf+ for lines of code. This will also require you to update the arguments \verb+pysep_path+ and \verb+st+ so that you can feed it your own stream of envelopes, modified from the original stream.
+See \verb+hwsol_sumatraA.pdf+ for lines of code. This will also require you to provide appropriately modified streams to pysep's record section plotting tool.
 
 \end{enumerate}
 
@@ -364,13 +361,14 @@ List the station name, distance $\Delta$ (degrees), and azimuth $\alpha$ (degree
 \pagebreak
 \section*{Problem 3 (1.0). \ptag\ Directivity II}
 
-Here you will download a new, small data set; see \tfilelab\ for examples. Choose your epicentral distance range appropriately.
+Here you will download a new, small data set.
+Choose your epicentral distance range appropriately.
 
 \begin{enumerate}
 \item (0.4) Modify \tfilelf\ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
 
 % ZZZ PYTHON ZZZ
-Optional 1: Quantify the amplitude ratios by using the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave. This will require designating time windows for R1 and R2, then calculating the maximum (see \verb+np.extract+ and \verb+np.max+).
+Optional 1: Quantify the amplitude ratios by using the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave. This will require designating time windows for R1 and R2, then calculating the maximum.
 
 Optional 2: Use a larger subset of stations to demonstrate the key point. (What distance range do you want to specify?)
 
@@ -385,7 +383,8 @@ Hint: Think about the finite source model shown in \refFig{fig:sumatra_chen}.
 %\pagebreak
 \section*{Problem 4 (1.5). Miscellaneous}
 
-Here you will download a new, small data set; see \tfilelab\ for examples. Choose your epicentral distance range appropriately.
+Here you will download a new, small data set.
+Choose your epicentral distance range appropriately.
 %In this problem, you will find it helpful to use an appropriate input for \verb+stasub+ so that \verb+client.get_waveforms+ will return only a subset of stations/waveforms.
 
 \begin{enumerate}
@@ -396,15 +395,16 @@ Note that here we ask for network IC as well, which will provide station IC.LSA.
 %Note: Use \verb+cutoff = [];+ and \verb+iint=0+ when calling \verb+getwaveform+; all filtering and integration can be applied within the plotting script (\verb+plotw_rs.m+).
 %
 \begin{enumerate}
-\item (0.4) Include plots of seismograms (or a record section) for raw data.
+\item (0.4) Include plots of seismograms (or a record section) for instrument-response deconvolved.
 
-\item (0.4) Include plots of seismograms (or a record section) for instrument deconvolved.
+\item (0.4) Also, include plots of seismograms (or a record section) for raw data. You may have to re-download the data.
 
 \item (0.2) How different are the waveform shapes and amplitudes between the raw and instrument-response-deconvolved versions?
 
 \item (0.0) On the basis of your results (notably the shapes of the filtered waveforms), can you infer whether the seismograms in \citet{Ammon2005} were instrument deconvolved or not?
 \end{enumerate}
 %
+\iffalse
 Notes:
 %
 \begin{itemize}
@@ -414,6 +414,7 @@ Notes:
 %\item Converting to displacement is trivial (see \verb+plotw_rs.py+). If you use \verb+plotw_rs.py+, then you may want to output the modified (\ie filtered) \verb+w+ to analyze.
 
 \end{itemize}
+\fi
 
 %------------
 
