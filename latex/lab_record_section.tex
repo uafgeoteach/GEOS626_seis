@@ -45,7 +45,7 @@ The main purpose is to create several different plots of seismic record sections
 
 The bandpass filter that is applied to the seismograms can have a dramatic effect on what is visible. The frequency limits of the bandpass is one of several important choices that are needed when plotting record sections.
 
-\item The two main procedures are executed using the software package PySep (\url{https://adjtomo.github.io/pysep/}), which uses ObsPy \citep{obspy2010,obspy2011,obspy2015}.
+\item The two main procedures are executed using the software package PySep (\url{https://pysep.readthedocs.io/en/devel/index.html}), which uses ObsPy \citep{obspy2010,obspy2011,obspy2015}.
 
 \item We will {\em not} be removing instrument responses, as we did in \verb+lab_response.pdf+. However, removing the instrument response can easily be achieved with the same tools. The two reasonse we do not remove the responses are: 1) it takes a bit longer, computationally, and 2) it can significantly distort the shape of the unfiltered waveforms, especially ones that are ``odd,'' which, here, we are interested in.
 
@@ -83,7 +83,7 @@ Hint: find the online documentation.
 
 % ZZZ master branch documentation
 \scriptsize
-\url{https://adjtomo.github.io/pysep/autoapi/pysep/recsec/index.html#pysep.recsec.RecordSection}
+\url{https://pysep.readthedocs.io/en/devel/autoapi/pysep/recsec/index.html#pysep.recsec.RecordSection}
 \normalsize
 
 Also you can experiment with adding \verb+_r+ to reverse the sorting order; for example, for \verb+alphabetical_r+ the sorting will go from Z to A.
