@@ -24,9 +24,6 @@ def surf_stress_love(k0, omega, rspan, crho, cmu, mrho, mmu, cthick, max_step=5e
         WT[1,-1] = stress value at the Earth's surface (r = rspan[1])
         [WT = displacement and stress eigenfunctions]
         [rvec = radii at which displacement and stress eigenfunctions were evaluated at]
-    
-    Applied Seismology (GEOS 626) University of Alaska Fairbanks
-    contributors: Charles Ammon, Carl Tape, Amanda McPherson*, Liam Toney
     """
 
     k = k0

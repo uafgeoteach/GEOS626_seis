@@ -3,11 +3,7 @@ import numpy as np
 from earthfun import earthfun
 
 def stress_disp_tor(r, WT_0, l, omega, imod, rho, mu, rspan):
-    """Python adaptation of stress_disp_tor.m by Carl Tape.
-
-    Coding by Amanda McPherson, Dec 2020
-    Some edits by Liam Toney, April 2021
-
+    """
     Finds the derivatives of W(r) and T(r)
 
     Args:

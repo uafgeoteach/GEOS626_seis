@@ -1,11 +1,7 @@
 import numpy as np
 
 def earthfun(r, rspan, imod):
-    """Python adaptation of earthfun.m by Carl Tape.
-
-    Amanda McPherson, Dec 2020
-    Some edits by Liam Toney, April 2021
-
+    """
     earthfun() returns a rho and mu value for a specified radius r (and rspan
     and imod). Called by stress_disp_tor().
 

@@ -1,13 +1,9 @@
-# Library of functions for the GEOS 626 and GEOS 627 courses at UAF
-# Contributers: Carl Tape, Nealey Sims*, Amanda McPherson*, Aakash Gupta*
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 ###################################################################
 
 def fftvec(t):
-    # Python version of fftvec.m made by Carl tape
     # FFTVEC provides frequency vector for Matlab's fft convention
     # 
     # This is the bare-bones FFT example for teaching purposes in the sense

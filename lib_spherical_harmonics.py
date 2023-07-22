@@ -17,9 +17,6 @@ def griddataX(phi, lat, alphcent, npts):
     lat       = latitude (radians)
     alphcent  = function values defined at every grid point
     npts      = number of points to use in horizontal interpolation
-
-    griddataX.m by Carl Tape
-    Python adaptation by Amanda McPherson
     """
 
     deg = 180 / np.pi
@@ -54,10 +51,6 @@ def xlm(th, LL):
     LL = degree for the spherical harmonic
 
     see Tape (2003) appendix in thesis for ylm notation and conventions
-
-    xlm.m by Carl Tape, 2006-01-22
-
-    Python adaptation by Amanda McPherson, 2021
     """
 
     X = np.cos(th)
@@ -97,9 +90,6 @@ def ylm(th, phi, L, M):
     M     = order [-L <= M <= L]
 
     calls xlm
-
-    ylm.m by Carl Tape, 2003-02-24
-    Python adaptation by Amanda McPherson, 2021
     """
 
     if M == 0 and L == 0:
@@ -125,8 +115,6 @@ def ylm(th, phi, L, M):
 def ylmplots_fun(L, M, th, ph, npts, thtick, numc):
     """
     Plots Ylm real spherical harmonic functions, either as a 3D figure or a 2D contour.
-    ylmplots.m by Carl Tape, 2004-04-13
-    Python adaptation by Amanda McPherson
     calls griddataX
     """
 

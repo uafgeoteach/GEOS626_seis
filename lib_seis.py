@@ -1,6 +1,3 @@
-# Library of functions for the GEOS 626 course at UAF
-# Contributers: Carl Tape, Nealey Sims*, Amanda McPherson*, Aakash Gupta*
-
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import datetime as dt
@@ -189,9 +186,6 @@ def get_dist_az(lon0, lat0, lons, lats):
 ###############################################################################################################
 
 def globefun3(R,lat,lon,bool_point,lc, fig,ax):
-    # Python adaptation of globefun3.m
-    # Python coding done by Nealey Sims
-    #
     # GLOBEFUN3 plots a single point on the sphere with a reference globe
     #
     # INPUT
@@ -306,7 +300,6 @@ def locations_and_tags(st):
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp)
 # 
 # This marks the 1/x value on a plot where you click the mouse.
-# python version based on the markt.m writtin by Carl Tape
 #
 # INPUT ARGUMENTS:
 # 
@@ -335,7 +328,6 @@ def markp(event):
 # To use function: cid=fig.canvas.mpl_connect('button_press_event', markp_minutes)
 # 
 # This marks the 1/x/60 value on a plot where you click the mouse.
-# python version based on the markt.m writtin by Carl Tape
 #
 # INPUT ARGUMENTS:
 # 
@@ -414,7 +406,7 @@ def response(tr, fft_freq, output, start_stage, end_stage):
 ###############################################################################################################
 
 def seis2GR(mag, dmag, idisplay=1, ifigure=0):
-    """ Python version of seis2GR.m by Carl Tape.
+    """
         Converts seismicity catalog to Gutenberg-Richter frequency-magnitude distribution, in both a cumulative
         and not cumulative version.
         
@@ -483,9 +475,7 @@ def seis2GR(mag, dmag, idisplay=1, ifigure=0):
 ###############################################################################################################
 
 def smooth(a,WSZ):
-    """ Python adaptation of MATLAB smooth.m function
-        Author: Divakar on Stack Overflow
-        
+    """
         INPUT:
             a: Numpy 1-D array containing the data to be smoothed
             WSZ: smoothing window size needs. Must be an odd number, as in the original implementation
@@ -502,10 +492,10 @@ def smooth(a,WSZ):
 
 ###############################################################################################################
 
-# python version of Matlab's sph2cart and cart2sph function
-# transforms elements of the spherical coordinate arrays azimuth, elevation, and r to Cartesian, or xyz, coordinates.
-
 def sph2cart(azimuth,elevation,r):
+
+    # transforms elements of the spherical coordinate arrays azimuth, elevation, and r to Cartesian, or xyz, coordinates.
+
     x = r * np.cos(elevation) * np.cos(azimuth)
     y = r * np.cos(elevation) * np.sin(azimuth)
     z = r * np.sin(elevation)

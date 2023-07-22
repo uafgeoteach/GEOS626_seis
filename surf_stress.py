@@ -5,11 +5,7 @@ from scipy.integrate import solve_ivp
 from stress_disp_tor import stress_disp_tor
 
 def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
-    """Python adaptation of surf_stress.m by Carl Tape.
-
-    Coding by Amanda McPherson, Dec 2020
-    Some edits by Liam Toney, April 2021
-
+    """
     Integrates using the RK45 method, and calls stress_disp_tor() to calculate the
     derivatives of displacement and stress
 

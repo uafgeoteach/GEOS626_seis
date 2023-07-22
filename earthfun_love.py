@@ -1,11 +1,7 @@
 import numpy as np
 
 def earthfun_love(r, rspan, crho, cmu, mrho, mmu, cthick):
-    """Python adaptation of earthfun_love.m by Carl Tape.
-
-    Amanda McPherson, Jan 2021
-    Some edits by Liam Toney, April 2021
-
+    """
     earthfun_love() returns a rho and mu value for a specified radius
     r. Called by stress_disp_love().
 
