@@ -3,18 +3,18 @@ channels:
   - conda-forge
   - default
 dependencies:
-  - cartopy=0.21.1=py311h5d490e5_0
+  - cartopy=0.21.1=py311hd88b842_1
   - ipympl=0.9.3=pyhd8ed1ab_0
-  - ipywidgets=7.7.3=pyhd8ed1ab_0
+  - ipywidgets=7.7.5=pyhd8ed1ab_0
   - jupyterlab=3.5.3=pyhd8ed1ab_0
   - kernda=0.3.0=py_1
   - matplotlib=3.6.3=py311h38be061_0
   - obspy=1.4.0=py311hcb2cf0a_2
-  - pandas=1.5.3=py311h2872171_0
-  - pip=23.0.1=pyhd8ed1ab_0
-  - pyproj=3.4.1=py311h945b3ca_1
+  - pandas=2.0.3=py311h320fe9a_1
+  - pip=23.2=pyhd8ed1ab_0
+  - pyproj=3.6.0=py311ha169711_1
   - pyyaml=6.0=py311hd4cff14_5
-  - sympy=1.11.1=py311h38be061_2                                                
-  - traitlets=5.1.1=pyhd8ed1ab_0
+  - sympy=1.12=pypyh9d50eac_103
+  - traitlets=5.1.1=pyhd8ed1ab_0 
   - pip:                                                                                              
-    - git+https://github.com/adjtomo/pysep.git@devel
+    - pysep-adjtomo==0.4.0
