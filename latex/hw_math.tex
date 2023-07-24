@@ -23,7 +23,7 @@ Last compiled: \today \\
 
 The purpose of this problem set is to review a few mathematical concepts that are important to seismology. These concepts will be useful in following the class reading \citep{SteinWysession,ShearerE2} and for future homework assignments.
 
-{\bf Except for Problem 1}, you are welcome to use a computer (Python, Matlab, etc) to support your answers. If you find yourself doing horrendous algebra, then probably you have made a prior mistake.
+{\bf Except for Problem 1}, you are welcome to use a computer (Python, Matlab, etc) to support your answers. If you find yourself doing horrendous algebra, then probably you have made a prior mistake. Please try out \verb+hw_math.ipynb+ for tips on doing lienar algebra in Python.
 
 %------------------------
 
@@ -78,7 +78,7 @@ Hint: What does $\bA$ do to the input vector $(x,y)$?
 %You can use Matlab for any tedious steps.
 
 \begin{enumerate}
-\item (0.1) Find the matrix, $\bA$, ($T(\bx) = \bA\bx$) of the linear transformation described by
+\item (0.1) Find the matrix $\bA$ ($T(\bx) = \bA\bx$) of the linear transformation described by
 %
 \begin{equation*}
 T \left( \left[ \begin{array}{r} 1 \\ 0 \\ 0  \end{array} \right] \right) = \left[ \begin{array}{r} 1 \\ 2 \end{array} \right],
@@ -88,7 +88,7 @@ T \left( \left[ \begin{array}{r} 0 \\ 1 \\ 0  \end{array} \right] \right) = \lef
 T \left( \left[ \begin{array}{r} 0 \\ 0 \\ 1  \end{array} \right] \right) = \left[ \begin{array}{r} 3 \\ 6 \end{array} \right]
 \end{equation*}
 
-\item (0.2) Find the matrix, $\bA$, ($T(\bx) = \bA\bx$) of the linear transformation described by
+\item (0.2) Find the matrix $\bA$ ($T(\bx) = \bA\bx$) of the linear transformation described by
 %
 \begin{equation*}
 T \left( \left[ \begin{array}{r} 1 \\ 0 \\ 0  \end{array} \right] \right) = \left[ \begin{array}{r} 1 \\ 1 \\ 0 \end{array} \right],
@@ -201,7 +201,7 @@ Consider the vector field
 \begin{enumerate}
 \item (0.5) Derive the Taylor series expansion of $f(x) = \ln(x)$ about the point $x = x_0$. List terms up to the third order.
 
-\item (0.5) Let $x_0 = 3.5$. In all of the plots, use $x$ limits from $-1$ to 10 (\verb+xlim([-1 10])+).
+\item (0.5) Let $x_0 = 3.5$. In all of the plots, use $x$ limits from $-1$ to 10 (\verb+plt.xlim(0,10)+).
 %
 \begin{enumerate}
 \item (0.2) Plot the zeroth-, first-, second-, and third-order {\bf terms} on a single plot.

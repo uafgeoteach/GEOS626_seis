@@ -98,9 +98,9 @@ There are three relevant origin times. The first is the PDE (Preliminary Determi
 \begin{enumerate}
 \item 8.9 listed in the CMTSOLUTION of the GCMT catalog. (If we calculate $M_0$ from $M_{ij}$ via \citet{SilverJordan1982}, then $\mw$ from $M_0$ via \citet{Kanamori1977}, we get $\mw = 8.9974$, which rounds to 9.0.)
 
-\item 9.1 is the official listing from USGS. This is rounded from 9.15 from \citet{Duputel2012}, which is based on the W phase.
+\item 9.1 is the official listing from USGS. This is rounded from 9.15 from \citet{Duputel2012Wphase}, which is based on the W phase \citep{Kanamori1993}\footnote{From the abstract: ``In terms of ray theory, this phase consists of long-period P, PP, S, SS, SP, PS, etc and its propagation mechanism is similar to that of a whispering gallery. In terms of normal-mode theory, it represents a group of higher-mode Rayleigh waves with a group velocity close to, but slower than, that of P wave.''}.
 
-\item 9.14 is via $M_0 = 6.5 \times 10^{22}$~N-m of the finite source model by Chen Ji (Model III) from \citet{Ammon2005}.
+\item 9.14 is via $M_0 = 6.5 \times 10^{22}$~N-m of the finite source model by Chen Ji (Model III) from \citet{Ammon2005}, which is based on teleseismic P and S waves, surface waves, and static GPS displacements.
 
 \item 9.2 is from \citet{Banerjee2005}, which is based on static displacements.
 
@@ -112,10 +112,9 @@ We will refer to the magnitude as 9.2, but most listings online follow the USGS 
 \item Background reading:
 
 \begin{itemize}
-\item instrument response and Fourier analysis: \citet[][Ch.~6]{SteinWysession}
-\item Sumatra earthquake: \citep{Lay2005,Ammon2005,Park2005,Ni2005}
+\item instrument response and Fourier analysis: \citet[][Ch.~6]{SteinWysession}, \verb+notes_fft.pdf+
+\item Sumatra earthquake: \citep{Lay2005,Ammon2005,Park2005,Ni2005}; PDFs of all referenced Sumatra papers can be found in the google drive
 %\item normal modes: \citet[][Section 2.9]{SteinWysession} and \citet[][Ch.~8]{DT}. See also ``Computational details'' in Section 10.5.1 of DT.
-\item PDFs of all referenced Sumatra papers can be found in the google drive.
 \end{itemize}
 
 \item In your answers, please include lines of your computer code if either of these applies:
@@ -137,7 +136,7 @@ We will refer to the magnitude as 9.2, but most listings online follow the USGS 
 \section*{Problem 1 (0.5). Complex numbers and functions}
 
 \begin{itemize}
-\item The best way to think of complex numbers is to sketch a circle (radius $r$) in the complex plane, with the $x$-axis the real component and the $y$-axis the imaginary component.
+\item The best way to think of complex numbers is to sketch a circle (radius $r$) in the complex plane, with the $x$-axis the real component and the $y$-axis the imaginary component. (See Figure 1 of \verb+notes_fft.pdf+.)
 %
 \begin{eqnarray*}
 z &=& r e^{i\theta}
@@ -216,6 +215,7 @@ $A(\omega)$ is clearly the amplitude in the sense that
 
 %-----------
 
+\pagebreak
 \item (0.2) \ptag\ 
 
 \begin{enumerate}

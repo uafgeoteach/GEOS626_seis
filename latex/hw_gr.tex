@@ -5,6 +5,8 @@
 
 \renewcommand{\baselinestretch}{1.1}
 
+\newcommand{\tfile}{{\tt hw\_gr.ipynb}}
+
 \newcommand{\fmag}{frequency--magnitude}
 
 %--------------------------------------------------------------
@@ -32,7 +34,7 @@ Last compiled: \today
 \item to practice using Python for scientific computing and plotting
 \item to think critically about histograms
 \item to review and apply some concepts of differentiation
-\item to understand the \fmag\ relation (\refeq{GR})\footnote{This empirical formula is referred to as a + b, where a = ``\fmag\'' or ``Gutenberg--Richter'' and b = ``relation'' or ``relationship'' or ``distribution'' or ``law''.}, including some of its subtler points
+\item to understand the \fmag\ relation (\refeq{GR})\footnote{This empirical formula is referred to as the combined phrase a + b, where a = ``\fmag'' or ``Gutenberg--Richter'' and b = ``relation'' or ``relationship'' or ``distribution'' or ``law''.}, including some of its subtler points
 \end{enumerate}
 %
 If you are new to Python, let me know.
@@ -47,13 +49,13 @@ If you are new to Python, let me know.
 %\verb+cp hw_gr_template.m hw_gr.m+
 %to access \verb+GEOTOOLS+.
 
-\item Log into OpenSARlab and run the template notebook \verb+hw_gr.ipynb+. You can work directly in this file.
+\item Log into OpenSARlab and run the template notebook \tfile. You can work directly in this file.
 
 \item {\bf Possible source of confusion:} Following standard mathematical notation, I will use `$\log_{10}$' to represent the base-10 logarithm and `$\ln$' to represent the natural logarithm. Note that in Python \verb+log10+ is $\log_{10}$ and \verb+log+ is $\ln$. (Note that \citet{SteinWysession} use `$\log$' for the base-10 logarithm.) Reminder: $\log_{10} x = \ln x / \ln 10$
 
 \item {\bf Python tips:}
 %Use \verb+linspace+ to generate a sequency of numbers, $x_i$; then $10^{x_i}$ will be uniformly spaced in $\log$ space.
-\verb+hw_gr.ipynb+ shows an example of how to plot multiple items on a log-scaled plot.
+\tfile\ shows an example of how to plot multiple items on a log-scaled plot.
 %It also shows how to produce a postscript (PS) or pdf file from a Matlab file.
 Make sure you follow the template script before proceeding.
 
@@ -98,8 +100,8 @@ where the index $i$ refers to the magnitude bin, with $M_i$ being the magnitude 
 
 \begin{itemize}
 \item The {\em cumulative distribution} is the cumulative number of events with $M \ge M_i$; the \fmag\ relation is expressed as a cumulative distribution.
-\item The {\em incremental distribution} is the number of events per magnitude bin, $M_i \le M \le M_{i+1}$.
-\item A {\em magnitude interval} is a range of magnitude, \eg the magnitude interval $[8.7,9.0]$. For the cumulative distribution, a magnitude interval should be expressed as an open interval, such as $M \ge 6.2$, rather than $6.2 \le M \le 6.3$.
+\item The {\em incremental distribution} is the number of events per magnitude bin, $M_i \le M < M_{i+1}$. (Here we are adoping the convention that the uppermost value $M_{i+1}$ is excluded from the interval. Check the details of your histogram-making function.)
+\item A {\em magnitude interval} is a range of magnitude, \eg the magnitude interval $[8.7,9.0)$. For the cumulative distribution, a magnitude interval should be expressed as an open interval, such as $M \ge 6.2$, rather than $6.2 \le M < 6.3$.
 \end{itemize}
 
 %\pagebreak
@@ -114,7 +116,7 @@ where the index $i$ refers to the magnitude bin, with $M_i$ being the magnitude 
 \begin{enumerate}
 \item (0.2) We consider the Global Centroid Moment Tensor (GCMT) catalog (\verb+www.globalcmt.org+), from 01-Jan-1976 to 30-June-2011. Thus $T$ represents the duration of the catalog, and $R$ represents planet Earth.
 
-Run the Python notebook \verb+hw_gr.ipynb+ to generate a global map of the catalog.
+Run the Python notebook \tfile\ to generate a global map of the catalog.
 %
 \begin{enumerate}
 \item (0.0) What is the range of depths of events in the catalog?
@@ -122,9 +124,9 @@ Run the Python notebook \verb+hw_gr.ipynb+ to generate a global map of the catal
 \item (0.1) What is the smallest magnitude and largest magnitude in the catalog? List your magnitudes with 0.001 precision.
 \end{enumerate}
 
-\item (0.8) Running \verb+hw_gr.ipynb+ will call the function \verb+seis2GR.py+ to obtain the cumulative and incremental distributions for the $\mw$ values of the GCMT catalog, using a bin width of $\Delta M = 0.1$. Examine the output that appears.
+\item (0.8) Running \tfile\ will call the function \verb+seis2GR.py+ to obtain the cumulative and incremental distributions for the $\mw$ values of the GCMT catalog, using a bin width of $\Delta M = 0.1$. Examine the output that appears.
 
-Note: The function \verb+seis2GR.py+ uses the variables names \verb+N+ for the cumulative numbers $N_i$, \verb+Ninc+ for the incremental numbers, and \verb+Medges+ for the bin edges $M_i$.
+%Note: The function \verb+seis2GR.py+ uses the variables names \verb+N+ for the cumulative numbers $N_i$, \verb+Ninc+ for the incremental numbers, and \verb+Medges+ for the bin edges $M_i$.
 
 \begin{enumerate}
 \item (0.2) What is the maximum value of the incremental distribution?
@@ -147,12 +149,12 @@ What is its magnitude interval?
 
 %----------------
 
-\item (3.0) Now it's time to write some lines of code. 
+\item (3.0) Now it's time to write some lines of code.
 
 \begin{enumerate}
-\item (0.0) Using the output from \verb+seis2GR.py+ (as shown in \verb+hw_gr.ipynb+), {\bf plot the cumulative and incremental distributions on the same plot}, similar to the plot in \citet[][Figure~4.7-2]{SteinWysession}, but note that your $x$-axis is $\mw$, not $\log_{10} M_0$, and your $y$-axis is number of earthquakes, not number of earthquakes per year.
+\item (0.0) Using the output from \verb+seis2GR.py+ (as shown in \tfile), {\bf plot the cumulative and incremental distributions on the same plot}, similar to the plot in \citet[][Figure~4.7-2]{SteinWysession}, but note that your $x$-axis is $\mw$, not $\log_{10} M_0$, and your $y$-axis is number of earthquakes, not number of earthquakes per year.
 
-{\em Coding tip}: There are two ways to deal with log scaling. One way is to transform $N$ into $n = \log_{10} N$, then work with~$n$ and use the \verb+plot+ command. Another way is to work with $N$ directly and use the \verb+semilogy+ command, as shown in the example at the bottom of \verb+hw_gr.ipynb+.
+{\em Coding tip}: There are two ways to deal with log scaling. One way is to transform $N$ into $n = \log_{10} N$, then work with~$n$ and use the \verb+plot+ command. Another way is to work with $N$ directly and use the \verb+semilogy+ command, as shown in the example at the bottom of \tfile.
 %(Pay attention to how the \verb+hold+ command works; this can be tricky.)
 
 Which distribution---incremental or cumulative---has more scatter?
@@ -191,7 +193,9 @@ Note: The expected value does not have to agree with what actually occurred with
 \item (1.0) Instead of analyzing seismicity, let us now analyze seismicity rate by dividing all binned values by the duration of the catalog ($T$, in years).
 %
 \begin{enumerate}
-\item (0.1) Taking an average over the entire time interval of the GCMT catalog, how many earthquakes per year are there?
+\item (0.1) Considering the total duration and the total number of events in the GCMT catalog, 
+%Taking an average over the entire time interval of the GCMT catalog,
+how many earthquakes per year are there?
 
 \item (0.1) Why is seismicity rate more useful than seismicity?
 
@@ -275,7 +279,7 @@ List the expression for $\Delta a$.
 %
 \begin{enumerate}
 \item (0.1) Can the GCMT catalog, $M > M_c$ (see earlier part of this problem for $M_c$), be fit well with a single line?
-\item (0.2) Compute an estimate $b$ for $M > 7.5$.
+\item (0.2) Compute an estimate for $b$ for $M > 7.5$.
 \item (0.1) What does the different $b$ value imply about large events in the catalog?
 \item (0.1) What is a possible reason for this?
 \end{enumerate}
