@@ -1,0 +1,17 @@
+History of GEOS 626 Applied Seismology at University of Alaska Fairbanks.
+
+The original course materials were written primarily by Carl Tape and built upon the Matlab GISMO package established by Celso Reyes and Michael West (The Waveform Suite: A Robust Platform for Manipulating Waveforms in MATLAB, Seismological Research Letters, 2011). In 2021, the code base and the delivery methods shifted to Python notebooks running in the cloud (OpenSARLab).
+
+2012. 1st offering using Matlab on the UAF Linux desktops. Sumatra problem sets enabled by a local waveform database constructed by UAF postdoc Silvio De Angelis. modesA problem (toroidal modes) is written by Charles Ammon for Matlab; adapted to modesB (Love waves) by Carl Tape. Github repositories established within the “classes” repository (now obsolete) in UAFGEOTOOLS (https://github.com/uafgeotools).
+
+2014. 2nd offering.
+
+2016. 3rd offering. University of Munich (LMU) PhD student Lion Kirischer establishes seismolive (https://seismo-live.github.io/) and translates the instrument response Matlab lab into Python: https://seismo-live.github.io/html/General%20Seismology/instrument_response_wrapper.html 
+
+2017. Shift class repositories from UAFGEOTOOLS to UAFGEOTEACH (https://github.com/uafgeoteach/). LMU team of Heiner Igel, Yongki Aiman, Tomy Gunawan, Angel Ling establish Python notebooks for portions of the Sumatra lab and problem set.
+
+2018. 4th offering. 
+
+2021. 5th offering. Transition to Python and Jupyter notebooks, enabled by UAF PhD students Nealey Sims and Amanda McPherson. Students fetched and processed seismic waveforms using ObsPy within notebooks translated by Nealey Sims. Course materials offered on the JupyterHub platform of OpenSARLab (now OpenScienceLab). Students use their own laptops rather than lab desktops with pre-installed software and waveform databases. UAF PhD student Liam Toney overhauled the modesA notebooks to reduce the use of global variables and to meet coding best practices.
+
+2023. 6th offering (2nd as Python and OpenSARLab). Major upgrade of codes led by PhD student Aakash Gupta. This included full integration of pysep (https://github.com/adjtomo/pysep) with the class; this was supported by UAF postdoc Bryant Chow.
