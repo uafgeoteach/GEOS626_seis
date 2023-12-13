@@ -269,4 +269,3 @@ dependencies:
   - zstd=1.5.2=hfc55251_7
   - pip:
       - pysep-adjtomo==0.4.0
-prefix: /home/agupta/miniconda3/envs/seismo
