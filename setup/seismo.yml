@@ -1,7 +1,7 @@
 name: seismo
 channels:
   - conda-forge
-  - default
+  - defaults
 dependencies:
   - ipympl
   - ipywidgets<8.0.0
