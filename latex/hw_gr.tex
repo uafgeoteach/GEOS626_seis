@@ -1,4 +1,3 @@
-% dvips -t letter hw_matlab.dvi -o hw_matlab.ps ; ps2pdf hw_matlab.ps
 \documentclass[11pt,titlepage,fleqn]{article}
 
 \input{hw626_header}
@@ -83,7 +82,7 @@ where
 %
 \begin{itemize}
 \item $N$ is the cumulative number of earthquakes having magnitudes larger than $M$ that occur in region $R$ within a particular time $T$
-\item $M$ is the earthquake magnitude; we take this to be moment magnitude $\mw$
+\item $M$ is the earthquake magnitude; we take this to be moment magnitude $\magMw$
 \item $b$ controls the slope of the seismicity distribution in region $R$ within a particular time $T$. The line will always increase to the left, so \refEq{GR} has a negative slope and therefore $b > 0$ by definition.
 \item $b \approx 1$ for most earthquake catalogs
 \item $a$ indicates the seismic activity in region $R$ within a particular time $T$
@@ -124,7 +123,7 @@ Run the Python notebook \tfile\ to generate a global map of the catalog.
 \item (0.1) What is the smallest magnitude and largest magnitude in the catalog? List your magnitudes with 0.001 precision.
 \end{enumerate}
 
-\item (0.8) Running \tfile\ will call the function \verb+seis2GR.py+ to obtain the cumulative and incremental distributions for the $\mw$ values of the GCMT catalog, using a bin width of $\Delta M = 0.1$. Examine the output that appears.
+\item (0.8) Running \tfile\ will call the function \verb+seis2GR.py+ to obtain the cumulative and incremental distributions for the $\magMw$ values of the GCMT catalog, using a bin width of $\Delta M = 0.1$. Examine the output that appears.
 
 %Note: The function \verb+seis2GR.py+ uses the variables names \verb+N+ for the cumulative numbers $N_i$, \verb+Ninc+ for the incremental numbers, and \verb+Medges+ for the bin edges $M_i$.
 
@@ -152,7 +151,7 @@ What is its magnitude interval?
 \item (3.0) Now it's time to write some lines of code.
 
 \begin{enumerate}
-\item (0.0) Using the output from \verb+seis2GR.py+ (as shown in \tfile), {\bf plot the cumulative and incremental distributions on the same plot}, similar to the plot in \citet[][Figure~4.7-2]{SteinWysession}, but note that your $x$-axis is $\mw$, not $\log_{10} M_0$, and your $y$-axis is number of earthquakes, not number of earthquakes per year.
+\item (0.0) Using the output from \verb+seis2GR.py+ (as shown in \tfile), {\bf plot the cumulative and incremental distributions on the same plot}, similar to the plot in \citet[][Figure~4.7-2]{SteinWysession}, but note that your $x$-axis is $\magMw$, not $\log_{10} M_0$, and your $y$-axis is number of earthquakes, not number of earthquakes per year.
 
 {\em Coding tip}: There are two ways to deal with log scaling. One way is to transform $N$ into $n = \log_{10} N$, then work with~$n$ and use the \verb+plot+ command. Another way is to work with $N$ directly and use the \verb+semilogy+ command, as shown in the example at the bottom of \tfile.
 %(Pay attention to how the \verb+hold+ command works; this can be tricky.)
