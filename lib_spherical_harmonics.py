@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -72,7 +74,7 @@ def xlm(th, LL):
 
         if MM != 0:
             norm = ((-1) ** MM) * np.sqrt(
-                (2 * np.math.factorial(LL - MM)) / np.math.factorial(LL + MM))  # divides by sqrt(2) if M is not 0
+                (2 * math.factorial(LL - MM)) / math.factorial(LL + MM))  # divides by sqrt(2) if M is not 0
             legmat[:, MM] = norm * legmat[:, MM] / np.sqrt(2)  # Applies Schmidt normalization
 
     return legmat
