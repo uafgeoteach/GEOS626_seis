@@ -4,12 +4,12 @@ channels:
   - defaults
 dependencies:
   - ipympl
-  - ipywidgets<8.0.0
-  - traitlets==5.1.1
+  - ipywidgets
+  - traitlets
   - kernda
   - jupyterlab
   - pip
-  - matplotlib<3.7.0
+  - matplotlib
   - cartopy
   - obspy
   - pandas
@@ -17,4 +17,4 @@ dependencies:
   - pyyaml
   - sympy                                                                     
   - pip:                                                                                              
-    - git+https://github.com/adjtomo/pysep.git@devel
+    - -e git+https://github.com/adjtomo/pysep.git@devel#egg=pysep
