@@ -431,11 +431,11 @@ def seis2GR(mag, dmag, idisplay=1, ifigure=0):
     minm = min(mag)
     maxm = max(mag)
     
-    print('seis2GR: %i events, min M = %.3f, max M = %.3f'% (n,minm,maxm))
+    print(f'seis2GR: {n} events, min M = {minm[0]:.3f}, max M = {maxm[0]:.3f}')
     
     emin = np.floor(minm/dmag)*dmag
     emax = (np.ceil(maxm/dmag)+1)*dmag # +1 in case maxm is right on an edge
-    Medges = np.arange(emin,emax,dmag).tolist()
+    Medges = np.arange(emin[0],emax[0],dmag).tolist()
     Medges = np.round(Medges, decimals=2)
     
     # see numpy documentation for details: the bins are closed on the left and open on the right
