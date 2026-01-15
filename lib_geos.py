@@ -1,6 +1,44 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from sympy import Matrix, init_printing
+from IPython.display import display
+
+###################################################################
+
+def showmat(A, numdig=None):
+    if numdig is not None:
+        if numdig == 0:
+            A_rounded = np.around(A).astype(int)
+        else:
+            A_rounded = np.around(A, decimals=numdig)
+    else:
+        A_rounded = A
+    sym_matrix = Matrix(A_rounded)
+    display(sym_matrix)
+
+###################################################################
+
+# calculate the correlation matrix from the covariance matrix
+#    rho = np.zeros((nparm,nparm))
+#    for i in range(nparm):
+#        for j in range(nparm):
+#            rho[i,j] = C[i,j]/np.sqrt(C[i,i]*C[j,j])
+#
+def corrcov(C):
+    nx,ny = C.shape
+    if nx != ny:
+        return
+        
+    # c = np.sqrt(np.diag(C)).reshape(nparm,1)
+    # Crho = C/(c@c.T)
+    sigma = np.sqrt(np.diag(C))
+    outer_v = np.outer(sigma,sigma)
+    Crho = C / outer_v
+    
+    Crho[C == 0] = 0
+    return Crho
+    
 ###################################################################
 
 def fftvec(t):
@@ -42,9 +80,7 @@ def fftvec(t):
     #f1 = linspace(-fNyq,fNyq-df,n)'
     #f = [f1(n/2+1:n) ; f1(1:n/2)];
 
-    #==========================================================================
-    
-####################################################
+###################################################################
 
 def gridvec(xmin,xmax,numx,ymin,ymax):
     """  This function inputs specifications for creating a grid 
@@ -83,7 +119,7 @@ def gridvec(xmin,xmax,numx,ymin,ymax):
 #    else:
 #        return xvec, yvec, numy
 
-####################################################
+###################################################################
 
 def plot_histo(hdat,edges,itype=2,make_plot=True):
     #PLOT_HISTO plot a histogram with cyan bars and black boundaries
@@ -130,4 +166,4 @@ def plot_histo(hdat,edges,itype=2,make_plot=True):
     
     plt.tight_layout()
     
-###########################################################
+###################################################################
