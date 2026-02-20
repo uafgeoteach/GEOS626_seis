@@ -6,6 +6,34 @@ from IPython.display import display
 
 ###################################################################
 
+def showtype(x, name=None):
+    """
+    Print type, dtype (if available), size, and shape of an object.
+    If name is provided, prepend 'name: '.
+    """
+    t = type(x).__name__
+    dtype = getattr(x, "dtype", None)
+    size  = getattr(x, "size", None)
+    shape = getattr(x, "shape", None)
+
+    parts = [f"type={t}"]
+
+    if dtype is not None:
+        parts.append(f"dtype={dtype}")
+    if size is not None:
+        parts.append(f"size={size}")
+    if shape is not None:
+        parts.append(f"shape={shape}")
+
+    out = ", ".join(parts)
+
+    if name is not None:
+        print(f"{name}: {out}")
+    else:
+        print(out)
+
+###################################################################
+
 def showmat(A, numdig=None):
     if numdig is not None:
         if numdig == 0:
