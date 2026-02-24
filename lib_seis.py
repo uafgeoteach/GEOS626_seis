@@ -353,12 +353,27 @@ def markp_minutes(event):
 
 ###############################################################################################################
 
-def matlab2datetime(matlab_datenum):
-        # equivalent of datestr when converting from serial number to date
+# def matlab2datetime(matlab_datenum):
+#         # equivalent of datestr when converting from serial number to date
        
-        day = dt.datetime.fromordinal(int(matlab_datenum))
-        dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
-        return day + dayfrac
+#         day = dt.datetime.fromordinal(int(matlab_datenum))
+#         dayfrac = dt.timedelta(days=float(matlab_datenum)%1) - dt.timedelta(days = 366)
+#         return day + dayfrac
+
+# def matlab2datetime(matlab_datenum):
+#     return (
+#         dt.datetime.fromordinal(int(matlab_datenum))
+#         + dt.timedelta(days=matlab_datenum % 1)
+#         - dt.timedelta(days=366)
+#     )
+
+def matlab2datetime(matlab_datenum):
+    dn = float(matlab_datenum)  # ensures scalar
+    return (
+        dt.datetime.fromordinal(int(dn))
+        + dt.timedelta(days=dn % 1)
+        - dt.timedelta(days=366)
+    )
 
 ###############################################################################################################
 
