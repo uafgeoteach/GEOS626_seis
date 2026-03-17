@@ -2,7 +2,7 @@ import numpy as np
 
 from earthfun import earthfun
 
-def stress_disp_tor(r, WT_0, l, omega, imod, rho, mu, rspan):
+def stress_disp_tor(r, WT_0, l, omega, imodel, rho, mu, rspan):
     """
     Finds the derivatives of W(r) and T(r)
 
@@ -11,7 +11,7 @@ def stress_disp_tor(r, WT_0, l, omega, imod, rho, mu, rspan):
         WT_0 (numpy.ndarray): WT_0[0] is W(r) and WT_0[1] is T(r)
         l (int):
         omega (int or float): Angular frequency
-        imod (int):
+        imodel (int):
         rho:
         mu:
         rspan:
@@ -22,9 +22,9 @@ def stress_disp_tor(r, WT_0, l, omega, imod, rho, mu, rspan):
 
     dWT = np.empty(2)
     # structural values at radius r: density and rigidity
-    # note: if imod == 0, then we use the rho and mu from spshell.ipynb
-    if imod != 0:
-        rho, mu = earthfun(r, rspan, imod)
+    # note: if imodel == 0, then we use the rho and mu from spshell.ipynb
+    if imodel != 0:
+        rho, mu = earthfun(r, rspan, imodel)
 
     # displacement (first row of equation 1)
     dWT[0] = WT_0[0] / r + WT_0[1] / mu

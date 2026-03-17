@@ -4,7 +4,7 @@ from scipy.integrate import solve_ivp
 
 from stress_disp_tor import stress_disp_tor
 
-def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
+def surf_stress(f, l, imodel, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
     """
     Integrates using the RK45 method, and calls stress_disp_tor() to calculate the
     derivatives of displacement and stress
@@ -12,7 +12,7 @@ def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
     Args:
         f (int or float): Frequency to evaluate at
         l:
-        imod:
+        imodel:
         rho:
         mu:
         rspan:
@@ -31,7 +31,7 @@ def surf_stress(f, l, imod, rho, mu, rspan, max_step=5e4, return_wt_rvec=False):
     # note: the dimension of rvec and WT is the number of points needed for
     # the numerical integration -- this will vary. You can adjust it via the 'max_step' parameter (try 1e2 or 1e3)
     rspan_t = tuple(rspan.tolist())
-    sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=max_step, args=(l, omega, imod, rho, mu, rspan))
+    sol = solve_ivp(stress_disp_tor,rspan_t,WT0,max_step=max_step, args=(l, omega, imodel, rho, mu, rspan))
     WT = sol.y
     rvec = sol.t
 
