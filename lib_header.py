@@ -15,3 +15,6 @@ from IPython.display import display
 
 import warnings
 warnings.filterwarnings('ignore')
+
+# constants
+deg = 180/np.pi
