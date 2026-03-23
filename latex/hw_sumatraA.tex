@@ -25,7 +25,7 @@
 {\large \bf Problem Set 4: Analysis of the 2004 Sumatra-Andaman earthquake \\
 Part 1: Instrument response and spectral analysis [sumatraA] \\ }
 \cltag\ \\
-Assigned: February 9, \cyear\ --- Due: February 16, \cyear\ \\
+Assigned: February 5, \cyear\ --- Due: February 17, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -351,7 +351,7 @@ Hint: the magnitude is $\magMw > 6$.
 \item (0.0) Does this aftershock have the same mechanism as the mainshock?
 \item (0.4) In summary, identify and interpret the main features in the seismogram.
 
-Hint: Aftershocks would be one feature. List three other features.
+Hint: Aftershocks would be one feature. Describe three other features.
 \end{enumerate}
 
 %-------------------
@@ -380,9 +380,9 @@ What is the corresponding period?
 
 \begin{enumerate}
 \item (0.3) Plot the amplitude spectrum (do {\em not} use any log scaling) $|C(\omega)|$ over the frequency window $[0.2,1.0]$~mHz.
-\item (0.2) Label each of the peaks that you see (\eg \snl{0}{2}).
+\item (0.2) Label each of the peaks that you see (\eg \snl{0}{2}), either on the plot or in separate text.
 
-\item (0.2) Describe the origin of the distinct spikes. For now, ignore the fact that the spikes 
+\item (0.2) Describe the origin of the distinct spikes. For now, ignore the fact that several spikes are split within clusters.
 
 \item (0.2) Why are some of the peaks ``split'' but one is not?
 
@@ -391,9 +391,12 @@ What is the corresponding period?
 
 %-------------------
 
-\item (0.2) Using the same frequencies that you used to define the full $C(\omega)$, evaluate the instrument response to acceleration, $I_a(\omega)$. Hint: See lab on instrument response.
+\item (0.2) Using the same frequencies that you used to define the full $C(\omega)$, evaluate the instrument response to acceleration, $I_a(\omega)$. Plot $I_a(\omega)$ as an amplitude spectrum over the full range of frequencies (not just $[0.2,1.0]$~mHz). Use log-log scaling.
 
-Plot $I_a(\omega)$ as an amplitude spectrum over the full range of frequencies (not just $[0.2,1.0]$~mHz). Use log-log scaling.
+\begin{itemize}
+\item Hint: See lab on instrument response. Here you want to make sure that your instrument response does {\bf not} contain any Nyquist effect.
+\item You may find the helper function \verb+response()+ in \verb+lib_seis.py+ to be useful.
+\end{itemize}
 
 %-------------------
 
@@ -407,7 +410,7 @@ X_a(\omega) I_a(\omega) &=& C(\omega)
 
 \begin{enumerate}
 \item (0.3) Deconvolve (or ``remove'') the instrument response from the raw spectral seismogram to obtain the spectral acceleration. Show your lines of code and plot of $|X_a(\omega)|$ on the log-log scale.
-\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz without log scaling. Comparing the shapes of $|X_a(\omega)|$ and $|C(\omega)|$, what is the effect of the deconvolution on the relative amplitudes of the peaks?
+\item (0.1) Plot $|X_a(\omega)|$ over the frequency range $[0.2,1.0]$~mHz without any log scaling. Comparing the shapes of $|X_a(\omega)|$ and $|C(\omega)|$, what is the effect of the deconvolution on the relative amplitudes of the peaks?
 \end{enumerate}
 %
 For both plots, adjust the $y$-axis limits so that you can see the details of the majority of the spectrum.
@@ -418,7 +421,7 @@ For both plots, adjust the $y$-axis limits so that you can see the details of th
 %
 \begin{enumerate}
 \item (0.2) Explain how your spectrum $|X_a(\omega)|$ differs from the one in Figure 1 of \citet{Park2005}.
-\item (0.2) Why might this be the case? In other words, what ``choices'' were taken that could influence some of the details in the spectrum?
+\item (0.2) What are the reasons for these differences? In other words, what ``choices'' were taken that could influence some of the details in the spectrum?
 \end{enumerate}
 
 \end{enumerate}
@@ -431,20 +434,20 @@ For both plots, adjust the $y$-axis limits so that you can see the details of th
 Run \tfilenoise. This will generate a time series at CAN for 10~days prior to the Sumatra earthquake.
 
 \begin{enumerate}
-\item (0.2) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
+\item (0.4) Using the GCMT catalog, list the magnitude, location, and origin time of the conspicuous event within the time series. 
 
-\item (0.2) Extract {\bf a multi-day time series that does not contain any earthquake-like signals}. Include this plot. What is the dominant period?
+\item (0.4) Extract {\bf a multi-day time series that does not contain any earthquake-like signals}. Include this plot. What is the dominant period?
 
 Tip: \verb+str = st1.trim(starttime,endtime)+ \\
 %Tip: Use the command \verb+plot(w,'xunit','h')+ to plot in hours.
 Tip: divide the array \verb+times+ by 3600 to plot in hours.
 
-\item (0.1) Compute and plot the amplitude spectrum using log-log scaling and the frequency limits $10^{-4}$~Hz to $10^1$~Hz. Mark where the the Nyquist frequency is on your plot.
+\item (0.2) Compute and plot the amplitude spectrum using log-log scaling and the frequency limits $10^{-4}$~Hz to $10^1$~Hz. Mark where the Nyquist frequency is on your plot.
 
-\item (1.5)
+\item (1.0)
 
 \begin{enumerate}
-\item (1.0) Now, following the procedure in Problem~2, deconvolve the instrument response from your earthquake-free time series. (Use the same scaling and x-limits as before.)
+\item (0.5) Now, following the procedure in Problem~2, deconvolve the instrument response from your earthquake-free time series. (Use the same scaling and x-limits as before.)
 
 %Tip: If you want a smoother spectral curve, try something like
 %
@@ -458,7 +461,7 @@ Tip: divide the array \verb+times+ by 3600 to plot in hours.
 
 \item (0.2) Qualitatively, how does your spectrum---notably your ocean microseism peak---compare with Figure 11.6 of \citet{ShearerE2}?
 
-\item (0.1) Based on this observation, and considering all possible periods, what period range at CAN will provide the highest signal-to-noise ratio?
+\item (0.1) Considering all possible periods, what period range at CAN will provide the highest signal-to-noise ratio?
 
 \end{enumerate}
 
@@ -495,7 +498,7 @@ In your 4-hour spectrum can you identify any of the normal modes in the range $[
 \begin{enumerate}
 \item (0.7) Using Supplemental Figure S11 of \citet{Ammon2005} as a guide, extract ``the'' P-wave and include a plot of the time series. About how long is the P wave signal?
 
-Be sure to include 50~s or so of noise prior to your signal, to demonstrate that you are capturing the start of the P wave.
+Your extracted and plotted signal should include about 50~s prior to the P onset, to demonstrate that you are capturing the start of the P wave.
 
 \item (0.4) Plot the amplitude spectrum of the P wave on a log-log plot with frequency ranging from $10^{-3}$~Hz to $10^1$~Hz. (Make sure you are working with the BHZ data.)
 
@@ -509,7 +512,7 @@ Be sure to include 50~s or so of noise prior to your signal, to demonstrate that
 \item (1.0) {\bf High-frequency bandpass}. Adapt \tfilebp\ to answer the following questions.
 %
 \begin{enumerate}
-\item (0.8) Estimate the rupture duration by analyzing the high-pass filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
+\item (0.8) Estimate the rupture duration by analyzing an appropriately-filtered seismogram at CAN, after \citet{Ni2005}. Include your plot and explain your interpretation.
 
 If you want to prepare for a future homework problem, then follow the filtering steps in \citet{Ni2005} by using \verb+hilbert+, \verb+abs+, and \verb+smooth+ in this order, on your filtered seismogram.
 

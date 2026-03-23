@@ -35,7 +35,7 @@
 {\large \bf Problem Set 10: Earthquake location with generalized least squares [genlsq]} \\
 %{\large \bf Lab Exercise: Earthquake location with generalized least squares [iter]} \\
 \cltag\ \\
-Assigned: April 13, \cyear\ --- Due: April 25, \cyear\ \\
+Assigned: April 9, \cyear\ --- Due: April 16, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -68,16 +68,17 @@ Generalized least squares was introduced by Tarantola \citep{TarantolaValette198
 Following \citet[][p.~205]{Tarantola2005}, the general form of a {\bf nonlinear least-squares misfit function} is
 %\footnote{Here I am using $\cprior$ whereas Tarantola uses $\covm$.}
 %
-\begin{eqnarray}
-\misfitvar(\mvec) &=& \misfitvar_{\rm D}(\mvec) + \misfitvar_{\rm M}(\mvec) 
-\\
-&=& \hlf \left\| \bg(\mvec) - \dvec \right\|^2_{\rm D} + \hlf \left\| \mvec - \mprior \right\|^2_{\rm M}
-\\
-&=& \hlf \left( \bg(\mvec) - \dvec\right)^T \; \covdi \left( \bg(\mvec) - \dvec \right)
-\;+\; \hlf \left( \mvec - \mprior \right)^T \; \cpriori \left( \mvec - \mprior \right).
-\nonumber \\
+\input{./notes/input_genlsq.tex}
+%\begin{eqnarray}
+%\misfitvar(\mvec) &=& \misfitvar_{\rm D}(\mvec) + \misfitvar_{\rm M}(\mvec) 
+%\\
+%&=& \hlf \left\| \bg(\mvec) - \dvec \right\|^2_{\rm D} + \hlf \left\| \mvec - \mprior \right\|^2_{\rm M}
+%\\
+%&=& \hlf \left( \bg(\mvec) - \dvec\right)^T \; \covdi \left( \bg(\mvec) - \dvec \right)
+%\;+\; \hlf \left( \mvec - \mprior \right)^T \; \cpriori \left( \mvec - \mprior \right).
+%\nonumber \\
 %\label{misfit_gen}
-\end{eqnarray}
+%\end{eqnarray}
 %
 Note these differences in notation (see \refTab{tab:vars}):
 
@@ -135,7 +136,7 @@ Here you will derive formulas for generalized least squares under the assumption
 \label{mpost3}
 \end{eqnarray}
 %
-HINT: You may find it useful to use the two matrix identities in \citet[][Eq.~6.525]{Tarantola2005} (which are serived in \verb+notes_tarantola.pdf+), as well as the expressions for the posterior covariance,
+HINT: You may find it useful to use the two matrix identities in \citet[][Eq.~6.525]{Tarantola2005} (which are derived in \verb+notes_tarantola.pdf+), as well as the expressions for the posterior covariance,
 %
 \begin{eqnarray}
 \cpost &=& \left(\bG^{\tssT} \covdi \bG + \cpriori \right)^{-1}

@@ -24,7 +24,7 @@
 \centering
 {\large \bf Problem Set 3: Fault parameters and moment tensors [mt]} \\
 \cltag\ \\
-Assigned: February 2, \cyear\ --- Due: February 9, \cyear\ \\
+Assigned: January 29, \cyear\ --- Due: February 5, \cyear\ \\
 Last compiled: \today
 \end{spacing}
 
@@ -49,7 +49,7 @@ The purpose of this problem set is to obtain a geometrical understanding of the 
 
 \item {\bf Signed angles}.
 %(This is a minor point that seems to require major text. Do not dwell on this.)
-The angle $\alpha$ between any two vectors and be determined from the dot product ($\cos\alpha = (\ba \cdot \bb) / (\|\ba\|\|\bb\|)$) ranges between $0^\circ$ and $180^\circ$. in \refFig{fig:cmt}, the angle between $\bK$ and $\bS$ is $120^\circ$.
+The angle $\alpha$ between any two vectors and be determined from the dot product ($\cos\alpha = (\ba \cdot \bb) / (\|\ba\|\|\bb\|)$) ranges between $0^\circ$ and $180^\circ$. In \refFig{fig:cmt}, the angle between $\bK$ and $\bS$ is $120^\circ$.
 
 See \refFig{fig:cmt}, where $\sigma$ is the {\em signed} angle from $\bK$ to $\bS$. The arrow from $\bK$ and $\bS$ tells us that $\bK$ is the initial vector and $\bS$ is the final; by itself, {\bf it does not tell us the sign of the angle}.
 
@@ -77,6 +77,8 @@ M_0 = \sfrac{1}{\sqrt{2}} \| \Mmat \|
 = \sfrac{1}{\sqrt{2}} \| \bLambda \|
 = \sfrac{1}{\sqrt{2}} \sqrt{\lambda_1^2 + \lambda_2^2 + \lambda_3^2}.
 \end{equation}
+%
+For a double couple, $M_0 = \sfrac{1}{\sqrt{2}}\sqrt{(\lambda)^2 + (0)^2 + (-\lambda)^2} = \lambda$.
 }).
 
 \item {\bf Nomenclature clarification}. 
@@ -144,9 +146,9 @@ def myrotmat(xdeg, ixyz):
 \item (1.5) \refFig{fig:rotsub} shows a rotation of $\rotangB = 30^\circ$ about rotation axis $\rotvec$, which points in the direction represented by polar angle $\theta$ and azimuthal angle $\phi$. The six-part ball is used to help you see the rotation. Mathematically the net rotation is $\Umat(\rotvec(\phi,\theta),\rotangB)$. Make sure that \refFig{fig:rotsub} makes sense before proceeding.
 %
 \begin{enumerate}
-\item (0.5) With \refFig{fig:rot} as a guide, describe (in words) the five operations that comprise $\Umat(\rotvec(\phi,\theta),\rotangB)$.
+\item (0.5) With \refFig{fig:rot} as a guide, describe (in words and symbols) the five operations that comprise $\Umat(\rotvec(\phi,\theta),\rotangB)$.
 
-Do not use the words clockwise, counterclockwise, positive, or negative.
+Do not use the words clockwise, counterclockwise, positive, or negative. Symbols like $-\theta$ are permitted.
 
 \item (1.0) Derive an expression for the matrix $\Umat(\rotvec(\phi,\theta),\rotangB)$ that rotates a vector $\br$ about the (Cartesian) input vector $\rotvec$ by angle $\rotangB$; this expression will be in terms of the matrix functions $\Rmat_x(\rotangA)$, $\Rmat_y(\rotangA)$, $\Rmat_z(\rotangA)$, where $\rotangA$ is the rotation angle about the $x$-axis, $y$-axis, or $z$-axis. (No numbers or terms like $\cos\rotangA$ should appear in your answer.)
 
@@ -257,12 +259,12 @@ What are the coordinates of the following vectors in your basis:
 \item (1.5) See \refFig{fig:cmt}. In Problem 1, you used the expression
 %
 \begin{equation}
-\br = \Umat(\rotvec,\rotangB)\br_0
+\br = \Umat(\rotvec,\rotangB)\br_0.
 \end{equation}
 %
-Here you want to write similar abstract expressions for $\bKh$, $\bNh$, $\bSh$.
-(What are $\rotvec$, $\rotangB$, and $\br_0$ for each case?)
-Please also describe each expression in words.
+Here you want to write similar mathematical expressions for $\bKh$, $\bNh$, $\bSh$.
+(What are $\br$, $\rotvec$, $\rotangB$, and $\br_0$ for each case?)
+Please also describe each expression in a complete sentence.
 %
 \begin{enumerate}
 \item the strike vector $\bKh$
@@ -291,19 +293,7 @@ Please note the following:
 \begin{enumerate}
 \item (0.3) Write the vectors in decimal form as a sum of weighted basis vectors: for example, $\bv = (1.45,1.75,-5.32)$ in basis $\{\bih,\bjh,\bkh\}$ is $\rotvec = 1.45\bih + 1.75\bjh - 5.32\bkh$. (For your problem, the basis is NOT $\{\bih,\bjh,\bkh\}$.)
 
-\item (0.3) Numerically check the following:
-%
-\begin{itemize}
-\item The three fault vectors are unit vectors.
-\item The angle between $\bnh$ and $\bKh$ is $\kappa$.
-\item The angle between $\brh$ and $\bNh$ is $\theta$. (Always true)
-\item The angle between $\bKh$ and $\bSh$ is $|\sigma|$. (Always true)
-\item $\bNh = \bSh \times \bKh$.
-\end{itemize}
-
-\end{enumerate}
-%
-If you are determined to get the correct numerical values, here is a check:
+If you are determined to get the correct numerical values, here is a check for $\bKh$, $\bNh$, and $\bSh$:
 %
 \begin{verbatim}
 K =
@@ -320,7 +310,19 @@ S =
    -0.0945
 \end{verbatim}
 %
-However, if you do not get these numbers, you can still answer several of the remaining questions.
+However, if you did not get these numbers, you can still use them to answer the next sub-problems.
+  
+\item (0.3) Numerically check the following:
+%
+\begin{itemize}
+\item The three fault vectors are unit vectors.
+\item The angle between $\bnh$ and $\bKh$ is $\kappa$.
+\item The angle between $\brh$ and $\bNh$ is $\theta$. (Always true)
+\item The angle between $\bKh$ and $\bSh$ is $|\sigma|$. (Always true)
+\item $\bNh = \bSh \times \bKh$.
+\end{itemize}
+
+\end{enumerate}
 
 %-----------
 
@@ -367,14 +369,14 @@ Hint: Think eigen-decomposition.
 %-----------------------
 
 \pagebreak
-\subsection*{Problem 3 (2.0). From fault parameters to moment tensors, Part II}
+\subsection*{Problem 3 (1.7). From fault parameters to moment tensors, Part II}
 
 \begin{enumerate}
 
-\item (0.8) From Problem 2, you obtained the moment tensor $\Mmat$ for the fault in \refFig{fig:cmt}.
+\item (0.7) From Problem 2, you obtained the moment tensor $\Mmat$ for the fault in \refFig{fig:cmt}.
 
 \begin{enumerate}
-\item (0.3) Check that the following operations are true for this example:
+\item (0.2) Numerically check that the following operations are true for this example:
 %
 \begin{eqnarray}
 \Mmat \, \bu_1 &=& \lambda_1 \, \bu_1 = \bu_1
@@ -390,20 +392,6 @@ Hint: Think eigen-decomposition.
 
 \item (0.5) What is the physical meaning of each of these operations? Think about P waves and S waves. (Be careful: The ``beachball'' pattern is representative of the P-wave motion only.)
 
-\end{enumerate}
-
-%-----------
-
-\item (0.3) \ptag\ Compute the transformation matrix $\Pmat$ that will convert the coordinates of vectors and tensors from the up-south-east basis to the north-east-down basis of \citet{AkiRichardsE2}.
-%
-\begin{enumerate}
-\item (0.1) Compute $\Pmat$ using Eq.~1 of Section A.5.1 of \cite{SteinWysession}.
-
-\item (0.1) Transform the fault vectors $\bKh$, $\bNh$, $\bSh$ using $\bKh' = \Pmat\bKh$, etc.
-
-Sketch $\bKh'$, $\bNh'$, and $\bSh'$ in \refFig{fig:block}.
-
-\item (0.1) Transform $\Mmat$ to $\Mmat'$ using $\Mmat' = \Pmat \Mmat \Pmat^T$; list the values of moment matrix $M'$.
 \end{enumerate}
 
 %-----------
@@ -431,7 +419,7 @@ This will list the GCMT solution for this event. The terms \verb+Mrr+, \verb+Mtt
 Other display formats from the website provide the strike, dip, and slip angles for both planes of the moment tensor.
 
 \begin{enumerate}
-\item (0.3) List the entries of $\Mmat_{\rm denali}$. What are the units?
+\item (0.3) List the entries of $\Mmat_{\rm denali}$ as a $3 \times 3$ matrix. What are the units?
 
 \item (0.4) Using your previous functions, compute $\Mmat_1$ for 
 %
@@ -453,7 +441,7 @@ Then compute $\Mmat_2$ for
 \sigma_2 &=& 18.96
 \end{eqnarray*}
 %
- Verify that the two moment tensors are the same (to two significant figures or so). Note \footnote{The GCMT catalog lists angles rounded to integer values. Their moment tensor elements are listed with greater precision, so I use these to obtain more precise fault angles to use.}.
+ Verify that the two moment tensors are the same (to two significant figures or so). Note \footnote{The GCMT catalog lists angles rounded to integer values. Their moment tensor entries $M_{ij}$ are listed with greater precision, so I use the $M_{ij}$ values to obtain the higher-precision fault angles ($0.01^\circ$ instead of $1^\circ$).}.
 
 \item (0.2) Verify that they are close to the GCMT solution. To make this comparison, you will need to normalize both moment tensors so that they have the same magnitude.
 %
@@ -471,6 +459,22 @@ Hint: Check the eigenvalues of $\Mmat_{\rm denali}$.
 
 \end{enumerate}
 
+\end{enumerate}
+
+
+%\pagebreak
+\subsection*{Problem 4 (0.3). Changing the coordinates of a moment tensor}
+
+\ptag\ Compute the transformation matrix $\Pmat$ that will convert the coordinates of vectors and tensors from the up-south-east basis (unprimed) to the north-east-down (primed) basis of \citet{AkiRichardsE2}.
+%
+\begin{enumerate}
+\item (0.1) Compute $\Pmat$ using Eq.~1 of Section A.5.1 of \cite{SteinWysession}.
+
+\item (0.1) Calculate the fault vectors $\bKh'$, $\bNh'$, $\bSh'$ using $\bKh' = \Pmat\bKh$, etc.
+
+Sketch $\bKh'$, $\bNh'$, and $\bSh'$ in \refFig{fig:block}.
+
+\item (0.1) Transform $\Mmat$ to $\Mmat'$ using $\Mmat' = \Pmat \Mmat \Pmat^T$; list the values of moment matrix $M'$.
 \end{enumerate}
 
 %------------------------
