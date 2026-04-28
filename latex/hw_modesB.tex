@@ -129,9 +129,14 @@ where $\beta_c$ is the crustal velocity, $\beta_m$ is the mantle velocity, and $
 \refEq{wcn} implies:
 %
 \begin{itemize}
-\item The index $\bar{n} \ge 1$ represents the number branches ($n = 0, 1, \ldots, \bar{n}-1$) that are present for $\omega_{x\overline{(n-1)}} < \omega < \omega_{x\bar{n}}$.
-\item Only the $n=0$ fundamental branch exists for $\omega < \omega_{x1}$
-\item The $n=0$ and $n=1$ branches exist for $\omega_{x1} < \omega < \omega_{x2}$.
+\item $\omega_{x0} = 0$~Hz.
+\item The index $\bar{n} \ge 1$ is the number branches ($n = 0$, $n = 1$, \ldots, $n = \bar{n}-1$) that are present for the frequency interval
+%$\omega_{x\overline{(n-1)}} < \omega < \omega_{x\bar{n}}$.
+$\omega_{x{(\bar{n}-1)}} < \omega < \omega_{x\bar{n}}$.
+\item For $\bar{n} = 1$, there is one branch ($n=0$) for the interval $0 < \omega < \omega_{x1}$.
+\item For $\bar{n} = 2$, there are two branches ($n=0$, $n=1$) for the interval $\omega_{x1} < \omega < \omega_{x2}$.
+\item Therefore, for any frequency $\omega$, one can determine $\bar{n}$ from interval $\omega_{x{(\bar{n}-1)}} < \omega < \omega_{x\bar{n}}$, and this provides the number of mode branches expected.
+\item The $n$th mode branch starts at $\omega_{x\bar{n}}$. The $n=0$ branch starts at $\omega_{x1} = 0$~Hz, the $n=1$ branch starts at $\omega_{x1}$, etc.
 \end{itemize}
 %
 
@@ -182,7 +187,7 @@ Draw or plot the set of dots representing the $(k_i, f)$ ($i = 1,2,\ldots$) poin
 
 %----------------
 
-\item (0.3) Make a 2D sketch the setup for this problem and include the following features and labels: the layer, $r$-axis, $r$-origin, $H$, $\lambda_m$, $\rho_c$, $\mu_c$, $\rho_m$, $\mu_m$.
+\item (0.3) Make a 2D sketch the setup for this problem and include the following features and labels: the layer, $r$-axis ($r$ defined in \refeq{rODEs}), $r$-origin, $H$, $\lambda_m$, $\rho_c$, $\mu_c$, $\rho_m$, $\mu_m$.
 
 In order to avoid numerical overflow during integration, we will use a coordinate system with an origin ($r = 0$) that is within the halfspace, three times a mantle shear-wavelength below the base of the layer. The convention is such that $r$ points upward.
 
@@ -190,7 +195,7 @@ In order to avoid numerical overflow during integration, we will use a coordinat
 
 %----------------
 
-\item (0.0) You will examine two additional models. Fill in \refTab{tab:models} with the values for these models.
+\item (0.0) You will examine two additional models. Fill in \refTab{tab:models} with the values for these models. (See \refTab{tab:models} caption.)
 
 \end{enumerate}
 
@@ -224,7 +229,7 @@ where $r_b = 0$ because of our choice of origin. Note that the ``bottom stress''
 \item (4.0) Adapt the four scripts from the modes homework to solve \refEq{rODEs}:
 %
 \begin{itemize}
-\item You will need to make significant modifications to \tfilemainB, which is provided as a starting point. (Alternatively, you can use your own notebooks or \tfilemain\ as a starting point.)
+\item You will need to make significant modifications to \tfilemainB, which is provided as a starting point. (Alternatively, you can use your own notebooks as a starting point.)
 %In particular, change \verb+import spshell_config+ to \verb+import spshell_love_config+.
 %(You might even find that starting from scratch is easier.)
 
@@ -246,6 +251,8 @@ Use the Python command \verb+np.linspace()+ to generate a vector \verb+kvec+ con
 
 % the only changes needed will be for the ode45 solver
 \item I have provided \tfilessB\ as a replacement for \tfiless.
+
+Examine \tfilessB\ to see what arguments are needed for \tfilesdtB.
 
 \item You will need to adapt \tfilesdt\ (\refeq{ODEs}) to be \tfilesdtB\ (\refeq{rODEs}).
 
@@ -271,7 +278,7 @@ Hint: What arguments related to \tfileef\ were needed in \tfiless? What argument
 \item (1.5) Using the model described in Problem~1-\ref{prob:model1}, compute the displacement and stress eigenfunctions for the period $T = 20$~s.
 
 \begin{enumerate}
-\item (0.5) Check that your root is $k_0 = 8.52 \times 10^{-5}$~1/m (Note \footnote{If your value does not round to the one listed, what might you consider changing?}) and list the line in your Python script that solved for $k_0$.
+\item (0.5) Check that your root is $k_0 = 8.52 \times 10^{-5}$~1/m (Note \footnote{If your value does not round to the one listed, what might you consider changing?}) and show the line in your Python script that solved for $k_0$.
 
 \item (0.5) Show your code for \tfilesdtB\ and \tfileefB.
 
@@ -280,11 +287,15 @@ Hint: What arguments related to \tfileef\ were needed in \tfiless? What argument
 
 \end{enumerate}
 
-\item (1.0) Show a plot of the two eigenfunctions; draw a line at the base of the layer. The base code for plotting eigenfunctions can be found in \tfilemain\ and needs to be copied and adapted into \tfilemainB.
+\item (1.0) Show a plot of the two eigenfunctions. The base code for plotting eigenfunctions can be found in \tfilemainB\ and needs to be adapted for the new purposes.
 
-If the eigenfunction appears jagged, please adjust \maxstep\ to improve their accuracy.
+\begin{itemize}
+\item Draw a line at the surface and at the base of the layer (i.e., the Moho) to assist with interpretations.
 
-Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis()+ to flip the direction of the $y$-axis.
+\item If the eigenfunctions appear jagged, then adjust \maxstep\ to improve their accuracy.
+
+\item Suggestion: For plotting purposes only, you may find it simpler to transform your $r$~values into depth values, with $z=0$ at the surface. You can then use \\ \verb+plt.invert_yaxis()+ to flip the direction of the $y$-axis.
+\end{itemize}
 
 \item (0.0) What is the normalized value of stress at the surface, $T(r_a)\,/\max(|T(r)|)$?
 
@@ -356,7 +367,7 @@ After you do the check, you can go back to using the default tolerance.
 \item (0.8) Using an equally spaced frequency vector ($\sim$50 values) ranging between periods of 20.0 seconds and 200.0 seconds, compute three dispersion plots for fundamental-mode Love waves:
 %
 \begin{itemize}
-\item (0.4) phase speed~(km/s) vs period~(s)
+\item (0.4) phase speed~(km/s) vs\footnote{Reminder: ``A vs B'' means that A is on the $y$-axis and B is on the $x$-axis.} period~(s)
 \item (0.2) phase speed~(km/s) vs frequency~(Hz)
 \item (0.2) angular frequency (rad/s) vs wavenumber~(1/km)
 \end{itemize}
@@ -381,7 +392,7 @@ Notes:
 %
 \begin{itemize}
 \item It might be useful to specify target $k$ corresponding to equal increments of period (since period is being plotted).
-\item For numerical differentiation of $A(x)$ to get $dA/dx$, try \verb+gradient(A,x)+.
+\item For numerical differentiation of $A(x)$ to get $dA/dx$, try \verb+np.gradient(A,x)+.
 \end{itemize}
 
 \item (0.4) Explain how measurements of phase speed and group speed can be used to infer structural properties (and ``image'' the Earth's interior).
@@ -430,7 +441,7 @@ Notes:
 \caption[]
 {{
 Dispersion plots for a toroidal modes in a homogeneous shell and Love waves in a layer-over-halfspace.
-(a) Dispersion plot for toroidal modes in a homogeneous shell. The dotes shows the only allowable solutions; the curves are drawn to show the difference branches ($n=0$, $n=1$, etc). 
+(a) Dispersion plot for toroidal modes in a homogeneous shell. The dots shows the only allowable solutions; the curves are drawn to show the difference branches ($n=0$, $n=1$, etc). 
 Note the $10^{-3}$ scaling for wavenumber. These wavenumbers (and frequencies) are much smaller than those in (b).
 (b) Dispersion plot for Love waves in a layer-over-halfspace. The dots are {\bf not} discrete modes; one should think of the solution space as a set of curves (\ie connect the colored dots).
 The model is described in Problem~1-\ref{prob:model1}.

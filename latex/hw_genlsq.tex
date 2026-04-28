@@ -68,7 +68,7 @@ Generalized least squares was introduced by Tarantola \citep{TarantolaValette198
 Following \citet[][p.~205]{Tarantola2005}, the general form of a {\bf nonlinear least-squares misfit function} is
 %\footnote{Here I am using $\cprior$ whereas Tarantola uses $\covm$.}
 %
-\input{./notes/input_genlsq.tex}
+\input{~/notes/input_genlsq.tex}
 %\begin{eqnarray}
 %\misfitvar(\mvec) &=& \misfitvar_{\rm D}(\mvec) + \misfitvar_{\rm M}(\mvec) 
 %\\
@@ -111,7 +111,7 @@ Throughout the assignment, and in the code, keep in mind the interchangability o
 \mtarget &=& \mvec_{\rm true}
 \end{eqnarray*}
 %
-The posterior model is the same as the final model of an iterative problem. And the ``target model'' is the same as the ``true model'': this is the model used to generate the ``target data'' or ``true data''. We will use the notation $\mpost$ and $\mtarget$.
+The posterior model is the same as the final model of an iterative problem. And the ``target model'' is the same as the ``true model'': this is the model used to generate the ``target data'' or ``true data''. We will use the notation $\mpost$ and $\mtarget$. The variable $n$ refers to both the number of observations and the index of the iterative inversion.
 
 %------------------------
 
@@ -125,28 +125,28 @@ Here you will derive formulas for generalized least squares under the assumption
 \item (1.5) Show the equivalence of the three expressions for the posterior Gaussian that are listed in \citet[][p.~66]{Tarantola2005}:
 %
 \begin{eqnarray}
-\mpost &=& \left(\bG^{\tssT} \covdi \bG + \cpriori \right)^{-1}
-\left( \bG^{\tssT} \covdi \bd + \cpriori\mprior \right)
+\mpost &=& \left(\bG^T \covdi \bG + \cpriori \right)^{-1}
+\left( \bG^T \covdi \bd + \cpriori\mprior \right)
 \label{mpost1}
 \\
-&=& \mprior + \left(\bG^{\tssT} \covdi \bG + \cpriori \right)^{-1} \bG^{\tssT} \covdi \left( \bd - \bG \mprior\right)
+&=& \mprior + \left(\bG^T \covdi \bG + \cpriori \right)^{-1} \bG^T \covdi \left( \bd - \bG \mprior\right)
 \label{mpost2}
 \\
-&=& \mprior + \cprior \bG^{\tssT} \left( \bG \cprior \bG^{\tssT} + \Cd\right)^{-1} \left( \bd - \bG \mprior\right)
+&=& \mprior + \cprior \bG^T \left( \bG \cprior \bG^T + \Cd\right)^{-1} \left( \bd - \bG \mprior\right)
 \label{mpost3}
 \end{eqnarray}
 %
 HINT: You may find it useful to use the two matrix identities in \citet[][Eq.~6.525]{Tarantola2005} (which are derived in \verb+notes_tarantola.pdf+), as well as the expressions for the posterior covariance,
 %
 \begin{eqnarray}
-\cpost &=& \left(\bG^{\tssT} \covdi \bG + \cpriori \right)^{-1}
+\cpost &=& \left(\bG^T \covdi \bG + \cpriori \right)^{-1}
 \label{cpost1}
 \\
-&=& \cprior - \cprior \bG^{\tssT} \left( \bG \cprior \bG^{\tssT} + \covd \right)^{-1} \bG \cprior
+&=& \cprior - \cprior \bG^T \left( \bG \cprior \bG^T + \covd \right)^{-1} \bG \cprior
 \label{cpost2}
 \end{eqnarray}
 
-\item (0.5) List each matrix in \refEqab{mpost1}{cpost2} that must be inverted. Also list the dimensions of each matrix, assuming that there are $\nparm$ model parameters and $\ndata$ observations.
+\item (0.5) List each matrix in \refEqab{mpost1}{cpost2} that must be inverted. Also list the dimensions of each matrix, assuming that there are $\ndata$ observations and $\nparm$ model parameters.
 \end{enumerate}
 
 %------------------------
@@ -205,7 +205,7 @@ You then record the P wave arrival times at all other stations. You choose an {\
 \item (0.5)
 Run \tfile.
 %\footnote{You do not need to enter any value at the prompt. If you hit ``0'' and hit return, then it will exit. If you hit any non-zero number and hit return, you will see an error message.}
-You should generate six figures, one of which is \refFig{fig:srcrec}. Then the code will crash because some code still needs to be written.
+You should generate four figures, one of which is \refFig{fig:srcrec}. Then the code will crash because some code still needs to be written.
 
 Examine \tfile\ and \tfileFE\ to see what is being plotted in these figures. Answer the following questions ``in words,'' that is, without excerpts from the code.
 
@@ -225,7 +225,7 @@ Examine \tfile\ and \tfileFE\ to see what is being plotted in these figures. Ans
 
 \vspace{1cm}
 
-\item (0.2) What do the functions \verb+tt+, \verb+d+, \verb+G+, and \verb+S+ do? Put your responses in \refTab{tab:funs}.
+\item (0.2) What do the functions \verb+g()+, \verb+d()+, \verb+G()+, and \verb+S()+ do? Put your responses in \refTab{tab:funs}.
 
 \item (0.0) What are the two main reasons for generating samples of $\cprior$?
 
@@ -264,7 +264,7 @@ What are the equations for $\bgammah$ and $\bHh$?
 
 \vspace{1cm}
 
-\item (0.1) From Section 3.2.3, what is the equation for $\cpost$?
+\item (0.1) From Section 3.2.3 \citep{Tarantola2005}, what is the equation for $\cpost$?
 
 \vspace{1cm}
 
@@ -335,7 +335,7 @@ List $\mpost$ and $\cpost$ after \textcolor{red}{eight iterations}. (The initial
 
 \item (0.5) 
 \begin{enumerate}
-\item (0.1) In the space provided in \tfile, use $\cpost$ to compute the posterior correlation matrix. Show your lines of code, and display the correlation matrix. A Python function equivalent to the Matlab command \verb+corrcov+ is provided. Do not use the function \verb+corrcov+ in your primary computation, but you can use this command to check.
+\item (0.1) In the space provided in \tfile, use $\cpost$ to compute the posterior correlation matrix. Show your lines of code, and display the correlation matrix. A Python function equivalent to the Matlab command \verb+corrcov+ is provided to check your code.
 
 \item (0.3) List the posterior standard deviations for each model parameter. Include units.
 
@@ -388,8 +388,8 @@ List $\mpost$ and $\cpost$ after \textcolor{red}{eight iterations}. (The initial
 \item (0.2)
 %
 \begin{enumerate}
-\item (0.1) How many iterations are needed for convergence in this example? \\
-      What indications do we have that convergence has occurred?
+\item (0.1) Based on visual inspection of the convergence curves in this example, how many iterations are needed for convergence? \\
+  What indications do we have that convergence has occurred?
 \item (0.1) Explain the relationships among the convergence curves for the data misfit, model misfit, and total misfit.
 \end{enumerate}
 

@@ -36,7 +36,41 @@ Last compiled: \today
 
 The goal is to understand the attributes of a seismic waveform (start time, end time, sample rate, station location, etc) and to gain some appreciation for variability in the quality of waveforms, especially when recording a \magnum{\magMw}{9} earthquake, which puts some seismometers to a difficult test!
 
+\item Aside: the \textbf{Global Seismographic Network (GSN)}. The GSN is composed of four seismic networks (see details at \url{https://www.fdsn.org/networks/}):
+%
+\begin{enumerate}
+\item \textbf{IU}. GSN--USGS. Publications: \citet{OliverMurphy1971,Ringler2020gsn,Wilson2024}.
+
+\item \textbf{II}. GSN--EarthScope. Publications: \citet{Agnew1986,Davis2024}. Prior to September 2024, the II network was run by Project IDA at the UCSD Scripps Institute of Oceanography.
+
+\item \textbf{IC}. New China Digital Seismograph Network - USGS. Publications: \citet{Anderson2015}.
+
+\item \textbf{CU}. Caribbean Network - USGS.  Publications: \citet{Ringler2020gsn,Wilson2024,Wilgus2024}.
+\end{enumerate}
+
+\item We select stations from three seismic networks, two of which are part of the GSN: \\
+
+\begin{tabular}{cll}
+\hline
+G   & Geoscope        & Institut de Physique du Globe de Paris \\
+II  & GSN-EarthScope  & EarthScope Consortium \\
+IU  & GSN-USGS        & USGS Albuquerque Seismological Laboratory \\
+\hline
+\end{tabular} \\
+
+\noindent
+The Geoscope network is managed by France and has been running high-quality stations since 1982 \citep{Leroy2024}.
+II and IU are part of the GSN \citep{Davis2024,Wilson2024}.
+
+\item The time periods for the waveforms are specified with respect to the origin time of the Sumatra earthquake: 2004--12--26 00:58:53
+
+%\noindent
+%This is the PDE (Preliminary Determination of Epicenter from National Earthquake Information Center) origin time listed in the CMTSOLUTION file (\url{www.globalcmt.org}).
+%The decimal version gives the time in days with respect to some Matlab reference time. In the lists below, all times and durations are in days.
+
 %---------
+
+\pagebreak
 
 \item {\bf Tips on picking stations for analysis}:
 \begin{itemize}
@@ -60,26 +94,6 @@ You do not need more than one seismogram for each site. In general the multiple 
 \item Having a uniform distribution (by distance, azimuth, latitude, etc) is often needed for analyses. {\bf So when you are picking a subset, be sure you have enough stations to cover the particular variation of interest.} Look over the homework problems to see what variations we will be covering. Use the global map of stations for help in picking.
 \end{itemize}
 
-\item We select stations from three seismic networks: \\
-
-\begin{tabular}{cll}
-\hline
-G   & Geoscope      & Institut de Physique du Globe de Paris \\
-II  & GSN-IRIS/IDA  & IRIS and Scripps Institute of Oceanography \\
-IU  & GSN-IRIS/USGS & IRIS and USGS Albuquerque Seismological Laboratory \\
-\hline
-\end{tabular} \\
-
-\noindent
-II and IU form the Global Seismographic Network (GSN).
-The Geoscope network is managed by France and has been running high-quality stations since 1982.
-
-\item The time periods for the waveforms are specified with respect to the origin time of the Sumatra earthquake: 2004--12--26 00:58:53
-
-%\noindent
-%This is the PDE (Preliminary Determination of Epicenter from National Earthquake Information Center) origin time listed in the CMTSOLUTION file (\url{www.globalcmt.org}).
-%The decimal version gives the time in days with respect to some Matlab reference time. In the lists below, all times and durations are in days.
-
 \end{itemize}
 
 %------------------------
@@ -88,7 +102,7 @@ The Geoscope network is managed by France and has been running high-quality stat
 \subsection*{Exercises}
 
 \begin{enumerate}
-\item Examine \tfile. For the LHZ raw data, list the parameters specified in the data download request:
+\item Examine \tfile. List the parameters specified in the data download request:
 
 \begin{itemize}
 \item networks: 
@@ -113,7 +127,7 @@ Your seismograms will be saved in the folder \verb+datawf/sumatra_LHZ_raw/+.
 
 \item Explain the four parts that make up each waveform ID. (See also \verb+lab_record_section.pdf+.) Note that the order of the four parts is critical.
 
-\item In the relevant code cell, set the flag \verb+plot_seismogram+ to \verb+True+ and examine the seismograms. Describe three ``errors'' in the seismograms that should probably be rejected from the analysis.
+\item In the relevant code cell, set the flag \verb+plot_seismogram+ to \verb+True+ and examine the seismograms. Describe three ``errors'' in the seismograms that should probably be rejected\footnote{This rejection will depend on what the specific science questions are. Potentially a seismogram with poor quality at the lowest frequencies could still be useful for analyses based on high frequencies.} from the analysis.
 
 %Open \verb+sumatra_modes.txt+ and make sure you understand what is shown.
 

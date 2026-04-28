@@ -68,7 +68,7 @@ The purpose of this problem set is to handle a large data set of seismograms and
 %Be familiar with what \verb+plotw_rs.py+ is doing.
 %Be sure you understand what a bandpass filter is.
 
-\item \verb+lab_sumatraB.pdf+, on sumatra waveforms
+\item \verb+lab_sumatraB.pdf+, on sumatra waveforms. This also includes an overview of the Global Seismograpphic Network (GSN), which is composed of four networks: IU, II, IC, and CU.
 \end{enumerate}
 
 %---------
@@ -82,22 +82,7 @@ The purpose of this problem set is to handle a large data set of seismograms and
 %\label{tab:all}
 %}}
 \hspace{-2.5cm}
-\begin{tabular}{||c|l|c|c|c|c|c|c||}
-\hline
-& &  & & & Number of & \multicolumn{2}{c||}{Number of} \\
-Problem & Notebook & Channel & Units & Duration & waveforms & \multicolumn{2}{c||}{stations} \\ \cline{7-8}
-&    & & & & downloaded & max & min \\ \hline
-%1-2 & \tfilelab\       & LHZ & counts & 10.5 days & 169 & 60 & 20 \\ \hline
-1    & \tfilemodes\     & LHZ & acc & 10.5 days & 169 & 60 & 20 \\ \hline
-2    & \tfilehf\        & BHZ & disp & -1 hr to +4 hr & 73 & 51 & 10 \\ \hline
-3    & \tfilelf\        & LHZ & vel & -1 hr to +4 hr & 40 & 31 & 3 \\ \hline
-4-1  & \tfilenearlf\    & LH* & disp, counts  & -1 hr to +4 hr & 33 & 5 & 4  \\ \hline
-4-2  & \tfileplf\       & LHZ & disp & -1 hr to +4 hr & 70 & 16 & 16 \\ \hline
-4-3  & \tfilephfcounts\ & BHZ & counts & -1 hr to +4 hr & 178 & 6 & 2 \\ \hline
-\hline
-\end{tabular}
-%\end{table}
-
+\input{hw_sumatraB_table}
 
 %---------
 
@@ -135,7 +120,10 @@ Problem & Notebook & Channel & Units & Duration & waveforms & \multicolumn{2}{c|
 %wcut=w.remove(station='CAN')
 %wcut=w.pop(index=2)     
 %\end{verbatim}
-%
+
+%---------
+
+\item {\bf Important:} For any script, if you change the ``fetch'' settings for getting waveforms, then you willw ant to manually delete the previous files in your folder. Otherwise your analysis will contain waveforms that were fetched with two different settings.
 
 \end{itemize}
 
@@ -152,6 +140,12 @@ Problem & Notebook & Channel & Units & Duration & waveforms & \multicolumn{2}{c|
 
 The template script is \tfilemodes.
 %See note \footnote{In this problem, our spectra are computed from the calibration-applied seismograms; the complete instrument response has not been deconvolved, as we did in the earlier homework. This should not impact our main findings, since we are not computing the {\em relative} amplitudes between modes within a given spectrum.}.
+
+\medskip\noindent
+Review from lab: Run \tfilelab\ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
+
+%\medskip\noindent
+%NOTE: Do NOT log-scale the frequency axis in this problem.
 
 \begin{enumerate}
 \item (0.5) Recall the modes spectrum that we computed for station CAN that emulated Figure~1 of \citet{Park2005} ({\em Science} paper). Having done the homework on toroidal modes, you should now have a better understanding of what the modes peaks are.
@@ -174,11 +168,6 @@ Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mo
 
 %---------
 
-% ZZZ THIS IS ALREADY DONE IN THE LAB.
-%\item (0.4) Run \tfilelab\ and examine the stations that were cut from the analysis. Describe four ``errors'' in these records, and list at least one station associated with each error.
-
-%---------
-
 \item (0.5) Copy your list of seed IDs (\verb+picked_waveforms+) from \tfilelab\ into the appropriate cell in \tfilemodes, and run the script to compute the manually-response-removed acceleration spectra and plot them.
 %
 \begin{enumerate}
@@ -189,7 +178,7 @@ Reminder of the indexing: \snlm{0}{2}{-1} refers to the $m=-1$ singlet of the mo
 Display a map of your stations, and display the text table of information (station names, distances, azimuths, etc).
 
 \item (0.2) Extract the amplitude of the \snl{0}{0} peak for all your stations. \\
-List the median value.
+List the median amplitude value (not the frequency).
 \end{enumerate}
 
 %---------
@@ -275,7 +264,8 @@ See \citet[][p. 106]{SteinWysession} for background.
 %
 \begin{itemize}
 \item The Earth is flat.
-\item The travel time between the fault and any station is encapsulated with the simple velocity $v = 11$~km/s. This is the mean apparent velocity for stations between $30^\circ < \Delta < 85^\circ$ of the source, assuming Jeffreys--Bullen P travel times and arc distances (not distances along the P wave ray path).
+\item The travel time between the fault and any station is encapsulated with the simple velocity $v = 11$~km/s. This is the mean apparent velocity for stations between $30^\circ < \Delta < 85^\circ$ of the source. Given an arc-distance of $d = a\Delta$~km from source to station ($a$ is Earth radius, $\Delta$ is in radians), the P wave traveltime is approximately $d/v$~seconds.
+ %, assuming Jeffreys--Bullen P travel times and arc distances (not distances along the P wave ray path).
 \item All stations are ``far'' from the fault, such that the distance from the station to the starting point is approximately equal to the distance from the station to the stopping point.
 \item The fault is positive in length: $L > 0$.
 \item The rupture speed is positive and less than the apparent P-wave speed: $0 < v_r < v$.
@@ -288,7 +278,7 @@ T_r(\alpha) = L\left(\frac{1}{v_r} - \frac{\cos(\alpha-\alpha_0)}{v}\right)
 \label{Tr}
 \end{equation}
 %
-where $v_r$ is the rupture velocity, $v$ is the velocity of the medium (11~km/s), $L$ is the fault length, and $\alpha$ is the azimuth to the station, and $\alpha_0$ is the rupture direction. In answering the following questions, note that {\bf no numbers are needed (only algebra).}
+where $v_r$ is the rupture velocity, $v$ is the velocity of the medium (11~km/s), $L$ is the fault length, $\alpha$ is the azimuth to the station, and $\alpha_0$ is the rupture direction. In answering the following questions, note that {\bf no numbers are needed (only algebra).}
 %
 \begin{enumerate}
 \item (0.1) What is the actual rupture time?
@@ -309,16 +299,16 @@ Hint: \refEq{Tr} is an equation with 6 unknowns: $T_r$, $L$, $v_r$, $v$, $\alpha
 %--------------------
 
 %\pagebreak
-\item (1.6) 
+\item (1.6) This problem can be completed without having finished the previous steps.
 \begin{enumerate}
-\item (1.0) With \citet[][Figure~1d]{Ni2005} as a guide, modify \tfilehf\ to produce a record section of filtered seismograms. (In the later part of this problem, you will work with envelopes.)
+\item (1.0) With \citet[][Figure~1d]{Ni2005} as a guide, modify \tfilehf\ to produce a record section of filtered seismograms. (In part (c), you will work with envelopes.)
 
 Notes:
 %
 \begin{itemize}
 \item In \verb+hw_sumatraA+ we examined this waveform for one station (CAN). Be sure to review that problem set before proceeding. Here we will look at many other stations besides CAN.
 
-\item Use stations within the epicentral distances given by $30^\circ < \Delta < 85^\circ$. (You will only find this detail in the Supplement of \citet{Ni2005}).
+\item Use stations within the epicentral distances given by $30^\circ < \Delta < 85^\circ$. (You will only find this detail in the Supplement of \citet{Ni2005}). You may need to delete any previously saved data files, if you are seeing stations having epicentral distances outside of the desired range.
 
 \item Use at least 10 stations with high-quality seismograms. (Think about what stations would be needed to reproduce the plot in \citet{Ni2005}. Be sure to include CAN from before.)
 
@@ -365,16 +355,18 @@ Here you will download a new, small data set.
 Choose your epicentral distance range appropriately.
 
 \begin{enumerate}
-\item (0.4) Modify \tfilelf\ to generate a record section that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
+\item (0.4) Modify \tfilelf\ to \textbf{generate a record section} that shows that the directivity can also be inferred from the relative amplitudes of R1 and R2, the ``minor orbit'' and ``major orbit'' Rayleigh wave arrivals\footnote{See Figure 2.7-3 of \citet{SteinWysession}.}. See Figure S1 of \citet{Ammon2005} as a guide.
 
+Your record section should have at least 3 seismograms.
+  
 % ZZZ PYTHON ZZZ
-Optional 1: Quantify the amplitude ratios by using the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave. This will require designating time windows for R1 and R2, then calculating the maximum.
-
-Optional 2: Use a larger subset of stations to demonstrate the key point. (What distance range do you want to specify?)
+Optional 1: Use a larger subset of stations to demonstrate the key point. (What distance range do you want to specify?)
+  
+Optional 2: Quantify the amplitude ratios by using the log-scaled quantity $\ln(A_{R1}/A_{R2})$, where $A_{R1}$ is the amplitude of the filtered R1 wave. This will require designating time windows for R1 and R2, then calculating the maximum.
 
 \item (0.3) Explain how the R1/R2 ratio can provide information on directivity.
 
-\item (0.3) Is your rupture direction ($\alpha_0$) different for the high-frequency P wave estimate than it is for the long-period Rayleigh wave estimate. Why might this be the case? \\
+\item (0.3) Is your rupture direction ($\alpha_0$) different for the high-frequency P wave estimate than it is for the long-period Rayleigh wave estimate? Why might this be the case? \\
 Hint: Think about the finite source model shown in \refFig{fig:sumatra_chen}.
 \end{enumerate}
 
@@ -390,18 +382,22 @@ Choose your epicentral distance range appropriately.
 \begin{enumerate}
 \item (1.0) Modify \tfilenearlf\ to show the maximal displacement (not velocity) of some ``near-source'' stations. See Figure~S12 of \citet{Ammon2005} for reference and checking.
 
-Note that here we ask for network IC as well, which will provide station IC.LSA.
+Note that here we ask for network IC\footnote{IC is also part of the Global Seismographic Network, along with II, IU, and CU.}, which will provide station IC.LSA.
 
 %Note: Use \verb+cutoff = [];+ and \verb+iint=0+ when calling \verb+getwaveform+; all filtering and integration can be applied within the plotting script (\verb+plotw_rs.m+).
 %
 \begin{enumerate}
-\item (0.4) Include plots of seismograms (or a record section) for instrument-response deconvolved.
+\item (0.4) Include plots of bandpass-filtered seismograms (or a record section) for instrument-response deconvolved.
 
-\item (0.4) Also, include plots of seismograms (or a record section) for raw data. You may have to re-download the data.
+Tip: If you encounter bad data, consider choosing between different location codes (e.g., 00 vs 10).
 
-\item (0.2) How different are the waveform shapes and amplitudes between the raw and instrument-response-deconvolved versions?
+\item (0.4) Include plots of bandpass-filtered seismograms (or a record section) for raw data. You may have to re-download the data.
 
-\item (0.0) On the basis of your results (notably the shapes of the filtered waveforms), can you infer whether the seismograms in \citet{Ammon2005} were instrument deconvolved or not?
+Tip: To enable comparisons, you will want to integrate the filtered raw recordings to dispalcement.
+
+\item (0.2) How different are the filtered waveform shapes between the raw and instrument-response-deconvolved versions?
+
+\item (0.0) On the basis of your results (notably the shapes of the filtered waveforms), can you infer whether the seismograms in \citet{Ammon2005} were instrument-deconvolved or not?
 \end{enumerate}
 %
 \iffalse
@@ -418,7 +414,7 @@ Notes:
 
 %------------
 
-\pagebreak
+%\pagebreak
 \item (0.5) \ptag\
 %
 \begin{enumerate}
