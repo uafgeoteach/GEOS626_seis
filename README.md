@@ -19,7 +19,8 @@ A `.yml` file (see setup/ folder) lists dependencies. This file, executed within
 ### How to run using Conda
 ---
 
-- install conda (miniconda or anaconda, former recommended) if not done already
+- install conda (miniconda) if not done already
+- if you already have miniconda, you might want to update to the latest version
 - navigate to the setup folder
   ```bash
   cd GEOS626_seis/setup
@@ -35,29 +36,6 @@ A `.yml` file (see setup/ folder) lists dependencies. This file, executed within
 - navigate back to the root of repository and launch jupyter
   ```bash
   cd ..
-  jupyter notebook
+  jupyter lab
   ```
 - browse and run notebooks as desired
-
-
-### How to run using Docker
----
-
-First, go into setup directory by using following command:
-
-```bash
-# move into setup directory
-cd setup
-
-# (optional): check Makefile exists 
-ls | grep Makefile
-```
-
-
-Once you are in the setup directory, run following command to build and run docker container.
-
-``` bash
-make
-```
-
-For more details, see `README.md` located in setup directory.
